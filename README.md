@@ -1,83 +1,97 @@
 # JS Framework
 
+JS is a web application framework for PHP 5.5+. Parts of the API are inspired by the node.js Connect and Express frameworks, however it is not a direct copy/mirror.
+
 ## Hello World
 
-app.php
+Create a new directory, clone the rep into `vendor/js`, create a new file called `app.php`, with:
 
-	use Js\App,
-		Js\App\Request, 
-		Js\App\Response;
-	
-	require 'vendor/autoload.php';
+```php
+use Js\App,
+	Js\App\Request, 
+	Js\App\Response;
 
-	$app = new App();
-	$app->add(function(Request $req, Response $res, App $app) {
-		return $res->text('Hello World');
-	});
-	
-	$app->execute((new Request())->import())->export();
-	
-Run:
+set_include_path(get_include_path() . PATH_SEPARATOR . 'vendor/js/lib');
+spl_autoload_register();
+require 'vendor/js/lib/Js.php';
 
-	php -S localhost:8000 app.php
+$app = new App();
+$app->add(function(Request $req, Response $res, App $app) {
+	return $res->text('Hello World');rem
+});
+
+$app->execute((new Request())->import())->export();
+```
 	
-And load it up in the browser at [http://localhost:8000/](http://localhost:8000/).
+Then run:
+
+```bash
+php -S localhost:8000 app.php
+```
 	
+And load it up in the browser at: [http://localhost:8000/](http://localhost:8000/).
+
 What's happening here:
 
-1. Include the [Composer](https://getcomposer.org/) autoloader. Js\App does not perform any class loading and does not include an autoloader. You can use any class loader you like (or roll your own), but I highly reccomend Composer's.
+1. Configure the autoloader.
 2. Initialise a `Js\App` object.
 3. Add some [middlewear](http://en.wikipedia.org/wiki/Middleware) to handle the request.
-4. Call `execute` to run the application. This method expects a `Js\App\Request` object, and returns a `Js\App\Response` object. The `import` method grabs all of the request data from PHP's globals, and the `export` method sends the response data back out. It is also possible to skip these methods and construct the request data manually, which is useful for testing.
+4. Call `execute` to run the application.
 
-In this example we're sending a `text/plain` response, the following methods are also avaliable:	
+The `execute` method expects a `Js\App\Request` object, and returns a `Js\App\Response` object. The `import` method grabs all of the request data from PHP's globals, and the `export` method sends the response data back out. It is also possible to skip these methods and construct the request data manually, which is useful for testing.
 
-### HTML
-		
-	$res->html('<p>Hello World</p>');
-	
-### JSON
-	
-	$res->json(['Hello World']);
-	
-### XML
-	
-	$dom = new \DOMDocument();
-	$dom->appendChild($dom->createElement('hello-world'));
-	$res->xml($dom);
-	
-### Other
-	
-	$res->setHeader('Content-Type', 'application/pdf')->setBody($data);
+## Requirements
 
-## Middleware
+* PHP 5.5+
 
-Middleware return values will be handeled as follows:
+## Documentation
 
-* **null**  
-	The request has not been completed, run further middleware.
-* **true** (or a value that will be cast to true)  
-	The request has been completed successfully, do not run any further middleware.
-* **false** (or a value that will be cast to false)  
-	The request has been completed unsuccessfully, do not run any further middleware, call the app's not found handler.
-	
-If no middleware completes the request the not found handler will be called:
+* [Getting Started](docs/Getting Started.md)
+* [Loaders](docs/Loaders.md)
+* [Middleware](docs/Middleware.md)
+* [Servers](docs/Servers.md)
+* App Components
+	* Request
+	* [Response](docs/Response.md)
+	* Router
+	* Controller
+	* View
+	* Url
+* Common Components
+	* Config
+	* Dir
+	* Dom
+	* File
+	* Feed
+	* Http
+	* Path
+	* Sitemap
+	* Url
 
-	$app->notFoundHandler(function(Request $req, Response $res, App $app) {
-		$res->setStatus(404)
-			->text("Not Found");
-	});
+## To Do
 
-Any uncaught exceptions thrown during execution of middleware will be refered to the app's error handler:
+* User documentation
+* API documentation
+* Tests
 
-	$app->errorHandler(function(Request $req, Response $res, App $app, Exception $e) {
-		$app->error($e);
-		$res->setStatus(500)
-			->text("Error: {$e->getMessage())}");
-	});
+## Licence
 
-### File and Directory Paths
+Copyright (c) 2014 Jack Sleight
 
-If you're using relative paths you should always ensure that the current working directory is correct by calling `chdir` at the top of app.php:
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-	chdir(__DIR__);
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
