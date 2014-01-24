@@ -1,6 +1,6 @@
 # JS Framework
 
-JS is a web application framework for PHP 5.5+. Parts of the API are inspired by the node.js Connect and Express frameworks, however it is not a direct copy/mirror.
+JS is a web application framework for PHP 5.5+. Parts of the API are inspired by the node.js Connect and Express frameworks, however it is not a direct copy/mirror. *This library and the documentation are sill a work in progress, the API may change, particularly the undocumented parts.*
 
 ## Hello World
 
@@ -17,7 +17,7 @@ spl_autoload_register();
 
 $app = new App();
 $app->add(function(Request $req, Response $res, App $app) {
-	return $res->text('Hello World');rem
+	return $res->text('Hello World');
 });
 
 $app->execute((new Request())->import())->export();
@@ -31,11 +31,11 @@ php -S localhost:8000 app.php
 	
 And load it up in the browser at: [http://localhost:8000/](http://localhost:8000/).
 
-### Explanation
+### What's happening here?
 
-1. Configure the autoloader.
+1. Include files and configure an autoloader.
 2. Initialise a `Js\App` object.
-3. Add some [middlewear](http://en.wikipedia.org/wiki/Middleware) to handle the request.
+3. Add some middlewear to handle the request.
 4. Call `execute` to run the application.
 
 The `execute` method expects a `Js\App\Request` object, and returns a `Js\App\Response` object. The `import` method grabs all of the request data from PHP's globals, and the `export` method sends the response data back out. It is also possible to skip these methods and construct the request data manually, which is useful for testing.
@@ -46,7 +46,6 @@ The `execute` method expects a `Js\App\Request` object, and returns a `Js\App\Re
 
 ## Documentation
 
-* [Getting Started](docs/Getting Started.md)
 * [Loaders](docs/Loaders.md)
 * [Middleware](docs/Middleware.md)
 * [Servers](docs/Servers.md)
