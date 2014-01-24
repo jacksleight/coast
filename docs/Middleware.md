@@ -2,7 +2,7 @@
 
 ...
 
-### Return Values
+## Return Values
 
 Middleware return values will be handeled as follows:
 
@@ -13,7 +13,7 @@ Middleware return values will be handeled as follows:
 * **false** (or a value that will be cast to false)  
 	The request has been completed unsuccessfully, do not run any further middleware, call the app's not found handler.
 
-### Not Found Handler
+## Not Found Handler
 
 If no middleware completes the request the not found handler will be called:
 
@@ -24,7 +24,7 @@ $app->notFoundHandler(function(Request $req, Response $res, App $app) {
 });
 ```
 
-### Exception Handler
+## Exception Handler
 
 Any uncaught exceptions thrown during execution of middleware will be refered to the app's error handler:
 

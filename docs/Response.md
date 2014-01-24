@@ -1,5 +1,7 @@
 # Response
 
+## Types
+
 ### HTML
 
 ```php		
