@@ -4,16 +4,16 @@ JS is a web application framework for PHP 5.5+. Parts of the API are inspired by
 
 ## Hello World
 
-Create a new directory, clone the rep into `vendor/js`, create a new file called `app.php`, with:
+Create a new directory, clone this repo into `vendor/js`, create a new file called `app.php` containing:
 
 ```php
 use Js\App,
 	Js\App\Request, 
 	Js\App\Response;
 
+require 'vendor/js/lib/Js.php';
 set_include_path(get_include_path() . PATH_SEPARATOR . 'vendor/js/lib');
 spl_autoload_register();
-require 'vendor/js/lib/Js.php';
 
 $app = new App();
 $app->add(function(Request $req, Response $res, App $app) {
@@ -31,7 +31,7 @@ php -S localhost:8000 app.php
 	
 And load it up in the browser at: [http://localhost:8000/](http://localhost:8000/).
 
-What's happening here:
+### Explanation
 
 1. Configure the autoloader.
 2. Initialise a `Js\App` object.
