@@ -1,16 +1,14 @@
 # Servers
 
-## PHP
-
-###### .htaccess
+### PHP
 
 ```bash
 php -S localhost:8000 app.php
 ```
 
-## Apache
+### Apache
 
-###### .htaccess
+**.htaccess**
 
 ```apache
 RewriteEngine On

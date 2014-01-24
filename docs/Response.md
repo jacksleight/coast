@@ -1,18 +1,18 @@
 # Response
 
-## HTML
+### HTML
 
 ```php		
 $res->html('<p>Hello World</p>');
 ```
 
-## JSON
+### JSON
 
 ```php
 $res->json(['Hello World']);
 ```
 
-## XML
+### XML
 
 ```php
 $dom = new \DOMDocument();
@@ -20,8 +20,8 @@ $dom->appendChild($dom->createElement('hello-world'));
 $res->xml($dom);
 ```
 
-## Other
+### Other
 
 ```php
-$res->setHeader('Content-Type', 'application/pdf')->setBody($data);
+$res->type('application/pdf')->body($data);
 ```

@@ -2,15 +2,13 @@
 
 Create a new directory, clone the rep into `vendor/js`, and create a new file called `app.php`.
 
-
-
-## App Initilisation
+### App Initilisation
 
 ```php
 $app = new App();
 ```
 
-## Middleware
+### Middleware
 
 ```php
 $app->add(function(Request $req, Response $res, App $app) {
@@ -18,4 +16,4 @@ $app->add(function(Request $req, Response $res, App $app) {
 });
 ```
 
-## Execution
+### Execution
