@@ -1,4 +1,4 @@
-# Notes
+# View
 
 ## Configration Options
 
