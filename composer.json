@@ -1,3 +1,13 @@
 {
-	"name": "jacksleight/js"
+	"name": "jacksleight/js",
+	"autoload": {
+		"psr-0": {
+			"Js": [
+				"lib"
+			]
+		},
+		"files": [
+			"lib/Js.php"
+		]
+	}
 }
