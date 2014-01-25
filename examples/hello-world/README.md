@@ -1,3 +1,3 @@
 # Hello World
 
-There's not much to say, check the [introduction](../) for an explanation.
+There's not much to say, check the [introduction](../../) for an explanation of what's happening.
