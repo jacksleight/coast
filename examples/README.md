@@ -15,10 +15,10 @@ php -S localhost:8000 app.php
 
 Or alternatively through Apache using the included .htaccess files.
 
-## Applications
+## Examples
 
 * [**Hello World**](hello-world)  
 	Basic hello world application.
 * [**Middleware**](middleware)  
-	Example of how middleware return values are handled and error handling.
+	Example of how middleware return values and errors are handled.
 

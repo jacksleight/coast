@@ -9,7 +9,7 @@ require 'vendor/autoload.php';
 $app = new App();
 $app->add(function(Request $req, Response $res, App $app) {
 		if ($req->getPath() == 'null') {
-			return null;
+			return;
 		} else if ($req->getPath() == 'true') {
 			$res->text('Success');
 			return true;
