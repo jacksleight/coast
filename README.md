@@ -1,6 +1,8 @@
 # JS Framework
 
-JS is a web application framework for PHP 5.5+. Parts of the API are inspired by the node.js Connect and Express frameworks, however it is not a direct copy/mirror. *This library and the documentation are sill a work in progress, the API may change, particularly the undocumented parts.*
+JS is a web application framework for PHP 5.5+. Parts of the API are inspired by the node.js Connect and Express frameworks, however it is not a direct clone.
+
+**The library and documentation are sill a work in progress, the API may change, particularly the undocumented parts.**
 
 ## Hello World
 
