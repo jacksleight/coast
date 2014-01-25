@@ -17,5 +17,8 @@ Or alternatively through Apache using the included .htaccess files.
 
 ## Applications
 
-
+* [**Hello World**](hello-world)  
+	Basic hello world application.
+* [**Middleware**](middleware)  
+	Example of how middleware return values are handled and error handling.
 
