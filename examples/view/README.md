@@ -4,7 +4,7 @@
 
 * **dir**  
 	The directory that contains your view files.
-* **extension** (phtml)
+* **extension** (phtml)  
 	The extension of your view files.
 
 ## Usage as Middleware
