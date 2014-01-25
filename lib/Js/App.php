@@ -45,8 +45,8 @@ class App
 	{
 		$this->_envs = array_merge(array(
 			'MODE'	 => isset($_SERVER['HTTP_HOST']) ? self::MODE_HTTP : self::MODE_CLI,
-			'SERVER' => self::SERVER_PRODUCTION,
-			'DEBUG'	 => false,
+			'SERVER' => self::SERVER_DEVELOPMENT,
+			'DEBUG'	 => true,
 		), $_ENV, $envs);
 		if ($this->debug()) {
 			foreach ($_REQUEST as $name => $value) {
