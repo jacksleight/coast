@@ -2,7 +2,7 @@
 
 JS is a web application framework for PHP 5.5+. Parts of the API are inspired by the node.js Connect and Express frameworks, however it is not a direct copy/mirror. *This library and the documentation are sill a work in progress, the API may change, particularly the undocumented parts.*
 
-## Barebones Hello World
+## Hello World
 
 Create a new directory, clone this repo into `vendor/jacksleight/js`, create a new file called `app.php` containing:
 
@@ -12,7 +12,7 @@ use Js\App,
 	Js\App\Request, 
 	Js\App\Response;
 
-require 'vendor/js/lib/Js.php';
+require 'vendor/jacksleight/js/lib/Js.php';
 set_include_path(get_include_path() . PATH_SEPARATOR . 'vendor/jacksleight/js/lib');
 spl_autoload_register();
 
@@ -34,14 +34,14 @@ And load it up in the browser at: [http://localhost:8000/](http://localhost:8000
 
 ### What's happening here?
 
-1. Include files and configure an autoloader.
+1. Include files and configure the autoloader.
 2. Initialise a `Js\App` object.
 3. Add middlewear to handle the request.
 4. Call `execute` to run the application.
 
 The `execute` method expects a `Js\App\Request` object, and returns a `Js\App\Response` object. The `import` method grabs all of the request data from PHP's globals, and the `export` method sends the response data back out. It is also possible to skip these methods and construct the request data manually, which is useful for testing.
 
-## Example Applications
+## Examples
 
 [Browse Examples](examples)
 
@@ -52,13 +52,15 @@ The `execute` method expects a `Js\App\Request` object, and returns a `Js\App\Re
 
 ## To Do
 
-* User documentation
+* More examples
 * API documentation
 * Tests
 
 ## Licence
 
-Copyright (c) 2014 Jack Sleight
+The MIT License
+
+Copyright (c) 2014 Jack Sleight http://jacksleight.com/
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
