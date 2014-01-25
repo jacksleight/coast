@@ -35,7 +35,7 @@ And load it up in the browser at: [http://localhost:8000/](http://localhost:8000
 
 1. Include files and configure an autoloader.
 2. Initialise a `Js\App` object.
-3. Add some middlewear to handle the request.
+3. Add middlewear to handle the request.
 4. Call `execute` to run the application.
 
 The `execute` method expects a `Js\App\Request` object, and returns a `Js\App\Response` object. The `import` method grabs all of the request data from PHP's globals, and the `export` method sends the response data back out. It is also possible to skip these methods and construct the request data manually, which is useful for testing.
@@ -43,29 +43,6 @@ The `execute` method expects a `Js\App\Request` object, and returns a `Js\App\Re
 ## Requirements
 
 * PHP 5.5+
-
-## Documentation
-
-* [Loaders](docs/Loaders.md)
-* [Middleware](docs/Middleware.md)
-* [Servers](docs/Servers.md)
-* App Components
-	* Request
-	* [Response](docs/Response.md)
-	* Router
-	* Controller
-	* View
-	* Url
-* Common Components
-	* Config
-	* Dir
-	* Dom
-	* File
-	* Feed
-	* Http
-	* Path
-	* Sitemap
-	* Url
 
 ## To Do
 
