@@ -1,0 +1,12 @@
+{
+	"minimum-stability": "dev",
+	"repositories": [
+		{
+			"url": "git@github.com:jacksleight/js.git",
+			"type": "git"
+		}
+	],
+	"require": {
+		"jacksleight/js": "master"
+	}
+}
