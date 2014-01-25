@@ -3,6 +3,7 @@ use Js\App,
 	Js\App\Request, 
 	Js\App\Response;
 
+chdir(__DIR__);
 require 'vendor/autoload.php';
 
 $app = new App();
