@@ -4,15 +4,16 @@ JS is a web application framework for PHP 5.5+. Parts of the API are inspired by
 
 ## Hello World
 
-Create a new directory, clone this repo into `vendor/js`, create a new file called `app.php` containing:
+Create a new directory, clone this repo into `vendor/jacksleight/js`, create a new file called `app.php` containing:
 
 ```php
+<?php
 use Js\App,
 	Js\App\Request, 
 	Js\App\Response;
 
 require 'vendor/js/lib/Js.php';
-set_include_path(get_include_path() . PATH_SEPARATOR . 'vendor/js/lib');
+set_include_path(get_include_path() . PATH_SEPARATOR . 'vendor/jacksleight/js/lib');
 spl_autoload_register();
 
 $app = new App();
