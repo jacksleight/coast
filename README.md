@@ -2,6 +2,8 @@
 
 JS is a web application framework for PHP 5.5+. Parts of the API are inspired by the node.js Connect and Express frameworks, however it is not a direct clone.
 
+If you have any questions please fee free to contact me by email (jacksleight at gmail dot com) or Twitter (@jacksleight). Feedback, bug reports and contributions are very welcome.
+
 **The library and documentation are sill a work in progress, the API may change, particularly the undocumented parts.**
 
 ## Hello World
