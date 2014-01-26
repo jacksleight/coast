@@ -22,5 +22,5 @@ Or alternatively through Apache using the included .htaccess files.
 * [**Middleware**](middleware)  
 	Example of how middleware return values and errors are handled.
 * [**View**](view)  
-	Usage of the `Js\View` component.
+	Usage of the `Coast\View` component.
 

@@ -1,7 +1,7 @@
 <?php
-use Js\App,
-	Js\App\Request, 
-	Js\App\Response;
+use Coast\App,
+	Coast\App\Request, 
+	Coast\App\Response;
 
 chdir(__DIR__);
 require 'vendor/autoload.php';

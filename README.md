@@ -1,6 +1,6 @@
-# JS Framework
+# Coast
 
-JS is a web application framework for PHP 5.5+. Parts of the API are inspired by the node.js Connect and Express frameworks, however it is not a direct clone.
+Coast is a web application framework for PHP 5.5+. Parts of the API are inspired by the node.js Connect and Express frameworks, however it is not a direct clone.
 
 If you have any questions please feel free to get in touch by email (jacksleight at gmail dot com) or [@jacksleight](https://twitter.com/jacksleight) on Twitter. All feedback, bug reports and contributions are very welcome.
 
@@ -12,11 +12,11 @@ Create a new directory, clone this repo into `js`, create a new file called `app
 
 ```php
 <?php
-use Js\App,
-	Js\App\Request, 
-	Js\App\Response;
+use Coast\App,
+	Coast\App\Request, 
+	Coast\App\Response;
 
-require 'js/lib/Js.php';
+require 'js/lib/Coast.php';
 set_include_path(get_include_path() . PATH_SEPARATOR . 'js/lib');
 spl_autoload_register();
 
@@ -39,11 +39,11 @@ And load it up in the browser at: [http://localhost:8000/](http://localhost:8000
 ### What's happening here?
 
 1. Include files and configure the autoloader.
-2. Initialise a `Js\App` object.
+2. Initialise a `Coast\App` object.
 3. Add middlewear to handle the request.
 4. Call `execute` to run the application.
 
-The `execute` method expects a `Js\App\Request` object, and returns a `Js\App\Response` object. The `import` method grabs all of the request data from PHP's globals, and the `export` method sends the response data back out. It is also possible to skip these methods and construct the request data manually, which is useful for testing.
+The `execute` method expects a `Coast\App\Request` object, and returns a `Coast\App\Response` object. The `import` method grabs all of the request data from PHP's globals, and the `export` method sends the response data back out. It is also possible to skip these methods and construct the request data manually, which is useful for testing.
 
 ## Examples
 

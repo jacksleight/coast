@@ -2,11 +2,11 @@
 	"minimum-stability": "dev",
 	"repositories": [
 		{
-			"url": "git@github.com:jacksleight/js.git",
+			"url": "git@github.com:jacksleight/coast.git",
 			"type": "git"
 		}
 	],
 	"require": {
-		"jacksleight/js": "master"
+		"jacksleight/coast": "master"
 	}
 }
