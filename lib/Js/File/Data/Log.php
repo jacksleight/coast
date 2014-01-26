@@ -13,7 +13,7 @@ class Log extends \Js\File\Data
 		parent::__construct($name, $mode);
 	}
 
-	public function add($value)
+	public function put($value)
 	{
 		$date = new \DateTime();
 		$this->put('[' . $date->format('d-M-Y H:i:s') . '] ' . $value);

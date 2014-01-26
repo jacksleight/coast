@@ -37,7 +37,7 @@ class Content
 			: null;
 	}
 
-	public function toString()
+	public function string()
 	{
 		return implode($this->_data);
 	}
@@ -54,6 +54,6 @@ class Content
 
 	public function __toString()
 	{
-		return $this->toString();
+		return $this->string();
 	}
 }

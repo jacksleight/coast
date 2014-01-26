@@ -29,7 +29,7 @@ class Sitemap extends \Js\Dom\Document
 		$this->appendChild($this->_root);
 	}
 
-	public function addUrl($location, \DateTime $modified = null, $changes = null, $priority = null)
+	public function add($location, \DateTime $modified = null, $changes = null, $priority = null)
 	{
 		if (is_array($changes)) {
 			list($since, $count) = $changes;

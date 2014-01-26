@@ -21,55 +21,55 @@ class Response
 		}
 	}
 
-	public function getStatus()
+	public function status()
 	{
 		return $this->_status;
 	}
 
-	public function getHeaders()
+	public function headers()
 	{
 		return $this->_headers;
 	}
 
-	public function getHeader($name)
+	public function header($name)
 	{
 		return isset($this->_headers[strtolower($name)])
 			? $this->_headers[strtolower($name)]
 			: null;
 	}
 
-	public function getBody()
+	public function body()
 	{
 		return $this->_body;
 	}
 
-	public function isInformation()
+	public function information()
 	{
 		return $this->_status >= 100 && $this->_status <= 199;
 	}
 
-	public function isSuccess()
+	public function success()
 	{
 		return $this->_status >= 200 && $this->_status <= 299;
 	}
 
-	public function isRedirect()
+	public function redirect()
 	{
 		return $this->_status >= 300 && $this->_status <= 399;
 	}
 
-	public function isClientError()
+	public function clientError()
 	{
 		return $this->_status >= 400 && $this->_status <= 499;
 	}
 
-	public function isServerError()
+	public function serverError()
 	{
 		return $this->_status >= 500 && $this->_status <= 599;
 	}
 
-	public function isError()
+	public function error()
 	{
-		return $this->isClientError() || $this->isServerError();
+		return $this->clientError() || $this->serverError();
 	}
 }

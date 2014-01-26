@@ -31,7 +31,7 @@ class Feed extends \Js\Dom\Document
 		$this->appendChild($this->_root);
 	}
 
-	public function addEntry($title, $link, \DateTime $updated, $summary = null)
+	public function add($title, $link, \DateTime $updated, $summary = null)
 	{
 		$entry = $this->createElement('entry', array(
 			$this->createElement('id', $link),
