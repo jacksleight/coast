@@ -8,34 +8,32 @@ namespace Js\File;
 
 abstract class Path extends \Js\Path
 {
+	const TYPE_DIR	= 'dir';
+	const TYPE_FILE	= 'file';
+
 	public function exists()
 	{
-		return file_exists($this->toString());
+		return file_exists($this->string());
 	}
 
-	public function isFile()
+	public function type()
 	{
-		return is_file($this->toString());
+		return is_dir($this->string()) ? self::TYPE_DIR : self::TYPE_FILE;
 	}
 
-	public function isDir()
+	public function readable()
 	{
-		return is_dir($this->toString());
+		return is_readable($this->string());
 	}
 
-	public function isReadable()
+	public function writable()
 	{
-		return is_readable($this->toString());
+		return is_writable($this->string());
 	}
 
-	public function isWritable()
+	public function permissions()
 	{
-		return is_writable($this->toString());
-	}
-
-	public function getPermissions()
-	{
-		return substr(sprintf('%o', fileperms($this->toString())), -4);
+		return substr(sprintf('%o', fileperms($this->string())), -4);
 	}
 	
 	abstract public function delete();

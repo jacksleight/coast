@@ -50,48 +50,48 @@ class Url
 			'query'		=> null,
 			'fragment'	=> null,
 		), parse_url($string));
-		$this->setScheme($data['scheme']);
-		$this->setUsername($data['user']);
-		$this->setPassword($data['pass']);
-		$this->setHost($data['host']);
-		$this->setPort($data['port']);
-		$this->setPath($data['path']);
-		$this->setQuery($data['query']);
-		$this->setFragment($data['fragment']);
+		$this->scheme($data['scheme']);
+		$this->username($data['user']);
+		$this->password($data['pass']);
+		$this->host($data['host']);
+		$this->port($data['port']);
+		$this->path($data['path']);
+		$this->query($data['query']);
+		$this->fragment($data['fragment']);
 	}
 	
-	public function toString($toPart = null, $fromStart = false)
+	public function string($toPart = null, $fromStart = false)
 	{
 		$parts = array_fill(self::PART_SCHEME, self::PART_FRAGMENT + 1, null);
 		
 		if (isset($this->_scheme)) {
-			$parts[self::PART_SCHEME]			= $this->getScheme();
+			$parts[self::PART_SCHEME]			= $this->scheme();
 			$parts[self::PART_SCHEME]		   .= isset(self::$_colons[$this->_scheme]) ? self::$_colons[$this->_scheme] : '://';
 		} else if (isset($this->_host)) {
 			$parts[self::PART_SCHEME]			= '//';
 		}
 		if (isset($this->_username)) {
-			$parts[self::PART_USERNAME]			= $this->getUsername();
+			$parts[self::PART_USERNAME]			= $this->username();
 			if (isset($this->_password)) {
-				$parts[self::PART_PASSWORD]		= ':' . $this->getPassword() . '@';
+				$parts[self::PART_PASSWORD]		= ':' . $this->password() . '@';
 			} else {	
 				$parts[self::PART_USERNAME]	   .= '@';
 			}
 		}
 		if (isset($this->_host)) {
-			$parts[self::PART_HOST]				= $this->getHost();
+			$parts[self::PART_HOST]				= $this->host();
 			if (isset($this->_port)) {
-				$parts[self::PART_PORT]			= ':' . $this->getPort();
+				$parts[self::PART_PORT]			= ':' . $this->port();
 			}
 		}
 		if (isset($this->_path)) {
-			$parts[self::PART_PATH]				= $this->getPath();
+			$parts[self::PART_PATH]				= $this->path();
 		}
 		if (count($this->_queryParams) > 0) {
-			$parts[self::PART_QUERY]			= '?' . $this->getQuery();
+			$parts[self::PART_QUERY]			= '?' . $this->query();
 		}
 		if (isset($this->_fragment)) {
-			$parts[self::PART_FRAGMENT]			= '#' . $this->getFragment();
+			$parts[self::PART_FRAGMENT]			= '#' . $this->fragment();
 		}
 		
 		if (!isset($toPart)) {
@@ -111,131 +111,113 @@ class Url
 
 	public function __toString()
 	{
-		return $this->toString();
+		return $this->string();
 	}
 	
-	public function isHttp()
+	public function scheme($value = null)
+	{
+		if (isset($value)) {
+			$this->_scheme = $value;
+			return $this;
+		}
+		return $this->_scheme;
+	}
+
+	public function http()
 	{
 		$scheme = strtolower($this->getScheme());
 		return $scheme == self::SCHEME_HTTP || $scheme == self::SCHEME_HTTPS;
 	}
 	
-	public function isHttps()
+	public function https()
 	{
 		$scheme = strtolower($this->getScheme());
 		return $scheme == self::SCHEME_HTTPS;
 	}
 	
-	public function setScheme($scheme)
+	public function username($value = null)
 	{
-		$this->_scheme = $scheme;
-		return $this;
-	}
-	
-	public function getScheme()
-	{
-		return $this->_scheme;
-	}
-	
-	public function setUsername($username)
-	{
-		$this->_username = $username;
-		return $this;
-	}
-	
-	public function getUsername()
-	{
+		if (isset($value)) {
+			$this->_username = $value;
+			return $this;
+		}
 		return $this->_username;
 	}
-	
-	public function setPassword($password)
+
+	public function password($value = null)
 	{
-		$this->_password = $password;
-		return $this;
-	}
-	
-	public function getPassword()
-	{
+		if (isset($value)) {
+			$this->_password = $value;
+			return $this;
+		}
 		return $this->_password;
 	}
 	
-	public function setHost($host)
+	public function host($value = null)
 	{
-		$this->_host = $host;
-		return $this;
-	}
-	
-	public function getHost()
-	{
+		if (isset($value)) {
+			$this->_host = $value;
+			return $this;
+		}
 		return $this->_host;
 	}
-	
-	public function setPort($port)
+
+	public function port($value = null)
 	{
-		$this->_port = $port;
-		return $this;
-	}
-	
-	public function getPort()
-	{
+		if (isset($value)) {
+			$this->_port = $value;
+			return $this;
+		}
 		return $this->_port;
 	}
-	
-	public function setPath($path)
+
+	public function path($value = null)
 	{
-		$this->_path = $path;
-		return $this;
-	}
-	
-	public function getPath()
-	{
+		if (isset($value)) {
+			$this->_path = $value;
+			return $this;
+		}
 		return $this->_path;
 	}
-	
-	public function setQuery($query)
+
+	public function query($value = null)
 	{
-		parse_str($query, $params);
-		$this->setQueryParams($params);
-		return $this;
+		if (isset($value)) {
+			parse_str($query, $params);
+			$this->queryParams($params);
+			return $this;
+		}
+		return http_build_query($this->queryParams());
 	}
-	
-	public function getQuery()
+
+	public function queryParam($name, $value = null)
 	{
-		return http_build_query($this->getQueryParams());
-	}
-	
-	public function setQueryParams(array $params)
-	{
-		$this->_queryParams = $params;
-		return $this;
-	}
-	
-	public function setQueryParam($name, $value)
-	{
-		$this->_queryParams[$name] = $value;
-		return $this;
-	}
-		
-	public function getQueryParams()
-	{
-		return $this->_queryParams;
-	}
-	
-	public function getQueryParam($name)
-	{
-		return isset($this->_queryParams[$name])
-			? $this->_queryParams[$name]
+		if (isset($value)) {
+			$this->_querys[$name] = $value;
+			return $this;
+		}
+		return isset($this->_querys[$name])
+			? $this->_querys[$name]
 			: null;
 	}
-	
-	public function setFragment($fragment)
+
+	public function queryParams(array $querys = null)
 	{
-		$this->_fragment = $fragment;
-		return $this;
+		if (isset($querys)) {
+			foreach ($querys as $name => $value) {
+				$this->queryParam($name, $value);
+			}
+			return $this;
+		}
+		return $this->_querys;
 	}
-	
-	public function getFragment()
+
+	public function fragment($value = null)
 	{
+		if (isset($value)) {
+			$this->_fragment = $value;
+			return $this;
+		}
 		return $this->_fragment;
 	}
 }

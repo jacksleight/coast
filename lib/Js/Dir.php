@@ -18,12 +18,12 @@ class Dir extends \Js\File\Path implements \IteratorAggregate
 
 	public function getIterator($recursive = false, $mode = \RecursiveIteratorIterator::LEAVES_ONLY, $flags = 0)
 	{
-		return new \Js\Dir\Iterator($this->toString(), $recursive, $mode, $flags);
+		return new \Js\Dir\Iterator($this->string(), $recursive, $mode, $flags);
 	}
 
 	public function make($mode = null)
 	{
-		$stack = explode("/", $this->toString());
+		$stack = explode("/", $this->string());
 		$parts = array();
 		while (count($stack) > 0) {
 			array_push($parts, array_shift($stack));
@@ -47,22 +47,25 @@ class Dir extends \Js\File\Path implements \IteratorAggregate
 				$path->delete();
 			}
 		}
-		rmdir($this->toString());
+		rmdir($this->string());
 		return $this;
 	}
 
-	public function chmod($mode, $recursive = false)
+	public function permissions($mode = null, $recursive = false)
 	{
-		if ($recursive) {
-			foreach ($this->getIterator(true, \RecursiveIteratorIterator::CHILD_FIRST) as $path) {
-				$path->chmod($mode);
+		if (isset($mode)) {
+			if ($recursive) {
+				foreach ($this->getIterator(true, \RecursiveIteratorIterator::CHILD_FIRST) as $path) {
+					$path->chmod($mode);
+				}
 			}
+			chmod($this->string(), $mode);
+			return $this;
 		}
-		chmod($this->toString(), $mode);
-		return $this;
+		return parent::permissions();
 	}
 
-	public function getSize($recursive = false)
+	public function size($recursive = false)
 	{
 		$size = 0;
 		foreach ($this->getIterator($recursive) as $path) {
@@ -74,23 +77,13 @@ class Dir extends \Js\File\Path implements \IteratorAggregate
 		return $size;
 	}
 
-	public function hasFile($path)
+	public function file($path)
 	{
-		return is_file("{$this->toString()}/{$path}");
+		return new \Js\File("{$this->string()}/{$path}");
 	}
 
-	public function getFile($path)
+	public function dir($path, $mode = null)
 	{
-		return new \Js\File("{$this->toString()}/{$path}");
-	}
-
-	public function hasDir($path)
-	{
-		return is_dir("{$this->toString()}/{$path}");
-	}
-
-	public function getDir($path, $mode = null)
-	{
-		return new \Js\Dir("{$this->toString()}/{$path}", $mode);
+		return new \Js\Dir("{$this->string()}/{$path}", $mode);
 	}
 }

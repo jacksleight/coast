@@ -8,24 +8,24 @@ namespace Js\File\Data;
 
 class Csv extends \Js\File\Data
 {
-	protected $_delimiter = ',';
-	protected $_enclosure = '"';
-	protected $_escape = '\\';
+	protected $_delimiter	= ',';
+	protected $_enclosure	= '"';
+	protected $_escape		= '\\';
 
-	public function setCharacters($delimiter = ',', $enclosure = '"', $escape = '\\')
+	public function characters($delimiter = ',', $enclosure = '"', $escape = '\\')
 	{
-		$this->_delimiter = $delimiter;
-		$this->_enclosure = $enclosure;
-		$this->_escape = $escape;
+		$this->_delimiter	= $delimiter;
+		$this->_enclosure	= $enclosure;
+		$this->_escape		= $escape;
 		return $this;
 	}
 
-	public function getArray($length = 0)
+	public function get($length = 0)
 	{
 		return fgetcsv($this->_handle, $length, $this->_delimiter, $this->_enclosure, $this->_escape);
 	}
 
-	public function putArray($array)
+	public function put($array)
 	{
 		fputcsv($this->_handle, $array, $this->_delimiter, $this->_enclosure);
 		return $this;

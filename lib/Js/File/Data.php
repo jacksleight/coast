@@ -13,15 +13,15 @@ class Data extends \Js\File
 	public function __construct($name, $mode = 'r')
 	{
 		parent::__construct($name);
-		$this->_handle = fopen($this->toString(), $mode);
+		$this->_handle = fopen($this->string(), $mode);
 	}
 
-	public function getHandle()
+	public function handle()
 	{
 		return $this->_handle;
 	}
 
-	public function setWriteBuffer($buffer)
+	public function buffer($buffer)
 	{
 		stream_set_write_buffer($this->_handle, $buffer);
 		return $this;
@@ -30,12 +30,12 @@ class Data extends \Js\File
 	public function close($class = 'Js\File')
 	{
 		fclose($this->_handle);
-		return new $class($this->toString());
+		return new $class($this->string());
 	}
 
 	public function read($length = null)
 	{
-		$size = $this->getSize();
+		$size = $this->size();
 		return fread($this->_handle, isset($length) ? $length : ($size ? $size : 1));
 	}
 

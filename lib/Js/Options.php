@@ -10,19 +10,22 @@ trait Options
 {
 	protected $_options = null;
 
-	public function setOptions(array $options)
+	public function options(array $options = null)
 	{
 		if (!isset($this->_options)) {
 			$this->_options = new \stdClass();
 		}
-		foreach ($options as $name => $value) {
-			$this->_options->$name = isset($value)
-				? $this->_initOption($name, $value)
-				: $value;
+		if (isset($options)) {
+			foreach ($options as $name => $value) {
+				$this->_options->$name = isset($value)
+					? $this->_initialize($name, $value)
+					: $value;
+			}
 		}
+		return $this->_options;
 	}
 
-	protected function _initOption($name, $value)
+	protected function _initialize($name, $value)
 	{
 		return $value;
 	}

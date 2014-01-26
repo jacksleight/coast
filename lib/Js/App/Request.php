@@ -36,8 +36,8 @@ class Request
 	protected $_port;
 	protected $_base;
 	protected $_path;
-	protected $_queries		= array();
-	protected $_datas		= array();
+	protected $_queryParams		= array();
+	protected $_dataParams		= array();
 	protected $_cookies		= array();
 
 	public function __construct()
@@ -82,8 +82,8 @@ class Request
 		$this->base(implode('/', $base) . '/');
 		$this->path(implode('/', $path));
 
-		$this->queries($this->_clean($_GET));
-		$this->datas($this->_clean(array_merge($_POST, $_FILES)));
+		$this->queryParams($this->_clean($_GET));
+		$this->dataParams($this->_clean(array_merge($_POST, $_FILES)));
 		$this->cookies($_COOKIE);		
 
 		if (session_status() == PHP_SESSION_NONE) {
@@ -302,50 +302,50 @@ class Request
 		return $this->_path;
 	}
 
-	public function query($name, $value = null)
+	public function queryParam($name, $value = null)
 	{
 		if (isset($value)) {
-			$this->_queries[$name] = $value;
+			$this->_queryParams[$name] = $value;
 			$this->param($name, $value);
 			return $this;
 		}
-		return isset($this->_queries[$name])
-			? $this->_queries[$name]
+		return isset($this->_queryParams[$name])
+			? $this->_queryParams[$name]
 			: null;
 	}
 
-	public function querys(array $querys = null)
+	public function queryParams(array $querys = null)
 	{
 		if (isset($querys)) {
 			foreach ($querys as $name => $value) {
-				$this->query($name, $value);
+				$this->queryParam($name, $value);
 			}
 			return $this;
 		}
-		return $this->_queries;
+		return $this->_queryParams;
 	}
 
-	public function data($name, $value = null)
+	public function dataParam($name, $value = null)
 	{
 		if (isset($value)) {
-			$this->_datas[$name] = $value;
+			$this->_dataParams[$name] = $value;
 			$this->param($name, $value);
 			return $this;
 		}
-		return isset($this->_datas[$name])
-			? $this->_datas[$name]
+		return isset($this->_dataParams[$name])
+			? $this->_dataParams[$name]
 			: null;
 	}
 
-	public function datas(array $datas = null)
+	public function dataParams(array $datas = null)
 	{
 		if (isset($datas)) {
 			foreach ($datas as $name => $value) {
-				$this->data($name, $value);
+				$this->dataParam($name, $value);
 			}
 			return $this;
 		}
-		return $this->_datas;
+		return $this->_dataParams;
 	}
 
 	public function cookie($name, $value = null)
@@ -370,17 +370,17 @@ class Request
 		return $this->_cookies;
 	}
 
-	public function getUrl()
+	public function url()
 	{
-		$defaultPort = 
-			($this->scheme() == self::SCHEME_HTTP && $this->port() == self::PORT_HTTP) ||
+		$default = 
+			($this->scheme() == self::SCHEME_HTTP  && $this->port() == self::PORT_HTTP) ||
 			($this->scheme() == self::SCHEME_HTTPS && $this->port() == self::PORT_HTTPS);
 		$url = new \Js\Url();
-		$url->setScheme($this->scheme());
-		$url->setHost($this->host());
-		$url->setPort(!$defaultPort ? $this->port() : null);
-		$url->setPath($this->base() . $this->path());
-		$url->setQueryParams($this->getQueryParams(false));
+		$url->scheme($this->scheme());
+		$url->host($this->host());
+		$url->port(!$default ? $this->port() : null);
+		$url->path($this->base() . $this->path());
+		$url->queryParams($this->queryParams());
 		return $url;
 	}
 }

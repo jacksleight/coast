@@ -26,7 +26,7 @@ class Path
 		$this->_name = $name;
 	}
 
-	public function toString($part = null)
+	public function string($part = null)
 	{
 		return isset($part)
 			? ($part == self::ALL ? pathinfo($this->_name) : pathinfo($this->_name, $part))
@@ -35,13 +35,13 @@ class Path
 
 	public function __toString()
 	{
-		return $this->toString();
+		return $this->string();
 	}
 
-	public function isWithin(\Js\Path $target)
+	public function within(\Js\Path $target)
 	{
-		$path = $this->toString();
-		$parts = \explode(PATH_SEPARATOR, $target->toString());	
+		$path = $this->string();
+		$parts = \explode(PATH_SEPARATOR, $target->string());	
 		foreach ($parts as $part) {
 			if (\preg_match('/^' . \preg_quote($part, '/') . '/', $path)) {
 				return true;
@@ -50,14 +50,14 @@ class Path
 		return false;
 	}
 
-	public function fromRelative(\Js\Path $target)
+	public function from(\Js\Path $target)
 	{
 		if (!$this->isAbsolute() || !$target->isRelative()) {
-			throw new \Exception("Source path '" . $this->toString() . "' is not absolute or target path '" . $target->toString() . "' is not relative");
+			throw new \Exception("Source path '" . $this->string() . "' is not absolute or target path '" . $target->string() . "' is not relative");
 		}
 
-		$source	= explode('/', $this->toString());
-		$target	= explode('/', $target->toString());
+		$source	= explode('/', $this->string());
+		$target	= explode('/', $target->string());
 		
 		$name = $source;
 		array_pop($name);
@@ -74,14 +74,14 @@ class Path
 		return new $class($name);
 	}
 
-	public function toRelative(\Js\Path $target)
+	public function to(\Js\Path $target)
 	{
 		if (!$this->isAbsolute() || !$target->isAbsolute()) {
-			throw new \Exception("Source path '" . $this->toString() . "' is not absolute or target path '" . $target->toString() . "' is not absolute");
+			throw new \Exception("Source path '" . $this->string() . "' is not absolute or target path '" . $target->string() . "' is not absolute");
 		}
 		
-		$source	= explode('/', $this->toString());
-		$target	= explode('/', $target->toString());
+		$source	= explode('/', $this->string());
+		$target	= explode('/', $target->string());
 
 		$name = $target;
 		foreach ($source as $i => $part) {
@@ -98,12 +98,12 @@ class Path
 		return new $class($name);
 	}
 
-	public function isAbsolute()
+	public function absolute()
 	{
-		return substr($this->toString(), 0, 1) == '/';
+		return substr($this->string(), 0, 1) == '/';
 	}
 
-	public function isRelative()
+	public function relative()
 	{
 		return !$this->isAbsolute();
 	}

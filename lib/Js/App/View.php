@@ -15,13 +15,13 @@ class View implements \Js\App\Access, \Js\App\Executable
 
 	public function __construct(array $options = array())
 	{
-		$this->setOptions(array_merge([
+		$this->options(array_merge([
 			'dir'		=> null,
 			'extension'	=> 'phtml',
 		], $options));
 	}
 
-	protected function _initOption($name, $value)
+	protected function _initialize($name, $value)
 	{
 		switch ($name) {
 			case 'dir':
@@ -94,7 +94,7 @@ class View implements \Js\App\Access, \Js\App\Executable
 		$this->start();
 		try {
 			extract($_params);
-			include $_file->toString();
+			include $_file->string();
 		} catch (\Exception $e) {
 			while ($this->_stack[0]['captures'] > 0) {
 				echo $this->end();

@@ -17,7 +17,7 @@ class Controller implements \Js\App\Access, \Js\App\Routable
 
 	public function __construct(array $options = array())
 	{
-		$this->setOptions(array_merge([
+		$this->options(array_merge([
 			'namespace'	=> null,
 		], $options));
 	}

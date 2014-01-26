@@ -13,7 +13,7 @@ class Url implements \Js\App\Access
 
 	public function __construct(array $options = array())
 	{
-		$this->setOptions(array_merge([
+		$this->options(array_merge([
 			'base'		=> '/',
 			'dir'		=> '',
 			'cdnBase'	=> null,
@@ -22,7 +22,7 @@ class Url implements \Js\App\Access
 		], $options));
 	}
 
-	protected function _initOption($name, $value)
+	protected function _initialize($name, $value)
 	{
 		switch ($name) {
 			case 'base':
@@ -58,7 +58,7 @@ class Url implements \Js\App\Access
 
 	public function base()
 	{
-		return $this->_options->base->toString();
+		return $this->_options->base->string();
 	}
 
 	public function string($string, $base = true)
@@ -97,7 +97,7 @@ class Url implements \Js\App\Access
 
 	public function url(\Js\Url $url, $toPart = null, $fromTop = false)
 	{
-		return $url->toString($toPart, $fromTop);
+		return $url->string($toPart, $fromTop);
 	}
 
 	public function file($file, $base = true, $cdn = true)
@@ -112,7 +112,7 @@ class Url implements \Js\App\Access
 
 		if ($this->_options->version && $file->isFile()) {
 			$time = $file->getModifyTime()->format('U');
-			$info = $file->toString(\Js\Path::ALL);
+			$info = $file->string(\Js\Path::ALL);
 			$info['dirname'] = $info['dirname'] != '.'
 				? "{$info['dirname']}/"
 				: '';
