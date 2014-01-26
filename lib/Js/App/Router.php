@@ -1,7 +1,7 @@
 <?php
 /*
- * Copyright 2008-2014 Jack Sleight <http://jacksleight.com/>
- * Any redistribution or reproduction of part or all of the contents in any form is prohibited.
+ * Copyright 2014 Jack Sleight <http://jacksleight.com/>
+ * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
  */
 
 namespace Js\App;
@@ -18,11 +18,11 @@ class Router implements \Js\App\Access, \Js\App\Executable
 		$this->_target = $target;
 	}
 
-	public function setApp(\Js\App $app)
+	public function app(\Js\App $app)
 	{
 		$this->_app = $app;
 		if ($this->_target instanceof \Js\App\Access) {
-			$this->_target->setApp($app);
+			$this->_target->app($app);
 		}
 		return $this;
 	}
