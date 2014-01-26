@@ -8,14 +8,14 @@ require 'vendor/autoload.php';
 
 $app = new App();
 $app->add(function(Request $req, Response $res, App $app) {
-		if ($req->getPath() == 'null') {
+		if ($req->path() == 'null') {
 			return;
-		} else if ($req->getPath() == 'true') {
+		} else if ($req->path() == 'true') {
 			$res->text('Success');
 			return true;
-		} else if ($req->getPath() == 'false') {
+		} else if ($req->path() == 'false') {
 			return false;
-		} else if ($req->getPath() == 'error') {
+		} else if ($req->path() == 'error') {
 			throw new \Exception('OH NO!');
 		}
 		return $res->text('Try accessing /null, /true, /false or /error.');	
@@ -24,11 +24,11 @@ $app->add(function(Request $req, Response $res, App $app) {
 		return $res->text('Second middleware.');	
 	})
 	->notFoundHandler(function(Request $req, Response $res, App $app) {
-		$res->setStatus(404)
+		$res->status(404)
 			->text("Not Found");
 	})
 	->errorHandler(function(Request $req, Response $res, App $app, Exception $e) {
-		$res->setStatus(500)
+		$res->status(500)
 			->text("Error: {$e->getMessage()}");
 	});
 

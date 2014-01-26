@@ -223,7 +223,7 @@ class App
 			$type = $e instanceof \ErrorException
 				? get_class($e) . '/' . self::$_errorLevels[$e->getSeverity()]
 				: get_class($e);
-			return $this->error($type, $e->getMessage(), $e->getFile(), $e->getLine(), $e->getTraceAsString());
+			return $this->error($type, $e->getMessage(), $e->file(), $e->getLine(), $e->getTraceAsString());
 		}
 
 		$error = "{$type}: '{$message}' in {$file} on line {$line}";

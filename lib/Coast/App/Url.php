@@ -31,7 +31,7 @@ class Url implements \Coast\App\Access
 				break;
 			case 'dir':
 				$value = new \Coast\Dir("{$value}");
-				$value = $value->isRelative()
+				$value = $value->relative()
 					? new \Coast\Dir(getcwd() . "/{$value}")
 					: $value;
 				break;
@@ -103,14 +103,14 @@ class Url implements \Coast\App\Access
 	public function file($file, $base = true, $cdn = true)
 	{
 		$file = new \Coast\File("{$file}");
-		$file = $file->isRelative()
+		$file = $file->relative()
 			? new \Coast\File(getcwd() . "/{$file}")
 			: $file;
 		if (!$file->isWithin($this->_options->dir)) {
 			throw new \Coast\App\Exception("File '{$file}' is not within base directory");
 		}
 
-		if ($this->_options->version && $file->isFile()) {
+		if ($this->_options->version && $file->exists()) {
 			$time = $file->getModifyTime()->format('U');
 			$info = $file->string(\Coast\Path::ALL);
 			$info['dirname'] = $info['dirname'] != '.'
@@ -119,7 +119,7 @@ class Url implements \Coast\App\Access
 			$file = new \Coast\File("{$info['dirname']}{$info['filename']}.{$time}.{$info['extension']}");
 		}
 
-		$path = $this->_options->dir->toRelative($file);
+		$path = $this->_options->dir->to($file);
 		if ($base) {
 			$path = $cdn && isset($this->_options->cdnBase)
 				? $this->_options->cdnBase . $path

@@ -119,7 +119,7 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
 
 	public function execute(\Coast\App\Request $req, \Coast\App\Response $res)
 	{
-		$match = $this->match($req->getPath());
+		$match = $this->match($req->path());
 		if (!$match) {
 			return false;
 		}
