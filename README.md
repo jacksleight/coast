@@ -4,7 +4,7 @@ Coast is a web application framework for PHP 5.5+. Parts of the API are inspired
 
 If you have any questions please feel free to get in touch by email (jacksleight at gmail dot com) or [@jacksleight](https://twitter.com/jacksleight) on Twitter. All feedback, bug reports and contributions are very welcome.
 
-**The library and documentation are sill a work in progress, the API may change, particularly the undocumented parts.**
+**The library and documentation are a work in progress, the API may change.**
 
 ## Hello World
 
