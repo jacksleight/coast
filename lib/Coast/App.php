@@ -163,7 +163,7 @@ class App
 
 	public function execute(\Coast\App\Request $req)
 	{
-		$res = $req->getResponse();
+		$res = $req->response();
 
 		$this->set('req', $req)
 			 ->set('res', $res);

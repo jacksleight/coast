@@ -86,7 +86,7 @@ class Response
 			: null;
 	}
 
-	public function body($value)
+	public function body($value = null)
 	{
 		if (isset($value)) {
 			$this->_body = $value;
