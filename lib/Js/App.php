@@ -1,7 +1,7 @@
 <?php
 /*
- * Copyright 2008-2014 Jack Sleight <http://jacksleight.com/>
- * Any redistribution or reproduction of part or all of the contents in any form is prohibited.
+ * Copyright 2014 Jack Sleight <http://jacksleight.com/>
+ * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
  */
 
 namespace Js;
@@ -50,7 +50,7 @@ class App
 		), $_ENV, $envs);
 		if ($this->debug()) {
 			foreach ($_REQUEST as $name => $value) {
-				if (preg_match('/^debug-([a-z]+)$/', $name, $match)) {
+				if (preg_match('/^_debug-([a-z]+)$/', $name, $match)) {
 					$this->setEnv(strtoupper(str_replace('-', '_', $name)), true);
 				}
 			}
@@ -143,7 +143,7 @@ class App
 	public function set($name, $value)
 	{
 		if ($value instanceof \Js\App\Access) {
-			$value->setApp($this);
+			$value->app($this);
 		}
 		$this->_params[$name] = $value;
 		return $this;
@@ -215,30 +215,6 @@ class App
 		}
 		return $this;
 	}
-
-	public function onError($level, $message, $file, $line)
-	{
-		if ($level & error_reporting()) {
-			if ($level & E_NOTICE) {
-				$this->error(self::$_errorLevels[$level], $message, $file, $line);
-			} else {
-				throw new \ErrorException($message, 0, $level, $file, $line);
-			}
-		}
-	}
-
-	public function onException(\Exception $e)
-	{
-		$this->error($e);
-	}
-
-	public function onShutdown()
-	{
-		$error = error_get_last();
-        if (isset($error)) {
-			$this->error(self::$_errorLevels[E_ERROR], $error['message'], $error['file'], $error['line']);
-        }
-	}
 		
 	public function error($type, $message = null, $file = null, $line = null, $trace = null)
 	{
@@ -266,6 +242,30 @@ class App
 				->add($error)
 				->close();
 		}
+	}
+
+	public function onError($level, $message, $file, $line)
+	{
+		if ($level & error_reporting()) {
+			if ($level & E_NOTICE) {
+				$this->error(self::$_errorLevels[$level], $message, $file, $line);
+			} else {
+				throw new \ErrorException($message, 0, $level, $file, $line);
+			}
+		}
+	}
+
+	public function onException(\Exception $e)
+	{
+		$this->error($e);
+	}
+
+	public function onShutdown()
+	{
+		$error = error_get_last();
+        if (isset($error)) {
+			$this->error(self::$_errorLevels[E_ERROR], $error['message'], $error['file'], $error['line']);
+        }
 	}
 
 	public function __set($name, $value)

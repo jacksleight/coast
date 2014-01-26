@@ -1,7 +1,7 @@
 <?php
 /*
- * Copyright 2008-2014 Jack Sleight <http://jacksleight.com/>
- * Any redistribution or reproduction of part or all of the contents in any form is prohibited.
+ * Copyright 2014 Jack Sleight <http://jacksleight.com/>
+ * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
  */
 
 namespace Js\App;
@@ -10,142 +10,130 @@ class Response
 {
 	protected $_req;
 	
-	protected $_status  = 200;
-	protected $_headers = array();
-	protected $_cookies = array();
-	protected $_body = '';
+	protected $_status	= null;
+	protected $_headers	= array();
+	protected $_cookies	= array();
+	protected $_body	= '';
 
 	public function __construct(\Js\App\Request $req)
 	{
 		$this->_req = $req;
-		$this->setStatus(200);
+		$this->status(200);
+	}
+
+	public function request()
+	{
+		return $this->_req;
 	}
 
 	public function export()
 	{
 		if (session_status() == PHP_SESSION_ACTIVE) {
-			$_SESSION = $this->_req->getSessions();
+			$_SESSION = $this->_req->sessions();
 			session_write_close();
 		}
-		header($this->_req->getProtocol() . $this->_status);
+		header($this->_req->protocol() . $this->_status);
 		foreach ($this->_headers as $name => $value) {
 			header("{$name}: {$value}");
 		}
 		foreach ($this->_cookies as $name => $params) {
-			setcookie($name, $params[0], $params[1], $params[2], $params[3], $params[4], $params[5]);
+			call_user_func_array('setcookie', $params);
 		}
-		echo $this->getBody();
+		echo $this->body();
 	}
 
-	public function setStatus($status)
+	public function status($value = null)
 	{
-		$this->_status = $status;
-		return $this;
-	}
-
-	public function setHeaders(array $headers)
-	{
-		foreach ($headers as $name => $value) {
-			$this->setHeader($name, $value);
+		if (isset($value)) {
+			$this->_status = $value;
+			return $this;
 		}
-		return $this;
+		return $this->_status;
 	}
 
-	public function setHeader($name, $value)
+	public function header($name, $value = null)
 	{
-		$this->_headers[strtolower($name)] = $value;
-		return $this;
-	}
-
-	public function getHeaders()
-	{
-		return $this->_headers;
-	}
-
-	public function getHeader($name)
-	{
+		$name = strtolower($name);
+		if (isset($value)) {
+			$this->_headers[$name] = $value;
+			return $this;
+		}
 		return isset($this->_headers[$name])
 			? $this->_headers[$name]
 			: null;
 	}
 
-	public function setCookies($cookies)
+	public function type($value = null)
 	{
-		foreach ($cookies as $name => $params) {
-			$this->setCookie($name, $params[0], $params[1], $params[2], $params[3], $params[4], $params[5]);
+		if (isset($value)) {
+			$this->header('Content-Type', $value);
+			return $this;
 		}
-		return $this;
+		return $this->header('Content-Type');
 	}
 
-	public function setCookie($name, $value = null, $age = null, $path = null, $domain = null, $secure = false, $http = false)
+	public function cookie($name, $value = null, $age = null, $path = null, $domain = null, $secure = false, $http = false)
 	{
-		if (!isset($path)) {
-			$path = $this->_req->getBase();
+		if (isset($value)) {
+			if (!isset($path)) {
+				$path = $this->_req->base();
+			}
+			$this->_cookies[$name] = array($value, (isset($age) ? time() + $age : null), $path, $domain, $secure, $http);
+			return $this;
 		}
-		$this->_cookies[$name] = array($value, (isset($age) ? time() + $age : null), $path, $domain, $secure, $http);
-		return $this;
-	}
-
-	public function getCookies()
-	{
-		return $this->_cookies;
-	}
-
-	public function getCookie($name)
-	{
 		return isset($this->_cookies[$name])
 			? $this->_cookies[$name]
 			: null;
 	}
 
-	public function setBody($body)
+	public function body($value)
 	{
-		$this->_body = $body;
-		return $this;
-	}
-
-	public function getBody()
-	{
+		if (isset($value)) {
+			$this->_body = $value;
+			return $this;
+		}
 		return $this->_body;
 	}
 
 	public function text($value)
 	{
-		$this
-			->setHeader('Content-Type', 'text/plain')
-			->setBody((string) $value);
-		return $this;
+		return $this
+			->type('text/plain')
+			->body((string) $value);
 	}
 
 	public function html($value)
 	{
-		$this
-			->setHeader('Content-Type', 'text/html')
-			->setBody((string) $value);
-		return $this;
+		return $this
+			->type('text/html')
+			->body((string) $value);
 	}
 
 	public function json($value)
 	{
-		$this
-			->setHeader('Content-Type', 'application/json')
-			->setBody(json_encode($value));
-		return $this;
+		return $this
+			->type('application/json')
+			->body(json_encode($value));
 	}
 
-	public function xml(\DOMDocument $value)
+	public function xml($value)
 	{
-		$this
-			->setHeader('Content-Type', 'application/xml')
-			->setBody($value->saveXML());
-		return $this;
+		if ($value instanceof \DOMDocument) {
+			$value = $value->saveXML();
+		} else if ($value instanceof \SimpleXMLElement) {
+			$value = $value->asXML();
+		} else {
+			$value = (string) $value;
+		}
+		return $this
+			->type('application/xml')
+			->body($value);
 	}
 
 	public function redirect($type, $url)
 	{
-		$this
-			->setStatus($type)
-			->setHeader('Location', $url);
-		return $this;
+		return $this
+			->status($type)
+			->header('Location', $url);
 	}
 }

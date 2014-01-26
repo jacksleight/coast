@@ -1,7 +1,7 @@
 <?php
 /*
- * Copyright 2008-2014 Jack Sleight <http://jacksleight.com/>
- * Any redistribution or reproduction of part or all of the contents in any form is prohibited.
+ * Copyright 2014 Jack Sleight <http://jacksleight.com/>
+ * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
  */
 
 namespace Js\App;
@@ -25,86 +25,81 @@ class Request
 
 	protected $_response;
 	
-	protected $_sessions = array();
-	protected $_params = array();
-	protected $_servers	= array();
+	protected $_sessions	= array();
+	protected $_params		= array();
+	protected $_servers		= array();
 	protected $_protocol;
 	protected $_method;
-	protected $_headers	= array();
+	protected $_headers		= array();
 	protected $_scheme;
 	protected $_host;
 	protected $_port;
 	protected $_base;
 	protected $_path;
-	protected $_rawQueryParams	= array();
-	protected $_rawPostParams	= array();
-	protected $_queryParams		= array();
-	protected $_postParams		= array();
-	protected $_cookies			= array();
+	protected $_queries		= array();
+	protected $_datas		= array();
+	protected $_cookies		= array();
 
 	public function __construct()
 	{
 		$this->_response = new \Js\App\Response($this);
 	}
 
-	public function getResponse()
+	public function response()
 	{
 		return $this->_response;
 	}
 
 	public function import()
 	{
-		$this->addParams(isset($_SERVER['argv']) ? $_SERVER['argv'] : array());
+		$this->params(isset($_SERVER['argv']) ? $_SERVER['argv'] : array());
 		
-		$this->addServers($_SERVER);
+		$this->servers($_SERVER);
 
-		$this->setProtocol(strtoupper($this->getServer('SERVER_PROTOCOL')));
-		$this->setMethod(strtoupper($this->getServer('REQUEST_METHOD')));
+		$this->protocol(strtoupper($this->server('SERVER_PROTOCOL')));
+		$this->method(strtoupper($this->server('REQUEST_METHOD')));
 
-		foreach ($this->getServers() as $name => $value) {
+		foreach ($this->servers() as $name => $value) {
 			if (preg_match('/^HTTP_(.*)$/', $name, $match)) {
-				$this->setHeader(str_replace('_', '-', $match[1]), $value);
+				$this->header(str_replace('_', '-', $match[1]), $value);
 			}
 		}
 		if (function_exists('apache_request_headers')) {
 			foreach (apache_request_headers() as $name => $value) {
-				$this->setHeader($name, $value);
+				$this->header($name, $value);
 			}
 		}
 
-		$this->setScheme($this->getServer('HTTPS') == 'on' ? self::SCHEME_HTTPS : self::SCHEME_HTTP);
-		$this->setHost($this->getServer('SERVER_NAME'));
-		$this->setPort($this->getServer('SERVER_PORT'));
+		$this->scheme($this->server('HTTPS') == 'on' ? self::SCHEME_HTTPS : self::SCHEME_HTTP);
+		$this->host($this->server('SERVER_NAME'));
+		$this->port($this->server('SERVER_PORT'));
 	
-		list($full)	= explode('?', $this->getServer('REQUEST_URI'));	
+		list($full)	= explode('?', $this->server('REQUEST_URI'));	
 		$path = isset($_GET['_']) ? $_GET['_'] : ltrim($full, '/');
 		$full = explode('/', $full);
 		$path = explode('/', $path);
 		$base = array_slice($full, 0, count($full) - count($path));
-		$this->setBase(implode('/', $base) . '/');
-		$this->setPath(implode('/', $path));
+		$this->base(implode('/', $base) . '/');
+		$this->path(implode('/', $path));
 
-		$this->setRawQueryParams($_GET);
-		$this->setRawPostParams(array_merge($_POST, $_FILES));
-
-		$this->addQueryParams(\Js\array_expand($this->_cleanParams($_GET), '_'));
-		$this->addPostParams(\Js\array_expand($this->_cleanParams(array_merge($_POST, $_FILES)), '_'));
-		$this->addCookies($_COOKIE);		
+		$this->queries($this->_clean($_GET));
+		$this->datas($this->_clean(array_merge($_POST, $_FILES)));
+		$this->cookies($_COOKIE);		
 
 		if (session_status() == PHP_SESSION_NONE) {
 			if ($this->hasQueryParam('sessionId')) {
 				session_id($this->getQueryParam('sessionId'));
 			}
 			session_name('sessionId');
-			session_set_cookie_params(0, $this->getBase());
+			session_set_cookie_params(0, $this->base());
 			session_start();
 		}
-		$this->addSessions($_SESSION);
+		$this->sessions($_SESSION);
 
 		return $this;
 	}
 
-	protected function _cleanParams(array $params)
+	protected function _clean(array $params)
 	{
 		foreach ($params as $name => $value) {
 			if (preg_match('/^_/', $name)) {
@@ -120,396 +115,272 @@ class Request
 		return $params;
 	}
 
-	public function addSessions(array $sessions)
+	public function &session($name, $value = null)
 	{
-		foreach ($sessions as $name => $value) {
-			$this->setSession($name, $value);
+		if (isset($value)) {
+			$this->_sessions[$name] = $value;
+			return $this;
 		}
-		return $this;
+		return isset($this->_sessions[$name])
+			? $this->_sessions[$name]
+			: null;
 	}
 
-	public function setSession($name, $value)
+	public function &sessions(array $sessions = null)
 	{
-		$this->_sessions[$name] = $value;
-		return $this;
-	}
-
-	public function &getSessions()
-	{
+		if (isset($sessions)) {
+			foreach ($sessions as $name => $value) {
+				$this->session($name, $value);
+			}
+			return $this;
+		}
 		return $this->_sessions;
 	}
 
-	public function &getSession($name, $default = null)
+	public function param($name, $value = null)
 	{
-		if (!isset($this->_sessions[$name])) {
-			$this->_sessions[$name] = $default;
+		if (isset($value)) {
+			$this->_params[$name] = $value;
+			return $this;
 		}
-		return $this->_sessions[$name];
+		return isset($this->_params[$name])
+			? $this->_params[$name]
+			: null;
 	}
 
-	public function importParams(array $params)
+	public function params(array $params = null)
 	{
-		$this->_params = $params;
-		return $this;
-	}
-
-	public function exportParams()
-	{
+		if (isset($params)) {
+			foreach ($params as $name => $value) {
+				$this->param($name, $value);
+			}
+			return $this;
+		}
 		return $this->_params;
 	}
 
-	public function addParams(array $params, $namespace = 'index')
+	public function server($name, $value = null)
 	{
-		foreach ($params as $name => $value) {
-			$this->setParam($name, $value, $namespace);
+		if (isset($value)) {
+			$this->_servers[$name] = $value;
+			return $this;
 		}
-		return $this;
-	}
-
-	public function setParam($name, $value, $namespace = 'index')
-	{
-		$this->_params[$namespace][$name] = $value;
-		return $this;
-	}
-
-	public function mergeParams(array $params, $namespace = 'index')
-	{
-		foreach ($params as $name => $value) {
-			$this->mergeParam($name, $value, $namespace);
-		}
-		return $this;
-	}
-
-	public function mergeParam($name, array $value, $namespace = 'index')
-	{
-		if (!isset($this->_params[$namespace][$name])) {
-			$this->_params[$namespace][$name] = array();
-		}
-		$this->_params[$namespace][$name] = \Js\array_merge_smart(
-			(array) $this->_params[$namespace][$name],
-			$value
-		);
-		return $this;
-	}
-
-	public function getParams($namespace = 'index')
-	{
-		return isset($this->_params[$namespace])
-			? $this->_params[$namespace]
-			: array();
-	}
-
-	public function getParam($name, $default = null, $namespace = 'index')
-	{
-		return $this->hasParam($name, $namespace)
-			? $this->_params[$namespace][$name]
-			: $default;
-	}
-
-	public function hasParam($name, $namespace = 'index')
-	{
-		return isset($this->_params[$namespace][$name]);
-	}
-
-	public function addServers(array $servers)
-	{
-		foreach ($servers as $name => $value) {
-			$this->setServer($name, $value);
-		}
-		return $this;
-	}
-
-	public function setServer($name, $value)
-	{
-		$this->_servers[$name] = $value;
-		return $this;
-	}
-
-	public function getServers()
-	{
-		return $this->_servers;
-	}
-
-	public function getServer($name)
-	{
 		return isset($this->_servers[$name])
 			? $this->_servers[$name]
 			: null;
 	}
 
-	public function setProtocol($protocol)
+	public function servers(array $servers = null)
 	{
-		$this->_protocol = $protocol;
-		return $this;
+		if (isset($servers)) {
+			foreach ($servers as $name => $value) {
+				$this->server($name, $value);
+			}
+			return $this;
+		}
+		return $this->_servers;
 	}
 
-	public function getProtocol()
+	public function protocol($value = null)
 	{
+		if (isset($value)) {
+			$this->_protocol = $value;
+			return $this;
+		}
 		return $this->_protocol;
 	}
 
-	public function setMethod($method)
+	public function method($value = null)
 	{
-		$this->_method = $method;
-		return $this;
-	}
-
-	public function getMethod()
-	{
+		if (isset($value)) {
+			$this->_method = $value;
+			return $this;
+		}
 		return $this->_method;
 	}
 
-	public function isHead()
+	public function head()
 	{
-		return $this->getMethod() == self::METHOD_HEAD;
+		return $this->method() == self::METHOD_HEAD;
 	}
 
-	public function isGet()
+	public function get()
 	{
-		return $this->getMethod() == self::METHOD_GET;
+		return $this->method() == self::METHOD_GET;
 	}
 
-	public function isPost()
+	public function post()
 	{
-		return $this->getMethod() == self::METHOD_POST;
+		return $this->method() == self::METHOD_POST;
 	}
 
-	public function isPut()
+	public function put()
 	{
-		return $this->getMethod() == self::METHOD_PUT;
+		return $this->method() == self::METHOD_PUT;
 	}
 
-	public function isDelete()
+	public function delete()
 	{
-		return $this->getMethod() == self::METHOD_DELETE;
+		return $this->method() == self::METHOD_DELETE;
 	}
 
-	public function isAjax()
+	public function ajax()
 	{
 		return $this->getHeader('X-Requested-With') == 'XMLHttpRequest';
 	}
 
-	public function addHeaders(array $headers)
+	public function header($name, $value = null)
 	{
-		foreach ($headers as $name => $value) {
-			$this->setHeader($name, $value);
+		$name = strtolower($name);
+		if (isset($value)) {
+			$this->_headers[$name] = $value;
+			return $this;
 		}
-		return $this;
-	}
-
-	public function setHeader($name, $value)
-	{
-		$this->_headers[strtolower($name)] = $value;
-		return $this;
-	}
-
-	public function getHeaders()
-	{
-		return $this->_headers;
-	}
-
-	public function getHeader($name)
-	{
-		return $this->hasHeader($name)
-			? $this->_headers[strtolower($name)]
+		return isset($this->_headers[$name])
+			? $this->_headers[$name]
 			: null;
 	}
 
-	public function hasHeader($name)
+	public function headers(array $headers = null)
 	{
-		return isset($this->_headers[strtolower($name)]);
+		if (isset($headers)) {
+			foreach ($headers as $name => $value) {
+				$this->header($name, $value);
+			}
+			return $this;
+		}
+		return $this->_headers;
 	}
 
-	public function setScheme($scheme)
+	public function scheme($value = null)
 	{
-		$this->_scheme = $scheme;
-		return $this;
-	}
-
-	public function getScheme()
-	{
+		if (isset($value)) {
+			$this->_scheme = $value;
+			return $this;
+		}
 		return $this->_scheme;
 	}
 
-	public function setHost($host)
+	public function secure()
 	{
-		$this->_host = $host;
-		return $this;
+		return $this->scheme() == self::SCHEME_HTTPS;
 	}
 
-	public function getHost()
+	public function host($value = null)
 	{
+		if (isset($value)) {
+			$this->_host = $value;
+			return $this;
+		}
 		return $this->_host;
 	}
 
-	public function setPort($port)
+	public function port($value = null)
 	{
-		$this->_port = (int) $port;
-		return $this;
-	}
-
-	public function getPort()
-	{
+		if (isset($value)) {
+			$this->_port = $value;
+			return $this;
+		}
 		return $this->_port;
 	}
 
-	public function isPortDefault()
+	public function base($value = null)
 	{
-		return ($this->getScheme() == self::SCHEME_HTTP && $this->getPort() == self::PORT_HTTP)
-			|| ($this->getScheme() == self::SCHEME_HTTPS && $this->getPort() == self::PORT_HTTPS);
-	}
-
-	public function setBase($base)
-	{
-		$this->_base = $base;
-		return $this;
-	}
-
-	public function getBase()
-	{
+		if (isset($value)) {
+			$this->_base = $value;
+			return $this;
+		}
 		return $this->_base;
 	}
 
-	public function setRawQueryParams(array $params)
+	public function path($value = null)
 	{
-		$this->_rawQueryParams = $params;
-		return $this;
-	}
-
-	public function setPath($path)
-	{
-		$this->_path = $path;
-		return $this;
-	}
-
-	public function getPath($base = false)
-	{
-		return $base
-			? $this->getBase() . $this->_path
-			: $this->_path;
-	}
-
-	public function getRawQueryParams()
-	{
-		return $this->_rawQueryParams;
-	}
-
-	public function addQueryParams(array $params)
-	{
-		foreach ($params as $name => $value) {
-			$this->setQueryParam($name, $value);
+		if (isset($value)) {
+			$this->_path = $value;
+			return $this;
 		}
-		return $this;
+		return $this->_path;
 	}
 
-	public function setQueryParam($name, $value)
+	public function query($name, $value = null)
 	{
-		$this->_queryParams[$name] = $value;
-		$this->setParam($name, $value);
-		return $this;
-	}
-
-	public function getQueryParams()
-	{
-		return $this->_queryParams;
-	}
-
-	public function getQueryParam($name, $default = null)
-	{
-		return $this->hasQueryParam($name)
-			? $this->_queryParams[$name]
-			: $default;
-	}
-
-	public function hasQueryParam($name)
-	{
-		return isset($this->_queryParams[$name]);
-	}
-
-	public function setRawPostParams(array $params)
-	{
-		$this->_rawPostParams = $params;
-		return $this;
-	}
-
-	public function getRawPostParams()
-	{
-		return $this->_rawPostParams;
-	}
-
-	public function addPostParams(array $params)
-	{
-		foreach ($params as $name => $value) {
-			$this->setPostParam($name, $value);
+		if (isset($value)) {
+			$this->_queries[$name] = $value;
+			$this->param($name, $value);
+			return $this;
 		}
-		return $this;
+		return isset($this->_queries[$name])
+			? $this->_queries[$name]
+			: null;
 	}
 
-	public function setPostParam($name, $value)
+	public function querys(array $querys = null)
 	{
-		$this->_postParams[$name] = $value;
-		$this->setParam($name, $value);
-		return $this;
-	}
-
-	public function getPostParams()
-	{
-		return $this->_postParams;
-	}
-
-	public function getPostParam($name, $default = null)
-	{
-		return $this->hasPostParam($name)
-			? $this->_postParams[$name]
-			: $default;
-	}
-
-	public function hasPostParam($name)
-	{
-		return isset($this->_postParams[$name]);
-	}
-
-	public function addCookies(array $cookies)
-	{
-		foreach ($cookies as $name => $value) {
-			$this->setCookie($name, $value);
+		if (isset($querys)) {
+			foreach ($querys as $name => $value) {
+				$this->query($name, $value);
+			}
+			return $this;
 		}
-		return $this;
+		return $this->_queries;
 	}
 
-	public function setCookie($name, $value)
+	public function data($name, $value = null)
 	{
-		$this->_cookies[$name] = $value;
-		$this->setParam($name, $value);
-		return $this;
+		if (isset($value)) {
+			$this->_datas[$name] = $value;
+			$this->param($name, $value);
+			return $this;
+		}
+		return isset($this->_datas[$name])
+			? $this->_datas[$name]
+			: null;
 	}
 
-	public function getCookies()
+	public function datas(array $datas = null)
 	{
-		return $this->_cookies;
+		if (isset($datas)) {
+			foreach ($datas as $name => $value) {
+				$this->data($name, $value);
+			}
+			return $this;
+		}
+		return $this->_datas;
 	}
 
-	public function getCookie($name, $default = null)
+	public function cookie($name, $value = null)
 	{
-		return $this->hasCookie($name)
+		if (isset($value)) {
+			$this->_cookies[$name] = $value;
+			return $this;
+		}
+		return isset($this->_cookies[$name])
 			? $this->_cookies[$name]
-			: $default;
+			: null;
 	}
 
-	public function hasCookie($name)
+	public function cookies(array $cookies = null)
 	{
-		return isset($this->_cookies[$name]);
+		if (isset($cookies)) {
+			foreach ($cookies as $name => $value) {
+				$this->cookie($name, $value);
+			}
+			return $this;
+		}
+		return $this->_cookies;
 	}
 
 	public function getUrl()
 	{
+		$defaultPort = 
+			($this->scheme() == self::SCHEME_HTTP && $this->port() == self::PORT_HTTP) ||
+			($this->scheme() == self::SCHEME_HTTPS && $this->port() == self::PORT_HTTPS);
 		$url = new \Js\Url();
-		$url->setScheme($this->getScheme());
-		$url->setHost($this->getHost());
-		$url->setPort(!$this->isPortDefault() ? $this->getPort() : null);
-		$url->setPath($this->getPath(true));
+		$url->setScheme($this->scheme());
+		$url->setHost($this->host());
+		$url->setPort(!$defaultPort ? $this->port() : null);
+		$url->setPath($this->base() . $this->path());
 		$url->setQueryParams($this->getQueryParams(false));
-
 		return $url;
 	}
 }
