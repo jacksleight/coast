@@ -69,7 +69,7 @@ class Dir extends \Coast\File\Path implements \IteratorAggregate
 	{
 		$size = 0;
 		foreach ($this->getIterator($recursive) as $path) {
-			if (!$path->isFile()) {
+			if (!$path->exists()) {
 				continue;
 			}
 			$size += $path->getSize();

@@ -52,7 +52,7 @@ class Path
 
 	public function from(\Coast\Path $target)
 	{
-		if (!$this->isAbsolute() || !$target->isRelative()) {
+		if (!$this->absolute() || !$target->relative()) {
 			throw new \Exception("Source path '" . $this->string() . "' is not absolute or target path '" . $target->string() . "' is not relative");
 		}
 
@@ -76,7 +76,7 @@ class Path
 
 	public function to(\Coast\Path $target)
 	{
-		if (!$this->isAbsolute() || !$target->isAbsolute()) {
+		if (!$this->absolute() || !$target->absolute()) {
 			throw new \Exception("Source path '" . $this->string() . "' is not absolute or target path '" . $target->string() . "' is not absolute");
 		}
 		
@@ -105,6 +105,6 @@ class Path
 
 	public function relative()
 	{
-		return !$this->isAbsolute();
+		return !$this->absolute();
 	}
 }

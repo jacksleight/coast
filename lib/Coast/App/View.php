@@ -34,28 +34,28 @@ class View implements \Coast\App\Access, \Coast\App\Executable
 	public function has($name)
 	{
 		$path = new \Coast\Path("{$name}." . $this->_options->extension);
-		if ($path->isRelative()) {
+		if ($path->relative()) {
 			throw new \Coast\App\Exception("Initial path '{$path}' is relative");
 		}
 
-		$file = $this->_options->dir->getFile($path);	
-		return $file->isFile();
+		$file = $this->_options->dir->file($path);	
+		return $file->exists();
 	}
 		
 	public function render($name, array $params = array())
 	{
 		$path = new \Coast\Path("{$name}." . $this->_options->extension);
 		if (count($this->_stack) > 0) {
-			$path = $path->isRelative()
-				? $this->_stack[0]['path']->fromRelative($path)
+			$path = $path->relative()
+				? $this->_stack[0]['path']->from($path)
 				: $path;
 			$params	= array_merge($this->_stack[0]['params'], $params);
-		} else if ($path->isRelative()) {
+		} else if ($path->relative()) {
 			throw new \Coast\App\Exception("Initial path '{$path}' is relative");
 		}
 
-		$file = $this->_options->dir->getFile($path);	
-		if (!$file->isFile()) {
+		$file = $this->_options->dir->file($path);	
+		if (!$file->exists()) {
 			if (count($this->_stack) == 0) {
 				throw new \Coast\App\Exception("View file '{$path}' does not exist");
 			} else {
@@ -156,7 +156,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
 
 	public function execute(\Coast\App\Request $req, \Coast\App\Response $res)
 	{		
-		$path = '/' . $req->getPath();
+		$path = '/' . $req->path();
 		if (!$this->has($path)) {
 			return false;
 		}
