@@ -1,5 +1,5 @@
 {
-	"name": "jacksleight/js",
+	"name": "jacksleight/coast",
 	"type": "library",
 	"description": "Web application framework for PHP 5.5+.",
 	"license": "MIT",
@@ -10,7 +10,7 @@
         "php": ">=5.5.0"
     },
 	"autoload": {
-		"psr-0": {"Js": "lib"},
-		"files": ["lib/Js.php"]
+		"psr-0": {"Coast": "lib"},
+		"files": ["lib/Coast.php"]
 	}
 }
