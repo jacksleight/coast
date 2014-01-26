@@ -8,7 +8,7 @@ If you have any questions please feel free to get in touch by email (jacksleight
 
 ## Hello World
 
-Create a new directory, clone this repo into `js`, create a new file called `app.php` containing:
+Create a new directory, clone this repo into `coast`, create a new file called `app.php` containing:
 
 ```php
 <?php
@@ -16,8 +16,8 @@ use Coast\App,
 	Coast\App\Request, 
 	Coast\App\Response;
 
-require 'js/lib/Coast.php';
-set_include_path(get_include_path() . PATH_SEPARATOR . 'js/lib');
+require 'coast/lib/Coast.php';
+set_include_path(get_include_path() . PATH_SEPARATOR . 'coast/lib');
 spl_autoload_register();
 
 $app = new App();
