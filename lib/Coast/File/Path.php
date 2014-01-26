@@ -37,5 +37,4 @@ abstract class Path extends \Coast\Path
 	}
 	
 	abstract public function delete();
-	abstract public function chmod($mode);
 }
