@@ -10,11 +10,11 @@ Coast is a web application framework for PHP 5.5+. Parts of the API are inspired
 * Controller component for **advanced request handling**
 * URL component for **easy URL generation** (static files, routes etc.)
 * Utility classes for working with **config files**, **URLs**, **DOM**, **Atom feeds**, **XML sitemaps** and the **file system**, plus a basic **HTTP client** library
-* **MIT licensed**
+* MIT licensed
 
-If you have any questions please feel free to get in touch by email (jacksleight at gmail dot com) or [@jacksleight](https://twitter.com/jacksleight) on Twitter. All feedback, bug reports and contributions are very welcome.
+All feedback, suggestions, bug reports and contributions are very welcome. Please feel free to get in touch by email (jacksleight at gmail dot com) or [@jacksleight](https://twitter.com/jacksleight) on Twitter.
 
-**I'm currently working towards the first release, which is imminent. The library and API documentation are a work in progress. The API may change.**
+**I'm currently working towards the first release, which is imminent. The library and documentation are both a work in progress. The API may change.**
 
 ## Installation
 
