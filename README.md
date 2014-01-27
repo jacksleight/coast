@@ -1,6 +1,6 @@
 # Coast
 
-Coast is a web application framework for PHP 5.5+. Parts of the API were inspired by the node.js Connect and Express frameworks, others are my own (potentially ridiculous) ideas.
+Coast is a web application framework for PHP 5.5+. Parts of the API were inspired by the node.js Connect and Express frameworks, others are my own (possibly ridiculous) ideas.
 
 * **Simple**, **lightweight** and **flexible**
 * Works with **PHP's CLI development server**, **Apache** and others
@@ -89,11 +89,13 @@ The `execute` method expects a `Coast\App\Request` object, and returns a `Coast\
 
 ## Roadmap
 
-* Internationalisation component (in progress)
-* Base entity class with validation (in progress)
-* Image component with automatic image resizing (in progress)
-* oEmbed component for including embedable content (in progress)
-* HTML tidy component (in progress)
+All of the items below are in progress, in fact they already exist as mostly working components of the library that became Coast, I've just not had a chance to update them yet.
+
+* Internationalisation component
+* Base entity class with validation
+* Image component with automatic image resizing
+* oEmbed component for including embedable content
+* HTML tidy component
 
 ## Licence
 
