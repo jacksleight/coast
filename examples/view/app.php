@@ -4,8 +4,11 @@ use Coast\App,
 	Coast\App\Response,
 	Coast\App\View;
 
+// You should use Composer's autoloader, as per the example in /README.md
 chdir(__DIR__);
-require 'vendor/autoload.php';
+require '../../lib/Coast.php';
+set_include_path(get_include_path() . PATH_SEPARATOR . '../../lib');
+spl_autoload_register();
 
 $app = new App();
 $app->set('view', new View(['dir' => 'views']))
