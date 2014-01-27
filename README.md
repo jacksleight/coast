@@ -1,14 +1,43 @@
 # Coast
 
-Coast is a web application framework for PHP 5.5+. Parts of the API are inspired by the node.js Connect and Express frameworks, however it is not a direct clone.
+Coast is a web application framework for PHP 5.5+. Parts of the API are inspired by the node.js Connect and Express frameworks.
+
+* **Simple**, **lightweight** and **flexible**
+* Works with **PHP's CLI development server**, **Apache** and others
+* Easy manipulation of **request and response data**
+* View component for **view, partial and layout rendering**
+* Router component for **advanced path routing**
+* Controller component for **advanced request handling**
+* URL component for **easy URL generation** (static files, routes etc.)
+* Utility classes for working with **config files**, **URLs**, **DOM**, **Atom feeds**, **XML sitemaps** and the **file system**, plus a basic **HTTP client** library
+* **MIT licensed**
 
 If you have any questions please feel free to get in touch by email (jacksleight at gmail dot com) or [@jacksleight](https://twitter.com/jacksleight) on Twitter. All feedback, bug reports and contributions are very welcome.
 
-**The library and documentation are a work in progress, the API may change.**
+**I'm currently working towards the first release, which is imminent. The library and API documentation are a work in progress. The API may change.**
+
+## Installation
+
+The easiest way to install Coast is through [Composer](https://getcomposer.org/doc/00-intro.md), by creating a file called `composer.json` containing:
+
+```json
+{
+	"minimum-stability": "dev",
+	"require": {
+		"jacksleight/coast": "master"
+	}
+}
+```
+
+And then running:
+
+```bash
+composer.phar update
+```
 
 ## Hello World
 
-Create a new directory, clone this repo into `coast`, create a new file called `app.php` containing:
+Create a new file called `app.php` containing:
 
 ```php
 <?php
@@ -16,9 +45,8 @@ use Coast\App,
 	Coast\App\Request, 
 	Coast\App\Response;
 
-require 'coast/lib/Coast.php';
-set_include_path(get_include_path() . PATH_SEPARATOR . 'coast/lib');
-spl_autoload_register();
+chdir(__DIR__);
+require 'vendor/autoload.php';
 
 $app = new App();
 $app->add(function(Request $req, Response $res, App $app) {
@@ -38,9 +66,9 @@ And load it up in the browser at: [http://localhost:8000/](http://localhost:8000
 
 ### What's happening here?
 
-1. Include files and configure the autoloader.
+1. Include the Composer autoloader.
 2. Initialise a `Coast\App` object.
-3. Add middlewear to handle the request.
+3. Add middleware to handle the request.
 4. Call `execute` to run the application.
 
 The `execute` method expects a `Coast\App\Request` object, and returns a `Coast\App\Response` object. The `import` method grabs all of the request data from PHP's globals, and the `export` method sends the response data back out. It is also possible to skip these methods and construct the request data manually, which is useful for testing.
@@ -59,6 +87,14 @@ The `execute` method expects a `Coast\App\Request` object, and returns a `Coast\
 * More examples
 * API documentation
 * Tests
+
+## Roadmap
+
+* Internationalisation component (in progress)
+* Base entity class with validation (in progress)
+* Image component with automatic image resizing (in progress)
+* oEmbed component for including embedable content (in progress)
+* HTML tidy component (in progress)
 
 ## Licence
 
