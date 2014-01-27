@@ -1,6 +1,6 @@
 # Coast
 
-Coast is a web application framework for PHP 5.5+. Parts of the API were inspired by the node.js Connect and Express frameworks, others were my own (potentially ridiculous) ideas.
+Coast is a web application framework for PHP 5.5+. Parts of the API were inspired by the node.js Connect and Express frameworks, others are my own (potentially ridiculous) ideas.
 
 * **Simple**, **lightweight** and **flexible**
 * Works with **PHP's CLI development server**, **Apache** and others
