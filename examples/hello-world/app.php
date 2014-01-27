@@ -9,8 +9,11 @@ require '../../lib/Coast.php';
 set_include_path(get_include_path() . PATH_SEPARATOR . '../../lib');
 spl_autoload_register();
 
+ini_set('log_errors', true);
+ini_set('error_log', 'error.log');
+
 $app = new App();
-$app->add(function(Request $req, Response $res, App $app) {
+$app->add(function(Request $req, Response $res, App $app) {	
 		return $res->text('Hello World');
 	});
 
