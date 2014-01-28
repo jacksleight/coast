@@ -23,9 +23,9 @@ class Sitemap extends \Coast\Dom\Document
 		parent::__construct('1.0', 'UTF-8');
 		$this->formatOutput = false;
 
-		$this->_root = $this->createElement('urlset', array(
+		$this->_root = $this->createElement('urlset', [
 			'xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9',
-		));
+		]);
 		$this->appendChild($this->_root);
 	}
 
@@ -37,14 +37,14 @@ class Sitemap extends \Coast\Dom\Document
 				$changes = self::CHANGES_NEVER;
 			} else {
 				$ratio = ((\Coast\DateTime::now()->format('U') - $since->format('U')) / 3600) / $count;
-				$intervals = array(
+				$intervals = [
 					self::CHANGES_YEARLY	=> 8760,
 					self::CHANGES_MONTHLY	=> 730,
 					self::CHANGES_WEEKLY	=> 168,
 					self::CHANGES_DAILY		=> 24,
 					self::CHANGES_HOURLY	=> 1,
 					self::CHANGES_ALWAYS	=> 0,
-				);
+				];
 				foreach ($intervals as $changes => $interval) {
 					if ($ratio >= $interval) {
 						break;
@@ -52,9 +52,9 @@ class Sitemap extends \Coast\Dom\Document
 				}
 			}
 		}
-		$url = $this->createElement('url', array(
+		$url = $this->createElement('url', [
 			$this->createElement('loc', $location),
-		));
+		]);
 		if (isset($modified)) {
 			$url->appendChild($this->createElement('lastmod', $modified->format(\DateTime::W3C)));
 		}

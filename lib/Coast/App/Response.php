@@ -11,8 +11,8 @@ class Response
 	protected $_req;
 	
 	protected $_status	= null;
-	protected $_headers	= array();
-	protected $_cookies	= array();
+	protected $_headers	= [];
+	protected $_cookies	= [];
 	protected $_body	= '';
 
 	public function __construct(\Coast\App\Request $req)
@@ -78,7 +78,7 @@ class Response
 			if (!isset($path)) {
 				$path = $this->_req->base();
 			}
-			$this->_cookies[$name] = array($value, (isset($age) ? time() + $age : null), $path, $domain, $secure, $http);
+			$this->_cookies[$name] = [$value, (isset($age) ? time() + $age : null), $path, $domain, $secure, $http];
 			return $this;
 		}
 		return isset($this->_cookies[$name])

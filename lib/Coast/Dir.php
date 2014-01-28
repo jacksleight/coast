@@ -24,7 +24,7 @@ class Dir extends \Coast\File\Path implements \IteratorAggregate
 	public function make($mode = null)
 	{
 		$stack = explode("/", $this->string());
-		$parts = array();
+		$parts = [];
 		while (count($stack) > 0) {
 			array_push($parts, array_shift($stack));
 			$create = implode("/", $parts);

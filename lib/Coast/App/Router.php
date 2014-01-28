@@ -16,7 +16,7 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
 	use \Coast\App\Access\Implementation;
 	use \Coast\Options;
 
-	protected $_routes = array();
+	protected $_routes = [];
 
 	public function __construct(array $options = array())
 	{
@@ -36,40 +36,40 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
 
 	public function all($name, $path, $params = null, \Closure $target = null)
 	{
-		return $this->add($name, array(
+		return $this->add($name, [
 			self::METHOD_GET,
 			self::METHOD_POST,
 			self::METHOD_PUT,
 			self::METHOD_DELETE,
-		), $path, $params, $target);
+		], $path, $params, $target);
 	}
 
 	public function get($name, $path, $params = null, \Closure $target = null)
 	{
-		return $this->add($name, array(
+		return $this->add($name, [
 			self::METHOD_GET,
-		), $path, $params, $target);
+		], $path, $params, $target);
 	}
 
 	public function post($name, $path, $params = null, \Closure $target = null)
 	{
-		return $this->add($name, array(
+		return $this->add($name, [
 			self::METHOD_POST,
-		), $path, $params, $target);
+		], $path, $params, $target);
 	}
 
 	public function put($name, $path, $params = null, \Closure $target = null)
 	{
-		return $this->add($name, array(
+		return $this->add($name, [
 			self::METHOD_PUT,
-		), $path, $params, $target);
+		], $path, $params, $target);
 	}
 
 	public function delete($name, $path, $params = null, \Closure $target = null)
 	{
-		return $this->add($name, array(
+		return $this->add($name, [
 			self::METHOD_DELETE,
-		), $path, $params, $target);
+		], $path, $params, $target);
 	}
 
 	public function add($name, $methods, $path, $params = null, \Closure $target = null)
@@ -82,14 +82,14 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
 		}
 		if ($params instanceof \Closure) {
 			$target = $params;
-			$params = array();
+			$params = [];
 		} if (!isset($params)) {
-			$params = array();
+			$params = [];
 		}
 
 		$parts	= explode('/', ltrim($path, '/'));
-		$names	= array();
-		$stack	= array();
+		$names	= [];
+		$stack	= [];
 		foreach ($parts as $i => $part) {
 			if (preg_match('/^\{([a-zA-Z0-9_-]+)(?::(.*))?\}(\?)?$/', $part, $match)) {
 				$match = \Coast\array_merge_smart(
@@ -137,7 +137,7 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
 				$route['params'],
 				count($match) > 0
 					? array_combine(array_slice($route['names'], 0, count($match)), $match)
-					: array()
+					: []
 			);
 			return array_merge($route, [
 				'name'	 => $name,
@@ -155,7 +155,7 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
 
 		$route	= $this->_routes[$name];
 		$parts	= explode('/', $route['path']);
-		$path	= array();
+		$path	= [];
 		foreach ($parts as $i => $part) {
 			if (preg_match('/^\{([a-zA-Z0-9_-]+)(?::(.*))?\}(\?)?$/', $part, $match)) {
 				$match = \Coast\array_merge_smart(

@@ -64,14 +64,14 @@ class Document extends \DOMDocument
 		$element = parent::createElement($name);
 
 		if (!is_array($attributes)) {
-			$attributes = isset($attributes) ? array($attributes) : array();
+			$attributes = isset($attributes) ? [$attributes] : [];
 		}
 		if (!is_array($children)) {
-			$children = isset($children) ? array($children) : array();
+			$children = isset($children) ? [$children] : [];
 		}
 		if (!\Coast\array_is_assoc($attributes)) {
 			$children = $attributes;
-			$attributes = array();
+			$attributes = [];
 		}
 		foreach ($attributes as $name => $value) {
 			$element->setAttribute($name, $value);

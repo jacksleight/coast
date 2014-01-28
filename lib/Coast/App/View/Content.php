@@ -8,7 +8,7 @@ namespace Coast\App\View;
 
 class Content
 {
-	protected $_data = array();
+	protected $_data = [];
 
 	public function __construct(array $data = array())
 	{

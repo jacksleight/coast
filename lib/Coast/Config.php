@@ -8,7 +8,7 @@ namespace Coast;
 
 class Config
 {
-	protected $_data = array();
+	protected $_data = [];
 
 	public function __construct($files)
 	{
@@ -16,7 +16,7 @@ class Config
 			$files = [$files];
 		}
 		foreach ($files as $file) {
-			$data = array();
+			$data = [];
 			require (string) $file;
 			$this->_data = array_merge_recursive(
 				$this->_data,
