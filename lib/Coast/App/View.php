@@ -11,7 +11,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
 	use \Coast\App\Access\Implementation;
 	use \Coast\Options;
 
-	protected $_stack = array();
+	protected $_stack = [];
 
 	public function __construct(array $options = array())
 	{
@@ -63,7 +63,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
 			}
 		}
 
-		array_unshift($this->_stack, array(
+		array_unshift($this->_stack, [
 			'name'		=> $name, 
 			'path'		=> $path, 
 			'params'	=> $params, 
@@ -71,7 +71,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
 			'block'		=> null, 
 			'content'	=> new \Coast\App\View\Content(), 
 			'captures'	=> 0,
-		));
+		]);
 		$this->_run($file, $params);
 		$content = $this->_stack[0]['content'];
 		if (isset($this->_stack[0]['layout'])) {
@@ -114,7 +114,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
 
 	protected function layout($name, array $params = array(), $set = null)
 	{
-		$this->_stack[0]['layout'] = array($name, $params, $set);
+		$this->_stack[0]['layout'] = [$name, $params, $set];
 	}
 
 	protected function block($name)

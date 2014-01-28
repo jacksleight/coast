@@ -56,12 +56,12 @@ class Http
 			? substr($response, $size)
 			: null;
 		
-		$headers = array();
+		$headers = [];
 		if ($head) {
-			$parts	= explode("\r\n\r\n", $head);
-			$head	= $parts[count($parts) - 2];
-			$head	= explode("\r\n", $head);
-			$headers= array();
+			$parts		= explode("\r\n\r\n", $head);
+			$head		= $parts[count($parts) - 2];
+			$head		= explode("\r\n", $head);
+			$headers	= [];
 			foreach ($head as $header) {
 				$parts = explode(':', $header, 2);
 				if (count($parts) != 2) {

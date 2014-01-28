@@ -11,9 +11,9 @@ class App
 	const MODE_CLI	= 'cli';
 	const MODE_HTTP	= 'http';
 	
-	protected $_envs	= array();
-	protected $_params	= array();
-	protected $_stack	= array();
+	protected $_envs	= [];
+	protected $_params	= [];
+	protected $_stack	= [];
 
 	protected $_notFoundHandler;
 	protected $_errorHandler;
@@ -66,7 +66,7 @@ class App
 		}
 		array_push($this->_stack, $value instanceof \Closure
 			? $value
-			: array($value, 'execute'));
+			: [$value, 'execute']);
 		if (isset($name)) {
 			$this->set($name, $value);
 		}

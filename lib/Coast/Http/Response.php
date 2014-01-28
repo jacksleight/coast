@@ -9,7 +9,7 @@ namespace Coast\Http;
 class Response
 {
 	protected $_status;
-	protected $_headers	= array();
+	protected $_headers	= [];
 	protected $_body;
 
 	public function __construct($status, array $headers, $body)

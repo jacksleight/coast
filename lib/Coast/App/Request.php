@@ -25,20 +25,20 @@ class Request
 
 	protected $_response;
 	
-	protected $_sessions	= array();
-	protected $_params		= array();
-	protected $_servers		= array();
+	protected $_sessions	= [];
+	protected $_params		= [];
+	protected $_servers		= [];
 	protected $_protocol;
 	protected $_method;
-	protected $_headers		= array();
+	protected $_headers		= [];
 	protected $_scheme;
 	protected $_host;
 	protected $_port;
 	protected $_base;
 	protected $_path;
-	protected $_queryParams	= array();
-	protected $_dataParams	= array();
-	protected $_cookies		= array();
+	protected $_queryParams	= [];
+	protected $_dataParams	= [];
+	protected $_cookies		= [];
 
 	public function __construct()
 	{
@@ -52,7 +52,7 @@ class Request
 
 	public function import()
 	{
-		$this->params(isset($_SERVER['argv']) ? $_SERVER['argv'] : array());
+		$this->params(isset($_SERVER['argv']) ? $_SERVER['argv'] : []);
 		
 		$this->servers($_SERVER);
 

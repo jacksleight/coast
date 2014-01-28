@@ -11,9 +11,9 @@ class Controller implements \Coast\App\Access, \Coast\App\Routable
 	use \Coast\App\Access\Implementation;
 	use \Coast\Options;
 	
-	protected $_stack	= array();
-	protected $_history	= array();
-	protected $_actions	= array();
+	protected $_stack	= [];
+	protected $_history	= [];
+	protected $_actions	= [];
 
 	public function __construct(array $options = array())
 	{
@@ -37,8 +37,8 @@ class Controller implements \Coast\App\Access, \Coast\App\Routable
 
 	public function dispatch($name, $action, $params = array())
 	{
-		$this->_stack = array();
-		$this->_history = array();
+		$this->_stack	= [];
+		$this->_history	= [];
 		$this->_queue($name, $action, $params);
 
 		$final = null;
@@ -77,8 +77,8 @@ class Controller implements \Coast\App\Access, \Coast\App\Routable
 	protected function _queue($name, $action, $params)
 	{
 		$parts	= explode('_', $name);
-		$path	= array();
-		$names	= array('all');
+		$path	= [];
+		$names	= ['all'];
 		while (count($parts) > 0) {
 			$path[]	 = array_shift($parts);
 			$names[] = implode('_', $path);
@@ -86,13 +86,13 @@ class Controller implements \Coast\App\Access, \Coast\App\Routable
 
 		$final = $names[count($names) - 1];
 
-		$stack = array();
+		$stack = [];
 		foreach ($names as $name) {
-			$stack[] = array($name, 'preDispatch', $params);
+			$stack[] = [$name, 'preDispatch', $params];
 		}
-		$stack[] = array($final, $action, $params);
+		$stack[] = [$final, $action, $params];
 		foreach (array_reverse($names) as $name) {
-			$stack[] = array($name, 'postDispatch', $params);
+			$stack[] = [$name, 'postDispatch', $params];
 		}
 
 		foreach ($stack as $item) {

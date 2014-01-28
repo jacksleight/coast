@@ -21,9 +21,9 @@ class Url
 	const SCHEME_HTTPS		= 'https';
 	const SCHEME_MAILTO		= 'mailto';
 
-	protected static $_colons = array(
+	protected static $_colons = [
 		self::SCHEME_MAILTO	=> ':',
-	);
+	];
 	
 	protected $_scheme;
 	protected $_username;
@@ -31,7 +31,7 @@ class Url
 	protected $_host;
 	protected $_port;
 	protected $_path;
-	protected $_queryParams = array();
+	protected $_queryParams = [];
 	protected $_fragment;
 		
 	public function __construct($string = null)
