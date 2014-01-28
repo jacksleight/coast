@@ -6,13 +6,13 @@
 	Example of how middleware return values and errors are handled.
 * [**View**](view)  
 	Usage of the `Coast\View` component.
-* **Router**](router)  
+* [**Router**](router)  
 	Usage of the `Coast\Router` component.
 * **Controller**  
 	Usage of the `Coast\Controller` component.
 * **URL**  
 	Usage of the `Coast\URL` component.
-* **REST API**  
+* [**REST API**](rest)
 	Example of a basic RESTful JSON API.
 * **Web Site**  
 	Example of a basic web site.

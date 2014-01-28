@@ -113,7 +113,7 @@ class Response
 	{
 		return $this
 			->type('application/json')
-			->body(json_encode($value));
+			->body(json_encode($value, JSON_PRETTY_PRINT));
 	}
 
 	public function xml($value)

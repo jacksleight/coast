@@ -18,10 +18,10 @@ $app->add('router', new Router())
 	});
 
 $app->router
-	->get('index', '/', function(Request $req, Response $res, App $app) {
+	->all('index', '/', function(Request $req, Response $res, App $app) {
 		return $res->text("Try /users, /users/add or /users/edit/1.");
 	})
-	->get('user', '/users/{action}?/{id:\d+}?', function(Request $req, Response $res, App $app) {
+	->all('user', '/users/{action}?/{id:\d+}?', function(Request $req, Response $res, App $app) {
 		return $res->json($req->params());
 	});
 

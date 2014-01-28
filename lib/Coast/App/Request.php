@@ -36,8 +36,8 @@ class Request
 	protected $_port;
 	protected $_base;
 	protected $_path;
-	protected $_queryParams		= array();
-	protected $_dataParams		= array();
+	protected $_queryParams	= array();
+	protected $_dataParams	= array();
 	protected $_cookies		= array();
 
 	public function __construct()
@@ -382,5 +382,15 @@ class Request
 		$url->path($this->base() . $this->path());
 		$url->queryParams($this->queryParams());
 		return $url;
+	}
+
+	public function __set($name, $value)
+	{
+		return $this->param($name, $value);
+	}
+
+	public function __get($name)
+	{
+		return $this->param($name);
 	}
 }
