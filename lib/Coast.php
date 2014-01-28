@@ -6,7 +6,7 @@
 
 namespace Coast;
 
-function array_is_assoc(array $array)
+function is_array_assoc(array $array)
 {
 	if (is_array($array)) {
 		\krsort($array, SORT_STRING);
@@ -40,7 +40,7 @@ function array_merge_smart()
 	foreach ($arrays as $array) {
 		foreach ($array as $key => $value) {
 			if (\is_array($value) && isset($merged[$key])) {
-				if (!\Coast\array_is_assoc($merged[$key]) && !\Coast\array_is_assoc($value)) {
+				if (!\Coast\is_array_assoc($merged[$key]) && !\Coast\is_array_assoc($value)) {
 					$merged[$key] = \array_merge($merged[$key], $value);
 				} else {
 					$merged[$key] = \Coast\array_merge_smart($merged[$key], $value);

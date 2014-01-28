@@ -105,8 +105,8 @@ class Controller implements \Coast\App\Access, \Coast\App\Routable
 	public function route(\Coast\App\Request $req, \Coast\App\Response $res)
 	{		
 		return $this->dispatch(
-			$req->getParam('_controller'),
-			$req->getParam('_action'),
+			\Coast\str_camel_upper($req->param('controller')),
+			\Coast\str_camel_upper($req->param('action')),
 			[$req, $res]
 		);
 	}

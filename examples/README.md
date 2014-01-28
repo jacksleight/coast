@@ -6,7 +6,7 @@
 	Example of how middleware return values and errors are handled.
 * [**View**](view)  
 	Usage of the `Coast\View` component.
-* **Router**  
+* **Router**](router)  
 	Usage of the `Coast\Router` component.
 * **Controller**  
 	Usage of the `Coast\Controller` component.

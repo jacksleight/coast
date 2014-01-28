@@ -11,7 +11,7 @@ set_include_path(get_include_path() . PATH_SEPARATOR . '../../lib');
 spl_autoload_register();
 
 $app = new App();
-$app->add('view', new View(['dir' => 'views']))
+$app->set('view', new View(['dir' => 'views']))
 	->add(function(Request $req, Response $res, App $app) {
 		return $res->html($app->view->render('/index'));
 	});

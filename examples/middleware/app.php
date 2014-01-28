@@ -21,7 +21,7 @@ $app->add(function(Request $req, Response $res, App $app) {
 		} else if ($req->path() == 'error') {
 			throw new \Exception('OH NO!');
 		}
-		return $res->text('Try accessing /null, /true, /false or /error.');	
+		return $res->text('Try /null, /true, /false or /error.');	
 	})
 	->add(function(Request $req, Response $res, App $app) {
 		return $res->text('Second middleware.');	

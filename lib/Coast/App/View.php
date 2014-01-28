@@ -156,7 +156,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
 
 	public function execute(\Coast\App\Request $req, \Coast\App\Response $res)
 	{		
-		$path = '/' . $req->path();
+		$path = $req->path();
 		if (!$this->has($path)) {
 			return false;
 		}

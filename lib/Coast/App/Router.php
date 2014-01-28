@@ -8,67 +8,127 @@ namespace Coast\App;
 
 class Router implements \Coast\App\Access, \Coast\App\Executable
 {
-	use \Coast\App\Access\Implementation;
+	const METHOD_GET	= \Coast\App\Request::METHOD_GET;
+	const METHOD_POST	= \Coast\App\Request::METHOD_POST;
+	const METHOD_PUT	= \Coast\App\Request::METHOD_PUT;
+	const METHOD_DELETE	= \Coast\App\Request::METHOD_DELETE;
 
-	protected $_target = array();
+	use \Coast\App\Access\Implementation;
+	use \Coast\Options;
+
 	protected $_routes = array();
 
-	public function __construct(\Coast\App\Routable $target)
+	public function __construct(array $options = array())
 	{
-		$this->_target = $target;
+		$this->options(array_merge([
+			'target' => null,
+		], $options));
 	}
 
 	public function app(\Coast\App $app)
 	{
 		$this->_app = $app;
-		if ($this->_target instanceof \Coast\App\Access) {
-			$this->_target->app($app);
+		if ($this->_options->target instanceof \Coast\App\Access) {
+			$this->_options->target->app($app);
 		}
 		return $this;
 	}
 
-	public function add($name, $path, array $params = array(), array $rules = array())
+	public function all($name, $path, $params = null, \Closure $target = null)
 	{
-		$parts = explode('/', trim($path, '/'));
-		$names = array();
-		$regex = array();
-		foreach ($parts as $i => $part) {
-			if (preg_match('/^:(.+)$/', $part, $matches)) {
-				$name = $matches[1];
-				$names[] = $name;
-				$match = isset($rules[$name])
-					? "({$rules[$name]})"
-					: '([^\/]+)';
-				if ($i > 0) {
-					$match = "\/{$match}";
-				}
-				$match = "(?:$match)";
-				if (array_key_exists($name, $params)) {
-					$match .= '?';
-				}
-			} else {
-				$match = preg_quote($part, '/');
-				if ($i > 0) {
-					$match = "\/{$match}";
-				}
-			}
-			$regex[$i] = $match;
-		}
-		$regex = '/^' . ltrim(implode(null, $regex), '\/') . '$/';
-
-		$this->_routes[$name] = [
-			'path'		=> $path,
-			'params'	=> $params,
-			'rules'		=> $rules,
-			'names'		=> $names,
-			'regex'		=> $regex,
-		];
+		return $this->add($name, array(
+			self::METHOD_GET,
+			self::METHOD_POST,
+			self::METHOD_PUT,
+			self::METHOD_DELETE,
+		), $path, $params, $target);
 	}
 
-	public function match($path)
+	public function get($name, $path, $params = null, \Closure $target = null)
 	{
-		$path = trim($path, '/');
+		return $this->add($name, array(
+			self::METHOD_GET,
+		), $path, $params, $target);
+	}
+
+	public function post($name, $path, $params = null, \Closure $target = null)
+	{
+		return $this->add($name, array(
+			self::METHOD_POST,
+		), $path, $params, $target);
+	}
+
+	public function put($name, $path, $params = null, \Closure $target = null)
+	{
+		return $this->add($name, array(
+			self::METHOD_PUT,
+		), $path, $params, $target);
+	}
+
+	public function delete($name, $path, $params = null, \Closure $target = null)
+	{
+		return $this->add($name, array(
+			self::METHOD_DELETE,
+		), $path, $params, $target);
+	}
+
+	public function add($name, $methods, $path, $params = null, \Closure $target = null)
+	{
+		if (!is_array($methods)) {
+			$methods = [$methods];
+		}
+		foreach ($methods as $i => $method) {
+			$methods[$i] = strtoupper($method);
+		}
+		if ($params instanceof \Closure) {
+			$target = $params;
+			$params = array();
+		} if (!isset($params)) {
+			$params = array();
+		}
+
+		$parts	= explode('/', ltrim($path, '/'));
+		$names	= array();
+		$stack	= array();
+		foreach ($parts as $i => $part) {
+			if (preg_match('/^\{([a-zA-Z0-9_-]+)(?::(.*))?\}(\?)?$/', $part, $match)) {
+				$match = \Coast\array_merge_smart(
+					array('', '', '', ''),
+					$match
+				);
+				$names[] = $match[1];	
+				$regex = strlen($match[2])
+					? "({$match[2]})"
+					: "([a-zA-Z0-9_-]+)";
+				if ($match[3] == '?') {
+					$regex = $i == 0 ? "\/(?:{$regex})?" : "(?:\/{$regex})?";
+				} else {
+					$regex = "\/{$regex}";
+				}
+			} else {
+				$regex = "\/" . preg_quote($part, '/');
+			}
+			$stack[] = $regex;
+		}
+		$regex = '/^' . implode($stack) . '$/';
+
+		$this->_routes[$name] = [
+			'methods'	=> $methods,
+			'path'		=> $path,
+			'regex'		=> $regex,
+			'names'		=> $names,
+			'params'	=> $params,
+			'target'	=> $target,
+		];
+		return $this;
+	}
+
+	public function match($method, $path)
+	{
 		foreach ($this->_routes as $name => $route) {
+			if (!in_array($method, $route['methods'])) {
+				continue;
+			}
 			if (!preg_match($route['regex'], $path, $match)) {
 				continue;
 			}
@@ -79,10 +139,10 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
 					? array_combine(array_slice($route['names'], 0, count($match)), $match)
 					: array()
 			);
-			return [
+			return array_merge($route, [
 				'name'	 => $name,
 				'params' => $params,
-			];
+			]);
 		}		
 		return false;
 	}
@@ -92,19 +152,22 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
 		if (!isset($this->_routes[$name])) {
 			throw new \Coast\App\Exception("Route '{$name}' does not exist");
 		}
-		
+
 		$route	= $this->_routes[$name];
 		$parts	= explode('/', $route['path']);
 		$path	= array();
 		foreach ($parts as $i => $part) {
-			if (preg_match('/^:(.+)$/', $part, $matches)) {
-				$name = $matches[1];
-				if (isset($params[$name])) {
-					$value = $params[$name];
-				} elseif (array_key_exists($name, $route['params'])) {
+			if (preg_match('/^\{([a-zA-Z0-9_-]+)(?::(.*))?\}(\?)?$/', $part, $match)) {
+				$match = \Coast\array_merge_smart(
+					array('', '', '', ''),
+					$match
+				);
+				if (isset($params[$match[1]])) {
+					$value = $params[$match[1]];
+				} else if ($match[3] == '?') {
 					$value = null;
 				} else {
-					throw new \Exception("Parameter '{$name}' missing");
+					throw new \Coast\App\Exception("Parameter '{$match[1]}' missing");
 				}
 			} else {
 				$value = $part;
@@ -119,13 +182,20 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
 
 	public function execute(\Coast\App\Request $req, \Coast\App\Response $res)
 	{
-		$match = $this->match($req->path());
+		$match = $this->match($req->method(), $req->path());
 		if (!$match) {
 			return false;
 		}
-		$req->addParams(array_merge([
-			'_route' => $match,
+		$req->params(array_merge([
+			'route' => $match['name'],
 		], $match['params']));
-		return $this->_target->route($req, $res);
+		
+		if (isset($this->_options->target)) {
+			return $this->_options->target->route($req, $res);
+		} else if (isset($match['target'])) {
+			return $match['target']($req, $res, $this->app);
+		} else {
+			throw new \Coast\App\Exception("There's noting to route '{$match['name']}' to");
+		}		
 	}
 }
