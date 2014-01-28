@@ -12,7 +12,7 @@
 	Usage of the `Coast\Controller` component.
 * **URL**  
 	Usage of the `Coast\URL` component.
-* [**REST API**](rest)
+* [**REST API**](rest)  
 	Example of a basic RESTful JSON API.
 * **Web Site**  
 	Example of a basic web site.
