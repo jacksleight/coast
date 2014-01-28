@@ -4,11 +4,8 @@ use Coast\App,
 	Coast\App\Response,
 	Coast\App\Router;
 
-// You should use Composer's autoloader, as per the example in /README.md
 chdir(__DIR__);
-require '../../lib/Coast.php';
-set_include_path(get_include_path() . PATH_SEPARATOR . '../../lib');
-spl_autoload_register();
+require 'vendor/autoload.php';
 
 $app = new App();
 $app->add('router', new Router())
@@ -19,9 +16,12 @@ $app->add('router', new Router())
 
 $app->router
 	->all('index', '/', function(Request $req, Response $res, App $app) {
-		return $res->text("Try /users, /users/add or /users/edit/1.");
+		return $res->text("Try /team and /team/jack-sleight.");
 	})
-	->all('user', '/users/{action}?/{id:\d+}?', function(Request $req, Response $res, App $app) {
+	->all('team', '/team', function(Request $req, Response $res, App $app) {
+		return $res->json($req->params());
+	})
+	->all('team-person', '/team/{person}', function(Request $req, Response $res, App $app) {
 		return $res->json($req->params());
 	});
 
