@@ -8,20 +8,20 @@ namespace Coast\App;
 
 class Request
 {
-    const PROTOCOL_10 = 'HTTP/1.0';
-    const PROTOCOL_11 = 'HTTP/1.1';
-
+    const PROTOCOL_10   = 'HTTP/1.0';
+    const PROTOCOL_11   = 'HTTP/1.1';
+    
     const METHOD_HEAD   = 'HEAD';
     const METHOD_GET    = 'GET';
     const METHOD_POST   = 'POST';
     const METHOD_PUT    = 'PUT';
     const METHOD_DELETE = 'DELETE';
-
-    const SCHEME_HTTP  = 'http';
-    const SCHEME_HTTPS = 'https';
-
-    const PORT_HTTP  = 80;
-    const PORT_HTTPS = 443;
+    
+    const SCHEME_HTTP   = 'http';
+    const SCHEME_HTTPS  = 'https';
+    
+    const PORT_HTTP     = 80;
+    const PORT_HTTPS    = 443;
 
     protected $_response;
     
@@ -37,8 +37,8 @@ class Request
     protected $_base;
     protected $_path;
     protected $_queryParams = [];
-    protected $_dataParams  = [];
-    protected $_data        = [];
+    protected $_bodyParams  = [];
+    protected $_body        = [];
     protected $_cookies     = [];
 
     public function __construct()
@@ -84,8 +84,8 @@ class Request
         $this->path(implode('/', $path));
 
         $this->queryParams($this->_clean($_GET));
-        $this->dataParams($this->_clean(array_merge($_POST, $_FILES)));
-        $this->data(file_get_contents('php://input'));
+        $this->bodyParams($this->_clean(array_merge($_POST, $_FILES)));
+        $this->body(file_get_contents('php://input'));
         $this->cookies($_COOKIE);
 
         if (session_status() == PHP_SESSION_NONE) {
@@ -327,46 +327,46 @@ class Request
         return $this->_queryParams;
     }
 
-    public function dataParam($name, $value = null)
+    public function bodyParam($name, $value = null)
     {
         if (isset($value)) {
-            $this->_dataParams[$name] = $value;
+            $this->_bodyParams[$name] = $value;
             $this->param($name, $value);
             return $this;
         }
-        return isset($this->_dataParams[$name])
-            ? $this->_dataParams[$name]
+        return isset($this->_bodyParams[$name])
+            ? $this->_bodyParams[$name]
             : null;
     }
 
-    public function dataParams(array $datas = null)
+    public function bodyParams(array $datas = null)
     {
         if (isset($datas)) {
             foreach ($datas as $name => $value) {
-                $this->dataParam($name, $value);
+                $this->bodyParam($name, $value);
             }
             return $this;
         }
-        return $this->_dataParams;
+        return $this->_bodyParams;
     }
 
-    public function data($value = null)
+    public function body($value = null)
     {
         if (isset($value)) {
-            $this->_data = $value;
+            $this->_body = $value;
             return $this;
         }
-        return $this->_data;
+        return $this->_body;
     }
 
     public function json($assoc = false, $depth = 512, $options = 0)
     {
-        return json_decode($this->_data, $assoc, $depth, $options);
+        return json_decode($this->_body, $assoc, $depth, $options);
     }
 
     public function xml($class = 'SimpleXMLElement', $options = 0, $namespace = '', $prefix = false)
     {
-        return simplexml_load_string($this->_data, $class, $options, $namespace, $prefix);
+        return simplexml_load_string($this->_body, $class, $options, $namespace, $prefix);
     }
 
     public function cookie($name, $value = null)
