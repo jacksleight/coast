@@ -3,8 +3,12 @@ use Coast\App,
 	Coast\App\Request, 
 	Coast\App\Response,
 	Coast\App\Router,
-	Coast\App\URL,
-	Coast\File;
+	Coast\App\URL;
+
+// Placeholder code, this allows PHP's CLI server to serve the example file
+if (php_sapi_name() == 'cli-server' && $_SERVER['REQUEST_URI'] == '/example.png') {
+	return false;
+}
 
 chdir(__DIR__);
 require 'vendor/autoload.php';
@@ -12,7 +16,7 @@ require 'vendor/autoload.php';
 $app = new App();
 $app->add('router', new Router())
 	->set('url', new URL([
-		'base'		=> (new Request())->import()->base(), // Dummy base URL, this would typically come from hard coded server config
+		'base'		=> (new Request())->import()->base(), // Placeholder base URL, this would typically come from hard coded server config
 		'router'	=> $app->router,
 	]))
 	->notFoundHandler(function(Request $req, Response $res, App $app) {

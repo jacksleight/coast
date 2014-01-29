@@ -8,7 +8,7 @@ chdir(__DIR__);
 require 'vendor/autoload.php';
 
 $app = new App();
-$app->set('data', json_decode(file_get_contents('data.json'), true)) // Dummy data
+$app->set('data', json_decode(file_get_contents('data.json'), true)) // Placeholder data
 	->add('router', new Router())
 	->notFoundHandler(function(Request $req, Response $res, App $app) {
 		$res->status(404)
