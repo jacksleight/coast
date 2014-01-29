@@ -8,31 +8,31 @@ namespace Coast\App\Controller;
 
 abstract class Action
 {
-	protected $_controller;
+    protected $_controller;
 
-	public function __construct(\Coast\App\Controller $controller)
-	{
-		$this->_controller = $controller;
-	}
+    public function __construct(\Coast\App\Controller $controller)
+    {
+        $this->_controller = $controller;
+    }
 
-	public function __get($name)
-	{
-		return $this->_controller->$name;
-	}
+    public function __get($name)
+    {
+        return $this->_controller->$name;
+    }
 
-	public function __isset($name)
-	{
-		return isset($this->_controller->$name);
-	}
+    public function __isset($name)
+    {
+        return isset($this->_controller->$name);
+    }
 
-	public function __call($name, array $args)
-	{
-		return call_user_func_array(array($this->_controller, $name), $args);
-	}
+    public function __call($name, array $args)
+    {
+        return call_user_func_array(array($this->_controller, $name), $args);
+    }
 
-	public function preDispatch()
-	{}
+    public function preDispatch()
+    {}
 
-	public function postDispatch()
-	{}
+    public function postDispatch()
+    {}
 }

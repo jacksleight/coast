@@ -8,11 +8,11 @@ namespace Coast\App;
 
 interface Access
 {
-	public function app(\Coast\App $app);
+    public function app(\Coast\App $app);
 
-	public function __get($name);
+    public function __get($name);
 
-	public function __isset($name);
+    public function __isset($name);
 
-	public function __call($name, array $args);
+    public function __call($name, array $args);
 }

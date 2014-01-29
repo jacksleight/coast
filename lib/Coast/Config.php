@@ -8,42 +8,42 @@ namespace Coast;
 
 class Config
 {
-	protected $_data = [];
+    protected $_data = [];
 
-	public function __construct($files)
-	{
-		if (!is_array($files)) {
-			$files = [$files];
-		}
-		foreach ($files as $file) {
-			$data = [];
-			require (string) $file;
-			$this->_data = array_merge_recursive(
-				$this->_data,
-				$data
-			);
-		}
-	}
+    public function __construct($files)
+    {
+        if (!is_array($files)) {
+            $files = [$files];
+        }
+        foreach ($files as $file) {
+            $data = [];
+            require (string) $file;
+            $this->_data = array_merge_recursive(
+                $this->_data,
+                $data
+            );
+        }
+    }
 
-	public function __set($name, $value)
-	{
-		$this->_data[$name] = $value;
-	}
+    public function __set($name, $value)
+    {
+        $this->_data[$name] = $value;
+    }
 
-	public function __get($name)
-	{
-		return isset($this->_data[$name])
-			? $this->_data[$name]
-			: null;
-	}
+    public function __get($name)
+    {
+        return isset($this->_data[$name])
+            ? $this->_data[$name]
+            : null;
+    }
 
-	public function __unset($name)
-	{
-		unset($this->_data[$name]);
-	}
+    public function __unset($name)
+    {
+        unset($this->_data[$name]);
+    }
 
-	public function __isset($name)
-	{
-		return isset($this->_data[$name]);
-	}
+    public function __isset($name)
+    {
+        return isset($this->_data[$name]);
+    }
 }

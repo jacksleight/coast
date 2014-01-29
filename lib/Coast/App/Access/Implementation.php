@@ -8,26 +8,26 @@ namespace Coast\App\Access;
 
 trait Implementation
 {
-	protected $_app;
+    protected $_app;
 
-	public function app(\Coast\App $app)
-	{
-		$this->_app = $app;
-		return $this;
-	}
+    public function app(\Coast\App $app)
+    {
+        $this->_app = $app;
+        return $this;
+    }
 
-	public function __get($name)
-	{
-		return $this->_app->__get($name);
-	}
+    public function __get($name)
+    {
+        return $this->_app->__get($name);
+    }
 
-	public function __isset($name)
-	{
-		return $this->_app->__isset($name);
-	}
+    public function __isset($name)
+    {
+        return $this->_app->__isset($name);
+    }
 
-	public function __call($name, array $args)
-	{
-		return $this->_app->__call($name, $args);
-	}
+    public function __call($name, array $args)
+    {
+        return $this->_app->__call($name, $args);
+    }
 }
