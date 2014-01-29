@@ -3,7 +3,7 @@
 ## Configration Options
 
 * **target**  
-	The component to forward requests on to.
+    The component to forward requests on to.
 
 ## Controller Usage
 

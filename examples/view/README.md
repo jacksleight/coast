@@ -3,9 +3,9 @@
 ## Configration Options
 
 * **dir**  
-	The directory that contains your view files.
+    The directory that contains your view files.
 * **extension** (phtml)  
-	The extension of your view files.
+    The extension of your view files.
 
 ## Usage as Middleware
 
