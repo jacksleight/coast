@@ -79,8 +79,8 @@ class Request
 		$full = explode('/', $full);
 		$path = explode('/', $path);
 		$base = array_slice($full, 0, count($full) - count($path));
-		$this->base(implode('/', $base));
-		$this->path('/' . implode('/', $path));
+		$this->base(implode('/', $base) . '/');
+		$this->path(implode('/', $path));
 
 		$this->queryParams($this->_clean($_GET));
 		$this->dataParams($this->_clean(array_merge($_POST, $_FILES)));
