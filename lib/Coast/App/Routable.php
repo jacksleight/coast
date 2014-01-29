@@ -8,5 +8,5 @@ namespace Coast\App;
 
 interface Routable
 {
-	public function route(\Coast\App\Request $req, \Coast\App\Response $res);
+    public function route(\Coast\App\Request $req, \Coast\App\Response $res);
 }

@@ -8,25 +8,25 @@ namespace Coast;
 
 trait Options
 {
-	protected $_options = null;
+    protected $_options = null;
 
-	public function options(array $options = null)
-	{
-		if (!isset($this->_options)) {
-			$this->_options = new \stdClass();
-		}
-		if (isset($options)) {
-			foreach ($options as $name => $value) {
-				$this->_options->$name = isset($value)
-					? $this->_initialize($name, $value)
-					: $value;
-			}
-		}
-		return $this->_options;
-	}
+    public function options(array $options = null)
+    {
+        if (!isset($this->_options)) {
+            $this->_options = new \stdClass();
+        }
+        if (isset($options)) {
+            foreach ($options as $name => $value) {
+                $this->_options->$name = isset($value)
+                    ? $this->_initialize($name, $value)
+                    : $value;
+            }
+        }
+        return $this->_options;
+    }
 
-	protected function _initialize($name, $value)
-	{
-		return $value;
-	}
+    protected function _initialize($name, $value)
+    {
+        return $value;
+    }
 }

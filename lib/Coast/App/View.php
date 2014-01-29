@@ -8,161 +8,161 @@ namespace Coast\App;
 
 class View implements \Coast\App\Access, \Coast\App\Executable
 {
-	use \Coast\App\Access\Implementation;
-	use \Coast\Options;
+    use \Coast\App\Access\Implementation;
+    use \Coast\Options;
 
-	protected $_stack = [];
+    protected $_stack = [];
 
-	public function __construct(array $options = array())
-	{
-		$this->options(array_merge([
-			'dir'		=> null,
-			'extension'	=> 'phtml',
-		], $options));
-	}
+    public function __construct(array $options = array())
+    {
+        $this->options(array_merge([
+            'dir'       => null,
+            'extension' => 'phtml',
+        ], $options));
+    }
 
-	protected function _initialize($name, $value)
-	{
-		switch ($name) {
-			case 'dir':
-				$value = new \Coast\Dir("{$value}");
-				break;
-		}
-		return $value;
-	}
-		
-	public function has($name)
-	{
-		$path = new \Coast\Path("{$name}." . $this->_options->extension);
-		if ($path->relative()) {
-			throw new \Coast\App\Exception("Initial path '{$path}' is relative");
-		}
+    protected function _initialize($name, $value)
+    {
+        switch ($name) {
+            case 'dir':
+                $value = new \Coast\Dir("{$value}");
+                break;
+        }
+        return $value;
+    }
+        
+    public function has($name)
+    {
+        $path = new \Coast\Path("{$name}." . $this->_options->extension);
+        if ($path->relative()) {
+            throw new \Coast\App\Exception("Initial path '{$path}' is relative");
+        }
 
-		$file = $this->_options->dir->file($path);	
-		return $file->exists();
-	}
-		
-	public function render($name, array $params = array())
-	{
-		$path = new \Coast\Path("{$name}." . $this->_options->extension);
-		if (count($this->_stack) > 0) {
-			$path = $path->relative()
-				? $this->_stack[0]['path']->from($path)
-				: $path;
-			$params	= array_merge($this->_stack[0]['params'], $params);
-		} else if ($path->relative()) {
-			throw new \Coast\App\Exception("Initial path '{$path}' is relative");
-		}
+        $file = $this->_options->dir->file($path);    
+        return $file->exists();
+    }
+        
+    public function render($name, array $params = array())
+    {
+        $path = new \Coast\Path("{$name}." . $this->_options->extension);
+        if (count($this->_stack) > 0) {
+            $path = $path->relative()
+                ? $this->_stack[0]['path']->from($path)
+                : $path;
+            $params    = array_merge($this->_stack[0]['params'], $params);
+        } else if ($path->relative()) {
+            throw new \Coast\App\Exception("Initial path '{$path}' is relative");
+        }
 
-		$file = $this->_options->dir->file($path);	
-		if (!$file->exists()) {
-			if (count($this->_stack) == 0) {
-				throw new \Coast\App\Exception("View file '{$path}' does not exist");
-			} else {
-				throw new \Coast\App\Exception("View file '{$path}' does not exist");				
-			}
-		}
+        $file = $this->_options->dir->file($path);    
+        if (!$file->exists()) {
+            if (count($this->_stack) == 0) {
+                throw new \Coast\App\Exception("View file '{$path}' does not exist");
+            } else {
+                throw new \Coast\App\Exception("View file '{$path}' does not exist");                
+            }
+        }
 
-		array_unshift($this->_stack, [
-			'name'		=> $name, 
-			'path'		=> $path, 
-			'params'	=> $params, 
-			'layout'	=> null, 
-			'block'		=> null, 
-			'content'	=> new \Coast\App\View\Content(), 
-			'captures'	=> 0,
-		]);
-		$this->_run($file, $params);
-		$content = $this->_stack[0]['content'];
-		if (isset($this->_stack[0]['layout'])) {
-			$content = $this->render(
-				$this->_stack[0]['layout'][0],
-				array_merge(
-					$this->_stack[0]['layout'][1],
-					array('content' => $content)
-				),
-				$this->_stack[0]['layout'][2]
-			);
-		}
-		array_shift($this->_stack);
+        array_unshift($this->_stack, [
+            'name'     => $name, 
+            'path'     => $path, 
+            'params'   => $params, 
+            'layout'   => null, 
+            'block'    => null, 
+            'content'  => new \Coast\App\View\Content(), 
+            'captures' => 0,
+        ]);
+        $this->_run($file, $params);
+        $content = $this->_stack[0]['content'];
+        if (isset($this->_stack[0]['layout'])) {
+            $content = $this->render(
+                $this->_stack[0]['layout'][0],
+                array_merge(
+                    $this->_stack[0]['layout'][1],
+                    array('content' => $content)
+                ),
+                $this->_stack[0]['layout'][2]
+            );
+        }
+        array_shift($this->_stack);
 
-		return $content;
-	}
+        return $content;
+    }
 
-	protected function _run($_file, array $_params = array())
-	{
-		$this->start();
-		try {
-			extract($_params);
-			include $_file->string();
-		} catch (\Exception $e) {
-			while ($this->_stack[0]['captures'] > 0) {
-				echo $this->end();
-			}
-			throw $e;
-		}
-		
-		$content = trim($this->end());
-		if (strlen($content) > 0 ) {
-			$this->_stack[0]['content']->add($content, $this->_stack[0]['block']);
-		}
-		$this->_stack[0]['block'] = null;
-		while ($this->_stack[0]['captures'] > 0) {
-			$this->end();
-		}
-	}
+    protected function _run($_file, array $_params = array())
+    {
+        $this->start();
+        try {
+            extract($_params);
+            include $_file->string();
+        } catch (\Exception $e) {
+            while ($this->_stack[0]['captures'] > 0) {
+                echo $this->end();
+            }
+            throw $e;
+        }
+        
+        $content = trim($this->end());
+        if (strlen($content) > 0 ) {
+            $this->_stack[0]['content']->add($content, $this->_stack[0]['block']);
+        }
+        $this->_stack[0]['block'] = null;
+        while ($this->_stack[0]['captures'] > 0) {
+            $this->end();
+        }
+    }
 
-	protected function layout($name, array $params = array(), $set = null)
-	{
-		$this->_stack[0]['layout'] = [$name, $params, $set];
-	}
+    protected function layout($name, array $params = array(), $set = null)
+    {
+        $this->_stack[0]['layout'] = [$name, $params, $set];
+    }
 
-	protected function block($name)
-	{
-		$content = trim($this->end());
-		if (strlen($content) > 0 ) {
-			$this->_stack[0]['content']->add($content, $this->_stack[0]['block']);
-		}
-		$this->_stack[0]['block'] = $name;
-		$this->start();
-	}
-	
-	protected function start()
-	{
-		ob_start();
-		$this->_stack[0]['captures']++;
-	}
-	
-	protected function end()
-	{
-		$this->_stack[0]['captures']--;
-		return ob_get_clean();
-	}
+    protected function block($name)
+    {
+        $content = trim($this->end());
+        if (strlen($content) > 0 ) {
+            $this->_stack[0]['content']->add($content, $this->_stack[0]['block']);
+        }
+        $this->_stack[0]['block'] = $name;
+        $this->start();
+    }
+    
+    protected function start()
+    {
+        ob_start();
+        $this->_stack[0]['captures']++;
+    }
+    
+    protected function end()
+    {
+        $this->_stack[0]['captures']--;
+        return ob_get_clean();
+    }
 
-	protected function escape($string)
-	{
+    protected function escape($string)
+    {
         return htmlspecialchars($string, ENT_COMPAT, 'UTF-8');
-	}
+    }
 
-	protected function encode($string)
-	{
-		return mb_convert_encoding($string, 'UTF-8');
-	}
+    protected function encode($string)
+    {
+        return mb_convert_encoding($string, 'UTF-8');
+    }
 
-	protected function strip($string)
-	{
-		return strip_tags($string);
-	}
+    protected function strip($string)
+    {
+        return strip_tags($string);
+    }
 
-	public function execute(\Coast\App\Request $req, \Coast\App\Response $res)
-	{		
-		$path = '/' . $req->path();
-		if (!$this->has($path)) {
-			return false;
-		}
-		return $res->html($this->render($path, [
-			'req' => $req,
-			'res' => $res,
-		]));
-	}
+    public function execute(\Coast\App\Request $req, \Coast\App\Response $res)
+    {        
+        $path = '/' . $req->path();
+        if (!$this->has($path)) {
+            return false;
+        }
+        return $res->html($this->render($path, [
+            'req' => $req,
+            'res' => $res,
+        ]));
+    }
 } 

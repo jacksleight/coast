@@ -21,10 +21,10 @@ The easiest way to install Coast is through [Composer](https://getcomposer.org/d
 
 ```json
 {
-	"minimum-stability": "dev",
-	"require": {
-		"jacksleight/coast": "master"
-	}
+    "minimum-stability": "dev",
+    "require": {
+        "jacksleight/coast": "master"
+    }
 }
 ```
 
@@ -41,26 +41,26 @@ Create a new file called `app.php` containing:
 ```php
 <?php
 use Coast\App,
-	Coast\App\Request, 
-	Coast\App\Response;
+    Coast\App\Request, 
+    Coast\App\Response;
 
 chdir(__DIR__);
 require 'vendor/autoload.php';
 
 $app = new App();
 $app->add(function(Request $req, Response $res, App $app) {
-	return $res->text('Hello World');
+    return $res->text('Hello World');
 });
 
 $app->execute((new Request())->import())->export();
 ```
-	
+    
 Then run:
 
 ```bash
 php -S localhost:8000 app.php
 ```
-	
+    
 And load it up in the browser at: [http://localhost:8000/](http://localhost:8000/).
 
 ### What's happening here?
