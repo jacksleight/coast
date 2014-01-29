@@ -8,19 +8,46 @@ namespace Coast;
 
 class Http
 {
-    const METHOD_HEAD = 'HEAD';
-    const METHOD_GET  = 'GET';
-    const METHOD_POST = 'POST';
+    const METHOD_HEAD   = 'HEAD';
+    const METHOD_GET    = 'GET';
+    const METHOD_POST   = 'POST';
+    const METHOD_PUT    = 'PUT';
+    const METHOD_DELETE = 'DELETE';
     
     protected $_timeout;
-    protected $_cookie;
+    protected $_cookies;
     
     public function __construct($timeout = null)
     {
         $this->_timeout = $timeout;
     }
+
+    public function head(\Coast\Url $url, $data = null)
+    {
+        return $this->request(self::METHOD_HEAD, $url, $data);
+    }
+
+    public function get(\Coast\Url $url, $data = null)
+    {
+        return $this->request(self::METHOD_GET, $url, $data);
+    }
+
+    public function post(\Coast\Url $url, $data = null)
+    {
+        return $this->request(self::METHOD_POST, $url, $data);
+    }
+
+    public function put(\Coast\Url $url, $data = null)
+    {
+        return $this->request(self::METHOD_PUT, $url, $data);
+    }
+
+    public function delete(\Coast\Url $url, $data = null)
+    {
+        return $this->request(self::METHOD_DELETE, $url, $data);
+    }
     
-    public function request(\Coast\Url $url, $method = self::METHOD_GET, $data = null)
+    public function request($method, \Coast\Url $url, $data = null)
     {
         if (!$url->isHttp()) {
             throw new \Exception("URL scheme is not HTTP or HTTPS");
@@ -35,8 +62,8 @@ class Http
         if (isset($this->_timeout)) {
             curl_setopt($ch, CURLOPT_TIMEOUT, $this->_timeout);
         }
-        if (isset($this->_cookie)) {
-            curl_setopt($ch, CURLOPT_COOKIE, $this->_cookie);
+        if (isset($this->_cookies)) {
+            curl_setopt($ch, CURLOPT_COOKIE, $this->_cookies);
         }
         if ($method == self::METHOD_HEAD) {
             curl_setopt($ch, CURLOPT_NOBODY, true);
@@ -74,7 +101,7 @@ class Http
         }
         
         if (isset($headers['cookie'])) {
-            $this->_cookie = $headers['cookie'];
+            $this->_cookies = $headers['cookie'];
         }
         
         curl_close($ch);
