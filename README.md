@@ -2,13 +2,13 @@
 
 Coast is a web application framework for PHP 5.5+. The goal of Coast is to provide a simple, lightweight and flexible framework for building high-performance, modern web apps. Some parts of the API were inspired by the Connect and Express node.js frameworks, others are my own (possibly ridiculous) ideas.
 
-* Works with **PHP's CLI development server**, **Apache** and others
-* Easy manipulation of **request and response data**
+* Easy handling of **request and response data**
 * View component for **view, partial and layout rendering**
 * Router component for **advanced path routing**
 * Controller component for **advanced request handling**
 * URL component for **easy URL generation** (static files, routes etc.)
 * Utility classes for working with **config files**, **URLs**, **DOM**, **Atom feeds**, **XML sitemaps** and the **file system**, plus a basic **HTTP client** library
+* Works with **PHP's CLI development server**, **Apache** and others
 
 All feedback, suggestions, bug reports and contributions are very welcome. Please feel free to get in touch by email (jacksleight at gmail dot com) or [@jacksleight](https://twitter.com/jacksleight) on Twitter.
 
