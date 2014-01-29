@@ -38,6 +38,7 @@ class Request
     protected $_path;
     protected $_queryParams = [];
     protected $_dataParams  = [];
+    protected $_data        = [];
     protected $_cookies     = [];
 
     public function __construct()
@@ -74,7 +75,7 @@ class Request
         $this->host($this->server('SERVER_NAME'));
         $this->port($this->server('SERVER_PORT'));
     
-        list($full)    = explode('?', $this->server('REQUEST_URI'));    
+        list($full) = explode('?', $this->server('REQUEST_URI'));    
         $path = isset($_GET['_']) ? $_GET['_'] : ltrim($full, '/');
         $full = explode('/', $full);
         $path = explode('/', $path);
@@ -84,7 +85,8 @@ class Request
 
         $this->queryParams($this->_clean($_GET));
         $this->dataParams($this->_clean(array_merge($_POST, $_FILES)));
-        $this->cookies($_COOKIE);        
+        $this->data(file_get_contents('php://input'));
+        $this->cookies($_COOKIE);
 
         if (session_status() == PHP_SESSION_NONE) {
             if (isset($_GET['sessionId'])) {
@@ -346,6 +348,25 @@ class Request
             return $this;
         }
         return $this->_dataParams;
+    }
+
+    public function data($value = null)
+    {
+        if (isset($value)) {
+            $this->_data = $value;
+            return $this;
+        }
+        return $this->_data;
+    }
+
+    public function json($assoc = false, $depth = 512, $options = 0)
+    {
+        return json_decode($this->_data, $assoc, $depth, $options);
+    }
+
+    public function xml($class = 'SimpleXMLElement', $options = 0, $namespace = '', $prefix = false)
+    {
+        return simplexml_load_string($this->_data, $class, $options, $namespace, $prefix);
     }
 
     public function cookie($name, $value = null)
