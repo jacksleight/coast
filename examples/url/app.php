@@ -1,0 +1,40 @@
+<?php
+use Coast\App,
+	Coast\App\Request, 
+	Coast\App\Response,
+	Coast\App\Router,
+	Coast\App\URL,
+	Coast\File;
+
+chdir(__DIR__);
+require 'vendor/autoload.php';
+
+$app = new App();
+$app->add('router', new Router())
+	->set('url', new URL([
+		'base'		=> (new Request())->import()->base(), // Dummy base URL, this would typically come from hard coded server config
+		'router'	=> $app->router,
+	]))
+	->notFoundHandler(function(Request $req, Response $res, App $app) {
+		$res->status(404)
+			->text("Not Found");
+	});
+
+$app->router
+	->all('index', '', function(Request $req, Response $res, App $app) {
+		$base	= $app->url();
+		$route	= $app->url(['person' => 'jack'], 'team-person', true);
+		$file	= $app->url->file('example.png');
+		$query	= $app->url->query(['page' => 1]);
+		return $res->html("
+			<a href='{$base}'>{$base}</a><br>
+			<a href='{$route}'>{$route}</a><br>
+			<a href='{$file}'>{$file}</a><br>
+			<a href='{$query}'>{$query}</a><br>
+		");
+	})
+	->all('team-person', 'team/{person}', function(Request $req, Response $res, App $app) {
+		return $res->json($req->params());
+	});
+
+$app->execute((new Request())->import())->export();

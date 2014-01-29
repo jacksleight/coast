@@ -75,7 +75,7 @@ class Url implements \Coast\App\Access
 			throw new \Coast\App\Exception("Router option has not been set");
 		}
 		$route = isset($this->req)
-			? $this->req->getParam('_route')
+			? $this->req->param('route')
 			: null;
 		if (!isset($name)) {
 			if (!isset($route)) {
@@ -89,7 +89,7 @@ class Url implements \Coast\App\Access
 				$params
 			);
 		}
-		$path = $this->_options->router->reverse($name, $params);
+		$path = ltrim($this->_options->router->reverse($name, $params), '/');
 		return $base
 			? $this->_options->base . $path
 			: $path;
@@ -106,7 +106,7 @@ class Url implements \Coast\App\Access
 		$file = $file->relative()
 			? new \Coast\File(getcwd() . "/{$file}")
 			: $file;
-		if (!$file->isWithin($this->_options->dir)) {
+		if (!$file->within($this->_options->dir)) {
 			throw new \Coast\App\Exception("File '{$file}' is not within base directory");
 		}
 
@@ -128,9 +128,9 @@ class Url implements \Coast\App\Access
 		return $path;
 	}
 
-	public function query(array $params = array(), $reset = false, $mark = true, $contract = true)
+	public function query(array $params = array(), $reset = false, $mark = true)
 	{
-		$params = $this->_parseQueryParams($params, $reset, $contract);
+		$params = $this->_parseQueryParams($params, $reset);
 		$query  = array();
 		foreach ($params as $name => $value) {
 			$query[] = $name . '=' . urlencode($value);
@@ -142,9 +142,9 @@ class Url implements \Coast\App\Access
 			: $query;
 	}
 
-	public function inputs(array $params = array(), $reset = false, $contract = true)
+	public function inputs(array $params = array(), $reset = false)
 	{
-		$params = $this->_parseQueryParams($params, $reset, $contract);
+		$params = $this->_parseQueryParams($params, $reset);
 		$inputs = array();
 		foreach ($params as $name => $value) {
 			$inputs[] = '<input type="hidden" name="' . $name . '" value="' . $value . '">';
@@ -153,18 +153,16 @@ class Url implements \Coast\App\Access
 		return implode($inputs);
 	}
 
-	protected function _parseQueryParams(array $params = array(), $reset = false, $contract = true)
+	protected function _parseQueryParams(array $params = array(), $reset = false)
 	{
 		if (!$reset && isset($this->req)) {
 			$params = \Coast\array_merge_smart(
-				$this->req->getQueryParams(),
+				$this->req->queryParams(),
 				$params
 			);
 		}
 		$params = \Coast\array_filter_null_recursive($params);
 		
-		return $contract
-			? \Coast\array_contract($params, '_')
-			: $params;
+		return $params;
 	}
 }

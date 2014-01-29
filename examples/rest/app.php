@@ -16,10 +16,10 @@ $app->set('data', json_decode(file_get_contents('data.json'), true)) // Dummy da
 	});
 
 $app->router
-	->all('index', '/', function(Request $req, Response $res, App $app) {
+	->all('index', '', function(Request $req, Response $res, App $app) {
 		return $res->text("Try /users.");
 	})
-	->get('get', '/{entity}/{id:\d+}?', function(Request $req, Response $res, App $app) {
+	->get('get', '{entity}/{id:\d+}?', function(Request $req, Response $res, App $app) {
 		$entity	= $req->entity;
 		if (!isset($app->data[$entity])) {
 			return false;
@@ -33,13 +33,13 @@ $app->router
 		}
 		return false;
 	})
-	->post('post', '/{entity}/{id:\d+}?', function(Request $req, Response $res, App $app) {
+	->post('post', '{entity}/{id:\d+}?', function(Request $req, Response $res, App $app) {
 		return $res->json(['error' => 'Unimplemented']);
 	})
-	->put('put', '/{entity}/{id:\d+}?', function(Request $req, Response $res, App $app) {
+	->put('put', '{entity}/{id:\d+}?', function(Request $req, Response $res, App $app) {
 		return $res->json(['error' => 'Unimplemented']);
 	})
-	->delete('delete', '/{entity}/{id:\d+}?', function(Request $req, Response $res, App $app) {
+	->delete('delete', '{entity}/{id:\d+}?', function(Request $req, Response $res, App $app) {
 		return $res->json(['error' => 'Unimplemented']);
 	});
 

@@ -15,13 +15,13 @@ $app->add('router', new Router())
 	});
 
 $app->router
-	->all('index', '/', function(Request $req, Response $res, App $app) {
-		return $res->text("Try /team and /team/jack-sleight.");
+	->all('index', '', function(Request $req, Response $res, App $app) {
+		return $res->text("Try /team and /team/jack.");
 	})
-	->all('team', '/team', function(Request $req, Response $res, App $app) {
+	->all('team', 'team', function(Request $req, Response $res, App $app) {
 		return $res->json($req->params());
 	})
-	->all('team-person', '/team/{person}', function(Request $req, Response $res, App $app) {
+	->all('team-person', 'team/{person}', function(Request $req, Response $res, App $app) {
 		return $res->json($req->params());
 	});
 

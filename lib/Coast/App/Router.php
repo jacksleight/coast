@@ -101,12 +101,18 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
 					? "({$match[2]})"
 					: "([a-zA-Z0-9_-]+)";
 				if ($match[3] == '?') {
-					$regex = $i == 0 ? "\/(?:{$regex})?" : "(?:\/{$regex})?";
+					$regex = $i == 0 
+						? "(?:{$regex})?"
+						: "(?:\/{$regex})?";
 				} else {
-					$regex = "\/{$regex}";
+					$regex = $i == 0
+						? "{$regex}"
+						: "\/{$regex}";
 				}
 			} else {
-				$regex = "\/" . preg_quote($part, '/');
+				$regex = $i == 0
+					? preg_quote($part, '/')
+					: "\/" . preg_quote($part, '/');
 			}
 			$stack[] = $regex;
 		}
@@ -187,7 +193,7 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
 			return false;
 		}
 		$req->params(array_merge([
-			'route' => $match['name'],
+			'route' => $match,
 		], $match['params']));
 		
 		if (isset($this->_options->target)) {

@@ -193,11 +193,11 @@ class Url
 	public function queryParam($name, $value = null)
 	{
 		if (isset($value)) {
-			$this->_querys[$name] = $value;
+			$this->_queryParams[$name] = $value;
 			return $this;
 		}
-		return isset($this->_querys[$name])
-			? $this->_querys[$name]
+		return isset($this->_queryParams[$name])
+			? $this->_queryParams[$name]
 			: null;
 	}
 
@@ -209,7 +209,7 @@ class Url
 			}
 			return $this;
 		}
-		return $this->_querys;
+		return $this->_queryParams;
 	}
 
 	public function fragment($value = null)

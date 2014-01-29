@@ -10,7 +10,7 @@
 	Usage of the `Coast\Router` component.
 * **Controller**  
 	Usage of the `Coast\Controller` component.
-* **URL**  
+* [**URL**](url)  
 	Usage of the `Coast\URL` component.
 * [**RESTful JSON API**](rest)  
 	Example of a basic RESTful JSON API.
