@@ -86,48 +86,48 @@ class Response
             : null;
     }
 
-    public function body($value = null)
+    public function body($data = null)
     {
-        if (isset($value)) {
-            $this->_body = $value;
+        if (isset($data)) {
+            $this->_body = $data;
             return $this;
         }
         return $this->_body;
     }
 
-    public function text($value)
+    public function text($data)
     {
         return $this
             ->type('text/plain')
-            ->body((string) $value);
+            ->body((string) $data);
     }
 
-    public function html($value)
+    public function html($data)
     {
         return $this
             ->type('text/html')
-            ->body((string) $value);
+            ->body((string) $data);
     }
 
-    public function json($value)
+    public function json($data, $options = JSON_PRETTY_PRINT, $depth = 512)
     {
         return $this
             ->type('application/json')
-            ->body(json_encode($value, JSON_PRETTY_PRINT));
+            ->body(json_encode($data, $options, $depth));
     }
 
-    public function xml($value)
+    public function xml($data, $options = null)
     {
-        if ($value instanceof \DOMDocument) {
-            $value = $value->saveXML();
-        } else if ($value instanceof \SimpleXMLElement) {
-            $value = $value->asXML();
+        if ($data instanceof \SimpleXMLElement) {
+            $data = $data->asXML();
+        } else if ($data instanceof \DOMDocument) {
+            $data = $data->saveXML($options);
         } else {
-            $value = (string) $value;
+            throw new \Coast\App\Exception("Response->xml() method expects a \DOMDocument or \SimpleXMLElement object");
         }
         return $this
             ->type('application/xml')
-            ->body($value);
+            ->body($data);
     }
 
     public function redirect($type, $url)
