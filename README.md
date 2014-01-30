@@ -68,7 +68,7 @@ And load it up in the browser at: [http://localhost:8000/](http://localhost:8000
 3. Add middleware to handle the request.
 4. Call `execute` to run the application.
 
-The `execute` method expects a `Coast\App\Request` object, and returns a `Coast\App\Response` object. The `import` method grabs all of the request data from PHP's globals, and the `export` method sends the response data back out. It is also possible to skip these methods and construct the request data manually, which is useful for testing.
+The `execute` method expects a `Coast\App\Request` object, and returns a `Coast\App\Response` object. The `import` method imports all of the request data from PHP's globals, and the `export` method exports the response data to the output buffer. It's also possible construct the request data manually, and inspect the response, which is useful for testing.
 
 ## Examples
 
