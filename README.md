@@ -21,7 +21,7 @@ The easiest way to install Coast is through [Composer](https://getcomposer.org/d
 {
     "minimum-stability": "dev",
     "require": {
-        "jacksleight/coast": "master"
+        "jacksleight/coast": "dev-master"
     }
 }
 ```
