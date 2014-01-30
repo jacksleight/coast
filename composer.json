@@ -1,7 +1,7 @@
 {
     "name": "jacksleight/coast",
     "type": "library",
-    "description": "Web application framework for PHP 5.5+.",
+    "description": "Web application framework for PHP 5.5+",
     "license": "MIT",
     "authors": [
         {"name": "Jack Sleight", "email": "jacksleight@gmail.com"}
