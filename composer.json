@@ -2,7 +2,7 @@
     "name": "jacksleight/coast",
     "type": "library",
     "description": "Web application framework for PHP 5.5+",
-    "keywords": ["framework", "coast", "express", "connect"]
+    "keywords": ["framework", "coast", "express", "connect"],
     "homepage": "http://coastphp.com/",
     "license": "MIT",
     "authors": [
