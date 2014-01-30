@@ -46,7 +46,7 @@ chdir(__DIR__);
 require 'vendor/autoload.php';
 
 $app = new App();
-$app->add(function(Request $req, Response $res, App $app) {
+$app->add(function(Request $req, Response $res) {
     return $res->text('Hello World');
 });
 
