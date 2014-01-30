@@ -19,17 +19,17 @@ $app->add('router', new Router())
         'base'   => (new Request())->import()->base(), // Placeholder base URL, this would typically come from hard coded server config
         'router' => $app->router,
     ]))
-    ->notFoundHandler(function(Request $req, Response $res, App $app) {
+    ->notFoundHandler(function(Request $req, Response $res) {
         $res->status(404)
             ->text("Not Found");
     });
 
 $app->router
-    ->all('index', '', function(Request $req, Response $res, App $app) {
-        $base  = $app->url();
-        $route = $app->url(['person' => 'jack'], 'team-person', true);
-        $file  = $app->url->file('example.png');
-        $query = $app->url->query(['page' => 1]);
+    ->all('index', '', function(Request $req, Response $res) {
+        $base  = $this->url();
+        $route = $this->url(['person' => 'jack'], 'team-person', true);
+        $file  = $this->url->file('example.png');
+        $query = $this->url->query(['page' => 1]);
         return $res->html("
             <a href='{$base}'>{$base}</a><br>
             <a href='{$route}'>{$route}</a><br>
@@ -37,7 +37,7 @@ $app->router
             <a href='{$query}'>{$query}</a><br>
         ");
     })
-    ->all('team-person', 'team/{person}', function(Request $req, Response $res, App $app) {
+    ->all('team-person', 'team/{person}', function(Request $req, Response $res) {
         return $res->json($req->params());
     });
 

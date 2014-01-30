@@ -10,21 +10,21 @@ require 'vendor/autoload.php';
 $app = new App();
 $app->set('data', json_decode(file_get_contents('data.json'), true)) // Placeholder data
     ->add('router', new Router())
-    ->notFoundHandler(function(Request $req, Response $res, App $app) {
+    ->notFoundHandler(function(Request $req, Response $res) {
         $res->status(404)
             ->text("Not Found");
     });
 
 $app->router
-    ->all('index', '', function(Request $req, Response $res, App $app) {
+    ->all('index', '', function(Request $req, Response $res) {
         return $res->text("Try /users.");
     })
-    ->get('get', '{entity}/{id:\d+}?', function(Request $req, Response $res, App $app) {
+    ->get('get', '{entity}/{id:\d+}?', function(Request $req, Response $res) {
         $entity = $req->entity;
-        if (!isset($app->data[$entity])) {
+        if (!isset($this->data[$entity])) {
             return false;
         }
-        $data = $app->data[$entity];
+        $data = $this->data[$entity];
         $id   = $req->id;
         if (!isset($id)) {
             return $res->json($data);
@@ -33,13 +33,13 @@ $app->router
         }
         return false;
     })
-    ->post('post', '{entity}/{id:\d+}?', function(Request $req, Response $res, App $app) {
+    ->post('post', '{entity}/{id:\d+}?', function(Request $req, Response $res) {
         return $res->json(['error' => 'Unimplemented']);
     })
-    ->put('put', '{entity}/{id:\d+}?', function(Request $req, Response $res, App $app) {
+    ->put('put', '{entity}/{id:\d+}?', function(Request $req, Response $res) {
         return $res->json(['error' => 'Unimplemented']);
     })
-    ->delete('delete', '{entity}/{id:\d+}?', function(Request $req, Response $res, App $app) {
+    ->delete('delete', '{entity}/{id:\d+}?', function(Request $req, Response $res) {
         return $res->json(['error' => 'Unimplemented']);
     });
 

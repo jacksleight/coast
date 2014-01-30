@@ -7,7 +7,7 @@ chdir(__DIR__);
 require 'vendor/autoload.php';
 
 $app = new App();
-$app->add(function(Request $req, Response $res, App $app) {
+$app->add(function(Request $req, Response $res) {
         if ($req->path() == 'null') {
             return;
         } else if ($req->path() == 'true') {
@@ -20,14 +20,14 @@ $app->add(function(Request $req, Response $res, App $app) {
         }
         return $res->text('Try /null, /true, /false or /error.');    
     })
-    ->add(function(Request $req, Response $res, App $app) {
+    ->add(function(Request $req, Response $res) {
         return $res->text('Second middleware.');    
     })
-    ->notFoundHandler(function(Request $req, Response $res, App $app) {
+    ->notFoundHandler(function(Request $req, Response $res) {
         $res->status(404)
             ->text("Not Found");
     })
-    ->errorHandler(function(Request $req, Response $res, App $app, Exception $e) {
+    ->errorHandler(function(Request $req, Response $res, Exception $e) {
         $res->status(500)
             ->text("Error: {$e->getMessage()}");
     });

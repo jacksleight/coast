@@ -65,7 +65,7 @@ class App
             throw new \Coast\App\Exception("Param '{$name}' is not a closure or instance of Coast\App\Executable");
         }
         array_push($this->_stack, $value instanceof \Closure
-            ? $value
+            ? $value->bindTo($this)
             : [$value, 'execute']);
         if (isset($name)) {
             $this->set($name, $value);
@@ -103,21 +103,21 @@ class App
         try {
             $result = null;
             foreach($this->_stack as $item) {
-                $result = call_user_func($item, $req, $res, $this);
+                $result = call_user_func($item, $req, $res);
                 if (isset($result)) {
                     break;
                 }
             }
             if ((bool) $result !== true) {
                 if (isset($this->_notFoundHandler)) {
-                    call_user_func($this->_notFoundHandler, $req, $res, $this);
+                    call_user_func($this->_notFoundHandler, $req, $res);
                 } else {
                     throw new \Coast\App\Exception('Nothing successfully handled the request');
                 }
             }
         } catch (\Exception $e) {
             if (isset($this->_errorHandler)) {
-                call_user_func($this->_errorHandler, $req, $res, $this, $e);
+                call_user_func($this->_errorHandler, $req, $res, $e);
             } else {
                 throw $e;
             }
@@ -130,13 +130,13 @@ class App
 
     public function notFoundHandler(\Closure $notFoundHandler)
     {
-        $this->_notFoundHandler = $notFoundHandler;
+        $this->_notFoundHandler = $notFoundHandler->bindTo($this);
         return $this;
     }
 
     public function errorHandler(\Closure $errorHandler)
     {
-        $this->_errorHandler = $errorHandler;
+        $this->_errorHandler = $errorHandler->bindTo($this);
         return $this;
     }
 

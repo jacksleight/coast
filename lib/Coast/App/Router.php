@@ -86,6 +86,9 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
         } if (!isset($params)) {
             $params = [];
         }
+        if (isset($target)) {
+            $target = $target->bindTo($this);
+        }
 
         $parts = explode('/', ltrim($path, '/'));
         $names = [];

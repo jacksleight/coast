@@ -9,19 +9,19 @@ require 'vendor/autoload.php';
 
 $app = new App();
 $app->add('router', new Router())
-    ->notFoundHandler(function(Request $req, Response $res, App $app) {
+    ->notFoundHandler(function(Request $req, Response $res) {
         $res->status(404)
             ->text("Not Found");
     });
 
 $app->router
-    ->all('index', '', function(Request $req, Response $res, App $app) {
+    ->all('index', '', function(Request $req, Response $res) {
         return $res->text("Try /team and /team/jack.");
     })
-    ->all('team', 'team', function(Request $req, Response $res, App $app) {
+    ->all('team', 'team', function(Request $req, Response $res) {
         return $res->json($req->params());
     })
-    ->all('team-person', 'team/{person}', function(Request $req, Response $res, App $app) {
+    ->all('team-person', 'team/{person}', function(Request $req, Response $res) {
         return $res->json($req->params());
     });
 
