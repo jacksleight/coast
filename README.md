@@ -11,7 +11,7 @@ Coast is a web application framework for PHP 5.5+. The goal of Coast is to provi
 
 All feedback, suggestions, bug reports and contributions are very welcome. Please feel free to get in touch by email (jacksleight at gmail dot com) or [@jacksleight](https://twitter.com/jacksleight) on Twitter.
 
-**I'm currently working towards the first release, which is imminent. The library and documentation are both a work in progress. The API may change.**
+**I'm currently working towards the first release, which is imminent. The documentation and code comments are still a work in progress (sorry). The API may change.**
 
 ## Installation
 
