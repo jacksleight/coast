@@ -48,8 +48,12 @@ class Url implements \Coast\App\Access
             $method = 'route';
         } else if ($args[0] instanceof \Coast\Url) {
             $method = 'url';
+        } else if ($args[0] instanceof \Coast\Dir) {
+            $method = 'dir';
         } else if ($args[0] instanceof \Coast\File) {
             $method = 'file';
+        } else if ($args[0] instanceof \Coast\Path) {
+            $method = 'path';
         } else {
             $method = 'string';
         }
@@ -100,26 +104,45 @@ class Url implements \Coast\App\Access
         return $url->string($toPart, $fromTop);
     }
 
+    public function dir($dir, $base = true, $cdn = true)
+    {
+        $dir = !$dir instanceof \Coast\Dir
+            ? new \Coast\Dir("{$dir}")
+            : $dir;
+        return $this->path($dir, $base, $cdn);
+    }
+
     public function file($file, $base = true, $cdn = true)
     {
-        $file = new \Coast\File("{$file}");
-        $file = $file->relative()
-            ? new \Coast\File(getcwd() . "/{$file}")
+        $file = !$file instanceof \Coast\File
+            ? new \Coast\File("{$file}")
             : $file;
-        if (!$file->within($this->_options->dir)) {
-            throw new \Coast\App\Exception("File '{$file}' is not within base directory");
+        return $this->path($file, $base, $cdn);
+    }
+
+    public function path($path, $base = true, $cdn = true)
+    {
+        $path = !$path instanceof \Coast\Path
+            ? new \Coast\Path("{$path}")
+            : $path;
+        $class = get_class($path);
+        $path = $path->relative()
+            ? new $class(getcwd() . "/{$path}")
+            : $path;
+        if (!$path->within($this->_options->dir)) {
+            throw new \Coast\App\Exception("Path '{$path}' is not within base directory");
         }
 
-        if ($this->_options->version && $file->exists()) {
-            $time = $file->getModifyTime()->format('U');
-            $info = $file->string(\Coast\Path::ALL);
+        if ($this->_options->version && $path instanceof \Coast\File && $path->exists()) {
+            $time = $path->getModifyTime()->format('U');
+            $info = $path->string(\Coast\Path::ALL);
             $info['dirname'] = $info['dirname'] != '.'
                 ? "{$info['dirname']}/"
                 : '';
-            $file = new \Coast\File("{$info['dirname']}{$info['filename']}.{$time}.{$info['extension']}");
+            $path = new \Coast\File("{$info['dirname']}{$info['filename']}.{$time}.{$info['extension']}");
         }
 
-        $path = $this->_options->dir->to($file);
+        $path = $this->_options->dir->to($path);
         if ($base) {
             $path = $cdn && isset($this->_options->cdnBase)
                 ? $this->_options->cdnBase . $path

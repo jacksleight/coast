@@ -28,11 +28,13 @@ $app->router
     ->all('index', '', function(Request $req, Response $res) {
         $base  = $this->url();
         $route = $this->url(['person' => 'jack'], 'team-person', true);
+        $dir   = $this->url->dir('images');
         $file  = $this->url->file('example.png');
         $query = $this->url->query(['page' => 1]);
         return $res->html("
             <a href='{$base}'>{$base}</a><br>
             <a href='{$route}'>{$route}</a><br>
+            <a href='{$dir}'>{$dir}</a><br>
             <a href='{$file}'>{$file}</a><br>
             <a href='{$query}'>{$query}</a><br>
         ");
