@@ -36,7 +36,7 @@ class Sitemap extends \Coast\Dom\Document
             if ($count == 0) {
                 $changes = self::CHANGES_NEVER;
             } else {
-                $ratio = ((\Coast\DateTime::now()->format('U') - $since->format('U')) / 3600) / $count;
+                $ratio = ((\Coast\DateTime::now()->getTimestamp() - $since->getTimestamp()) / 3600) / $count;
                 $intervals = [
                     self::CHANGES_YEARLY  => 8760,
                     self::CHANGES_MONTHLY => 730,

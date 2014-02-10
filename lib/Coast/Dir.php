@@ -16,7 +16,7 @@ class Dir extends \Coast\File\Path implements \IteratorAggregate
         }
     }
 
-    public function getIterator($recursive = false, $mode = \RecursiveIteratorIterator::LEAVES_ONLY, $flags = 0)
+    public function iterator($recursive = false, $mode = \RecursiveIteratorIterator::LEAVES_ONLY, $flags = 0)
     {
         return new \Coast\Dir\Iterator($this->string(), $recursive, $mode, $flags);
     }
@@ -40,11 +40,11 @@ class Dir extends \Coast\File\Path implements \IteratorAggregate
         return $this;
     }
 
-    public function delete($recursive = false)
+    public function remove($recursive = false)
     {
         if ($recursive) {
-            foreach ($this->getIterator(null, true, \RecursiveIteratorIterator::CHILD_FIRST) as $path) {
-                $path->delete();
+            foreach ($this->iterator(null, true, \RecursiveIteratorIterator::CHILD_FIRST) as $path) {
+                $path->remove();
             }
         }
         rmdir($this->string());
@@ -55,7 +55,7 @@ class Dir extends \Coast\File\Path implements \IteratorAggregate
     {
         if (isset($mode)) {
             if ($recursive) {
-                foreach ($this->getIterator(null, true, \RecursiveIteratorIterator::CHILD_FIRST) as $path) {
+                foreach ($this->iterator(null, true, \RecursiveIteratorIterator::CHILD_FIRST) as $path) {
                     $path->chmod($mode);
                 }
             }
@@ -68,7 +68,7 @@ class Dir extends \Coast\File\Path implements \IteratorAggregate
     public function size($recursive = false)
     {
         $size = 0;
-        foreach ($this->getIterator(null, $recursive) as $path) {
+        foreach ($this->iterator(null, $recursive) as $path) {
             if (!$path->exists()) {
                 continue;
             }
@@ -85,5 +85,10 @@ class Dir extends \Coast\File\Path implements \IteratorAggregate
     public function dir($path, $mode = null)
     {
         return new \Coast\Dir("{$this->string()}/{$path}", $mode);
+    }
+
+    public function getIterator()
+    {
+        return $this->iterator();
     }
 }
