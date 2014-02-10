@@ -36,5 +36,5 @@ abstract class Path extends \Coast\Path
         return substr(sprintf('%o', fileperms($this->string())), -4);
     }
     
-    abstract public function delete();
+    abstract public function remove();
 }

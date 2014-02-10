@@ -49,7 +49,7 @@ class File extends \Coast\File\Path
         return new \Coast\File($path);
     }
 
-    public function delete()
+    public function remove()
     {
         unlink($this->string());
         return $this;
@@ -66,7 +66,7 @@ class File extends \Coast\File\Path
 
     public function touch(\DateTime $modify = null, \DateTime $access = null)
     {
-        touch($this->string(), $modify->format('U'), $access->format('U'));
+        touch($this->string(), $modify->getTimestamp(), $access->getTimestamp());
         return $this;
     }
 
@@ -87,16 +87,16 @@ class File extends \Coast\File\Path
 
     public function access()
     {
-        return new \DateTime('@' . fileatime($this->string()));
+        return (new \DateTime())->setTimestamp(fileatime($this->string()));
     }
 
     public function change()
     {
-        return new \DateTime('@' . filectime($this->string()));
+        return (new \DateTime())->setTimestamp(filectime($this->string()));
     }
 
     public function modify()
     {
-        return new \DateTime('@' . filemtime($this->string()));
+        return (new \DateTime())->setTimestamp(filemtime($this->string()));
     }
 }

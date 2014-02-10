@@ -134,7 +134,7 @@ class Url implements \Coast\App\Access
         }
 
         if ($this->_options->version && $path instanceof \Coast\File && $path->exists()) {
-            $time = $path->getModifyTime()->format('U');
+            $time = $path->getModifyTime()->getTimestamp();
             $info = $path->string(\Coast\Path::ALL);
             $info['dirname'] = $info['dirname'] != '.'
                 ? "{$info['dirname']}/"
