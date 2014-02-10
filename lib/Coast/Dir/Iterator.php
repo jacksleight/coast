@@ -10,11 +10,14 @@ class Iterator implements \SeekableIterator
 {
     protected $_spl;
 
-    public function __construct($path, $recursive = false, $flags = null)
+    public function __construct($path, $flags = null, $recursive = false, $mode = null)
     {
+        $flags = !isset($flags)
+            ? \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_FILEINFO | \FilesystemIterator::SKIP_DOTS
+            : $flags;
         $this->_spl = !$recursive
             ? new \FilesystemIterator($path, $flags)
-            : new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path), $flags);
+            : new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path, $flags), $mode);
     }
 
     public function __call($method, $args)

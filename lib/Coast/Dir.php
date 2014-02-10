@@ -43,7 +43,7 @@ class Dir extends \Coast\File\Path implements \IteratorAggregate
     public function delete($recursive = false)
     {
         if ($recursive) {
-            foreach ($this->getIterator(true, \RecursiveIteratorIterator::CHILD_FIRST) as $path) {
+            foreach ($this->getIterator(null, true, \RecursiveIteratorIterator::CHILD_FIRST) as $path) {
                 $path->delete();
             }
         }
@@ -55,7 +55,7 @@ class Dir extends \Coast\File\Path implements \IteratorAggregate
     {
         if (isset($mode)) {
             if ($recursive) {
-                foreach ($this->getIterator(true, \RecursiveIteratorIterator::CHILD_FIRST) as $path) {
+                foreach ($this->getIterator(null, true, \RecursiveIteratorIterator::CHILD_FIRST) as $path) {
                     $path->chmod($mode);
                 }
             }
@@ -68,11 +68,11 @@ class Dir extends \Coast\File\Path implements \IteratorAggregate
     public function size($recursive = false)
     {
         $size = 0;
-        foreach ($this->getIterator($recursive) as $path) {
+        foreach ($this->getIterator(null, $recursive) as $path) {
             if (!$path->exists()) {
                 continue;
             }
-            $size += $path->getSize();
+            $size += $path->size();
         }
         return $size;
     }
