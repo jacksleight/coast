@@ -78,7 +78,7 @@ class Response
             if (!isset($path)) {
                 $path = $this->_req->base();
             }
-            $this->_cookies[$name] = [$value, (isset($age) ? time() + $age : null), $path, $domain, $secure, $http];
+            $this->_cookies[$name] = [$name, $value, (isset($age) ? time() + $age : null), $path, $domain, $secure, $http];
             return $this;
         }
         return isset($this->_cookies[$name])
