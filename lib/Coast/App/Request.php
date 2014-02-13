@@ -89,10 +89,6 @@ class Request
         $this->cookies($_COOKIE);
 
         if (session_status() == PHP_SESSION_NONE) {
-            if (isset($_GET['sessionId'])) {
-                session_id($this->getQueryParam('sessionId'));
-            }
-            session_name('sessionId');
             session_set_cookie_params(0, $this->base());
             session_start();
         }
