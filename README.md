@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/jacksleight/coast.png?branch=master)](https://travis-ci.org/jacksleight/coast)
-
 # Coast
+
+[![Build Status](https://travis-ci.org/jacksleight/coast.png?branch=master)](https://travis-ci.org/jacksleight/coast)
 
 Coast is a web application framework for PHP 5.5+. The goal of Coast is to provide a simple, lightweight and flexible framework for building high-performance, modern web apps. Some parts of the API were inspired by the Connect and Express node.js frameworks, others are my own (possibly ridiculous) ideas.
 
