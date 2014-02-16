@@ -8,11 +8,10 @@ namespace Coast;
 
 class Path
 {
-    const ALL       = 0;
-    const DIRNAME   = PATHINFO_DIRNAME;
-    const BASENAME  = PATHINFO_BASENAME;
-    const EXTENSION = PATHINFO_EXTENSION;
-    const FILENAME  = PATHINFO_FILENAME;
+    const DIRNAME  = PATHINFO_DIRNAME;
+    const BASENAME = PATHINFO_BASENAME;
+    const EXTNAME  = PATHINFO_EXTENSION;
+    const FILENAME = PATHINFO_FILENAME;
 
     protected $_name;
 
@@ -26,22 +25,42 @@ class Path
         $this->_name = $name;
     }
 
-    public function string($part = null)
+    public function name($part = null)
     {
         return isset($part)
-            ? ($part == self::ALL ? pathinfo($this->_name) : pathinfo($this->_name, $part))
+            ? pathinfo($this->_name, $part)
             : $this->_name;
+    }
+
+    public function dirname()
+    {
+        return $this->name(self::DIRNAME);
+    }
+
+    public function basename()
+    {
+        return $this->name(self::BASENAME);
+    }
+
+    public function extname()
+    {
+        return $this->name(self::EXTNAME);
+    }
+
+    public function filename()
+    {
+        return $this->name(self::FILENAME);
     }
 
     public function __toString()
     {
-        return $this->string();
+        return $this->name();
     }
 
     public function within(\Coast\Path $target)
     {
-        $path = $this->string();
-        $parts = \explode(PATH_SEPARATOR, $target->string());    
+        $path = $this->name();
+        $parts = \explode(PATH_SEPARATOR, $target->name());    
         foreach ($parts as $part) {
             if (\preg_match('/^' . \preg_quote($part, '/') . '/', $path)) {
                 return true;
@@ -53,11 +72,11 @@ class Path
     public function from(\Coast\Path $target)
     {
         if (!$this->absolute() || !$target->relative()) {
-            throw new \Exception("Source path '" . $this->string() . "' is not absolute or target path '" . $target->string() . "' is not relative");
+            throw new \Exception("Source path '" . $this->name() . "' is not absolute or target path '" . $target->name() . "' is not relative");
         }
 
-        $source = explode('/', $this->string());
-        $target = explode('/', $target->string());
+        $source = explode('/', $this->name());
+        $target = explode('/', $target->name());
         
         $name = $source;
         array_pop($name);
@@ -77,11 +96,11 @@ class Path
     public function to(\Coast\Path $target)
     {
         if (!$this->absolute() || !$target->absolute()) {
-            throw new \Exception("Source path '" . $this->string() . "' is not absolute or target path '" . $target->string() . "' is not absolute");
+            throw new \Exception("Source path '" . $this->name() . "' is not absolute or target path '" . $target->name() . "' is not absolute");
         }
         
-        $source = explode('/', $this->string());
-        $target = explode('/', $target->string());
+        $source = explode('/', $this->name());
+        $target = explode('/', $target->name());
 
         $name = $target;
         foreach ($source as $i => $part) {
@@ -100,7 +119,7 @@ class Path
 
     public function absolute()
     {
-        return substr($this->string(), 0, 1) == '/';
+        return substr($this->name(), 0, 1) == '/';
     }
 
     public function relative()

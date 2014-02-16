@@ -60,7 +60,7 @@ class Url
         $this->fragment($data['fragment']);
     }
     
-    public function string($toPart = null, $fromStart = false)
+    public function name($to = null, $start = false)
     {
         $parts = array_fill(self::PART_SCHEME, self::PART_FRAGMENT + 1, null);
         
@@ -94,16 +94,16 @@ class Url
             $parts[self::PART_FRAGMENT]         = '#' . $this->fragment();
         }
         
-        if (!isset($toPart)) {
-            $toPart = $fromStart
+        if (!isset($to)) {
+            $to = $start
                 ? self::PART_FRAGMENT
                 : self::PART_SCHEME;
         }
         
-        if ($fromStart) {
-            $parts = array_slice($parts, self::PART_SCHEME, $toPart + 1);
+        if ($start) {
+            $parts = array_slice($parts, self::PART_SCHEME, $to + 1);
         } else {
-            $parts = array_slice($parts, $toPart);            
+            $parts = array_slice($parts, $to);            
         }
         
         return implode(null, $parts);
@@ -111,7 +111,7 @@ class Url
 
     public function __toString()
     {
-        return $this->string();
+        return $this->name();
     }
     
     public function scheme($value = null)
