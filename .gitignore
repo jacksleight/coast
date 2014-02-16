@@ -1,4 +1,5 @@
-vendor
+/vendor
+/report
 
 composer.lock
 error.log

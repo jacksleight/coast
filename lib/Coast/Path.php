@@ -98,10 +98,10 @@ class Path
      * @param  \Coast\Path $target path to check against. 
      * @return bool
      */
-    public function within(\Coast\Path $target)
+    public function within(\Coast\Path $parent)
     {
         $path = $this->name();
-        $parts = \explode(PATH_SEPARATOR, $target->name());    
+        $parts = \explode(PATH_SEPARATOR, $parent->name());    
         foreach ($parts as $part) {
             if (\preg_match('/^' . \preg_quote($part, '/') . '/', $path)) {
                 return true;
@@ -111,60 +111,57 @@ class Path
     }
 
     /**
-     * Resolve absolute path from relative path.
-     * @param  \Coast\Path $target Target relative path.
+     * Get absolute path from relative path.
+     * @param  \Coast\Path $base base absolute path.
      * @return \Coast\Path
-     * @todo   Rename to resolve, allow opposite order. 
      */
-    public function from(\Coast\Path $target)
+    public function resolve(\Coast\Path $base)
     {
-        if (!$this->absolute() || !$target->relative()) {
-            throw new \Exception("Source path '" . $this->name() . "' is not absolute or target path '" . $target->name() . "' is not relative");
+        if (!$this->relative() || !$base->absolute()) {
+            throw new \Exception("Path '" . $this->name() . "' is not relative or base path '" . $base->name() . "' is not absolute");
         }
 
-        $source = explode('/', $this->name());
-        $target = explode('/', $target->name());
+        $source = explode('/', $base->name());
+        $target = explode('/', $this->name());
         
-        $name = $source;
-        array_pop($name);
+        array_pop($source);
         foreach ($target as $part) {
             if ($part == '..') {
-                array_pop($name);
+                array_pop($source);
             } elseif ($part != '.' && $part != '') {
-                $name[] = $part;
+                $source[] = $part;
             }
         }
-        $name = implode('/', $name);
+        $name = implode('/', $source);
 
         $class = get_class($this);
         return new $class($name);
     }
 
     /**
-     * Get relative path from two absolute paths.
-     * @param  \Coast\Path $target Target path.
+     * Get relative path from absolute path.
+     * @param  \Coast\Path $base Base absolute path.
      * @return \Coast\Path
      * @todo   Rename.
      */
-    public function to(\Coast\Path $target)
+    public function unresolve(\Coast\Path $base)
     {
-        if (!$this->absolute() || !$target->absolute()) {
-            throw new \Exception("Source path '" . $this->name() . "' is not absolute or target path '" . $target->name() . "' is not absolute");
+        if (!$this->absolute() || !$base->absolute()) {
+            throw new \Exception("Source path '" . $this->name() . "' is not absolute or base path '" . $base->name() . "' is not absolute");
         }
         
-        $source = explode('/', $this->name());
-        $target = explode('/', $target->name());
+        $source = explode('/', $base->name());
+        $target = explode('/', $this->name());
 
-        $name = $target;
         foreach ($source as $i => $part) {
             if ($part == $target[$i]) {
-                array_shift($name);
+                array_shift($target);
             } else {
-                $name = array_pad($name, (count($name) + (count($source) - $i) - 1) * -1, '..');
+                $target = array_pad($target, (count($target) + (count($source) - $i) - 1) * -1, '..');
                 break;
             }
         }
-        $name = implode('/', $name);
+        $name = implode('/', $target);
 
         $class = get_class($this);
         return new $class($name);
