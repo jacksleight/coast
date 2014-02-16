@@ -73,8 +73,8 @@ The `execute` method expects a `Coast\App\Request` object, and returns a `Coast\
 
 ## Documentation & Examples
 
-[Examples](examples)
-[API Documentation](http://rawgithub.com/jacksleight/coast/master/docs/index.html)
+[Examples](examples)  
+[API Documentation](http://rawgithub.com/jacksleight/coast/master/docs/index.html)  
 
 ## Requirements
 
