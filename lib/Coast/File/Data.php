@@ -13,7 +13,7 @@ class Data extends \Coast\File
     public function __construct($name, $mode = 'r')
     {
         parent::__construct($name);
-        $this->_handle = fopen($this->string(), $mode);
+        $this->_handle = fopen($this->name(), $mode);
     }
 
     public function handle()
@@ -30,7 +30,7 @@ class Data extends \Coast\File
     public function close($class = 'Coast\File')
     {
         fclose($this->_handle);
-        return new $class($this->string());
+        return new $class($this->name());
     }
 
     public function read($length = null)

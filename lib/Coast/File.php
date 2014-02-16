@@ -19,46 +19,46 @@ class File extends \Coast\File\Path
     
     public function open($mode = 'r', $class = 'Coast\File\Data')
     {
-        return new $class($this->string(), $mode);
+        return new $class($this->name(), $mode);
     }
 
     public function move(\Coast\Dir $dir, $name = null, $upload = false)
     {
-        $path = $dir->string() . '/' . (isset($name)
+        $path = $dir->name() . '/' . (isset($name)
             ? $name
-            : $this->string(\Coast\Path::BASENAME));
+            : $this->name(\Coast\Path::BASENAME));
         $upload
-            ? move_uploaded_file($this->string(), $path)
-            : rename($this->string(), $path);
+            ? move_uploaded_file($this->name(), $path)
+            : rename($this->name(), $path);
         return new \Coast\File($path);
     }
 
     public function copy(\Coast\Dir $dir, $name = null)
     {
-        $path = $dir->string() . '/' . (isset($name)
+        $path = $dir->name() . '/' . (isset($name)
             ? $name
-            : $this->string(\Coast\Path::BASENAME));
-        copy($this->string(), $path);
+            : $this->name(\Coast\Path::BASENAME));
+        copy($this->name(), $path);
         return new \Coast\File($path);
     }
 
     public function rename($name)
     {
-        $path = $this->string(\Coast\Path::DIRNAME) . '/' . $name;
-        rename($this->string(), $path);
+        $path = $this->name(\Coast\Path::DIRNAME) . '/' . $name;
+        rename($this->name(), $path);
         return new \Coast\File($path);
     }
 
     public function remove()
     {
-        unlink($this->string());
+        unlink($this->name());
         return $this;
     }
 
     public function permissions($mode = null)
     {
         if (isset($mode)) {
-            chmod($this->string(), $mode);
+            chmod($this->name(), $mode);
             return $this;
         }
         return parent::permissions();
@@ -66,37 +66,37 @@ class File extends \Coast\File\Path
 
     public function touch(\DateTime $modify = null, \DateTime $access = null)
     {
-        touch($this->string(), $modify->getTimestamp(), $access->getTimestamp());
+        touch($this->name(), $modify->getTimestamp(), $access->getTimestamp());
         return $this;
     }
 
     public function size()
     {
-        return filesize($this->string());
+        return filesize($this->name());
     }
 
     public function hash($type)
     {
-        return hash_file($type, $this->string());
+        return hash_file($type, $this->name());
     }
 
     public function dir($mode = null)
     {
-        return new \Coast\Dir($this->string(\Coast\Path::DIRNAME), $mode);
+        return new \Coast\Dir($this->name(\Coast\Path::DIRNAME), $mode);
     }
 
     public function access()
     {
-        return (new \DateTime())->setTimestamp(fileatime($this->string()));
+        return (new \DateTime())->setTimestamp(fileatime($this->name()));
     }
 
     public function change()
     {
-        return (new \DateTime())->setTimestamp(filectime($this->string()));
+        return (new \DateTime())->setTimestamp(filectime($this->name()));
     }
 
     public function modify()
     {
-        return (new \DateTime())->setTimestamp(filemtime($this->string()));
+        return (new \DateTime())->setTimestamp(filemtime($this->name()));
     }
 }

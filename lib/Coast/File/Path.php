@@ -13,27 +13,27 @@ abstract class Path extends \Coast\Path
 
     public function exists()
     {
-        return file_exists($this->string());
+        return file_exists($this->name());
     }
 
     public function type()
     {
-        return is_dir($this->string()) ? self::TYPE_DIR : self::TYPE_FILE;
+        return is_dir($this->name()) ? self::TYPE_DIR : self::TYPE_FILE;
     }
 
     public function readable()
     {
-        return is_readable($this->string());
+        return is_readable($this->name());
     }
 
     public function writable()
     {
-        return is_writable($this->string());
+        return is_writable($this->name());
     }
 
     public function permissions()
     {
-        return substr(sprintf('%o', fileperms($this->string())), -4);
+        return substr(sprintf('%o', fileperms($this->name())), -4);
     }
     
     abstract public function remove();
