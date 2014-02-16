@@ -6,6 +6,11 @@
 
 namespace Coast;
 
+/**
+ * Is array key/value pairs.
+ * @param  array   $array
+ * @return boolean
+ */
 function is_array_assoc(array $array)
 {
     if (is_array($array)) {
@@ -15,6 +20,13 @@ function is_array_assoc(array $array)
     return false;
 }
 
+/**
+ * Extract two params of a multidimensional array to a new key/value pair array.
+ * @param  array  $array
+ * @param  string $key
+ * @param  string $value
+ * @return array
+ */
 function array_pairs(array $array, $key, $value)
 {
     $pairs = [];
@@ -24,6 +36,12 @@ function array_pairs(array $array, $key, $value)
     return $pairs;
 }
 
+/**
+ * Extract one param of a multidimensional array to a new array.
+ * @param  array  $array
+ * @param  string $key
+ * @return array
+ */
 function array_column(array $array, $key)
 {
     $values = [];
@@ -33,6 +51,10 @@ function array_column(array $array, $key)
     return $values;
 }
 
+/**
+ * Recursively merge arrays, overwriting keys when arrays are key/value pairs, merging when numeric.
+ * @return array
+ */
 function array_merge_smart()
 {
     $merged = [];
@@ -53,6 +75,11 @@ function array_merge_smart()
     return $merged;
 }
 
+/**
+ * Remove null values from array.
+ * @param  array $array
+ * @return array
+ */
 function array_filter_null($array)
 {
     $output = [];
@@ -64,6 +91,11 @@ function array_filter_null($array)
     return $output;
 }
 
+/**
+ * Recursively remove null values from array.
+ * @param  array $array
+ * @return array
+ */
 function array_filter_null_recursive($array)
 {
     $output = [];
@@ -90,7 +122,12 @@ function array_diff_key(array $array1, array $array2)
     return \array_diff_key($array1, \array_fill_keys($array2, null));
 }
 
-function array_avg(array $array)
+/**
+ * Calculate the mean of all values in an array
+ * @param  array  $array
+ * @return float
+ */
+function array_mean(array $array)
 {
     if (!\count($array)) {
         return 0;
@@ -98,7 +135,13 @@ function array_avg(array $array)
     return \array_sum($array) / \count($array);
 }
 
-function math_gcd($a, $b)
+/**
+ * Calculate the greatest common denominator of two values.
+ * @param  float $a
+ * @param  float $b
+ * @return float
+ */
+function gcd($a, $b)
 {
     while ($b !== 0) {
         $t = $b;
@@ -110,7 +153,7 @@ function math_gcd($a, $b)
 
 function math_ratio($a, $b)
 {
-    $gcd = \Coast\math_gcd($a, $b);
+    $gcd = \Coast\gcd($a, $b);
     return [$a / $gcd, $b / $gcd];
 }
 

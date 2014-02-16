@@ -5,10 +5,10 @@
 	<meta name="generator" content="ApiGen 2.8.0">
 	<meta name="robots" content="noindex">
 
-	<title>File Coast/Config.php</title>
+	<title>File Coast/Config.php | Coast API Documentation</title>
 
 	<script type="text/javascript" src="resources/combined.js?2587632619"></script>
-	<script type="text/javascript" src="elementlist.js?1062809521"></script>
+	<script type="text/javascript" src="elementlist.js?2881286496"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360">
 
 </head>
@@ -45,8 +45,6 @@
 				<li><a href="namespace-Coast.Http.html">Http</a>
 						</li>
 							</ul></li>
-				<li><a href="namespace-PHP.html">PHP</a>
-						</li>
 			</ul>
 		</div>
 
@@ -77,16 +75,16 @@
 
 			<h3>Functions</h3>
 			<ul>
-				<li><a href="function-Coast.array_avg.html">array_avg</a></li>
 				<li><a href="function-Coast.array_column.html">array_column</a></li>
 				<li><a href="function-Coast.array_diff_key.html">array_diff_key</a></li>
 				<li><a href="function-Coast.array_filter_null.html">array_filter_null</a></li>
 				<li><a href="function-Coast.array_filter_null_recursive.html">array_filter_null_recursive</a></li>
 				<li><a href="function-Coast.array_intersect_key.html">array_intersect_key</a></li>
+				<li><a href="function-Coast.array_mean.html">array_mean</a></li>
 				<li><a href="function-Coast.array_merge_smart.html">array_merge_smart</a></li>
 				<li><a href="function-Coast.array_pairs.html">array_pairs</a></li>
+				<li><a href="function-Coast.gcd.html">gcd</a></li>
 				<li><a href="function-Coast.is_array_assoc.html">is_array_assoc</a></li>
-				<li><a href="function-Coast.math_gcd.html">math_gcd</a></li>
 				<li><a href="function-Coast.math_ratio.html">math_ratio</a></li>
 				<li><a href="function-Coast.str_camel.html">str_camel</a></li>
 				<li><a href="function-Coast.str_camel_lower.html">str_camel_lower</a></li>
@@ -128,6 +126,12 @@
 			<li>
 				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
 			</li>
+			<li>
+				<a href="deprecated.html" title="List of deprecated elements"><span>Deprecated</span></a>
+			</li>
+			<li>
+				<a href="todo.html" title="Todo list"><span>Todo</span></a>
+			</li>
 		</ul>
 		<ul>
 		</ul>
@@ -141,50 +145,80 @@
 </span><span id="6" class="l"><a class="l" href="#6"> 6: </a>
 </span><span id="7" class="l"><a class="l" href="#7"> 7: </a><span class="php-keyword1">namespace</span> Coast;
 </span><span id="8" class="l"><a class="l" href="#8"> 8: </a>
-</span><span id="9" class="l"><a class="l" href="#9"> 9: </a><span class="php-keyword1">class</span> <a id="Config" href="#Config">Config</a>
-</span><span id="10" class="l"><a class="l" href="#10">10: </a>{
-</span><span id="11" class="l"><a class="l" href="#11">11: </a>    <span class="php-keyword1">protected</span> <span class="php-var"><a id="$_data" href="#$_data">$_data</a></span> = [];
-</span><span id="12" class="l"><a class="l" href="#12">12: </a>
-</span><span id="13" class="l"><a class="l" href="#13">13: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="___construct" href="#___construct">__construct</a>(<span class="php-var">$files</span>)
-</span><span id="14" class="l"><a class="l" href="#14">14: </a>    {
-</span><span id="15" class="l"><a class="l" href="#15">15: </a>        <span class="php-keyword1">if</span> (!<span class="php-keyword2">is_array</span>(<span class="php-var">$files</span>)) {
-</span><span id="16" class="l"><a class="l" href="#16">16: </a>            <span class="php-var">$files</span> = [<span class="php-var">$files</span>];
-</span><span id="17" class="l"><a class="l" href="#17">17: </a>        }
-</span><span id="18" class="l"><a class="l" href="#18">18: </a>        <span class="php-keyword1">foreach</span> (<span class="php-var">$files</span> <span class="php-keyword1">as</span> <span class="php-var">$file</span>) {
-</span><span id="19" class="l"><a class="l" href="#19">19: </a>            <span class="php-var">$data</span> = [];
-</span><span id="20" class="l"><a class="l" href="#20">20: </a>            <span class="php-keyword1">require</span> (string) <span class="php-var">$file</span>;
-</span><span id="21" class="l"><a class="l" href="#21">21: </a>            <span class="php-var">$this</span>-&gt;_data = <span class="php-keyword2">array_merge_recursive</span>(
-</span><span id="22" class="l"><a class="l" href="#22">22: </a>                <span class="php-var">$this</span>-&gt;_data,
-</span><span id="23" class="l"><a class="l" href="#23">23: </a>                <span class="php-var">$data</span>
-</span><span id="24" class="l"><a class="l" href="#24">24: </a>            );
-</span><span id="25" class="l"><a class="l" href="#25">25: </a>        }
-</span><span id="26" class="l"><a class="l" href="#26">26: </a>    }
-</span><span id="27" class="l"><a class="l" href="#27">27: </a>
-</span><span id="28" class="l"><a class="l" href="#28">28: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="___set" href="#___set">__set</a>(<span class="php-var">$name</span>, <span class="php-var">$value</span>)
-</span><span id="29" class="l"><a class="l" href="#29">29: </a>    {
-</span><span id="30" class="l"><a class="l" href="#30">30: </a>        <span class="php-var">$this</span>-&gt;_data[<span class="php-var">$name</span>] = <span class="php-var">$value</span>;
-</span><span id="31" class="l"><a class="l" href="#31">31: </a>    }
-</span><span id="32" class="l"><a class="l" href="#32">32: </a>
-</span><span id="33" class="l"><a class="l" href="#33">33: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="___get" href="#___get">__get</a>(<span class="php-var">$name</span>)
-</span><span id="34" class="l"><a class="l" href="#34">34: </a>    {
-</span><span id="35" class="l"><a class="l" href="#35">35: </a>        <span class="php-keyword1">return</span> <span class="php-keyword1">isset</span>(<span class="php-var">$this</span>-&gt;_data[<span class="php-var">$name</span>])
-</span><span id="36" class="l"><a class="l" href="#36">36: </a>            ? <span class="php-var">$this</span>-&gt;_data[<span class="php-var">$name</span>]
-</span><span id="37" class="l"><a class="l" href="#37">37: </a>            : <span class="php-keyword1">null</span>;
-</span><span id="38" class="l"><a class="l" href="#38">38: </a>    }
-</span><span id="39" class="l"><a class="l" href="#39">39: </a>
-</span><span id="40" class="l"><a class="l" href="#40">40: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="___unset" href="#___unset">__unset</a>(<span class="php-var">$name</span>)
-</span><span id="41" class="l"><a class="l" href="#41">41: </a>    {
-</span><span id="42" class="l"><a class="l" href="#42">42: </a>        <span class="php-keyword1">unset</span>(<span class="php-var">$this</span>-&gt;_data[<span class="php-var">$name</span>]);
-</span><span id="43" class="l"><a class="l" href="#43">43: </a>    }
-</span><span id="44" class="l"><a class="l" href="#44">44: </a>
-</span><span id="45" class="l"><a class="l" href="#45">45: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="___isset" href="#___isset">__isset</a>(<span class="php-var">$name</span>)
-</span><span id="46" class="l"><a class="l" href="#46">46: </a>    {
-</span><span id="47" class="l"><a class="l" href="#47">47: </a>        <span class="php-keyword1">return</span> <span class="php-keyword1">isset</span>(<span class="php-var">$this</span>-&gt;_data[<span class="php-var">$name</span>]);
-</span><span id="48" class="l"><a class="l" href="#48">48: </a>    }
-</span><span id="49" class="l"><a class="l" href="#49">49: </a></span>}</code></pre>
+</span><span id="9" class="l"><a class="l" href="#9"> 9: </a><span class="php-comment">/**
+</span></span><span id="10" class="l"><a class="l" href="#10">10: </a><span class="php-comment"> * PHP file based config object.
+</span></span><span id="11" class="l"><a class="l" href="#11">11: </a><span class="php-comment"> */</span>
+</span><span id="12" class="l"><a class="l" href="#12">12: </a><span class="php-keyword1">class</span> <a id="Config" href="#Config">Config</a>
+</span><span id="13" class="l"><a class="l" href="#13">13: </a>{
+</span><span id="14" class="l"><a class="l" href="#14">14: </a>    <span class="php-comment">/**
+</span></span><span id="15" class="l"><a class="l" href="#15">15: </a><span class="php-comment">     * Config data.
+</span></span><span id="16" class="l"><a class="l" href="#16">16: </a><span class="php-comment">     * @var array
+</span></span><span id="17" class="l"><a class="l" href="#17">17: </a><span class="php-comment">     */</span>
+</span><span id="18" class="l"><a class="l" href="#18">18: </a>    <span class="php-keyword1">protected</span> <span class="php-var"><a id="$_data" href="#$_data">$_data</a></span> = [];
+</span><span id="19" class="l"><a class="l" href="#19">19: </a>
+</span><span id="20" class="l"><a class="l" href="#20">20: </a>    <span class="php-comment">/**
+</span></span><span id="21" class="l"><a class="l" href="#21">21: </a><span class="php-comment">     * Consutruct a new config object.
+</span></span><span id="22" class="l"><a class="l" href="#22">22: </a><span class="php-comment">     * @param array $files List of PHP files to parse.
+</span></span><span id="23" class="l"><a class="l" href="#23">23: </a><span class="php-comment">     */</span>
+</span><span id="24" class="l"><a class="l" href="#24">24: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="___construct" href="#___construct">__construct</a>(<span class="php-var">$files</span>)
+</span><span id="25" class="l"><a class="l" href="#25">25: </a>    {
+</span><span id="26" class="l"><a class="l" href="#26">26: </a>        <span class="php-keyword1">if</span> (!<span class="php-keyword2">is_array</span>(<span class="php-var">$files</span>)) {
+</span><span id="27" class="l"><a class="l" href="#27">27: </a>            <span class="php-var">$files</span> = [<span class="php-var">$files</span>];
+</span><span id="28" class="l"><a class="l" href="#28">28: </a>        }
+</span><span id="29" class="l"><a class="l" href="#29">29: </a>        <span class="php-keyword1">foreach</span> (<span class="php-var">$files</span> <span class="php-keyword1">as</span> <span class="php-var">$file</span>) {
+</span><span id="30" class="l"><a class="l" href="#30">30: </a>            <span class="php-var">$data</span> = [];
+</span><span id="31" class="l"><a class="l" href="#31">31: </a>            <span class="php-keyword1">require</span> (string) <span class="php-var">$file</span>;
+</span><span id="32" class="l"><a class="l" href="#32">32: </a>            <span class="php-var">$this</span>-&gt;_data = <span class="php-keyword2">array_merge_recursive</span>(
+</span><span id="33" class="l"><a class="l" href="#33">33: </a>                <span class="php-var">$this</span>-&gt;_data,
+</span><span id="34" class="l"><a class="l" href="#34">34: </a>                <span class="php-var">$data</span>
+</span><span id="35" class="l"><a class="l" href="#35">35: </a>            );
+</span><span id="36" class="l"><a class="l" href="#36">36: </a>        }
+</span><span id="37" class="l"><a class="l" href="#37">37: </a>    }
+</span><span id="38" class="l"><a class="l" href="#38">38: </a>
+</span><span id="39" class="l"><a class="l" href="#39">39: </a>    <span class="php-comment">/**
+</span></span><span id="40" class="l"><a class="l" href="#40">40: </a><span class="php-comment">     * Set a param.
+</span></span><span id="41" class="l"><a class="l" href="#41">41: </a><span class="php-comment">     * @param string $name
+</span></span><span id="42" class="l"><a class="l" href="#42">42: </a><span class="php-comment">     * @param mixed $value
+</span></span><span id="43" class="l"><a class="l" href="#43">43: </a><span class="php-comment">     */</span>
+</span><span id="44" class="l"><a class="l" href="#44">44: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="___set" href="#___set">__set</a>(<span class="php-var">$name</span>, <span class="php-var">$value</span>)
+</span><span id="45" class="l"><a class="l" href="#45">45: </a>    {
+</span><span id="46" class="l"><a class="l" href="#46">46: </a>        <span class="php-var">$this</span>-&gt;_data[<span class="php-var">$name</span>] = <span class="php-var">$value</span>;
+</span><span id="47" class="l"><a class="l" href="#47">47: </a>    }
+</span><span id="48" class="l"><a class="l" href="#48">48: </a>
+</span><span id="49" class="l"><a class="l" href="#49">49: </a>    <span class="php-comment">/**
+</span></span><span id="50" class="l"><a class="l" href="#50">50: </a><span class="php-comment">     * Get a param.
+</span></span><span id="51" class="l"><a class="l" href="#51">51: </a><span class="php-comment">     * @param  string $name
+</span></span><span id="52" class="l"><a class="l" href="#52">52: </a><span class="php-comment">     * @return mixed
+</span></span><span id="53" class="l"><a class="l" href="#53">53: </a><span class="php-comment">     */</span>
+</span><span id="54" class="l"><a class="l" href="#54">54: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="___get" href="#___get">__get</a>(<span class="php-var">$name</span>)
+</span><span id="55" class="l"><a class="l" href="#55">55: </a>    {
+</span><span id="56" class="l"><a class="l" href="#56">56: </a>        <span class="php-keyword1">return</span> <span class="php-keyword1">isset</span>(<span class="php-var">$this</span>-&gt;_data[<span class="php-var">$name</span>])
+</span><span id="57" class="l"><a class="l" href="#57">57: </a>            ? <span class="php-var">$this</span>-&gt;_data[<span class="php-var">$name</span>]
+</span><span id="58" class="l"><a class="l" href="#58">58: </a>            : <span class="php-keyword1">null</span>;
+</span><span id="59" class="l"><a class="l" href="#59">59: </a>    }
+</span><span id="60" class="l"><a class="l" href="#60">60: </a>
+</span><span id="61" class="l"><a class="l" href="#61">61: </a>    <span class="php-comment">/**
+</span></span><span id="62" class="l"><a class="l" href="#62">62: </a><span class="php-comment">     * Unset a param.
+</span></span><span id="63" class="l"><a class="l" href="#63">63: </a><span class="php-comment">     * @param string $name
+</span></span><span id="64" class="l"><a class="l" href="#64">64: </a><span class="php-comment">     */</span>
+</span><span id="65" class="l"><a class="l" href="#65">65: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="___unset" href="#___unset">__unset</a>(<span class="php-var">$name</span>)
+</span><span id="66" class="l"><a class="l" href="#66">66: </a>    {
+</span><span id="67" class="l"><a class="l" href="#67">67: </a>        <span class="php-keyword1">unset</span>(<span class="php-var">$this</span>-&gt;_data[<span class="php-var">$name</span>]);
+</span><span id="68" class="l"><a class="l" href="#68">68: </a>    }
+</span><span id="69" class="l"><a class="l" href="#69">69: </a>
+</span><span id="70" class="l"><a class="l" href="#70">70: </a>    <span class="php-comment">/**
+</span></span><span id="71" class="l"><a class="l" href="#71">71: </a><span class="php-comment">     * Check if a param is set.
+</span></span><span id="72" class="l"><a class="l" href="#72">72: </a><span class="php-comment">     * @param  string  $name
+</span></span><span id="73" class="l"><a class="l" href="#73">73: </a><span class="php-comment">     * @return boolean
+</span></span><span id="74" class="l"><a class="l" href="#74">74: </a><span class="php-comment">     */</span>
+</span><span id="75" class="l"><a class="l" href="#75">75: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="___isset" href="#___isset">__isset</a>(<span class="php-var">$name</span>)
+</span><span id="76" class="l"><a class="l" href="#76">76: </a>    {
+</span><span id="77" class="l"><a class="l" href="#77">77: </a>        <span class="php-keyword1">return</span> <span class="php-keyword1">isset</span>(<span class="php-var">$this</span>-&gt;_data[<span class="php-var">$name</span>]);
+</span><span id="78" class="l"><a class="l" href="#78">78: </a>    }
+</span><span id="79" class="l"><a class="l" href="#79">79: </a></span>}</code></pre>
 
 	<div id="footer">
-		 API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
+		Coast API Documentation API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
 	</div>
 </div>
 </div>

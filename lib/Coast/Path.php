@@ -17,7 +17,7 @@ class Path
     const FILENAME = PATHINFO_FILENAME;
 
     /**
-     * Path name.
+     * Full path name.
      * @var string
      */
     protected $_name;
@@ -95,7 +95,7 @@ class Path
 
     /**
      * Check if path is within another
-     * @param  \Coast\Path $target path to check against. 
+     * @param  Coast\Path $target path to check against. 
      * @return bool
      */
     public function within(\Coast\Path $parent)
@@ -112,8 +112,9 @@ class Path
 
     /**
      * Get absolute path from relative path.
-     * @param  \Coast\Path $base base absolute path.
-     * @return \Coast\Path
+     * @param  Coast\Path $base base absolute path.
+     * @return Coast\Path
+     * @todo   Review method name of resolve and unresolve.
      */
     public function resolve(\Coast\Path $base)
     {
@@ -141,9 +142,9 @@ class Path
 
     /**
      * Get relative path from absolute path.
-     * @param  \Coast\Path $base Base absolute path.
-     * @return \Coast\Path
-     * @todo   Rename.
+     * @param  Coast\Path $base Base absolute path.
+     * @return Coast\Path
+     * @todo   Review method name of resolve and unresolve.
      */
     public function unresolve(\Coast\Path $base)
     {
