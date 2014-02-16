@@ -2,5 +2,5 @@ language: php
 php: 
   - 5.5
   - hhvm
-script: phpunit
 before_script: composer install
+script: php vendor/bin/phpunit
