@@ -1,5 +1,13 @@
 language: php
 php: 
   - 5.5
-before_script: composer install
-script: php vendor/bin/phpunit
+
+before_script:
+  - composer install --no-interaction
+
+script:
+  - mkdir -p build/logs 
+  - php vendor/bin/phpunit
+
+after_script:
+  - php vendor/bin/coveralls
