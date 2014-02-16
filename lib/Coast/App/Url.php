@@ -62,7 +62,7 @@ class Url implements \Coast\App\Access
 
     public function base()
     {
-        return $this->_options->base->string();
+        return $this->_options->base->name();
     }
 
     public function string($string, $base = true)
@@ -99,9 +99,9 @@ class Url implements \Coast\App\Access
             : $path;
     }
 
-    public function url(\Coast\Url $url, $toPart = null, $fromTop = false)
+    public function url(\Coast\Url $url, $to = null, $start = false)
     {
-        return $url->string($toPart, $fromTop);
+        return $url->name($to, $start);
     }
 
     public function dir($dir, $base = true, $cdn = true)
@@ -134,12 +134,14 @@ class Url implements \Coast\App\Access
         }
 
         if ($this->_options->version && $path instanceof \Coast\File && $path->exists()) {
-            $time = $path->modify()->getTimestamp();
-            $info = $path->string(\Coast\Path::ALL);
-            $info['dirname'] = $info['dirname'] != '.'
-                ? "{$info['dirname']}/"
+            $time     = $path->modify()->getTimestamp();
+            $dirname  = $path->dirname();
+            $filename = $path->filename();
+            $extname  = $path->extname();
+            $dirname = $dirname != '.'
+                ? "{$dirname}/"
                 : '';
-            $path = new \Coast\File("{$info['dirname']}{$info['filename']}.{$time}.{$info['extension']}");
+            $path = new \Coast\File("{$dirname}{$filename}.{$time}.{$extname}");
         }
 
         $path = $this->_options->dir->to($path);
