@@ -33,7 +33,7 @@ The easiest way to install Coast is through [Composer](https://getcomposer.org/d
 And then running:
 
 ```bash
-composer.phar update
+composer.phar install
 ```
 
 ## Hello World
