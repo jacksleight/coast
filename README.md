@@ -11,7 +11,7 @@ Coast is a web application framework for PHP 5.5+. The goal of Coast is to provi
 
 All feedback, suggestions, bug reports and contributions are very welcome. Please feel free to get in touch by email (jacksleight at gmail dot com) or [@jacksleight](https://twitter.com/jacksleight) on Twitter.
 
-**The documentation and code comments are still a work in progress (sorry). Until there's a stable release the API may change.**
+**The documentation and tests are still a work in progress (sorry). Until there's a stable release the API may change.**
 
 ## Installation
 
@@ -84,9 +84,9 @@ The `execute` method expects a `Coast\App\Request` object, and returns a `Coast\
 
 ## To Do
 
-* More examples
-* API documentation
-* Tests
+* Examples (in progress)
+* API documentation (in progress)
+* Tests (in progress)
 
 ## Roadmap
 
