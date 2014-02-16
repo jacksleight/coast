@@ -144,7 +144,7 @@ class Url implements \Coast\App\Access
             $path = new \Coast\File("{$dirname}{$filename}.{$time}.{$extname}");
         }
 
-        $path = $this->_options->dir->to($path);
+        $path = $path->unresolve($this->_options->dir);
         if ($base) {
             $path = $cdn && isset($this->_options->cdnBase)
                 ? $this->_options->cdnBase . $path

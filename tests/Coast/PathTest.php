@@ -43,10 +43,10 @@ class PathTest extends \PHPUnit_Framework_TestCase
         $b = new Path('/one/two/three');
         $c = new Path('../');
 
-        $this->assertEquals('../../one/four', $a->unresolve($b)->name());
+        $this->assertEquals('../four', $a->unresolve($b)->name());
       
         $this->setExpectedException('Exception');
-        $this->assertEquals('../../one/four', $a->unresolve($c)->name());
+        $this->assertEquals('../four', $a->unresolve($c)->name());
     }
 
     public function testType()

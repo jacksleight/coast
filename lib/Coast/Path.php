@@ -124,15 +124,16 @@ class Path
         $source = explode('/', $base->name());
         $target = explode('/', $this->name());
         
-        array_pop($source);
+        $name = $source;
+        array_pop($name);
         foreach ($target as $part) {
             if ($part == '..') {
-                array_pop($source);
+                array_pop($name);
             } elseif ($part != '.' && $part != '') {
-                $source[] = $part;
+                $name[] = $part;
             }
         }
-        $name = implode('/', $source);
+        $name = implode('/', $name);
 
         $class = get_class($this);
         return new $class($name);
@@ -153,15 +154,16 @@ class Path
         $source = explode('/', $base->name());
         $target = explode('/', $this->name());
 
+        $name = $target;
         foreach ($source as $i => $part) {
             if ($part == $target[$i]) {
-                array_shift($target);
+                array_shift($name);
             } else {
-                $target = array_pad($target, (count($target) + (count($source) - $i) - 1) * -1, '..');
+                $name = array_pad($name, (count($name) + (count($source) - $i) - 1) * -1, '..');
                 break;
             }
         }
-        $name = implode('/', $target);
+        $name = implode('/', $name);
 
         $class = get_class($this);
         return new $class($name);
