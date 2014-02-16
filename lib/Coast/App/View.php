@@ -47,7 +47,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         $path = new \Coast\Path("{$name}." . $this->_options->extension);
         if (count($this->_stack) > 0) {
             $path = $path->relative()
-                ? $this->_stack[0]['path']->from($path)
+                ? $path->resolve($this->_stack[0]['path'])
                 : $path;
             $params    = array_merge($this->_stack[0]['params'], $params);
         } else if ($path->relative()) {
