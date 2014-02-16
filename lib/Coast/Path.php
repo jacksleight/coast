@@ -6,6 +6,9 @@
 
 namespace Coast;
 
+/**
+ * Path object.
+ */
 class Path
 {
     const DIRNAME  = PATHINFO_DIRNAME;
@@ -13,8 +16,16 @@ class Path
     const EXTNAME  = PATHINFO_EXTENSION;
     const FILENAME = PATHINFO_FILENAME;
 
+    /**
+     * Path name.
+     * @var string
+     */
     protected $_name;
 
+    /**
+     * Constructs a new path object.
+     * @param string $name Full path name.
+     */
     public function __construct($name)
     {
         $name = str_replace('\\', '/', $name);
@@ -25,6 +36,11 @@ class Path
         $this->_name = $name;
     }
 
+    /**
+     * Get full path name or part.
+     * @param  string $part The part to return.
+     * @return string
+     */ 
     public function name($part = null)
     {
         return isset($part)
@@ -32,31 +48,56 @@ class Path
             : $this->_name;
     }
 
+    /**
+     * Get the directory name.
+     * @return string
+     */
     public function dirname()
     {
         return $this->name(self::DIRNAME);
     }
 
+    /**
+     * Get the base name.
+     * @return string
+     */
     public function basename()
     {
         return $this->name(self::BASENAME);
     }
 
+    /**
+     * Get the extension name.
+     * @return string
+     */
     public function extname()
     {
         return $this->name(self::EXTNAME);
     }
 
+    /**
+     * Get the file name.
+     * @return string
+     */
     public function filename()
     {
         return $this->name(self::FILENAME);
     }
 
+    /**
+     * Aliases `name`
+     * @return string
+     */
     public function __toString()
     {
         return $this->name();
     }
 
+    /**
+     * Check if path is within another
+     * @param  \Coast\Path $target path to check against. 
+     * @return bool
+     */
     public function within(\Coast\Path $target)
     {
         $path = $this->name();
@@ -69,6 +110,12 @@ class Path
         return false;
     }
 
+    /**
+     * Resolve absolute path from relative path.
+     * @param  \Coast\Path $target Target relative path.
+     * @return \Coast\Path
+     * @todo   Rename to resolve, allow opposite order. 
+     */
     public function from(\Coast\Path $target)
     {
         if (!$this->absolute() || !$target->relative()) {
@@ -93,6 +140,12 @@ class Path
         return new $class($name);
     }
 
+    /**
+     * Get relative path from two absolute paths.
+     * @param  \Coast\Path $target Target path.
+     * @return \Coast\Path
+     * @todo   Rename.
+     */
     public function to(\Coast\Path $target)
     {
         if (!$this->absolute() || !$target->absolute()) {
@@ -117,11 +170,19 @@ class Path
         return new $class($name);
     }
 
+    /**
+     * Is path absolute.
+     * @return bool
+     */
     public function absolute()
     {
         return substr($this->name(), 0, 1) == '/';
     }
 
+    /**
+     * Is path relative.
+     * @return bool
+     */
     public function relative()
     {
         return !$this->absolute();
