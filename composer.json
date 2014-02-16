@@ -12,7 +12,8 @@
         "php": ">=5.5.0"
     },
     "require-dev": {
-        "apigen/apigen": "2.8.*"
+        "apigen/apigen": "2.8.*",
+        "phpunit/phpunit": "3.7.*"
     },
     "autoload": {
         "psr-0": {"Coast": "lib"},
