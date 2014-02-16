@@ -6,18 +6,48 @@
 
 namespace Coast;
 
+/**
+ * Coast application object.
+ */
 class App
 {
     const MODE_CLI  = 'cli';
     const MODE_HTTP = 'http';
     
-    protected $_envs   = [];
-    protected $_params = [];
-    protected $_stack  = [];
+    /**
+     * Environment variables.
+     * @var array
+     */
+    protected $_envs = [];
 
+    /**
+     * Parameters.
+     * @var array
+     */
+    protected $_params = [];
+
+    /**
+     * Middleware stack.
+     * @var array
+     */
+    protected $_stack = [];
+
+    /**
+     * Handler for requests that are not handled by middleware.
+     * @var Closure
+     */
     protected $_notFoundHandler;
+
+    /**
+     * Handler for errors thrown in middleware.
+     * @var Closure
+     */
     protected $_errorHandler;
 
+    /**
+     * Construct a new Coast application.
+     * @param array $envs Additional environment variables.
+     */
     public function __construct(array $envs = array())
     {
         $this->_envs = array_merge(array(
@@ -28,11 +58,11 @@ class App
         $this->set('app', $this);
     }
 
-    public function dir()
-    {
-        return $this->_dir;
-    }
-
+    /**
+     * Get environment variables.
+     * @param  string $name
+     * @return [type]
+     */
     public function env($name)
     {
         return isset($this->_envs[$name])
@@ -40,21 +70,39 @@ class App
             : null;
     }
 
+    /**
+     * Get the mode (HTTP or CLI).
+     * @return string
+     */
     public function mode()
     {
         return $this->env('MODE');
     }
 
+    /**
+     * Is mode HTTP.
+     * @return bool
+     */
     public function http()
     {
         return $this->mode() == self::MODE_HTTP;
     }
 
+    /**
+     * Is mode CLI.
+     * @return bool
+     */
     public function cli()
     {
         return $this->mode() == self::MODE_CLI;
     }
 
+    /**
+     * Add middleware to the stack.
+     * @param string $name
+     * @param Closure|Coast\App\Executable $value
+     * @return self
+     */
     public function add($name, $value = null)
     {
         if (!isset($value)) {
@@ -73,6 +121,13 @@ class App
         return $this;
     }
 
+    /**
+     * Set a parameter.
+     * @param string $name
+     * @param mixed $value
+     * @return self
+     * @todo Review set and get, should they be param()?
+     */
     public function set($name, $value)
     {
         if ($value instanceof \Coast\App\Access) {
@@ -82,6 +137,11 @@ class App
         return $this;
     }
 
+    /**
+     * Get a parameter.
+     * @param  string $name
+     * @return mixed
+     */
     public function get($name)
     {
         return isset($this->_params[$name])
@@ -89,11 +149,21 @@ class App
             : null;
     }
 
+    /**
+     * Check if a parameter exists.
+     * @param  string  $name
+     * @return boolean
+     */
     public function has($name)
     {
         return isset($this->_params[$name]);
     }
 
+    /**
+     * Execute the application, running middleware in order.
+     * @param  Coast\App\Request $req Request object.
+     * @return Coast\App\Response Response object
+     */
     public function execute(\Coast\App\Request $req)
     {
         $res = $req->response();
@@ -128,28 +198,63 @@ class App
         return $res;
     }
 
+    /**
+     * Set the not found handler
+     * @param  Closure $notFoundHandler
+     * @return self
+     */
     public function notFoundHandler(\Closure $notFoundHandler)
     {
         $this->_notFoundHandler = $notFoundHandler->bindTo($this);
         return $this;
     }
 
+    /**
+     * Set the error handler
+     * @param  Closure $errorHandler
+     * @return self
+     */
     public function errorHandler(\Closure $errorHandler)
     {
         $this->_errorHandler = $errorHandler->bindTo($this);
         return $this;
     }
 
+    /**
+     * Alias of `set`
+     * @param string $name
+     * @param mixed $value
+     */
     public function __set($name, $value)
     {
         return $this->set($name, $value);
     }
 
+    /**
+     * Alias of `get`
+     * @param string $name
+     * @return mixed
+     */
     public function __get($name)
     {
         return $this->get($name);
     }
+    
+    /**
+     * Alias of `has`
+     * @param string $name
+     * @return bool
+     */
+    public function __isset($name)
+    {
+        return $this->has($name);
+    }
 
+    /**
+     * Attempts to call the `call` method of the parameter named `$name`
+     * @param string $name
+     * @param array $args
+     */
     public function __call($name, array $args)
     {
         $value = $this->get($name);
@@ -157,10 +262,5 @@ class App
             throw new \Coast\App\Exception("Param '{$name}' is not an object or does not have a call method");
         }
         return call_user_func_array(array($value, 'call'), $args);
-    }
-
-    public function __isset($name)
-    {
-        return $this->has($name);
     }
 }
