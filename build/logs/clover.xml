@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1392574184">
-  <project timestamp="1392574184">
+<coverage generated="1392574792">
+  <project timestamp="1392574792">
     <file name="/Server/_coast/lib/Coast.php">
       <line num="11" type="stmt" count="0"/>
       <line num="12" type="stmt" count="0"/>
