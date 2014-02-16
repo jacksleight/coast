@@ -71,13 +71,10 @@ And load it up in the browser at: [http://localhost:8000/](http://localhost:8000
 
 The `execute` method expects a `Coast\App\Request` object, and returns a `Coast\App\Response` object. The `import` method imports all of the request data from PHP's globals, and the `export` method exports the response data to the output buffer. It's also possible construct the request data manually, and inspect the response, which is useful for testing.
 
-## API Documentation
+## Documentation & Examples
 
-[Browse API Documentation](http://rawgithub.com/jacksleight/coast/master/docs/index.html)
-
-## Examples
-
-[Browse Examples](examples)
+[Examples](examples)
+[API Documentation](http://rawgithub.com/jacksleight/coast/master/docs/index.html)
 
 ## Requirements
 
