@@ -25,7 +25,7 @@ The easiest way to install Coast is through [Composer](https://getcomposer.org/d
 ```json
 {
     "require": {
-        "jacksleight/coast": "v0.1.0-beta.1"
+        "jacksleight/coast": "dev-master"
     }
 }
 ```
@@ -33,7 +33,7 @@ The easiest way to install Coast is through [Composer](https://getcomposer.org/d
 And then running:
 
 ```bash
-composer.phar update
+composer.phar install
 ```
 
 ## Hello World
