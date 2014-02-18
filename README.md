@@ -4,6 +4,7 @@
 [![Latest Unstable Version](https://poser.pugx.org/jacksleight/coast/v/unstable.png)](https://packagist.org/packages/jacksleight/coast)
 [![Build Status](https://travis-ci.org/jacksleight/coast.png?branch=master)](https://travis-ci.org/jacksleight/coast)
 [![Coverage Status](https://coveralls.io/repos/jacksleight/coast/badge.png)](https://coveralls.io/r/jacksleight/coast)
+[![License](https://poser.pugx.org/jacksleight/coast/license.png)](https://packagist.org/packages/jacksleight/coast)
 
 Coast is a web application framework for PHP 5.5+. The goal of Coast is to provide a simple, lightweight and flexible framework for building high-performance, modern web apps. Some parts of the API were inspired by the Connect and Express node.js frameworks, others are my own (possibly ridiculous) ideas.
 
