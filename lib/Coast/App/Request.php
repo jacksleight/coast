@@ -157,6 +157,37 @@ class Request
         return $this->_params;
     }
 
+    /**
+     * Set a parameter.
+     * @param string $name
+     * @param mixed $value
+     * @return self
+     */
+    public function set($name, $value)
+    {
+        return $this->param($name, $value);
+    }
+
+    /**
+     * Get a parameter.
+     * @param  string $name
+     * @return mixed
+     */
+    public function get($name)
+    {
+        return $this->param($name);
+    }
+
+    /**
+     * Check if a parameter exists.
+     * @param  string  $name
+     * @return boolean
+     */
+    public function has($name)
+    {
+        return isset($this->_params[$name]);
+    }
+
     public function server($name, $value = null)
     {
         if (isset($value)) {
@@ -197,34 +228,34 @@ class Request
         return $this->_method;
     }
 
-    public function head()
+    public function isHead()
     {
         return $this->method() == self::METHOD_HEAD;
     }
 
-    public function get()
+    public function isGet()
     {
         return $this->method() == self::METHOD_GET;
     }
 
-    public function post()
+    public function isPost()
     {
         return $this->method() == self::METHOD_POST;
     }
 
-    public function put()
+    public function isPut()
     {
         return $this->method() == self::METHOD_PUT;
     }
 
-    public function delete()
+    public function isDelete()
     {
         return $this->method() == self::METHOD_DELETE;
     }
 
-    public function ajax()
+    public function isAjax()
     {
-        return $this->getHeader('X-Requested-With') == 'XMLHttpRequest';
+        return $this->header('X-Requested-With') == 'XMLHttpRequest';
     }
 
     public function header($name, $value = null)
@@ -259,7 +290,7 @@ class Request
         return $this->_scheme;
     }
 
-    public function secure()
+    public function isSecure()
     {
         return $this->scheme() == self::SCHEME_HTTPS;
     }
@@ -401,13 +432,33 @@ class Request
         return $url;
     }
 
+    /**
+     * Alias of `set`
+     * @param string $name
+     * @param mixed $value
+     */
     public function __set($name, $value)
     {
-        return $this->param($name, $value);
+        return $this->set($name, $value);
     }
 
+    /**
+     * Alias of `get`
+     * @param string $name
+     * @return mixed
+     */
     public function __get($name)
     {
-        return $this->param($name);
+        return $this->get($name);
+    }
+    
+    /**
+     * Alias of `has`
+     * @param string $name
+     * @return bool
+     */
+    public function __isset($name)
+    {
+        return $this->has($name);
     }
 }

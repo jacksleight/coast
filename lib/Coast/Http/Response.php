@@ -43,33 +43,33 @@ class Response
         return $this->_body;
     }
 
-    public function information()
+    public function isInformation()
     {
         return $this->_status >= 100 && $this->_status <= 199;
     }
 
-    public function success()
+    public function isSuccess()
     {
         return $this->_status >= 200 && $this->_status <= 299;
     }
 
-    public function redirect()
+    public function isRedirect()
     {
         return $this->_status >= 300 && $this->_status <= 399;
     }
 
-    public function clientError()
+    public function isClientError()
     {
         return $this->_status >= 400 && $this->_status <= 499;
     }
 
-    public function serverError()
+    public function isServerError()
     {
         return $this->_status >= 500 && $this->_status <= 599;
     }
 
-    public function error()
+    public function isError()
     {
-        return $this->clientError() || $this->serverError();
+        return $this->isClientError() || $this->isServerError();
     }
 }

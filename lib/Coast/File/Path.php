@@ -8,25 +8,27 @@ namespace Coast\File;
 
 abstract class Path extends \Coast\Path
 {
-    const TYPE_DIR  = 'dir';
-    const TYPE_FILE = 'file';
-
     public function exists()
     {
         return file_exists($this->name());
     }
 
-    public function type()
+    public function isDir()
     {
-        return is_dir($this->name()) ? self::TYPE_DIR : self::TYPE_FILE;
+        return is_dir($this->name());
     }
 
-    public function readable()
+    public function isFile()
+    {
+        return is_file($this->name());
+    }
+
+    public function isReadable()
     {
         return is_readable($this->name());
     }
 
-    public function writable()
+    public function isWritable()
     {
         return is_writable($this->name());
     }
