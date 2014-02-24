@@ -37,21 +37,11 @@ class Config
     }
 
     /**
-     * Set a param.
-     * @param string $name
-     * @param mixed $value
-     */
-    public function __set($name, $value)
-    {
-        $this->_data[$name] = $value;
-    }
-
-    /**
      * Get a param.
      * @param  string $name
      * @return mixed
      */
-    public function __get($name)
+    public function get($name)
     {
         return isset($this->_data[$name])
             ? $this->_data[$name]
@@ -59,21 +49,32 @@ class Config
     }
 
     /**
-     * Unset a param.
-     * @param string $name
-     */
-    public function __unset($name)
-    {
-        unset($this->_data[$name]);
-    }
-
-    /**
      * Check if a param is set.
      * @param  string  $name
      * @return boolean
      */
-    public function __isset($name)
+    public function has($name)
     {
         return isset($this->_data[$name]);
+    }
+
+    /**
+     * Alias of `get`
+     * @param string $name
+     * @return mixed
+     */
+    public function __get($name)
+    {
+        return $this->get($name);
+    }
+    
+    /**
+     * Alias of `has`
+     * @param string $name
+     * @return bool
+     */
+    public function __isset($name)
+    {
+        return $this->has($name);
     }
 }

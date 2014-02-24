@@ -151,7 +151,7 @@
 </span><span id="31" class="l"><a class="l" href="#31"> 31: </a>                <span class="php-keyword1">break</span>;
 </span><span id="32" class="l"><a class="l" href="#32"> 32: </a>            <span class="php-keyword1">case</span> <span class="php-quote">'dir'</span>:
 </span><span id="33" class="l"><a class="l" href="#33"> 33: </a>                <span class="php-var">$value</span> = <span class="php-keyword1">new</span> \Coast\<span class="php-keyword2">Dir</span>(<span class="php-quote">&quot;</span><span class="php-var">{$value}</span><span class="php-quote">&quot;</span>);
-</span><span id="34" class="l"><a class="l" href="#34"> 34: </a>                <span class="php-var">$value</span> = <span class="php-var">$value</span>-&gt;relative()
+</span><span id="34" class="l"><a class="l" href="#34"> 34: </a>                <span class="php-var">$value</span> = <span class="php-var">$value</span>-&gt;isRelative()
 </span><span id="35" class="l"><a class="l" href="#35"> 35: </a>                    ? <span class="php-keyword1">new</span> \Coast\<span class="php-keyword2">Dir</span>(<span class="php-keyword2">getcwd</span>() . <span class="php-quote">&quot;/</span><span class="php-var">{$value}</span><span class="php-quote">&quot;</span>)
 </span><span id="36" class="l"><a class="l" href="#36"> 36: </a>                    : <span class="php-var">$value</span>;
 </span><span id="37" class="l"><a class="l" href="#37"> 37: </a>                <span class="php-keyword1">break</span>;
@@ -246,10 +246,10 @@
 </span><span id="126" class="l"><a class="l" href="#126">126: </a>            ? <span class="php-keyword1">new</span> \Coast\Path(<span class="php-quote">&quot;</span><span class="php-var">{$path}</span><span class="php-quote">&quot;</span>)
 </span><span id="127" class="l"><a class="l" href="#127">127: </a>            : <span class="php-var">$path</span>;
 </span><span id="128" class="l"><a class="l" href="#128">128: </a>        <span class="php-var">$class</span> = <span class="php-keyword2">get_class</span>(<span class="php-var">$path</span>);
-</span><span id="129" class="l"><a class="l" href="#129">129: </a>        <span class="php-var">$path</span> = <span class="php-var">$path</span>-&gt;relative()
+</span><span id="129" class="l"><a class="l" href="#129">129: </a>        <span class="php-var">$path</span> = <span class="php-var">$path</span>-&gt;isRelative()
 </span><span id="130" class="l"><a class="l" href="#130">130: </a>            ? <span class="php-keyword1">new</span> <span class="php-var">$class</span>(<span class="php-keyword2">getcwd</span>() . <span class="php-quote">&quot;/</span><span class="php-var">{$path}</span><span class="php-quote">&quot;</span>)
 </span><span id="131" class="l"><a class="l" href="#131">131: </a>            : <span class="php-var">$path</span>;
-</span><span id="132" class="l"><a class="l" href="#132">132: </a>        <span class="php-keyword1">if</span> (!<span class="php-var">$path</span>-&gt;within(<span class="php-var">$this</span>-&gt;_options-&gt;<span class="php-keyword2">dir</span>)) {
+</span><span id="132" class="l"><a class="l" href="#132">132: </a>        <span class="php-keyword1">if</span> (!<span class="php-var">$path</span>-&gt;isWithin(<span class="php-var">$this</span>-&gt;_options-&gt;<span class="php-keyword2">dir</span>)) {
 </span><span id="133" class="l"><a class="l" href="#133">133: </a>            <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> \Coast\App\Exception(<span class="php-quote">&quot;Path '</span><span class="php-var">{$path}</span><span class="php-quote">' is not within base directory&quot;</span>);
 </span><span id="134" class="l"><a class="l" href="#134">134: </a>        }
 </span><span id="135" class="l"><a class="l" href="#135">135: </a>
@@ -264,7 +264,7 @@
 </span><span id="144" class="l"><a class="l" href="#144">144: </a>            <span class="php-var">$path</span> = <span class="php-keyword1">new</span> \Coast\<span class="php-keyword2">File</span>(<span class="php-quote">&quot;</span><span class="php-var">{$dirname}{$filename}</span><span class="php-quote">.</span><span class="php-var">{$time}</span><span class="php-quote">.</span><span class="php-var">{$extname}</span><span class="php-quote">&quot;</span>);
 </span><span id="145" class="l"><a class="l" href="#145">145: </a>        }
 </span><span id="146" class="l"><a class="l" href="#146">146: </a>
-</span><span id="147" class="l"><a class="l" href="#147">147: </a>        <span class="php-var">$path</span> = <span class="php-var">$path</span>-&gt;unresolve(<span class="php-var">$this</span>-&gt;_options-&gt;<span class="php-keyword2">dir</span>);
+</span><span id="147" class="l"><a class="l" href="#147">147: </a>        <span class="php-var">$path</span> = <span class="php-var">$path</span>-&gt;relative(<span class="php-var">$this</span>-&gt;_options-&gt;<span class="php-keyword2">dir</span>);
 </span><span id="148" class="l"><a class="l" href="#148">148: </a>        <span class="php-keyword1">if</span> (<span class="php-var">$base</span>) {
 </span><span id="149" class="l"><a class="l" href="#149">149: </a>            <span class="php-var">$path</span> = <span class="php-var">$cdn</span> &amp;&amp; <span class="php-keyword1">isset</span>(<span class="php-var">$this</span>-&gt;_options-&gt;cdnBase)
 </span><span id="150" class="l"><a class="l" href="#150">150: </a>                ? <span class="php-var">$this</span>-&gt;_options-&gt;cdnBase . <span class="php-var">$path</span>

@@ -31,7 +31,7 @@ class Url implements \Coast\App\Access
                 break;
             case 'dir':
                 $value = new \Coast\Dir("{$value}");
-                $value = $value->relative()
+                $value = $value->isRelative()
                     ? new \Coast\Dir(getcwd() . "/{$value}")
                     : $value;
                 break;
@@ -126,10 +126,10 @@ class Url implements \Coast\App\Access
             ? new \Coast\Path("{$path}")
             : $path;
         $class = get_class($path);
-        $path = $path->relative()
+        $path = $path->isRelative()
             ? new $class(getcwd() . "/{$path}")
             : $path;
-        if (!$path->within($this->_options->dir)) {
+        if (!$path->isWithin($this->_options->dir)) {
             throw new \Coast\App\Exception("Path '{$path}' is not within base directory");
         }
 
@@ -144,7 +144,7 @@ class Url implements \Coast\App\Access
             $path = new \Coast\File("{$dirname}{$filename}.{$time}.{$extname}");
         }
 
-        $path = $path->unresolve($this->_options->dir);
+        $path = $path->relative($this->_options->dir);
         if ($base) {
             $path = $cdn && isset($this->_options->cdnBase)
                 ? $this->_options->cdnBase . $path

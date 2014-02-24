@@ -83,7 +83,7 @@ class App
      * Is mode HTTP.
      * @return bool
      */
-    public function http()
+    public function isHttp()
     {
         return $this->mode() == self::MODE_HTTP;
     }
@@ -92,9 +92,76 @@ class App
      * Is mode CLI.
      * @return bool
      */
-    public function cli()
+    public function isCli()
     {
         return $this->mode() == self::MODE_CLI;
+    }
+
+    /**
+     * Set/get param.
+     * @param  string $name  
+     * @param  mixed $value
+     * @return self|mixed
+     */
+    public function param($name, $value = null)
+    {
+        if (isset($value)) {
+            if ($value instanceof \Coast\App\Access) {
+                $value->app($this);
+            }
+            $this->_params[$name] = $value;
+            return $this;
+        }
+        return isset($this->_params[$name])
+            ? $this->_params[$name]
+            : null;
+    }
+
+    /**
+     * Set/get multiple params.
+     * @param  array $params
+     * @return self|array
+     */
+    public function params(array $params = null)
+    {
+        if (isset($params)) {
+            foreach ($params as $name => $value) {
+                $this->param($name, $value);
+            }
+            return $this;
+        }
+        return $this->_params;
+    }
+
+    /**
+     * Set a parameter.
+     * @param string $name
+     * @param mixed $value
+     * @return self
+     */
+    public function set($name, $value)
+    {
+        return $this->param($name, $value);
+    }
+
+    /**
+     * Get a parameter.
+     * @param  string $name
+     * @return mixed
+     */
+    public function get($name)
+    {
+        return $this->param($name);
+    }
+
+    /**
+     * Check if a parameter exists.
+     * @param  string  $name
+     * @return boolean
+     */
+    public function has($name)
+    {
+        return isset($this->_params[$name]);
     }
 
     /**
@@ -119,44 +186,6 @@ class App
             $this->set($name, $value);
         }
         return $this;
-    }
-
-    /**
-     * Set a parameter.
-     * @param string $name
-     * @param mixed $value
-     * @return self
-     * @todo Review set and get, should they be param()?
-     */
-    public function set($name, $value)
-    {
-        if ($value instanceof \Coast\App\Access) {
-            $value->app($this);
-        }
-        $this->_params[$name] = $value;
-        return $this;
-    }
-
-    /**
-     * Get a parameter.
-     * @param  string $name
-     * @return mixed
-     */
-    public function get($name)
-    {
-        return isset($this->_params[$name])
-            ? $this->_params[$name]
-            : null;
-    }
-
-    /**
-     * Check if a parameter exists.
-     * @param  string  $name
-     * @return boolean
-     */
-    public function has($name)
-    {
-        return isset($this->_params[$name]);
     }
 
     /**

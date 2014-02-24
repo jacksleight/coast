@@ -148,34 +148,34 @@
 </span><span id="43" class="l"><a class="l" href="#43">43: </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;_body;
 </span><span id="44" class="l"><a class="l" href="#44">44: </a>    }
 </span><span id="45" class="l"><a class="l" href="#45">45: </a>
-</span><span id="46" class="l"><a class="l" href="#46">46: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_information" href="#_information">information</a>()
+</span><span id="46" class="l"><a class="l" href="#46">46: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_isInformation" href="#_isInformation">isInformation</a>()
 </span><span id="47" class="l"><a class="l" href="#47">47: </a>    {
 </span><span id="48" class="l"><a class="l" href="#48">48: </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;_status &gt;= <span class="php-num">100</span> &amp;&amp; <span class="php-var">$this</span>-&gt;_status &lt;= <span class="php-num">199</span>;
 </span><span id="49" class="l"><a class="l" href="#49">49: </a>    }
 </span><span id="50" class="l"><a class="l" href="#50">50: </a>
-</span><span id="51" class="l"><a class="l" href="#51">51: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_success" href="#_success">success</a>()
+</span><span id="51" class="l"><a class="l" href="#51">51: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_isSuccess" href="#_isSuccess">isSuccess</a>()
 </span><span id="52" class="l"><a class="l" href="#52">52: </a>    {
 </span><span id="53" class="l"><a class="l" href="#53">53: </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;_status &gt;= <span class="php-num">200</span> &amp;&amp; <span class="php-var">$this</span>-&gt;_status &lt;= <span class="php-num">299</span>;
 </span><span id="54" class="l"><a class="l" href="#54">54: </a>    }
 </span><span id="55" class="l"><a class="l" href="#55">55: </a>
-</span><span id="56" class="l"><a class="l" href="#56">56: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_redirect" href="#_redirect">redirect</a>()
+</span><span id="56" class="l"><a class="l" href="#56">56: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_isRedirect" href="#_isRedirect">isRedirect</a>()
 </span><span id="57" class="l"><a class="l" href="#57">57: </a>    {
 </span><span id="58" class="l"><a class="l" href="#58">58: </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;_status &gt;= <span class="php-num">300</span> &amp;&amp; <span class="php-var">$this</span>-&gt;_status &lt;= <span class="php-num">399</span>;
 </span><span id="59" class="l"><a class="l" href="#59">59: </a>    }
 </span><span id="60" class="l"><a class="l" href="#60">60: </a>
-</span><span id="61" class="l"><a class="l" href="#61">61: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_clientError" href="#_clientError">clientError</a>()
+</span><span id="61" class="l"><a class="l" href="#61">61: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_isClientError" href="#_isClientError">isClientError</a>()
 </span><span id="62" class="l"><a class="l" href="#62">62: </a>    {
 </span><span id="63" class="l"><a class="l" href="#63">63: </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;_status &gt;= <span class="php-num">400</span> &amp;&amp; <span class="php-var">$this</span>-&gt;_status &lt;= <span class="php-num">499</span>;
 </span><span id="64" class="l"><a class="l" href="#64">64: </a>    }
 </span><span id="65" class="l"><a class="l" href="#65">65: </a>
-</span><span id="66" class="l"><a class="l" href="#66">66: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_serverError" href="#_serverError">serverError</a>()
+</span><span id="66" class="l"><a class="l" href="#66">66: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_isServerError" href="#_isServerError">isServerError</a>()
 </span><span id="67" class="l"><a class="l" href="#67">67: </a>    {
 </span><span id="68" class="l"><a class="l" href="#68">68: </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;_status &gt;= <span class="php-num">500</span> &amp;&amp; <span class="php-var">$this</span>-&gt;_status &lt;= <span class="php-num">599</span>;
 </span><span id="69" class="l"><a class="l" href="#69">69: </a>    }
 </span><span id="70" class="l"><a class="l" href="#70">70: </a>
-</span><span id="71" class="l"><a class="l" href="#71">71: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_error" href="#_error">error</a>()
+</span><span id="71" class="l"><a class="l" href="#71">71: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_isError" href="#_isError">isError</a>()
 </span><span id="72" class="l"><a class="l" href="#72">72: </a>    {
-</span><span id="73" class="l"><a class="l" href="#73">73: </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;clientError() || <span class="php-var">$this</span>-&gt;serverError();
+</span><span id="73" class="l"><a class="l" href="#73">73: </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;isClientError() || <span class="php-var">$this</span>-&gt;isServerError();
 </span><span id="74" class="l"><a class="l" href="#74">74: </a>    }
 </span><span id="75" class="l"><a class="l" href="#75">75: </a></span>}</code></pre>
 

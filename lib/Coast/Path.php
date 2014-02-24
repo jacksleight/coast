@@ -98,7 +98,7 @@ class Path
      * @param  Coast\Path $target path to check against. 
      * @return bool
      */
-    public function within(\Coast\Path $parent)
+    public function isWithin(\Coast\Path $parent)
     {
         $path = $this->name();
         $parts = \explode(PATH_SEPARATOR, $parent->name());    
@@ -114,11 +114,10 @@ class Path
      * Get absolute path from relative path.
      * @param  Coast\Path $base base absolute path.
      * @return Coast\Path
-     * @todo   Review method name of resolve and unresolve.
      */
-    public function resolve(\Coast\Path $base)
+    public function absolute(\Coast\Path $base)
     {
-        if (!$this->relative() || !$base->absolute()) {
+        if (!$this->isRelative() || !$base->isAbsolute()) {
             throw new \Exception("Path '" . $this->name() . "' is not relative or base path '" . $base->name() . "' is not absolute");
         }
 
@@ -144,11 +143,10 @@ class Path
      * Get relative path from absolute path.
      * @param  Coast\Path $base Base absolute path.
      * @return Coast\Path
-     * @todo   Review method name of resolve and unresolve.
      */
-    public function unresolve(\Coast\Path $base)
+    public function relative(\Coast\Path $base)
     {
-        if (!$this->absolute() || !$base->absolute()) {
+        if (!$this->isAbsolute() || !$base->isAbsolute()) {
             throw new \Exception("Source path '" . $this->name() . "' is not absolute or base path '" . $base->name() . "' is not absolute");
         }
         
@@ -174,7 +172,7 @@ class Path
      * Is path absolute.
      * @return bool
      */
-    public function absolute()
+    public function isAbsolute()
     {
         return substr($this->name(), 0, 1) == '/';
     }
@@ -183,8 +181,8 @@ class Path
      * Is path relative.
      * @return bool
      */
-    public function relative()
+    public function isRelative()
     {
-        return !$this->absolute();
+        return !$this->isAbsolute();
     }
 }

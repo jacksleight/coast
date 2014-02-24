@@ -25,11 +25,6 @@ class Content
         return $this;
     }
 
-    public function has($name)
-    {
-        return isset($this->_data[$name]);
-    }
-
     public function get($name)
     {
         return isset($this->_data[$name])
@@ -37,19 +32,24 @@ class Content
             : null;
     }
 
+    public function has($name)
+    {
+        return isset($this->_data[$name]);
+    }
+
     public function string()
     {
         return implode($this->_data);
     }
 
-    public function __isset($name)
-    {
-        return $this->has($name);
-    }
-
     public function __get($name)
     {
         return $this->get($name);
+    }
+
+    public function __isset($name)
+    {
+        return $this->has($name);
     }
 
     public function __toString()

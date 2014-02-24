@@ -151,7 +151,7 @@
 		<b>Namespace:</b> <a href="namespace-Coast.html">Coast</a>\<a href="namespace-Coast.File.html">File</a><br>
 		
 
-		<b>Located at</b> <a href="source-class-Coast.File.Path.html#9-40" title="Go to source code">Coast/File/Path.php</a><br>
+		<b>Located at</b> <a href="source-class-Coast.File.Path.html#9-42" title="Go to source code">Coast/File/Path.php</a><br>
 	</div>
 
 
@@ -169,7 +169,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_exists">#</a>
-		<code><a href="source-class-Coast.File.Path.html#14-17" title="Go to source code">exists</a>( )</code>
+		<code><a href="source-class-Coast.File.Path.html#11-14" title="Go to source code">exists</a>( )</code>
 
 		<div class="description short">
 			
@@ -187,7 +187,7 @@
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="type" id="_type">
+	<tr data-order="isDir" id="_isDir">
 
 		<td class="attributes"><code>
 			 public 
@@ -197,8 +197,8 @@
 		</td>
 
 		<td class="name"><div>
-		<a class="anchor" href="#_type">#</a>
-		<code><a href="source-class-Coast.File.Path.html#19-22" title="Go to source code">type</a>( )</code>
+		<a class="anchor" href="#_isDir">#</a>
+		<code><a href="source-class-Coast.File.Path.html#16-19" title="Go to source code">isDir</a>( )</code>
 
 		<div class="description short">
 			
@@ -216,7 +216,7 @@
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="readable" id="_readable">
+	<tr data-order="isFile" id="_isFile">
 
 		<td class="attributes"><code>
 			 public 
@@ -226,8 +226,8 @@
 		</td>
 
 		<td class="name"><div>
-		<a class="anchor" href="#_readable">#</a>
-		<code><a href="source-class-Coast.File.Path.html#24-27" title="Go to source code">readable</a>( )</code>
+		<a class="anchor" href="#_isFile">#</a>
+		<code><a href="source-class-Coast.File.Path.html#21-24" title="Go to source code">isFile</a>( )</code>
 
 		<div class="description short">
 			
@@ -245,7 +245,7 @@
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="writable" id="_writable">
+	<tr data-order="isReadable" id="_isReadable">
 
 		<td class="attributes"><code>
 			 public 
@@ -255,8 +255,37 @@
 		</td>
 
 		<td class="name"><div>
-		<a class="anchor" href="#_writable">#</a>
-		<code><a href="source-class-Coast.File.Path.html#29-32" title="Go to source code">writable</a>( )</code>
+		<a class="anchor" href="#_isReadable">#</a>
+		<code><a href="source-class-Coast.File.Path.html#26-29" title="Go to source code">isReadable</a>( )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="isWritable" id="_isWritable">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_isWritable">#</a>
+		<code><a href="source-class-Coast.File.Path.html#31-34" title="Go to source code">isWritable</a>( )</code>
 
 		<div class="description short">
 			
@@ -285,7 +314,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_permissions">#</a>
-		<code><a href="source-class-Coast.File.Path.html#34-37" title="Go to source code">permissions</a>( )</code>
+		<code><a href="source-class-Coast.File.Path.html#36-39" title="Go to source code">permissions</a>( )</code>
 
 		<div class="description short">
 			
@@ -314,7 +343,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_remove">#</a>
-		<code><a href="source-class-Coast.File.Path.html#39" title="Go to source code">remove</a>( )</code>
+		<code><a href="source-class-Coast.File.Path.html#41" title="Go to source code">remove</a>( )</code>
 
 		<div class="description short">
 			
@@ -345,11 +374,11 @@
 			<a href="class-Coast.Path.html#_dirname">dirname()</a>, 
 			<a href="class-Coast.Path.html#_extname">extname()</a>, 
 			<a href="class-Coast.Path.html#_filename">filename()</a>, 
+			<a href="class-Coast.Path.html#_isAbsolute">isAbsolute()</a>, 
+			<a href="class-Coast.Path.html#_isRelative">isRelative()</a>, 
+			<a href="class-Coast.Path.html#_isWithin">isWithin()</a>, 
 			<a href="class-Coast.Path.html#_name">name()</a>, 
-			<a href="class-Coast.Path.html#_relative">relative()</a>, 
-			<a href="class-Coast.Path.html#_resolve">resolve()</a>, 
-			<a href="class-Coast.Path.html#_unresolve">unresolve()</a>, 
-			<a href="class-Coast.Path.html#_within">within()</a>
+			<a href="class-Coast.Path.html#_relative">relative()</a>
 		</code></td>
 	</tr>
 	</table>
@@ -360,49 +389,6 @@
 
 
 
-	<table class="summary" id="constants">
-	<caption>Constants summary</caption>
-	<tr data-order="TYPE_DIR" id="TYPE_DIR">
-
-		<td class="attributes"><code>string</code></td>
-		<td class="name"><code>
-				<a href="source-class-Coast.File.Path.html#11" title="Go to source code"><b>TYPE_DIR</b></a>
-		</code></td>
-		<td class="value"><code><span class="php-quote">'dir'</span></code></td>
-		<td class="description"><div>
-			<a href="#TYPE_DIR" class="anchor">#</a>
-
-			<div class="description short">
-				
-			</div>
-
-			<div class="description detailed hidden">
-				
-
-			</div>
-		</div></td>
-	</tr>
-	<tr data-order="TYPE_FILE" id="TYPE_FILE">
-
-		<td class="attributes"><code>string</code></td>
-		<td class="name"><code>
-				<a href="source-class-Coast.File.Path.html#12" title="Go to source code"><b>TYPE_FILE</b></a>
-		</code></td>
-		<td class="value"><code><span class="php-quote">'file'</span></code></td>
-		<td class="description"><div>
-			<a href="#TYPE_FILE" class="anchor">#</a>
-
-			<div class="description short">
-				
-			</div>
-
-			<div class="description detailed hidden">
-				
-
-			</div>
-		</div></td>
-	</tr>
-	</table>
 
 	<table class="summary inherited">
 	<caption>Constants inherited from <a href="class-Coast.Path.html#constants">Coast\Path</a></caption>

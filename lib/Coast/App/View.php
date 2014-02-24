@@ -34,7 +34,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
     public function has($name)
     {
         $path = new \Coast\Path("{$name}." . $this->_options->extension);
-        if ($path->relative()) {
+        if ($path->isRelative()) {
             throw new \Coast\App\Exception("Initial path '{$path}' is relative");
         }
 
@@ -46,11 +46,11 @@ class View implements \Coast\App\Access, \Coast\App\Executable
     {
         $path = new \Coast\Path("{$name}." . $this->_options->extension);
         if (count($this->_stack) > 0) {
-            $path = $path->relative()
-                ? $path->resolve($this->_stack[0]['path'])
+            $path = $path->isRelative()
+                ? $path->absolute($this->_stack[0]['path'])
                 : $path;
             $params    = array_merge($this->_stack[0]['params'], $params);
-        } else if ($path->relative()) {
+        } else if ($path->isRelative()) {
             throw new \Coast\App\Exception("Initial path '{$path}' is relative");
         }
 

@@ -22,31 +22,31 @@ class PathTest extends \PHPUnit_Framework_TestCase
         $a = new Path('/parent');
         $b = new Path('/parent/child');
 
-        $this->assertTrue($b->within($a));
-        $this->assertFalse($a->within($b));
+        $this->assertTrue($b->isWithin($a));
+        $this->assertFalse($a->isWithin($b));
     }
 
-    public function testResolve()
+    public function testAbsolute()
     {
         $a = new Path('../four');
         $b = new Path('/one/two/three');
 
-        $this->assertEquals('/one/four', $a->resolve($b)->name());
+        $this->assertEquals('/one/four', $a->absolute($b)->name());
 
         $this->setExpectedException('Exception');
-        $this->assertEquals('/one/four', $b->resolve($a)->name());
+        $this->assertEquals('/one/four', $b->absolute($a)->name());
     }
 
-    public function testUnresolve()
+    public function testRelative()
     {
         $a = new Path('/one/four');
         $b = new Path('/one/two/three');
         $c = new Path('../');
 
-        $this->assertEquals('../four', $a->unresolve($b)->name());
+        $this->assertEquals('../four', $a->relative($b)->name());
       
         $this->setExpectedException('Exception');
-        $this->assertEquals('../four', $a->unresolve($c)->name());
+        $this->assertEquals('../four', $a->relative($c)->name());
     }
 
     public function testType()
@@ -54,7 +54,7 @@ class PathTest extends \PHPUnit_Framework_TestCase
         $abs = new Path('/name');
         $rel = new Path('name');
 
-        $this->assertTrue($abs->absolute());
-        $this->assertTrue($rel->relative());
+        $this->assertTrue($abs->isAbsolute());
+        $this->assertTrue($rel->isRelative());
     }
 }

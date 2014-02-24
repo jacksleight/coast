@@ -154,7 +154,7 @@
 </span><span id="34" class="l"><a class="l" href="#34"> 34: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_has" href="#_has">has</a>(<span class="php-var">$name</span>)
 </span><span id="35" class="l"><a class="l" href="#35"> 35: </a>    {
 </span><span id="36" class="l"><a class="l" href="#36"> 36: </a>        <span class="php-var">$path</span> = <span class="php-keyword1">new</span> \Coast\Path(<span class="php-quote">&quot;</span><span class="php-var">{$name}</span><span class="php-quote">.&quot;</span> . <span class="php-var">$this</span>-&gt;_options-&gt;extension);
-</span><span id="37" class="l"><a class="l" href="#37"> 37: </a>        <span class="php-keyword1">if</span> (<span class="php-var">$path</span>-&gt;relative()) {
+</span><span id="37" class="l"><a class="l" href="#37"> 37: </a>        <span class="php-keyword1">if</span> (<span class="php-var">$path</span>-&gt;isRelative()) {
 </span><span id="38" class="l"><a class="l" href="#38"> 38: </a>            <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> \Coast\App\Exception(<span class="php-quote">&quot;Initial path '</span><span class="php-var">{$path}</span><span class="php-quote">' is relative&quot;</span>);
 </span><span id="39" class="l"><a class="l" href="#39"> 39: </a>        }
 </span><span id="40" class="l"><a class="l" href="#40"> 40: </a>
@@ -166,11 +166,11 @@
 </span><span id="46" class="l"><a class="l" href="#46"> 46: </a>    {
 </span><span id="47" class="l"><a class="l" href="#47"> 47: </a>        <span class="php-var">$path</span> = <span class="php-keyword1">new</span> \Coast\Path(<span class="php-quote">&quot;</span><span class="php-var">{$name}</span><span class="php-quote">.&quot;</span> . <span class="php-var">$this</span>-&gt;_options-&gt;extension);
 </span><span id="48" class="l"><a class="l" href="#48"> 48: </a>        <span class="php-keyword1">if</span> (<span class="php-keyword2">count</span>(<span class="php-var">$this</span>-&gt;_stack) &gt; <span class="php-num">0</span>) {
-</span><span id="49" class="l"><a class="l" href="#49"> 49: </a>            <span class="php-var">$path</span> = <span class="php-var">$path</span>-&gt;relative()
-</span><span id="50" class="l"><a class="l" href="#50"> 50: </a>                ? <span class="php-var">$path</span>-&gt;resolve(<span class="php-var">$this</span>-&gt;_stack[<span class="php-num">0</span>][<span class="php-quote">'path'</span>])
+</span><span id="49" class="l"><a class="l" href="#49"> 49: </a>            <span class="php-var">$path</span> = <span class="php-var">$path</span>-&gt;isRelative()
+</span><span id="50" class="l"><a class="l" href="#50"> 50: </a>                ? <span class="php-var">$path</span>-&gt;absolute(<span class="php-var">$this</span>-&gt;_stack[<span class="php-num">0</span>][<span class="php-quote">'path'</span>])
 </span><span id="51" class="l"><a class="l" href="#51"> 51: </a>                : <span class="php-var">$path</span>;
 </span><span id="52" class="l"><a class="l" href="#52"> 52: </a>            <span class="php-var">$params</span>    = <span class="php-keyword2">array_merge</span>(<span class="php-var">$this</span>-&gt;_stack[<span class="php-num">0</span>][<span class="php-quote">'params'</span>], <span class="php-var">$params</span>);
-</span><span id="53" class="l"><a class="l" href="#53"> 53: </a>        } <span class="php-keyword1">else</span> <span class="php-keyword1">if</span> (<span class="php-var">$path</span>-&gt;relative()) {
+</span><span id="53" class="l"><a class="l" href="#53"> 53: </a>        } <span class="php-keyword1">else</span> <span class="php-keyword1">if</span> (<span class="php-var">$path</span>-&gt;isRelative()) {
 </span><span id="54" class="l"><a class="l" href="#54"> 54: </a>            <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> \Coast\App\Exception(<span class="php-quote">&quot;Initial path '</span><span class="php-var">{$path}</span><span class="php-quote">' is relative&quot;</span>);
 </span><span id="55" class="l"><a class="l" href="#55"> 55: </a>        }
 </span><span id="56" class="l"><a class="l" href="#56"> 56: </a>

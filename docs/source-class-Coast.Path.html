@@ -237,7 +237,7 @@
 </span></span><span id="98" class="l"><a class="l" href="#98"> 98: </a><span class="php-comment">     * @param  Coast\Path $target path to check against. 
 </span></span><span id="99" class="l"><a class="l" href="#99"> 99: </a><span class="php-comment">     * @return bool
 </span></span><span id="100" class="l"><a class="l" href="#100">100: </a><span class="php-comment">     */</span>
-</span><span id="101" class="l"><a class="l" href="#101">101: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_within" href="#_within">within</a>(\Coast\Path <span class="php-var">$parent</span>)
+</span><span id="101" class="l"><a class="l" href="#101">101: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_isWithin" href="#_isWithin">isWithin</a>(\Coast\Path <span class="php-var">$parent</span>)
 </span><span id="102" class="l"><a class="l" href="#102">102: </a>    {
 </span><span id="103" class="l"><a class="l" href="#103">103: </a>        <span class="php-var">$path</span> = <span class="php-var">$this</span>-&gt;name();
 </span><span id="104" class="l"><a class="l" href="#104">104: </a>        <span class="php-var">$parts</span> = \<span class="php-keyword2">explode</span>(PATH_SEPARATOR, <span class="php-var">$parent</span>-&gt;name());    
@@ -253,80 +253,78 @@
 </span></span><span id="114" class="l"><a class="l" href="#114">114: </a><span class="php-comment">     * Get absolute path from relative path.
 </span></span><span id="115" class="l"><a class="l" href="#115">115: </a><span class="php-comment">     * @param  Coast\Path $base base absolute path.
 </span></span><span id="116" class="l"><a class="l" href="#116">116: </a><span class="php-comment">     * @return Coast\Path
-</span></span><span id="117" class="l"><a class="l" href="#117">117: </a><span class="php-comment">     * @todo   Review method name of resolve and unresolve.
-</span></span><span id="118" class="l"><a class="l" href="#118">118: </a><span class="php-comment">     */</span>
-</span><span id="119" class="l"><a class="l" href="#119">119: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_resolve" href="#_resolve">resolve</a>(\Coast\Path <span class="php-var">$base</span>)
-</span><span id="120" class="l"><a class="l" href="#120">120: </a>    {
-</span><span id="121" class="l"><a class="l" href="#121">121: </a>        <span class="php-keyword1">if</span> (!<span class="php-var">$this</span>-&gt;relative() || !<span class="php-var">$base</span>-&gt;absolute()) {
-</span><span id="122" class="l"><a class="l" href="#122">122: </a>            <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> \Exception(<span class="php-quote">&quot;Path '&quot;</span> . <span class="php-var">$this</span>-&gt;name() . <span class="php-quote">&quot;' is not relative or base path '&quot;</span> . <span class="php-var">$base</span>-&gt;name() . <span class="php-quote">&quot;' is not absolute&quot;</span>);
-</span><span id="123" class="l"><a class="l" href="#123">123: </a>        }
-</span><span id="124" class="l"><a class="l" href="#124">124: </a>
-</span><span id="125" class="l"><a class="l" href="#125">125: </a>        <span class="php-var">$source</span> = <span class="php-keyword2">explode</span>(<span class="php-quote">'/'</span>, <span class="php-var">$base</span>-&gt;name());
-</span><span id="126" class="l"><a class="l" href="#126">126: </a>        <span class="php-var">$target</span> = <span class="php-keyword2">explode</span>(<span class="php-quote">'/'</span>, <span class="php-var">$this</span>-&gt;name());
-</span><span id="127" class="l"><a class="l" href="#127">127: </a>        
-</span><span id="128" class="l"><a class="l" href="#128">128: </a>        <span class="php-var">$name</span> = <span class="php-var">$source</span>;
-</span><span id="129" class="l"><a class="l" href="#129">129: </a>        <span class="php-keyword2">array_pop</span>(<span class="php-var">$name</span>);
-</span><span id="130" class="l"><a class="l" href="#130">130: </a>        <span class="php-keyword1">foreach</span> (<span class="php-var">$target</span> <span class="php-keyword1">as</span> <span class="php-var">$part</span>) {
-</span><span id="131" class="l"><a class="l" href="#131">131: </a>            <span class="php-keyword1">if</span> (<span class="php-var">$part</span> == <span class="php-quote">'..'</span>) {
-</span><span id="132" class="l"><a class="l" href="#132">132: </a>                <span class="php-keyword2">array_pop</span>(<span class="php-var">$name</span>);
-</span><span id="133" class="l"><a class="l" href="#133">133: </a>            } <span class="php-keyword1">elseif</span> (<span class="php-var">$part</span> != <span class="php-quote">'.'</span> &amp;&amp; <span class="php-var">$part</span> != <span class="php-quote">''</span>) {
-</span><span id="134" class="l"><a class="l" href="#134">134: </a>                <span class="php-var">$name</span>[] = <span class="php-var">$part</span>;
-</span><span id="135" class="l"><a class="l" href="#135">135: </a>            }
-</span><span id="136" class="l"><a class="l" href="#136">136: </a>        }
-</span><span id="137" class="l"><a class="l" href="#137">137: </a>        <span class="php-var">$name</span> = <span class="php-keyword2">implode</span>(<span class="php-quote">'/'</span>, <span class="php-var">$name</span>);
-</span><span id="138" class="l"><a class="l" href="#138">138: </a>
-</span><span id="139" class="l"><a class="l" href="#139">139: </a>        <span class="php-var">$class</span> = <span class="php-keyword2">get_class</span>(<span class="php-var">$this</span>);
-</span><span id="140" class="l"><a class="l" href="#140">140: </a>        <span class="php-keyword1">return</span> <span class="php-keyword1">new</span> <span class="php-var">$class</span>(<span class="php-var">$name</span>);
-</span><span id="141" class="l"><a class="l" href="#141">141: </a>    }
-</span><span id="142" class="l"><a class="l" href="#142">142: </a>
-</span><span id="143" class="l"><a class="l" href="#143">143: </a>    <span class="php-comment">/**
-</span></span><span id="144" class="l"><a class="l" href="#144">144: </a><span class="php-comment">     * Get relative path from absolute path.
-</span></span><span id="145" class="l"><a class="l" href="#145">145: </a><span class="php-comment">     * @param  Coast\Path $base Base absolute path.
-</span></span><span id="146" class="l"><a class="l" href="#146">146: </a><span class="php-comment">     * @return Coast\Path
-</span></span><span id="147" class="l"><a class="l" href="#147">147: </a><span class="php-comment">     * @todo   Review method name of resolve and unresolve.
-</span></span><span id="148" class="l"><a class="l" href="#148">148: </a><span class="php-comment">     */</span>
-</span><span id="149" class="l"><a class="l" href="#149">149: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_unresolve" href="#_unresolve">unresolve</a>(\Coast\Path <span class="php-var">$base</span>)
-</span><span id="150" class="l"><a class="l" href="#150">150: </a>    {
-</span><span id="151" class="l"><a class="l" href="#151">151: </a>        <span class="php-keyword1">if</span> (!<span class="php-var">$this</span>-&gt;absolute() || !<span class="php-var">$base</span>-&gt;absolute()) {
-</span><span id="152" class="l"><a class="l" href="#152">152: </a>            <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> \Exception(<span class="php-quote">&quot;Source path '&quot;</span> . <span class="php-var">$this</span>-&gt;name() . <span class="php-quote">&quot;' is not absolute or base path '&quot;</span> . <span class="php-var">$base</span>-&gt;name() . <span class="php-quote">&quot;' is not absolute&quot;</span>);
-</span><span id="153" class="l"><a class="l" href="#153">153: </a>        }
-</span><span id="154" class="l"><a class="l" href="#154">154: </a>        
-</span><span id="155" class="l"><a class="l" href="#155">155: </a>        <span class="php-var">$source</span> = <span class="php-keyword2">explode</span>(<span class="php-quote">'/'</span>, <span class="php-var">$base</span>-&gt;name());
-</span><span id="156" class="l"><a class="l" href="#156">156: </a>        <span class="php-var">$target</span> = <span class="php-keyword2">explode</span>(<span class="php-quote">'/'</span>, <span class="php-var">$this</span>-&gt;name());
-</span><span id="157" class="l"><a class="l" href="#157">157: </a>
-</span><span id="158" class="l"><a class="l" href="#158">158: </a>        <span class="php-var">$name</span> = <span class="php-var">$target</span>;
-</span><span id="159" class="l"><a class="l" href="#159">159: </a>        <span class="php-keyword1">foreach</span> (<span class="php-var">$source</span> <span class="php-keyword1">as</span> <span class="php-var">$i</span> =&gt; <span class="php-var">$part</span>) {
-</span><span id="160" class="l"><a class="l" href="#160">160: </a>            <span class="php-keyword1">if</span> (<span class="php-var">$part</span> == <span class="php-var">$target</span>[<span class="php-var">$i</span>]) {
-</span><span id="161" class="l"><a class="l" href="#161">161: </a>                <span class="php-keyword2">array_shift</span>(<span class="php-var">$name</span>);
-</span><span id="162" class="l"><a class="l" href="#162">162: </a>            } <span class="php-keyword1">else</span> {
-</span><span id="163" class="l"><a class="l" href="#163">163: </a>                <span class="php-var">$name</span> = <span class="php-keyword2">array_pad</span>(<span class="php-var">$name</span>, (<span class="php-keyword2">count</span>(<span class="php-var">$name</span>) + (<span class="php-keyword2">count</span>(<span class="php-var">$source</span>) - <span class="php-var">$i</span>) - <span class="php-num">1</span>) * -<span class="php-num">1</span>, <span class="php-quote">'..'</span>);
-</span><span id="164" class="l"><a class="l" href="#164">164: </a>                <span class="php-keyword1">break</span>;
-</span><span id="165" class="l"><a class="l" href="#165">165: </a>            }
-</span><span id="166" class="l"><a class="l" href="#166">166: </a>        }
-</span><span id="167" class="l"><a class="l" href="#167">167: </a>        <span class="php-var">$name</span> = <span class="php-keyword2">implode</span>(<span class="php-quote">'/'</span>, <span class="php-var">$name</span>);
-</span><span id="168" class="l"><a class="l" href="#168">168: </a>
-</span><span id="169" class="l"><a class="l" href="#169">169: </a>        <span class="php-var">$class</span> = <span class="php-keyword2">get_class</span>(<span class="php-var">$this</span>);
-</span><span id="170" class="l"><a class="l" href="#170">170: </a>        <span class="php-keyword1">return</span> <span class="php-keyword1">new</span> <span class="php-var">$class</span>(<span class="php-var">$name</span>);
-</span><span id="171" class="l"><a class="l" href="#171">171: </a>    }
-</span><span id="172" class="l"><a class="l" href="#172">172: </a>
-</span><span id="173" class="l"><a class="l" href="#173">173: </a>    <span class="php-comment">/**
-</span></span><span id="174" class="l"><a class="l" href="#174">174: </a><span class="php-comment">     * Is path absolute.
-</span></span><span id="175" class="l"><a class="l" href="#175">175: </a><span class="php-comment">     * @return bool
-</span></span><span id="176" class="l"><a class="l" href="#176">176: </a><span class="php-comment">     */</span>
-</span><span id="177" class="l"><a class="l" href="#177">177: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_absolute" href="#_absolute">absolute</a>()
-</span><span id="178" class="l"><a class="l" href="#178">178: </a>    {
-</span><span id="179" class="l"><a class="l" href="#179">179: </a>        <span class="php-keyword1">return</span> <span class="php-keyword2">substr</span>(<span class="php-var">$this</span>-&gt;name(), <span class="php-num">0</span>, <span class="php-num">1</span>) == <span class="php-quote">'/'</span>;
-</span><span id="180" class="l"><a class="l" href="#180">180: </a>    }
-</span><span id="181" class="l"><a class="l" href="#181">181: </a>
-</span><span id="182" class="l"><a class="l" href="#182">182: </a>    <span class="php-comment">/**
-</span></span><span id="183" class="l"><a class="l" href="#183">183: </a><span class="php-comment">     * Is path relative.
-</span></span><span id="184" class="l"><a class="l" href="#184">184: </a><span class="php-comment">     * @return bool
-</span></span><span id="185" class="l"><a class="l" href="#185">185: </a><span class="php-comment">     */</span>
-</span><span id="186" class="l"><a class="l" href="#186">186: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_relative" href="#_relative">relative</a>()
-</span><span id="187" class="l"><a class="l" href="#187">187: </a>    {
-</span><span id="188" class="l"><a class="l" href="#188">188: </a>        <span class="php-keyword1">return</span> !<span class="php-var">$this</span>-&gt;absolute();
-</span><span id="189" class="l"><a class="l" href="#189">189: </a>    }
-</span><span id="190" class="l"><a class="l" href="#190">190: </a></span>}</code></pre>
+</span></span><span id="117" class="l"><a class="l" href="#117">117: </a><span class="php-comment">     */</span>
+</span><span id="118" class="l"><a class="l" href="#118">118: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_absolute" href="#_absolute">absolute</a>(\Coast\Path <span class="php-var">$base</span>)
+</span><span id="119" class="l"><a class="l" href="#119">119: </a>    {
+</span><span id="120" class="l"><a class="l" href="#120">120: </a>        <span class="php-keyword1">if</span> (!<span class="php-var">$this</span>-&gt;isRelative() || !<span class="php-var">$base</span>-&gt;isAbsolute()) {
+</span><span id="121" class="l"><a class="l" href="#121">121: </a>            <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> \Exception(<span class="php-quote">&quot;Path '&quot;</span> . <span class="php-var">$this</span>-&gt;name() . <span class="php-quote">&quot;' is not relative or base path '&quot;</span> . <span class="php-var">$base</span>-&gt;name() . <span class="php-quote">&quot;' is not absolute&quot;</span>);
+</span><span id="122" class="l"><a class="l" href="#122">122: </a>        }
+</span><span id="123" class="l"><a class="l" href="#123">123: </a>
+</span><span id="124" class="l"><a class="l" href="#124">124: </a>        <span class="php-var">$source</span> = <span class="php-keyword2">explode</span>(<span class="php-quote">'/'</span>, <span class="php-var">$base</span>-&gt;name());
+</span><span id="125" class="l"><a class="l" href="#125">125: </a>        <span class="php-var">$target</span> = <span class="php-keyword2">explode</span>(<span class="php-quote">'/'</span>, <span class="php-var">$this</span>-&gt;name());
+</span><span id="126" class="l"><a class="l" href="#126">126: </a>        
+</span><span id="127" class="l"><a class="l" href="#127">127: </a>        <span class="php-var">$name</span> = <span class="php-var">$source</span>;
+</span><span id="128" class="l"><a class="l" href="#128">128: </a>        <span class="php-keyword2">array_pop</span>(<span class="php-var">$name</span>);
+</span><span id="129" class="l"><a class="l" href="#129">129: </a>        <span class="php-keyword1">foreach</span> (<span class="php-var">$target</span> <span class="php-keyword1">as</span> <span class="php-var">$part</span>) {
+</span><span id="130" class="l"><a class="l" href="#130">130: </a>            <span class="php-keyword1">if</span> (<span class="php-var">$part</span> == <span class="php-quote">'..'</span>) {
+</span><span id="131" class="l"><a class="l" href="#131">131: </a>                <span class="php-keyword2">array_pop</span>(<span class="php-var">$name</span>);
+</span><span id="132" class="l"><a class="l" href="#132">132: </a>            } <span class="php-keyword1">elseif</span> (<span class="php-var">$part</span> != <span class="php-quote">'.'</span> &amp;&amp; <span class="php-var">$part</span> != <span class="php-quote">''</span>) {
+</span><span id="133" class="l"><a class="l" href="#133">133: </a>                <span class="php-var">$name</span>[] = <span class="php-var">$part</span>;
+</span><span id="134" class="l"><a class="l" href="#134">134: </a>            }
+</span><span id="135" class="l"><a class="l" href="#135">135: </a>        }
+</span><span id="136" class="l"><a class="l" href="#136">136: </a>        <span class="php-var">$name</span> = <span class="php-keyword2">implode</span>(<span class="php-quote">'/'</span>, <span class="php-var">$name</span>);
+</span><span id="137" class="l"><a class="l" href="#137">137: </a>
+</span><span id="138" class="l"><a class="l" href="#138">138: </a>        <span class="php-var">$class</span> = <span class="php-keyword2">get_class</span>(<span class="php-var">$this</span>);
+</span><span id="139" class="l"><a class="l" href="#139">139: </a>        <span class="php-keyword1">return</span> <span class="php-keyword1">new</span> <span class="php-var">$class</span>(<span class="php-var">$name</span>);
+</span><span id="140" class="l"><a class="l" href="#140">140: </a>    }
+</span><span id="141" class="l"><a class="l" href="#141">141: </a>
+</span><span id="142" class="l"><a class="l" href="#142">142: </a>    <span class="php-comment">/**
+</span></span><span id="143" class="l"><a class="l" href="#143">143: </a><span class="php-comment">     * Get relative path from absolute path.
+</span></span><span id="144" class="l"><a class="l" href="#144">144: </a><span class="php-comment">     * @param  Coast\Path $base Base absolute path.
+</span></span><span id="145" class="l"><a class="l" href="#145">145: </a><span class="php-comment">     * @return Coast\Path
+</span></span><span id="146" class="l"><a class="l" href="#146">146: </a><span class="php-comment">     */</span>
+</span><span id="147" class="l"><a class="l" href="#147">147: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_relative" href="#_relative">relative</a>(\Coast\Path <span class="php-var">$base</span>)
+</span><span id="148" class="l"><a class="l" href="#148">148: </a>    {
+</span><span id="149" class="l"><a class="l" href="#149">149: </a>        <span class="php-keyword1">if</span> (!<span class="php-var">$this</span>-&gt;isAbsolute() || !<span class="php-var">$base</span>-&gt;isAbsolute()) {
+</span><span id="150" class="l"><a class="l" href="#150">150: </a>            <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> \Exception(<span class="php-quote">&quot;Source path '&quot;</span> . <span class="php-var">$this</span>-&gt;name() . <span class="php-quote">&quot;' is not absolute or base path '&quot;</span> . <span class="php-var">$base</span>-&gt;name() . <span class="php-quote">&quot;' is not absolute&quot;</span>);
+</span><span id="151" class="l"><a class="l" href="#151">151: </a>        }
+</span><span id="152" class="l"><a class="l" href="#152">152: </a>        
+</span><span id="153" class="l"><a class="l" href="#153">153: </a>        <span class="php-var">$source</span> = <span class="php-keyword2">explode</span>(<span class="php-quote">'/'</span>, <span class="php-var">$base</span>-&gt;name());
+</span><span id="154" class="l"><a class="l" href="#154">154: </a>        <span class="php-var">$target</span> = <span class="php-keyword2">explode</span>(<span class="php-quote">'/'</span>, <span class="php-var">$this</span>-&gt;name());
+</span><span id="155" class="l"><a class="l" href="#155">155: </a>
+</span><span id="156" class="l"><a class="l" href="#156">156: </a>        <span class="php-var">$name</span> = <span class="php-var">$target</span>;
+</span><span id="157" class="l"><a class="l" href="#157">157: </a>        <span class="php-keyword1">foreach</span> (<span class="php-var">$source</span> <span class="php-keyword1">as</span> <span class="php-var">$i</span> =&gt; <span class="php-var">$part</span>) {
+</span><span id="158" class="l"><a class="l" href="#158">158: </a>            <span class="php-keyword1">if</span> (<span class="php-var">$part</span> == <span class="php-var">$target</span>[<span class="php-var">$i</span>]) {
+</span><span id="159" class="l"><a class="l" href="#159">159: </a>                <span class="php-keyword2">array_shift</span>(<span class="php-var">$name</span>);
+</span><span id="160" class="l"><a class="l" href="#160">160: </a>            } <span class="php-keyword1">else</span> {
+</span><span id="161" class="l"><a class="l" href="#161">161: </a>                <span class="php-var">$name</span> = <span class="php-keyword2">array_pad</span>(<span class="php-var">$name</span>, (<span class="php-keyword2">count</span>(<span class="php-var">$name</span>) + (<span class="php-keyword2">count</span>(<span class="php-var">$source</span>) - <span class="php-var">$i</span>) - <span class="php-num">1</span>) * -<span class="php-num">1</span>, <span class="php-quote">'..'</span>);
+</span><span id="162" class="l"><a class="l" href="#162">162: </a>                <span class="php-keyword1">break</span>;
+</span><span id="163" class="l"><a class="l" href="#163">163: </a>            }
+</span><span id="164" class="l"><a class="l" href="#164">164: </a>        }
+</span><span id="165" class="l"><a class="l" href="#165">165: </a>        <span class="php-var">$name</span> = <span class="php-keyword2">implode</span>(<span class="php-quote">'/'</span>, <span class="php-var">$name</span>);
+</span><span id="166" class="l"><a class="l" href="#166">166: </a>
+</span><span id="167" class="l"><a class="l" href="#167">167: </a>        <span class="php-var">$class</span> = <span class="php-keyword2">get_class</span>(<span class="php-var">$this</span>);
+</span><span id="168" class="l"><a class="l" href="#168">168: </a>        <span class="php-keyword1">return</span> <span class="php-keyword1">new</span> <span class="php-var">$class</span>(<span class="php-var">$name</span>);
+</span><span id="169" class="l"><a class="l" href="#169">169: </a>    }
+</span><span id="170" class="l"><a class="l" href="#170">170: </a>
+</span><span id="171" class="l"><a class="l" href="#171">171: </a>    <span class="php-comment">/**
+</span></span><span id="172" class="l"><a class="l" href="#172">172: </a><span class="php-comment">     * Is path absolute.
+</span></span><span id="173" class="l"><a class="l" href="#173">173: </a><span class="php-comment">     * @return bool
+</span></span><span id="174" class="l"><a class="l" href="#174">174: </a><span class="php-comment">     */</span>
+</span><span id="175" class="l"><a class="l" href="#175">175: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_isAbsolute" href="#_isAbsolute">isAbsolute</a>()
+</span><span id="176" class="l"><a class="l" href="#176">176: </a>    {
+</span><span id="177" class="l"><a class="l" href="#177">177: </a>        <span class="php-keyword1">return</span> <span class="php-keyword2">substr</span>(<span class="php-var">$this</span>-&gt;name(), <span class="php-num">0</span>, <span class="php-num">1</span>) == <span class="php-quote">'/'</span>;
+</span><span id="178" class="l"><a class="l" href="#178">178: </a>    }
+</span><span id="179" class="l"><a class="l" href="#179">179: </a>
+</span><span id="180" class="l"><a class="l" href="#180">180: </a>    <span class="php-comment">/**
+</span></span><span id="181" class="l"><a class="l" href="#181">181: </a><span class="php-comment">     * Is path relative.
+</span></span><span id="182" class="l"><a class="l" href="#182">182: </a><span class="php-comment">     * @return bool
+</span></span><span id="183" class="l"><a class="l" href="#183">183: </a><span class="php-comment">     */</span>
+</span><span id="184" class="l"><a class="l" href="#184">184: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_isRelative" href="#_isRelative">isRelative</a>()
+</span><span id="185" class="l"><a class="l" href="#185">185: </a>    {
+</span><span id="186" class="l"><a class="l" href="#186">186: </a>        <span class="php-keyword1">return</span> !<span class="php-var">$this</span>-&gt;isAbsolute();
+</span><span id="187" class="l"><a class="l" href="#187">187: </a>    }
+</span><span id="188" class="l"><a class="l" href="#188">188: </a></span>}</code></pre>
 
 	<div id="footer">
 		Coast API Documentation API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
