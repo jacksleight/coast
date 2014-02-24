@@ -19,7 +19,7 @@
 
 ## Running
 
-You can then run them through PHP's CLI web server:
+You can run these examples through PHP's CLI web server:
 
 ```bash
 cd examples/[example name]
