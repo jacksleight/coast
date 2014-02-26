@@ -8,7 +8,7 @@
 	<title>File Coast/App/Request.php | Coast API Documentation</title>
 
 	<script type="text/javascript" src="resources/combined.js?2587632619"></script>
-	<script type="text/javascript" src="elementlist.js?2881286496"></script>
+	<script type="text/javascript" src="elementlist.js?3170320727"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360">
 
 </head>
@@ -35,7 +35,7 @@
 							</ul></li>
 				<li><a href="namespace-Coast.Dir.html">Dir</a>
 						</li>
-				<li><a href="namespace-Coast.Dom.html">Dom</a>
+				<li><a href="namespace-Coast.Feed.html">Feed</a>
 						</li>
 				<li><a href="namespace-Coast.File.html">File<span></span></a>
 						<ul>
@@ -511,9 +511,9 @@
 </span><span id="391" class="l"><a class="l" href="#391">391: </a>        <span class="php-keyword1">return</span> <span class="php-keyword2">json_decode</span>(<span class="php-var">$this</span>-&gt;_body, <span class="php-var">$assoc</span>, <span class="php-var">$depth</span>, <span class="php-var">$options</span>);
 </span><span id="392" class="l"><a class="l" href="#392">392: </a>    }
 </span><span id="393" class="l"><a class="l" href="#393">393: </a>
-</span><span id="394" class="l"><a class="l" href="#394">394: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_xml" href="#_xml">xml</a>(<span class="php-var">$class</span> = <span class="php-quote">'SimpleXMLElement'</span>, <span class="php-var">$options</span> = <span class="php-num">0</span>, <span class="php-var">$namespace</span> = <span class="php-quote">''</span>, <span class="php-var">$prefix</span> = <span class="php-keyword1">false</span>)
+</span><span id="394" class="l"><a class="l" href="#394">394: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_xml" href="#_xml">xml</a>(<span class="php-var">$class</span> = <span class="php-quote">'\SimpleXMLElement'</span>, <span class="php-var">$options</span> = <span class="php-num">0</span>, <span class="php-var">$namespace</span> = <span class="php-quote">''</span>, <span class="php-var">$prefix</span> = <span class="php-keyword1">false</span>)
 </span><span id="395" class="l"><a class="l" href="#395">395: </a>    {
-</span><span id="396" class="l"><a class="l" href="#396">396: </a>        <span class="php-keyword1">return</span> <span class="php-keyword2">simplexml_load_string</span>(<span class="php-var">$this</span>-&gt;_body, <span class="php-var">$class</span>, <span class="php-var">$options</span>, <span class="php-var">$namespace</span>, <span class="php-var">$prefix</span>);
+</span><span id="396" class="l"><a class="l" href="#396">396: </a>        <span class="php-keyword1">return</span> <span class="php-keyword1">new</span> <span class="php-var">$class</span>(<span class="php-var">$this</span>-&gt;_body, <span class="php-var">$options</span>, <span class="php-keyword1">false</span>, <span class="php-var">$namespace</span>, <span class="php-var">$prefix</span>);
 </span><span id="397" class="l"><a class="l" href="#397">397: </a>    }
 </span><span id="398" class="l"><a class="l" href="#398">398: </a>
 </span><span id="399" class="l"><a class="l" href="#399">399: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_cookie" href="#_cookie">cookie</a>(<span class="php-var">$name</span>, <span class="php-var">$value</span> = <span class="php-keyword1">null</span>)

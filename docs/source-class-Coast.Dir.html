@@ -8,7 +8,7 @@
 	<title>File Coast/Dir.php | Coast API Documentation</title>
 
 	<script type="text/javascript" src="resources/combined.js?2587632619"></script>
-	<script type="text/javascript" src="elementlist.js?2881286496"></script>
+	<script type="text/javascript" src="elementlist.js?3170320727"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360">
 
 </head>
@@ -35,7 +35,7 @@
 							</ul></li>
 				<li><a href="namespace-Coast.Dir.html">Dir</a>
 						</li>
-				<li><a href="namespace-Coast.Dom.html">Dom</a>
+				<li><a href="namespace-Coast.Feed.html">Feed</a>
 						</li>
 				<li><a href="namespace-Coast.File.html">File<span></span></a>
 						<ul>
@@ -57,7 +57,6 @@
 				<li><a href="class-Coast.App.html">App</a></li>
 				<li><a href="class-Coast.Config.html">Config</a></li>
 				<li class="active"><a href="class-Coast.Dir.html">Dir</a></li>
-				<li><a href="class-Coast.Feed.html">Feed</a></li>
 				<li><a href="class-Coast.File.html">File</a></li>
 				<li><a href="class-Coast.Http.html">Http</a></li>
 				<li><a href="class-Coast.Path.html">Path</a></li>
@@ -162,11 +161,11 @@
 </span><span id="23" class="l"><a class="l" href="#23">23: </a>
 </span><span id="24" class="l"><a class="l" href="#24">24: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_make" href="#_make">make</a>(<span class="php-var">$mode</span> = <span class="php-keyword1">null</span>)
 </span><span id="25" class="l"><a class="l" href="#25">25: </a>    {
-</span><span id="26" class="l"><a class="l" href="#26">26: </a>        <span class="php-var">$stack</span> = <span class="php-keyword2">explode</span>(<span class="php-quote">&quot;/&quot;</span>, <span class="php-var">$this</span>-&gt;name());
+</span><span id="26" class="l"><a class="l" href="#26">26: </a>        <span class="php-var">$stack</span> = <span class="php-keyword2">explode</span>(<span class="php-quote">'/'</span>, <span class="php-var">$this</span>-&gt;name());
 </span><span id="27" class="l"><a class="l" href="#27">27: </a>        <span class="php-var">$parts</span> = [];
 </span><span id="28" class="l"><a class="l" href="#28">28: </a>        <span class="php-keyword1">while</span> (<span class="php-keyword2">count</span>(<span class="php-var">$stack</span>) &gt; <span class="php-num">0</span>) {
 </span><span id="29" class="l"><a class="l" href="#29">29: </a>            <span class="php-keyword2">array_push</span>(<span class="php-var">$parts</span>, <span class="php-keyword2">array_shift</span>(<span class="php-var">$stack</span>));
-</span><span id="30" class="l"><a class="l" href="#30">30: </a>            <span class="php-var">$create</span> = <span class="php-keyword2">implode</span>(<span class="php-quote">&quot;/&quot;</span>, <span class="php-var">$parts</span>);
+</span><span id="30" class="l"><a class="l" href="#30">30: </a>            <span class="php-var">$create</span> = <span class="php-keyword2">implode</span>(<span class="php-quote">'/'</span>, <span class="php-var">$parts</span>);
 </span><span id="31" class="l"><a class="l" href="#31">31: </a>            <span class="php-keyword1">if</span> (<span class="php-keyword2">strlen</span>(<span class="php-var">$create</span>) == <span class="php-num">0</span>) {
 </span><span id="32" class="l"><a class="l" href="#32">32: </a>                <span class="php-keyword1">continue</span>;
 </span><span id="33" class="l"><a class="l" href="#33">33: </a>            }

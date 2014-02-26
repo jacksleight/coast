@@ -4,7 +4,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="generator" content="ApiGen 2.8.0">
 
-	<title>Interface Coast\App\Access | Coast API Documentation</title>
+	<title>Class Coast\Feed\Atom | Coast API Documentation</title>
 
 	<script type="text/javascript" src="resources/combined.js?2587632619"></script>
 	<script type="text/javascript" src="elementlist.js?3170320727"></script>
@@ -23,7 +23,7 @@
 			<ul>
 				<li class="active"><a href="namespace-Coast.html">Coast<span></span></a>
 						<ul>
-				<li class="active"><a href="namespace-Coast.App.html">App<span></span></a>
+				<li><a href="namespace-Coast.App.html">App<span></span></a>
 						<ul>
 				<li><a href="namespace-Coast.App.Access.html">Access</a>
 						</li>
@@ -34,7 +34,7 @@
 							</ul></li>
 				<li><a href="namespace-Coast.Dir.html">Dir</a>
 						</li>
-				<li><a href="namespace-Coast.Feed.html">Feed</a>
+				<li class="active"><a href="namespace-Coast.Feed.html">Feed</a>
 						</li>
 				<li><a href="namespace-Coast.File.html">File<span></span></a>
 						<ul>
@@ -53,26 +53,11 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
-				<li><a href="class-Coast.App.Controller.html">Controller</a></li>
-				<li><a href="class-Coast.App.Request.html">Request</a></li>
-				<li><a href="class-Coast.App.Response.html">Response</a></li>
-				<li><a href="class-Coast.App.Router.html">Router</a></li>
-				<li><a href="class-Coast.App.Url.html">Url</a></li>
-				<li><a href="class-Coast.App.View.html">View</a></li>
-			</ul>
-
-			<h3>Interfaces</h3>
-			<ul>
-				<li class="active"><a href="class-Coast.App.Access.html">Access</a></li>
-				<li><a href="class-Coast.App.Executable.html">Executable</a></li>
-				<li><a href="class-Coast.App.Routable.html">Routable</a></li>
+				<li class="active"><a href="class-Coast.Feed.Atom.html">Atom</a></li>
 			</ul>
 
 
-			<h3>Exceptions</h3>
-			<ul>
-				<li><a href="class-Coast.App.Exception.html">Exception</a></li>
-			</ul>
+
 
 
 		</div>
@@ -96,7 +81,7 @@
 				<a href="index.html" title="Overview"><span>Overview</span></a>
 			</li>
 			<li>
-				<a href="namespace-Coast.App.html" title="Summary of Coast\App"><span>Namespace</span></a>
+				<a href="namespace-Coast.Feed.html" title="Summary of Coast\Feed"><span>Namespace</span></a>
 			</li>
 			<li class="active">
 <span>Class</span>			</li>
@@ -117,7 +102,7 @@
 	</div>
 
 <div id="content" class="class">
-	<h1>Interface Access</h1>
+	<h1>Class Atom</h1>
 
 
 
@@ -125,13 +110,6 @@
 
 
 
-	<div>
-		<h4>Direct known implementers</h4>
-			<a href="class-Coast.App.Controller.html">Coast\App\Controller</a>, 
-			<a href="class-Coast.App.Router.html">Coast\App\Router</a>, 
-			<a href="class-Coast.App.Url.html">Coast\App\Url</a>, 
-			<a href="class-Coast.App.View.html">Coast\App\View</a>
-	</div>
 
 
 
@@ -139,17 +117,17 @@
 	<div class="info">
 		
 		
-		<b>Namespace:</b> <a href="namespace-Coast.html">Coast</a>\<a href="namespace-Coast.App.html">App</a><br>
+		<b>Namespace:</b> <a href="namespace-Coast.html">Coast</a>\<a href="namespace-Coast.Feed.html">Feed</a><br>
 		
 
-		<b>Located at</b> <a href="source-class-Coast.App.Access.html#9-18" title="Go to source code">Coast/App/Access.php</a><br>
+		<b>Located at</b> <a href="source-class-Coast.Feed.Atom.html#9-46" title="Go to source code">Coast/Feed/Atom.php</a><br>
 	</div>
 
 
 
 	<table class="summary" id="methods">
 	<caption>Methods summary</caption>
-	<tr data-order="app" id="_app">
+	<tr data-order="__construct" id="___construct">
 
 		<td class="attributes"><code>
 			 public 
@@ -159,8 +137,8 @@
 		</td>
 
 		<td class="name"><div>
-		<a class="anchor" href="#_app">#</a>
-		<code><a href="source-class-Coast.App.Access.html#11" title="Go to source code">app</a>( <span><code><a href="class-Coast.App.html">Coast\App</a></code> <var>$app</var></span> )</code>
+		<a class="anchor" href="#___construct">#</a>
+		<code><a href="source-class-Coast.Feed.Atom.html#13-23" title="Go to source code">__construct</a>( <span>mixed <var>$title</var></span>, <span><code><a href="class-Coast.Url.html">Coast\Url</a></code> <var>$link</var></span>, <span>mixed <var>$author</var></span>, <span>DateTime <var>$updated</var></span> )</code>
 
 		<div class="description short">
 			
@@ -178,7 +156,7 @@
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="__get" id="___get">
+	<tr data-order="add" id="_add">
 
 		<td class="attributes"><code>
 			 public 
@@ -188,8 +166,8 @@
 		</td>
 
 		<td class="name"><div>
-		<a class="anchor" href="#___get">#</a>
-		<code><a href="source-class-Coast.App.Access.html#13" title="Go to source code">__get</a>( <span>mixed <var>$name</var></span> )</code>
+		<a class="anchor" href="#_add">#</a>
+		<code><a href="source-class-Coast.Feed.Atom.html#25-35" title="Go to source code">add</a>( <span>mixed <var>$title</var></span>, <span><code><a href="class-Coast.Url.html">Coast\Url</a></code> <var>$link</var></span>, <span>DateTime <var>$updated</var></span>, <span>mixed <var>$summary</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -207,7 +185,7 @@
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="__isset" id="___isset">
+	<tr data-order="xml" id="_xml">
 
 		<td class="attributes"><code>
 			 public 
@@ -217,8 +195,8 @@
 		</td>
 
 		<td class="name"><div>
-		<a class="anchor" href="#___isset">#</a>
-		<code><a href="source-class-Coast.App.Access.html#15" title="Go to source code">__isset</a>( <span>mixed <var>$name</var></span> )</code>
+		<a class="anchor" href="#_xml">#</a>
+		<code><a href="source-class-Coast.Feed.Atom.html#37-40" title="Go to source code">xml</a>( )</code>
 
 		<div class="description short">
 			
@@ -236,7 +214,7 @@
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="__call" id="___call">
+	<tr data-order="__toString" id="___toString">
 
 		<td class="attributes"><code>
 			 public 
@@ -246,8 +224,8 @@
 		</td>
 
 		<td class="name"><div>
-		<a class="anchor" href="#___call">#</a>
-		<code><a href="source-class-Coast.App.Access.html#17" title="Go to source code">__call</a>( <span>mixed <var>$name</var></span>, <span>array <var>$args</var></span> )</code>
+		<a class="anchor" href="#___toString">#</a>
+		<code><a href="source-class-Coast.Feed.Atom.html#42-45" title="Go to source code">__toString</a>( )</code>
 
 		<div class="description short">
 			
@@ -278,6 +256,32 @@
 
 
 
+	<table class="summary" id="properties">
+	<caption>Properties summary</caption>
+	<tr data-order="_xml" id="$_xml">
+		<td class="attributes"><code>
+			protected  
+			mixed
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Coast.Feed.Atom.html#11" title="Go to source code"><var>$_xml</var></a>
+		</td>
+		<td class="value"><code></code></td>
+		<td class="description"><div>
+			<a href="#$_xml" class="anchor">#</a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</div></td>
+	</tr>
+	</table>
 
 
 
