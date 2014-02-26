@@ -147,7 +147,7 @@ class Url implements \Coast\App\Access
 
         $url = new \Coast\Url($path);
         if ($version && $file instanceof \Coast\File && $file->exists()) {
-            $url->queryParam($file->modifiedTime()->getTimestamp(), '');
+            $url->queryParam($file->modifyTime()->getTimestamp(), '');
         }
 
         return $url;

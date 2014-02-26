@@ -23,11 +23,11 @@ class Dir extends \Coast\File\Path implements \IteratorAggregate
 
     public function make($mode = null)
     {
-        $stack = explode("/", $this->name());
+        $stack = explode('/', $this->name());
         $parts = [];
         while (count($stack) > 0) {
             array_push($parts, array_shift($stack));
-            $create = implode("/", $parts);
+            $create = implode('/', $parts);
             if (strlen($create) == 0) {
                 continue;
             }
