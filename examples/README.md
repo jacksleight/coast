@@ -20,8 +20,6 @@
     Usage of the `Coast\Sitemap` component.
 * [**Feed**](feed)  
     Usage of the `Coast\Feed\Atom` component.
-* [**URL**](url)  
-    Usage of the `Coast\URL` component.
 
 ## Running
 
