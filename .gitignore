@@ -1,6 +1,7 @@
 /vendor
 /report
 /build
+/node_modules
 
 composer.lock
 error.log
