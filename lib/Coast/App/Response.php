@@ -116,13 +116,20 @@ class Response
             ->body(json_encode($data, $options, $depth));
     }
 
-    public function xml(\SimpleXMLElement $data, $type = null)
-    {
+    public function xml($data, $type = null, $options = null)
+    {  
+        if ($data instanceof \SimpleXMLElement) {
+            $data = $data->asXML();
+        } else if ($data instanceof \Coast\Xml\Wrapper) {
+            $data = $data->xml()->asXML();
+        } else if ($data instanceof \DOMDocument) {
+            $data = $data->saveXML($options);
+        }
         return $this
             ->type(isset($type)
                 ? "application/{$type}+xml"
                 : 'application/xml')
-            ->body($data->asXML());
+            ->body((string) $data);
     }
 
     public function redirect($type, $url)

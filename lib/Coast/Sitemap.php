@@ -6,7 +6,7 @@
 
 namespace Coast;
 
-class Sitemap
+class Sitemap implements \Coast\Xml\Wrapper
 {
     const CHANGES_ALWAYS  = 'always';
     const CHANGES_HOURLY  = 'hourly';

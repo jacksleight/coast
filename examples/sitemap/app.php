@@ -16,7 +16,7 @@ $app->add(function(Request $req, Response $res) {
 		Sitemap::CHANGES_WEEKLY,
 		1
 	);
-    return $res->xml($sitemap->xml());
+    return $res->xml($sitemap);
 });
 
 $app->execute((new Request())->import())->export();
