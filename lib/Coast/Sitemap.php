@@ -6,7 +6,7 @@
 
 namespace Coast;
 
-class Sitemap extends \Coast\Xml\Wrapper
+class Sitemap
 {
     const CHANGES_ALWAYS  = 'always';
     const CHANGES_HOURLY  = 'hourly';
@@ -16,10 +16,12 @@ class Sitemap extends \Coast\Xml\Wrapper
     const CHANGES_YEARLY  = 'yearly';
     const CHANGES_NEVER   = 'never';
 
+    protected $_xml;
+
     public function __construct()
     {
-        parent::__construct('urlset');
-        $this->addAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
+       $this->_xml = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><urlset/>');
+       $this->_xml->addAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
     }
 
     public function add(\Coast\Url $loc, \DateTime $modified = null, $changes = null, $priority = null)
@@ -45,7 +47,7 @@ class Sitemap extends \Coast\Xml\Wrapper
                 }
             }
         }
-        $url = $this->addChild('url');
+        $url = $this->_xml->addChild('url');
         $loc = $url->addChild('loc', $loc->name());
         if (isset($modified)) {
             $url->addChild('lastmod', $modified->format(\DateTime::W3C));
@@ -56,5 +58,15 @@ class Sitemap extends \Coast\Xml\Wrapper
         if (isset($priority)) {
             $url->addChild('priority', number_format($priority, 1, '.', null));
         }
+    }
+
+    public function xml()
+    {
+        return $this->_xml->asXML();
+    }
+
+    public function __toString()
+    {
+        return $this->xml();
     }
 }
