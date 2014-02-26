@@ -6,25 +6,25 @@
 
 namespace Coast\Feed;
 
-class Atom extends \Coast\Xml\Wrapper
+class Atom
 {
-    protected $_root;
+    protected $_xml;
 
     public function __construct($title, \Coast\Url $link, $author, \DateTime $updated)
     {
-        parent::__construct('feed');
-        $this->addAttribute('xmlns', 'http://www.w3.org/2005/Atom');
+        $this->_xml = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><feed/>');
+        $this->_xml->addAttribute('xmlns', 'http://www.w3.org/2005/Atom');
 
-        $this->addChild('title', $title);
-        $this->addChild('id', $link->name());
-        $this->addChild('link')->addAttribute('href', $link);
-        $this->addChild('author')->addChild('name', $author);
-        $this->addChild('updated', $updated->format(\DateTime::W3C));
+        $this->_xml->addChild('title', $title);
+        $this->_xml->addChild('id', $link->name());
+        $this->_xml->addChild('link')->addAttribute('href', $link);
+        $this->_xml->addChild('author')->addChild('name', $author);
+        $this->_xml->addChild('updated', $updated->format(\DateTime::W3C));
     }
 
     public function add($title, \Coast\Url $link, \DateTime $updated, $summary = null)
     {
-        $entry = $this->addChild('entry');
+        $entry = $this->_xml->addChild('entry');
         $entry->addChild('id', $link->name());
         $entry->addChild('title', $title);
         $entry->addChild('link')->addAttribute('href', $link);
@@ -32,5 +32,15 @@ class Atom extends \Coast\Xml\Wrapper
         if (isset($summary)) {
             $entry->addChild('summary', $summary);
         }
+    }
+
+    public function xml()
+    {
+        return $this->_xml->asXML();
+    }
+
+    public function __toString()
+    {
+        return $this->xml();
     }
 }
