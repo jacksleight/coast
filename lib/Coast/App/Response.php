@@ -116,18 +116,13 @@ class Response
             ->body(json_encode($data, $options, $depth));
     }
 
-    public function xml($data, $options = null)
+    public function xml(\SimpleXMLElement $data, $type = null)
     {
-        if ($data instanceof \SimpleXMLElement) {
-            $data = $data->asXML();
-        } else if ($data instanceof \DOMDocument) {
-            $data = $data->saveXML($options);
-        } else {
-            throw new \Coast\App\Exception("Response->xml() method expects a \DOMDocument or \SimpleXMLElement object");
-        }
         return $this
-            ->type('application/xml')
-            ->body($data);
+            ->type(isset($type)
+                ? "application/{$type}+xml"
+                : 'application/xml')
+            ->body($data->asXML());
     }
 
     public function redirect($type, $url)

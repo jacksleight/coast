@@ -393,7 +393,7 @@ class Request
 
     public function xml($class = 'SimpleXMLElement', $options = 0, $namespace = '', $prefix = false)
     {
-        return simplexml_load_string($this->_body, $class, $options, $namespace, $prefix);
+        return new $class($this->_body, $options, false, $namespace, $prefix);
     }
 
     public function cookie($name, $value = null)
