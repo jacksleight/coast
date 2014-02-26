@@ -20,7 +20,7 @@ class Sitemap implements \Coast\Xml\Wrapper
 
     public function __construct()
     {
-        $this->_xml = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><urlset/>');
+        $this->_xml = new \Coast\Xml('<?xml version="1.0" encoding="UTF-8"?><urlset/>');
         $this->_xml->addAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
     }
 
