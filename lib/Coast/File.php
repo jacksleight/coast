@@ -10,7 +10,7 @@ class File extends \Coast\File\Path
 {
     public static function tempoary()
     {
-        $path = str_replace(DIRECTORY_SEPARATOR, '/', tempnam(sys_get_temp_dir(), 'temp_'));
+        $path = str_replace(DIRECTORY_SEPARATOR, '/', tempnam(sys_get_temp_dir(), 'php'));
         if (!$path) {
             throw new \Exception('Could not create tempoary file');
         }
@@ -85,17 +85,17 @@ class File extends \Coast\File\Path
         return new \Coast\Dir($this->name(\Coast\Path::DIRNAME), $mode);
     }
 
-    public function accessedTime()
+    public function accessTime()
     {
         return (new \DateTime())->setTimestamp(fileatime($this->name()));
     }
 
-    public function changedTime()
+    public function changeTime()
     {
         return (new \DateTime())->setTimestamp(filectime($this->name()));
     }
 
-    public function modifiedTime()
+    public function modifyTime()
     {
         return (new \DateTime())->setTimestamp(filemtime($this->name()));
     }
