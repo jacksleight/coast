@@ -17,8 +17,8 @@ class Url implements \Coast\App\Access
             'base'    => '/',
             'dir'     => '',
             'cdnBase' => null,
-            'version' => false,
             'router'  => null,
+            'version' => true,
         ], $options));
     }
 
@@ -62,15 +62,15 @@ class Url implements \Coast\App\Access
 
     public function base()
     {
-        return $this->_options->base->name();
+        return new \Coast\Url($this->_options->base->name());
     }
 
     public function string($string, $base = true)
     {
         $path = (string) $string;
-        return $base
+        return new \Coast\Url($base
             ? $this->_options->base . $path
-            : $path;
+            : $path);
     }
 
     public function route(array $params = array(), $name = null, $reset = false, $base = true)
@@ -94,17 +94,17 @@ class Url implements \Coast\App\Access
             );
         }
         $path = ltrim($this->_options->router->reverse($name, $params), '/');
-        return $base
+        return new \Coast\Url($base
             ? $this->_options->base . $path
-            : $path;
+            : $path);
     }
 
-    public function url(\Coast\Url $url, $to = null, $start = false)
+    public function url(\Coast\Url $url)
     {
-        return $url->name($to, $start);
+        return $url;
     }
 
-    public function dir($dir, $base = true, $cdn = true)
+    public function dir($dir, $base = true, $cdn = true, $version = null)
     {
         $dir = !$dir instanceof \Coast\Dir
             ? new \Coast\Dir("{$dir}")
@@ -112,7 +112,7 @@ class Url implements \Coast\App\Access
         return $this->path($dir, $base, $cdn);
     }
 
-    public function file($file, $base = true, $cdn = true)
+    public function file($file, $base = true, $cdn = true, $version = null)
     {
         $file = !$file instanceof \Coast\File
             ? new \Coast\File("{$file}")
@@ -120,8 +120,12 @@ class Url implements \Coast\App\Access
         return $this->path($file, $base, $cdn);
     }
 
-    public function path($path, $base = true, $cdn = true)
+    public function path($path, $base = true, $cdn = true, $version = null)
     {
+        $version = isset($version)
+            ? $version
+            : $this->_options->version;
+
         $path = !$path instanceof \Coast\Path
             ? new \Coast\Path("{$path}")
             : $path;
@@ -133,48 +137,38 @@ class Url implements \Coast\App\Access
             throw new \Coast\App\Exception("Path '{$path}' is not within base directory");
         }
 
-        if ($this->_options->version && $path instanceof \Coast\File && $path->exists()) {
-            $time     = $path->modify()->getTimestamp();
-            $dirname  = $path->dirname();
-            $filename = $path->filename();
-            $extname  = $path->extname();
-            $dirname = $dirname != '.'
-                ? "{$dirname}/"
-                : '';
-            $path = new \Coast\File("{$dirname}{$filename}.{$time}.{$extname}");
-        }
-
+        $file = $path;
         $path = $path->relative($this->_options->dir);
         if ($base) {
             $path = $cdn && isset($this->_options->cdnBase)
                 ? $this->_options->cdnBase . $path
                 : $this->_options->base . $path;
         }
-        return $path;
-    }
 
-    public function query(array $params = array(), $reset = false, $mark = true)
-    {
-        $params = $this->_parseQueryParams($params, $reset);
-        $query  = array();
-        foreach ($params as $name => $value) {
-            $query[] = $name . '=' . urlencode($value);
+        $url = new \Coast\Url($path);
+        if ($version && $file instanceof \Coast\File && $file->exists()) {
+            $url->queryParam($file->modifiedTime()->getTimestamp(), '');
         }
-        $query = implode('&', $query);
-        
-        return $mark
-            ? '?' . $query
-            : $query;
+
+        return $url;
     }
 
-    public function inputs(array $params = array(), $reset = false)
+    public function query(array $params = array(), $reset = false)
+    {
+        $url = new \Coast\Url();
+        $url->queryParams($this->_parseQueryParams($params, $reset));
+        
+        return $url;
+    }
+
+    public function queryInputs(array $params = array(), $reset = false)
     {
         $params = $this->_parseQueryParams($params, $reset);
         $inputs = array();
         foreach ($params as $name => $value) {
             $inputs[] = '<input type="hidden" name="' . $name . '" value="' . $value . '">';
         }
-        
+       
         return implode($inputs);
     }
 
@@ -186,8 +180,7 @@ class Url implements \Coast\App\Access
                 $params
             );
         }
-        $params = \Coast\array_filter_null_recursive($params);
-        
-        return $params;
+
+        return \Coast\array_filter_null_recursive($params);
     }
 }

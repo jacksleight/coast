@@ -180,16 +180,6 @@ class Url
         return $this->_path;
     }
 
-    public function query($value = null)
-    {
-        if (isset($value)) {
-            parse_str($query, $params);
-            $this->queryParams($params);
-            return $this;
-        }
-        return http_build_query($this->queryParams());
-    }
-
     public function queryParam($name, $value = null)
     {
         if (isset($value)) {
@@ -210,6 +200,20 @@ class Url
             return $this;
         }
         return $this->_queryParams;
+    }
+
+    public function query($value = null)
+    {
+        if (isset($value)) {
+            parse_str($value, $params);
+            $this->queryParams($params);
+            return $this;
+        }
+        $query = array();
+        foreach ($this->queryParams() as $name => $value) {
+            $query[] = $name . (strlen($value) ? '=' . urlencode($value) : null);
+        }
+        return implode('&', $query);
     }
 
     public function fragment($value = null)

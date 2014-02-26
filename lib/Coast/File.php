@@ -85,17 +85,17 @@ class File extends \Coast\File\Path
         return new \Coast\Dir($this->name(\Coast\Path::DIRNAME), $mode);
     }
 
-    public function access()
+    public function accessedTime()
     {
         return (new \DateTime())->setTimestamp(fileatime($this->name()));
     }
 
-    public function change()
+    public function changedTime()
     {
         return (new \DateTime())->setTimestamp(filectime($this->name()));
     }
 
-    public function modify()
+    public function modifiedTime()
     {
         return (new \DateTime())->setTimestamp(filemtime($this->name()));
     }
