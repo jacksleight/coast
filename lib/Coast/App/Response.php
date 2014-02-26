@@ -120,8 +120,6 @@ class Response
     {  
         if ($data instanceof \SimpleXMLElement) {
             $data = $data->asXML();
-        } else if ($data instanceof \Coast\Xml\Wrapper) {
-            $data = $data->xml()->asXML();
         } else if ($data instanceof \DOMDocument) {
             $data = $data->saveXML($options);
         }
