@@ -6,7 +6,7 @@
 
 namespace Coast;
 
-class Sitemap extends \Coast\Dom\Document
+class Sitemap
 {
     const CHANGES_ALWAYS  = 'always';
     const CHANGES_HOURLY  = 'hourly';
@@ -16,20 +16,15 @@ class Sitemap extends \Coast\Dom\Document
     const CHANGES_YEARLY  = 'yearly';
     const CHANGES_NEVER   = 'never';
 
-    protected $_root;
+    protected $_xml;
 
     public function __construct()
     {
-        parent::__construct('1.0', 'UTF-8');
-        $this->formatOutput = false;
-
-        $this->_root = $this->createElement('urlset', [
-            'xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9',
-        ]);
-        $this->appendChild($this->_root);
+        $this->_xml = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><urlset/>');
+        $this->_xml->addAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
     }
 
-    public function add($location, \DateTime $modified = null, $changes = null, $priority = null)
+    public function add(\Coast\Url $loc, \DateTime $modified = null, $changes = null, $priority = null)
     {
         if (is_array($changes)) {
             list($since, $count) = $changes;
@@ -52,18 +47,21 @@ class Sitemap extends \Coast\Dom\Document
                 }
             }
         }
-        $url = $this->createElement('url', [
-            $this->createElement('loc', $location),
-        ]);
+        $url = $this->_xml->addChild('url');
+        $loc = $url->addChild('loc', $loc->name());
         if (isset($modified)) {
-            $url->appendChild($this->createElement('lastmod', $modified->format(\DateTime::W3C)));
+            $url->addChild('lastmod', $modified->format(\DateTime::W3C));
         }
         if (isset($changes)) {
-            $url->appendChild($this->createElement('changefreq', $changes));
+            $url->addChild('changefreq', $changes);
         }
         if (isset($priority)) {
-            $url->appendChild($this->createElement('priority', number_format($priority, 1, '.', null)));
+            $url->addChild('priority', number_format($priority, 1, '.', null));
         }
-        $this->_root->appendChild($url);
+    }
+
+    public function xml()
+    {
+        return $this->_xml;
     }
 }
