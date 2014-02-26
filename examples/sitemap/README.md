@@ -1,3 +1,3 @@
 # Sitemap
 
-Example usage of the XML sitemap component.
+Example usage of the sitemap component.
