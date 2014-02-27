@@ -8,7 +8,10 @@ namespace Coast;
 
 class File extends \Coast\File\Path
 {
-    public static function createTempoary()
+    protected $_chars = [',', '"', '\\'];
+    protected $_handle;
+
+    public static function createTemp()
     {
         $path = str_replace(DIRECTORY_SEPARATOR, '/', tempnam(sys_get_temp_dir(), 'php'));
         if (!$path) {
@@ -16,10 +19,103 @@ class File extends \Coast\File\Path
         }
         return new \Coast\File($path);
     }
-    
-    public function open($mode = 'r', $class = 'Coast\File\Data')
+
+    public function chars($delimiter = ',', $enclosure = '"', $escape = '\\')
     {
-        return new $class($this->_value, $mode);
+        $this->_chars = [$delimiter, $enclosure, $escape];
+        return $this;
+    }
+    
+    public function open($mode = 'r')
+    {
+        $this->_handle = fopen($this->_value, $mode);
+        return $this;
+    }
+
+    public function close($class = 'Coast\File')
+    {
+        if (!isset($this->_handle)) {
+            throw new \Exception("File '{$this}' is not open");
+        }
+        fclose($this->_handle);
+        $this->_handle = null;
+        return $this;
+    }
+
+    public function read($length = null)
+    {
+        if (!isset($this->_handle)) {
+            throw new \Exception("File '{$this}' is not open");
+        }
+        $size = $this->size();
+        return isset($length)
+            ? fread($this->_handle, $length)
+            : fread($this->_handle, $size ? $size : 1);
+    }
+
+    public function write($string, $length = null)
+    {
+        if (!isset($this->_handle)) {
+            throw new \Exception("File '{$this}' is not open");
+        }
+        isset($length)
+            ? fwrite($this->_handle, $string, $length)
+            : fwrite($this->_handle, $string);
+        return $this;
+    }
+
+    public function get($length = null)
+    {
+        if (!isset($this->_handle)) {
+            throw new \Exception("File '{$this}' is not open");
+        }
+        return isset($length)
+            ? fgets($this->_handle, $length)
+            : fgets($this->_handle);
+    }
+
+    public function put($string, $length = null)
+    {
+        if (!isset($this->_handle)) {
+            throw new \Exception("File '{$this}' is not open");
+        }
+        $this->write($string, $length) . $this->write("\n");
+        return $this;
+    }
+
+    public function getCsv($length = 0)
+    {
+        if (!isset($this->_handle)) {
+            throw new \Exception("File '{$this}' is not open");
+        }
+        return fgetcsv($this->_handle, $length, $this->_chars[0], $this->_chars[1], $this->_chars[2]);
+    }
+
+    public function putCsv($array)
+    {
+        if (!isset($this->_handle)) {
+            throw new \Exception("File '{$this}' is not open");
+        }
+        fputcsv($this->_handle, $array, $this->_chars[0], $this->_chars[1]);
+        return $this;
+    }
+
+    public function seek($offset, $whence = SEEK_SET)
+    {
+        if (!isset($this->_handle)) {
+            throw new \Exception("File '{$this}' is not open");
+        }
+        fseek($this->_handle, $offset, $whence);
+        return $this;
+    }
+
+    public function truncate($length = 0)
+    {
+        if (!isset($this->_handle)) {
+            throw new \Exception("File '{$this}' is not open");
+        }
+        ftruncate($this->_handle, $length);
+        return $this;
     }
 
     public function move(\Coast\Dir $dir, $name = null, $upload = false)

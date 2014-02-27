@@ -30,11 +30,11 @@ class SitemapTest extends \PHPUnit_Framework_TestCase
 
     public function testFile()
     {
-        $file = \Coast\File::createTempoary();
+        $file = \Coast\File::createTemp();
         $this->_sitemap->writeFile($file);
-        $file = $file->open('r');
+        $file->open('r');
         $this->assertEquals($this->_output, $file->read());
-        $file = $file->close();
+        $file->close();
         $file->remove();
     }
 }
