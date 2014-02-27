@@ -1,7 +1,7 @@
 <?php
-use Coast\Path;
-
 namespace Coast;
+
+use Coast\Path;
 
 class PathTest extends \PHPUnit_Framework_TestCase
 {
@@ -11,10 +11,10 @@ class PathTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('/dir/base.ext', (string) $path);
         $this->assertEquals('/dir/base.ext', $path->name());
-        $this->assertEquals('/dir', $path->dirname());
-        $this->assertEquals('base.ext', $path->basename());
-        $this->assertEquals('ext', $path->extname());
-        $this->assertEquals('base', $path->filename());
+        $this->assertEquals('/dir', $path->dirName());
+        $this->assertEquals('base.ext', $path->baseName());
+        $this->assertEquals('ext', $path->extName());
+        $this->assertEquals('base', $path->fileName());
     }
 
     public function testWithin()
@@ -32,6 +32,12 @@ class PathTest extends \PHPUnit_Framework_TestCase
         $b = new Path('/one/two/three');
 
         $this->assertEquals('/one/four', $a->absolute($b)->name());
+    }
+
+    public function testAbsoluteException()
+    {
+        $a = new Path('../four');
+        $b = new Path('/one/two/three');
 
         $this->setExpectedException('Exception');
         $this->assertEquals('/one/four', $b->absolute($a)->name());
@@ -41,12 +47,17 @@ class PathTest extends \PHPUnit_Framework_TestCase
     {
         $a = new Path('/one/four');
         $b = new Path('/one/two/three');
-        $c = new Path('../');
 
         $this->assertEquals('../four', $a->relative($b)->name());
-      
+    }
+
+    public function testRelativeException()
+    {   
+        $a = new Path('/one/four');
+        $b = new Path('../');
+
         $this->setExpectedException('Exception');
-        $this->assertEquals('../four', $a->relative($c)->name());
+        $this->assertEquals('../four', $a->relative($b)->name());
     }
 
     public function testType()

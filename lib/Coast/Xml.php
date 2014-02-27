@@ -10,22 +10,12 @@ abstract class Xml
 {
     protected $_xml;
 
-    public function string($value = null)
+    public function string()
     {
-        if (isset($value)) {
-            $this->_xml = new \SimpleXMLElement($value);
-            return $this;
-        }
         return $this->_xml->asXML();
     }
 
-    public function readFile(\Coast\File $file)
-    {
-        $this->_xml = new \SimpleXMLElement($file->name(), 0, true);
-        return $this;
-    }
-
-    public function writeFile(\Coast\File $file = null)
+    public function file(\Coast\File $file)
     {
         return $this->_xml->asXML($file->name());
     }

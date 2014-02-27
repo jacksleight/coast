@@ -52,7 +52,7 @@ class Path
      * Get the directory name.
      * @return string
      */
-    public function dirname()
+    public function dirName()
     {
         return $this->name(self::DIRNAME);
     }
@@ -61,7 +61,7 @@ class Path
      * Get the base name.
      * @return string
      */
-    public function basename()
+    public function baseName()
     {
         return $this->name(self::BASENAME);
     }
@@ -70,7 +70,7 @@ class Path
      * Get the extension name.
      * @return string
      */
-    public function extname()
+    public function extName()
     {
         return $this->name(self::EXTNAME);
     }
@@ -79,7 +79,7 @@ class Path
      * Get the file name.
      * @return string
      */
-    public function filename()
+    public function fileName()
     {
         return $this->name(self::FILENAME);
     }
