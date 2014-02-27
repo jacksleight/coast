@@ -1,7 +1,7 @@
 <?php
-use Coast\Sitemap;
-
 namespace Coast;
+
+use Coast\Sitemap;
 
 class SitemapTest extends \PHPUnit_Framework_TestCase
 {
@@ -22,36 +22,19 @@ class SitemapTest extends \PHPUnit_Framework_TestCase
 ';
     }
 
-    public function testStringOutput()
+    public function testString()
     {
         $this->assertEquals($this->_output, $this->_sitemap->string());        
         $this->assertEquals($this->_output, (string) $this->_sitemap);        
     }
 
-    public function testFileOutput()
+    public function testFile()
     {
         $file = \Coast\File::tempoary();
-        $this->_sitemap->writeFile($file);
+        $this->_sitemap->file($file);
         $file = $file->open('r');
         $this->assertEquals($this->_output, $file->read());
         $file = $file->close();
-        $file->remove();
-    }
-
-    public function testStringInput()
-    {
-        $sitemap = (new Sitemap())->string($this->_output);
-        $this->assertEquals($this->_output, $sitemap->string());
-    }
-
-    public function testFileInput()
-    {
-        $file = \Coast\File::tempoary();
-        $file = $file->open('w');
-        $file->write($this->_output);
-        $file = $file->close();
-        $sitemap = (new Sitemap())->readFile($file);
-        $this->assertEquals($this->_output, $sitemap->string());
         $file->remove();
     }
 }
