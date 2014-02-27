@@ -32,7 +32,7 @@ class File extends \Coast\File\Path
         return $this;
     }
 
-    public function close($class = 'Coast\File')
+    public function close()
     {
         if (!isset($this->_handle)) {
             throw new \Exception("File '{$this}' is not open");
