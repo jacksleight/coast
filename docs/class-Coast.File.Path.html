@@ -7,7 +7,7 @@
 	<title>Class Coast\File\Path | Coast API Documentation</title>
 
 	<script type="text/javascript" src="resources/combined.js?2587632619"></script>
-	<script type="text/javascript" src="elementlist.js?3170320727"></script>
+	<script type="text/javascript" src="elementlist.js?3514180990"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360">
 
 </head>
@@ -151,7 +151,7 @@
 		<b>Namespace:</b> <a href="namespace-Coast.html">Coast</a>\<a href="namespace-Coast.File.html">File</a><br>
 		
 
-		<b>Located at</b> <a href="source-class-Coast.File.Path.html#9-42" title="Go to source code">Coast/File/Path.php</a><br>
+		<b>Located at</b> <a href="source-class-Coast.File.Path.html#9-45" title="Go to source code">Coast/File/Path.php</a><br>
 	</div>
 
 
@@ -169,7 +169,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_exists">#</a>
-		<code><a href="source-class-Coast.File.Path.html#11-14" title="Go to source code">exists</a>( )</code>
+		<code><a href="source-class-Coast.File.Path.html#11-17" title="Go to source code">exists</a>( )</code>
 
 		<div class="description short">
 			
@@ -182,6 +182,10 @@
 
 
 
+				<h4>Todo</h4>
+				<div class="list">
+						isReal?<br>
+				</div>
 
 
 		</div>
@@ -198,7 +202,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_isDir">#</a>
-		<code><a href="source-class-Coast.File.Path.html#16-19" title="Go to source code">isDir</a>( )</code>
+		<code><a href="source-class-Coast.File.Path.html#19-22" title="Go to source code">isDir</a>( )</code>
 
 		<div class="description short">
 			
@@ -227,7 +231,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_isFile">#</a>
-		<code><a href="source-class-Coast.File.Path.html#21-24" title="Go to source code">isFile</a>( )</code>
+		<code><a href="source-class-Coast.File.Path.html#24-27" title="Go to source code">isFile</a>( )</code>
 
 		<div class="description short">
 			
@@ -256,7 +260,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_isReadable">#</a>
-		<code><a href="source-class-Coast.File.Path.html#26-29" title="Go to source code">isReadable</a>( )</code>
+		<code><a href="source-class-Coast.File.Path.html#29-32" title="Go to source code">isReadable</a>( )</code>
 
 		<div class="description short">
 			
@@ -285,7 +289,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_isWritable">#</a>
-		<code><a href="source-class-Coast.File.Path.html#31-34" title="Go to source code">isWritable</a>( )</code>
+		<code><a href="source-class-Coast.File.Path.html#34-37" title="Go to source code">isWritable</a>( )</code>
 
 		<div class="description short">
 			
@@ -314,7 +318,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_permissions">#</a>
-		<code><a href="source-class-Coast.File.Path.html#36-39" title="Go to source code">permissions</a>( )</code>
+		<code><a href="source-class-Coast.File.Path.html#39-42" title="Go to source code">permissions</a>( )</code>
 
 		<div class="description short">
 			
@@ -343,7 +347,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_remove">#</a>
-		<code><a href="source-class-Coast.File.Path.html#41" title="Go to source code">remove</a>( )</code>
+		<code><a href="source-class-Coast.File.Path.html#44" title="Go to source code">remove</a>( )</code>
 
 		<div class="description short">
 			
@@ -369,16 +373,16 @@
 		<td><code>
 			<a href="class-Coast.Path.html#___construct">__construct()</a>, 
 			<a href="class-Coast.Path.html#___toString">__toString()</a>, 
-			<a href="class-Coast.Path.html#_absolute">absolute()</a>, 
-			<a href="class-Coast.Path.html#_basename">basename()</a>, 
-			<a href="class-Coast.Path.html#_dirname">dirname()</a>, 
-			<a href="class-Coast.Path.html#_extname">extname()</a>, 
-			<a href="class-Coast.Path.html#_filename">filename()</a>, 
+			<a href="class-Coast.Path.html#_baseName">baseName()</a>, 
+			<a href="class-Coast.Path.html#_dirName">dirName()</a>, 
+			<a href="class-Coast.Path.html#_extName">extName()</a>, 
+			<a href="class-Coast.Path.html#_fileName">fileName()</a>, 
 			<a href="class-Coast.Path.html#_isAbsolute">isAbsolute()</a>, 
 			<a href="class-Coast.Path.html#_isRelative">isRelative()</a>, 
 			<a href="class-Coast.Path.html#_isWithin">isWithin()</a>, 
-			<a href="class-Coast.Path.html#_name">name()</a>, 
-			<a href="class-Coast.Path.html#_relative">relative()</a>
+			<a href="class-Coast.Path.html#_toAbsolute">toAbsolute()</a>, 
+			<a href="class-Coast.Path.html#_toRelative">toRelative()</a>, 
+			<a href="class-Coast.Path.html#_toString">toString()</a>
 		</code></td>
 	</tr>
 	</table>
@@ -390,17 +394,6 @@
 
 
 
-	<table class="summary inherited">
-	<caption>Constants inherited from <a href="class-Coast.Path.html#constants">Coast\Path</a></caption>
-	<tr>
-		<td><code>
-			<a href="class-Coast.Path.html#BASENAME"><b>BASENAME</b></a>, 
-			<a href="class-Coast.Path.html#DIRNAME"><b>DIRNAME</b></a>, 
-			<a href="class-Coast.Path.html#EXTNAME"><b>EXTNAME</b></a>, 
-			<a href="class-Coast.Path.html#FILENAME"><b>FILENAME</b></a>
-		</code></td>
-	</tr>
-	</table>
 
 
 
@@ -409,7 +402,7 @@
 	<caption>Properties inherited from <a href="class-Coast.Path.html#properties">Coast\Path</a></caption>
 	<tr>
 		<td><code>
-			<a href="class-Coast.Path.html#$_name"><var>$_name</var></a>
+			<a href="class-Coast.Path.html#$_value"><var>$_value</var></a>
 		</code></td>
 	</tr>
 	</table>

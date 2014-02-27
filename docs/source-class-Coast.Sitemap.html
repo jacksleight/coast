@@ -8,7 +8,7 @@
 	<title>File Coast/Sitemap.php | Coast API Documentation</title>
 
 	<script type="text/javascript" src="resources/combined.js?2587632619"></script>
-	<script type="text/javascript" src="elementlist.js?3170320727"></script>
+	<script type="text/javascript" src="elementlist.js?3514180990"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360">
 
 </head>
@@ -62,6 +62,7 @@
 				<li><a href="class-Coast.Path.html">Path</a></li>
 				<li class="active"><a href="class-Coast.Sitemap.html">Sitemap</a></li>
 				<li><a href="class-Coast.Url.html">Url</a></li>
+				<li><a href="class-Coast.Xml.html">Xml</a></li>
 			</ul>
 
 
@@ -144,70 +145,37 @@
 </span><span id="6" class="l"><a class="l" href="#6"> 6: </a>
 </span><span id="7" class="l"><a class="l" href="#7"> 7: </a><span class="php-keyword1">namespace</span> Coast;
 </span><span id="8" class="l"><a class="l" href="#8"> 8: </a>
-</span><span id="9" class="l"><a class="l" href="#9"> 9: </a><span class="php-keyword1">class</span> <a id="Sitemap" href="#Sitemap">Sitemap</a>
+</span><span id="9" class="l"><a class="l" href="#9"> 9: </a><span class="php-keyword1">class</span> <a id="Sitemap" href="#Sitemap">Sitemap</a> <span class="php-keyword1">extends</span> \Coast\Xml
 </span><span id="10" class="l"><a class="l" href="#10">10: </a>{
-</span><span id="11" class="l"><a class="l" href="#11">11: </a>    <span class="php-keyword1">const</span> <a id="CHANGES_ALWAYS" href="#CHANGES_ALWAYS">CHANGES_ALWAYS</a>  = <span class="php-quote">'always'</span>;
-</span><span id="12" class="l"><a class="l" href="#12">12: </a>    <span class="php-keyword1">const</span> <a id="CHANGES_HOURLY" href="#CHANGES_HOURLY">CHANGES_HOURLY</a>  = <span class="php-quote">'hourly'</span>;
-</span><span id="13" class="l"><a class="l" href="#13">13: </a>    <span class="php-keyword1">const</span> <a id="CHANGES_DAILY" href="#CHANGES_DAILY">CHANGES_DAILY</a>   = <span class="php-quote">'daily'</span>;
-</span><span id="14" class="l"><a class="l" href="#14">14: </a>    <span class="php-keyword1">const</span> <a id="CHANGES_WEEKLY" href="#CHANGES_WEEKLY">CHANGES_WEEKLY</a>  = <span class="php-quote">'weekly'</span>;
-</span><span id="15" class="l"><a class="l" href="#15">15: </a>    <span class="php-keyword1">const</span> <a id="CHANGES_MONTHLY" href="#CHANGES_MONTHLY">CHANGES_MONTHLY</a> = <span class="php-quote">'monthly'</span>;
-</span><span id="16" class="l"><a class="l" href="#16">16: </a>    <span class="php-keyword1">const</span> <a id="CHANGES_YEARLY" href="#CHANGES_YEARLY">CHANGES_YEARLY</a>  = <span class="php-quote">'yearly'</span>;
-</span><span id="17" class="l"><a class="l" href="#17">17: </a>    <span class="php-keyword1">const</span> <a id="CHANGES_NEVER" href="#CHANGES_NEVER">CHANGES_NEVER</a>   = <span class="php-quote">'never'</span>;
+</span><span id="11" class="l"><a class="l" href="#11">11: </a>    <span class="php-keyword1">const</span> <a id="CHANGEFREQ_ALWAYS" href="#CHANGEFREQ_ALWAYS">CHANGEFREQ_ALWAYS</a>  = <span class="php-quote">'always'</span>;
+</span><span id="12" class="l"><a class="l" href="#12">12: </a>    <span class="php-keyword1">const</span> <a id="CHANGEFREQ_HOURLY" href="#CHANGEFREQ_HOURLY">CHANGEFREQ_HOURLY</a>  = <span class="php-quote">'hourly'</span>;
+</span><span id="13" class="l"><a class="l" href="#13">13: </a>    <span class="php-keyword1">const</span> <a id="CHANGEFREQ_DAILY" href="#CHANGEFREQ_DAILY">CHANGEFREQ_DAILY</a>   = <span class="php-quote">'daily'</span>;
+</span><span id="14" class="l"><a class="l" href="#14">14: </a>    <span class="php-keyword1">const</span> <a id="CHANGEFREQ_WEEKLY" href="#CHANGEFREQ_WEEKLY">CHANGEFREQ_WEEKLY</a>  = <span class="php-quote">'weekly'</span>;
+</span><span id="15" class="l"><a class="l" href="#15">15: </a>    <span class="php-keyword1">const</span> <a id="CHANGEFREQ_MONTHLY" href="#CHANGEFREQ_MONTHLY">CHANGEFREQ_MONTHLY</a> = <span class="php-quote">'monthly'</span>;
+</span><span id="16" class="l"><a class="l" href="#16">16: </a>    <span class="php-keyword1">const</span> <a id="CHANGEFREQ_YEARLY" href="#CHANGEFREQ_YEARLY">CHANGEFREQ_YEARLY</a>  = <span class="php-quote">'yearly'</span>;
+</span><span id="17" class="l"><a class="l" href="#17">17: </a>    <span class="php-keyword1">const</span> <a id="CHANGEFREQ_NEVER" href="#CHANGEFREQ_NEVER">CHANGEFREQ_NEVER</a>   = <span class="php-quote">'never'</span>;
 </span><span id="18" class="l"><a class="l" href="#18">18: </a>
-</span><span id="19" class="l"><a class="l" href="#19">19: </a>    <span class="php-keyword1">protected</span> <span class="php-var"><a id="$_xml" href="#$_xml">$_xml</a></span>;
-</span><span id="20" class="l"><a class="l" href="#20">20: </a>
-</span><span id="21" class="l"><a class="l" href="#21">21: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="___construct" href="#___construct">__construct</a>()
-</span><span id="22" class="l"><a class="l" href="#22">22: </a>    {
-</span><span id="23" class="l"><a class="l" href="#23">23: </a>       <span class="php-var">$this</span>-&gt;_xml = <span class="php-keyword1">new</span> \SimpleXMLElement(<span class="php-quote">'&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;urlset/&gt;'</span>);
-</span><span id="24" class="l"><a class="l" href="#24">24: </a>       <span class="php-var">$this</span>-&gt;_xml-&gt;addAttribute(<span class="php-quote">'xmlns'</span>, <span class="php-quote">'http://www.sitemaps.org/schemas/sitemap/0.9'</span>);
-</span><span id="25" class="l"><a class="l" href="#25">25: </a>    }
-</span><span id="26" class="l"><a class="l" href="#26">26: </a>
-</span><span id="27" class="l"><a class="l" href="#27">27: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_add" href="#_add">add</a>(\Coast\Url <span class="php-var">$loc</span>, \DateTime <span class="php-var">$modified</span> = <span class="php-keyword1">null</span>, <span class="php-var">$changes</span> = <span class="php-keyword1">null</span>, <span class="php-var">$priority</span> = <span class="php-keyword1">null</span>)
-</span><span id="28" class="l"><a class="l" href="#28">28: </a>    {
-</span><span id="29" class="l"><a class="l" href="#29">29: </a>        <span class="php-keyword1">if</span> (<span class="php-keyword2">is_array</span>(<span class="php-var">$changes</span>)) {
-</span><span id="30" class="l"><a class="l" href="#30">30: </a>            <span class="php-keyword1">list</span>(<span class="php-var">$since</span>, <span class="php-var">$count</span>) = <span class="php-var">$changes</span>;
-</span><span id="31" class="l"><a class="l" href="#31">31: </a>            <span class="php-keyword1">if</span> (<span class="php-var">$count</span> == <span class="php-num">0</span>) {
-</span><span id="32" class="l"><a class="l" href="#32">32: </a>                <span class="php-var">$changes</span> = self::CHANGES_NEVER;
-</span><span id="33" class="l"><a class="l" href="#33">33: </a>            } <span class="php-keyword1">else</span> {
-</span><span id="34" class="l"><a class="l" href="#34">34: </a>                <span class="php-var">$ratio</span> = (((<span class="php-keyword1">new</span> \DateTime())-&gt;getTimestamp() - <span class="php-var">$since</span>-&gt;getTimestamp()) / <span class="php-num">3600</span>) / <span class="php-var">$count</span>;
-</span><span id="35" class="l"><a class="l" href="#35">35: </a>                <span class="php-var">$intervals</span> = [
-</span><span id="36" class="l"><a class="l" href="#36">36: </a>                    self::CHANGES_YEARLY  =&gt; <span class="php-num">8760</span>,
-</span><span id="37" class="l"><a class="l" href="#37">37: </a>                    self::CHANGES_MONTHLY =&gt; <span class="php-num">730</span>,
-</span><span id="38" class="l"><a class="l" href="#38">38: </a>                    self::CHANGES_WEEKLY  =&gt; <span class="php-num">168</span>,
-</span><span id="39" class="l"><a class="l" href="#39">39: </a>                    self::CHANGES_DAILY   =&gt; <span class="php-num">24</span>,
-</span><span id="40" class="l"><a class="l" href="#40">40: </a>                    self::CHANGES_HOURLY  =&gt; <span class="php-num">1</span>,
-</span><span id="41" class="l"><a class="l" href="#41">41: </a>                    self::CHANGES_ALWAYS  =&gt; <span class="php-num">0</span>,
-</span><span id="42" class="l"><a class="l" href="#42">42: </a>                ];
-</span><span id="43" class="l"><a class="l" href="#43">43: </a>                <span class="php-keyword1">foreach</span> (<span class="php-var">$intervals</span> <span class="php-keyword1">as</span> <span class="php-var">$changes</span> =&gt; <span class="php-var">$interval</span>) {
-</span><span id="44" class="l"><a class="l" href="#44">44: </a>                    <span class="php-keyword1">if</span> (<span class="php-var">$ratio</span> &gt;= <span class="php-var">$interval</span>) {
-</span><span id="45" class="l"><a class="l" href="#45">45: </a>                        <span class="php-keyword1">break</span>;
-</span><span id="46" class="l"><a class="l" href="#46">46: </a>                    }
-</span><span id="47" class="l"><a class="l" href="#47">47: </a>                }
-</span><span id="48" class="l"><a class="l" href="#48">48: </a>            }
-</span><span id="49" class="l"><a class="l" href="#49">49: </a>        }
-</span><span id="50" class="l"><a class="l" href="#50">50: </a>        <span class="php-var">$url</span> = <span class="php-var">$this</span>-&gt;_xml-&gt;addChild(<span class="php-quote">'url'</span>);
-</span><span id="51" class="l"><a class="l" href="#51">51: </a>        <span class="php-var">$loc</span> = <span class="php-var">$url</span>-&gt;addChild(<span class="php-quote">'loc'</span>, <span class="php-var">$loc</span>-&gt;name());
-</span><span id="52" class="l"><a class="l" href="#52">52: </a>        <span class="php-keyword1">if</span> (<span class="php-keyword1">isset</span>(<span class="php-var">$modified</span>)) {
-</span><span id="53" class="l"><a class="l" href="#53">53: </a>            <span class="php-var">$url</span>-&gt;addChild(<span class="php-quote">'lastmod'</span>, <span class="php-var">$modified</span>-&gt;format(\DateTime::W3C));
-</span><span id="54" class="l"><a class="l" href="#54">54: </a>        }
-</span><span id="55" class="l"><a class="l" href="#55">55: </a>        <span class="php-keyword1">if</span> (<span class="php-keyword1">isset</span>(<span class="php-var">$changes</span>)) {
-</span><span id="56" class="l"><a class="l" href="#56">56: </a>            <span class="php-var">$url</span>-&gt;addChild(<span class="php-quote">'changefreq'</span>, <span class="php-var">$changes</span>);
-</span><span id="57" class="l"><a class="l" href="#57">57: </a>        }
-</span><span id="58" class="l"><a class="l" href="#58">58: </a>        <span class="php-keyword1">if</span> (<span class="php-keyword1">isset</span>(<span class="php-var">$priority</span>)) {
-</span><span id="59" class="l"><a class="l" href="#59">59: </a>            <span class="php-var">$url</span>-&gt;addChild(<span class="php-quote">'priority'</span>, <span class="php-keyword2">number_format</span>(<span class="php-var">$priority</span>, <span class="php-num">1</span>, <span class="php-quote">'.'</span>, <span class="php-keyword1">null</span>));
-</span><span id="60" class="l"><a class="l" href="#60">60: </a>        }
-</span><span id="61" class="l"><a class="l" href="#61">61: </a>    }
-</span><span id="62" class="l"><a class="l" href="#62">62: </a>
-</span><span id="63" class="l"><a class="l" href="#63">63: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_xml" href="#_xml">xml</a>()
-</span><span id="64" class="l"><a class="l" href="#64">64: </a>    {
-</span><span id="65" class="l"><a class="l" href="#65">65: </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;_xml-&gt;asXML();
-</span><span id="66" class="l"><a class="l" href="#66">66: </a>    }
-</span><span id="67" class="l"><a class="l" href="#67">67: </a>
-</span><span id="68" class="l"><a class="l" href="#68">68: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="___toString" href="#___toString">__toString</a>()
-</span><span id="69" class="l"><a class="l" href="#69">69: </a>    {
-</span><span id="70" class="l"><a class="l" href="#70">70: </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;xml();
-</span><span id="71" class="l"><a class="l" href="#71">71: </a>    }
-</span><span id="72" class="l"><a class="l" href="#72">72: </a></span>}</code></pre>
+</span><span id="19" class="l"><a class="l" href="#19">19: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="___construct" href="#___construct">__construct</a>()
+</span><span id="20" class="l"><a class="l" href="#20">20: </a>    {
+</span><span id="21" class="l"><a class="l" href="#21">21: </a>       <span class="php-var">$this</span>-&gt;_xml = <span class="php-keyword1">new</span> \SimpleXMLElement(<span class="php-quote">'&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;urlset/&gt;'</span>);
+</span><span id="22" class="l"><a class="l" href="#22">22: </a>       <span class="php-var">$this</span>-&gt;_xml-&gt;addAttribute(<span class="php-quote">'xmlns'</span>, <span class="php-quote">'http://www.sitemaps.org/schemas/sitemap/0.9'</span>);
+</span><span id="23" class="l"><a class="l" href="#23">23: </a>    }
+</span><span id="24" class="l"><a class="l" href="#24">24: </a>
+</span><span id="25" class="l"><a class="l" href="#25">25: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_add" href="#_add">add</a>(\Coast\Url <span class="php-var">$loc</span>, \DateTime <span class="php-var">$lastmod</span> = <span class="php-keyword1">null</span>, <span class="php-var">$changefreq</span> = <span class="php-keyword1">null</span>, <span class="php-var">$priority</span> = <span class="php-keyword1">null</span>)
+</span><span id="26" class="l"><a class="l" href="#26">26: </a>    {
+</span><span id="27" class="l"><a class="l" href="#27">27: </a>        <span class="php-var">$url</span> = <span class="php-var">$this</span>-&gt;_xml-&gt;addChild(<span class="php-quote">'url'</span>);
+</span><span id="28" class="l"><a class="l" href="#28">28: </a>        <span class="php-var">$loc</span> = <span class="php-var">$url</span>-&gt;addChild(<span class="php-quote">'loc'</span>, <span class="php-var">$loc</span>-&gt;toString());
+</span><span id="29" class="l"><a class="l" href="#29">29: </a>        <span class="php-keyword1">if</span> (<span class="php-keyword1">isset</span>(<span class="php-var">$lastmod</span>)) {
+</span><span id="30" class="l"><a class="l" href="#30">30: </a>            <span class="php-var">$url</span>-&gt;addChild(<span class="php-quote">'lastmod'</span>, <span class="php-var">$lastmod</span>-&gt;format(\DateTime::W3C));
+</span><span id="31" class="l"><a class="l" href="#31">31: </a>        }
+</span><span id="32" class="l"><a class="l" href="#32">32: </a>        <span class="php-keyword1">if</span> (<span class="php-keyword1">isset</span>(<span class="php-var">$changefreq</span>)) {
+</span><span id="33" class="l"><a class="l" href="#33">33: </a>            <span class="php-var">$url</span>-&gt;addChild(<span class="php-quote">'changefreq'</span>, <span class="php-var">$changefreq</span>);
+</span><span id="34" class="l"><a class="l" href="#34">34: </a>        }
+</span><span id="35" class="l"><a class="l" href="#35">35: </a>        <span class="php-keyword1">if</span> (<span class="php-keyword1">isset</span>(<span class="php-var">$priority</span>)) {
+</span><span id="36" class="l"><a class="l" href="#36">36: </a>            <span class="php-var">$url</span>-&gt;addChild(<span class="php-quote">'priority'</span>, <span class="php-keyword2">number_format</span>(<span class="php-var">$priority</span>, <span class="php-num">1</span>, <span class="php-quote">'.'</span>, <span class="php-keyword1">null</span>));
+</span><span id="37" class="l"><a class="l" href="#37">37: </a>        }
+</span><span id="38" class="l"><a class="l" href="#38">38: </a>    }
+</span><span id="39" class="l"><a class="l" href="#39">39: </a></span>}</code></pre>
 
 	<div id="footer">
 		Coast API Documentation API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>

@@ -7,7 +7,7 @@
 	<title>Class Coast\Sitemap | Coast API Documentation</title>
 
 	<script type="text/javascript" src="resources/combined.js?2587632619"></script>
-	<script type="text/javascript" src="elementlist.js?3170320727"></script>
+	<script type="text/javascript" src="elementlist.js?3514180990"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360">
 
 </head>
@@ -61,6 +61,7 @@
 				<li><a href="class-Coast.Path.html">Path</a></li>
 				<li class="active"><a href="class-Coast.Sitemap.html">Sitemap</a></li>
 				<li><a href="class-Coast.Url.html">Url</a></li>
+				<li><a href="class-Coast.Xml.html">Xml</a></li>
 			</ul>
 
 
@@ -139,6 +140,20 @@
 
 
 
+	<dl class="tree">
+		<dd style="padding-left:0px">
+			<a href="class-Coast.Xml.html"><span>Coast\Xml</span></a>
+			
+			
+			
+		</dd>
+		<dd style="padding-left:30px">
+			<img src="resources/inherit.png" alt="Extended by">
+<b><span>Coast\Sitemap</span></b>			
+			
+			
+		</dd>
+	</dl>
 
 
 
@@ -153,7 +168,7 @@
 		<b>Namespace:</b> <a href="namespace-Coast.html">Coast</a><br>
 		
 
-		<b>Located at</b> <a href="source-class-Coast.Sitemap.html#9-72" title="Go to source code">Coast/Sitemap.php</a><br>
+		<b>Located at</b> <a href="source-class-Coast.Sitemap.html#9-39" title="Go to source code">Coast/Sitemap.php</a><br>
 	</div>
 
 
@@ -171,7 +186,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-Coast.Sitemap.html#21-25" title="Go to source code">__construct</a>( )</code>
+		<code><a href="source-class-Coast.Sitemap.html#19-23" title="Go to source code">__construct</a>( )</code>
 
 		<div class="description short">
 			
@@ -200,65 +215,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_add">#</a>
-		<code><a href="source-class-Coast.Sitemap.html#27-61" title="Go to source code">add</a>( <span><code><a href="class-Coast.Url.html">Coast\Url</a></code> <var>$loc</var></span>, <span>DateTime <var>$modified</var> = <span class="php-keyword1">null</span></span>, <span>mixed <var>$changes</var> = <span class="php-keyword1">null</span></span>, <span>mixed <var>$priority</var> = <span class="php-keyword1">null</span></span> )</code>
-
-		<div class="description short">
-			
-		</div>
-
-		<div class="description detailed hidden">
-			
-
-
-
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="xml" id="_xml">
-
-		<td class="attributes"><code>
-			 public 
-			
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_xml">#</a>
-		<code><a href="source-class-Coast.Sitemap.html#63-66" title="Go to source code">xml</a>( )</code>
-
-		<div class="description short">
-			
-		</div>
-
-		<div class="description detailed hidden">
-			
-
-
-
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="__toString" id="___toString">
-
-		<td class="attributes"><code>
-			 public 
-			
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#___toString">#</a>
-		<code><a href="source-class-Coast.Sitemap.html#68-71" title="Go to source code">__toString</a>( )</code>
+		<code><a href="source-class-Coast.Sitemap.html#25-38" title="Go to source code">add</a>( <span><code><a href="class-Coast.Url.html">Coast\Url</a></code> <var>$loc</var></span>, <span>DateTime <var>$lastmod</var> = <span class="php-keyword1">null</span></span>, <span>mixed <var>$changefreq</var> = <span class="php-keyword1">null</span></span>, <span>mixed <var>$priority</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -278,6 +235,16 @@
 	</tr>
 	</table>
 
+	<table class="summary inherited">
+	<caption>Methods inherited from <a href="class-Coast.Xml.html#methods">Coast\Xml</a></caption>
+	<tr>
+		<td><code>
+			<a href="class-Coast.Xml.html#___toString">__toString()</a>, 
+			<a href="class-Coast.Xml.html#_toString">toString()</a>, 
+			<a href="class-Coast.Xml.html#_writeFile">writeFile()</a>
+		</code></td>
+	</tr>
+	</table>
 
 
 
@@ -287,15 +254,15 @@
 
 	<table class="summary" id="constants">
 	<caption>Constants summary</caption>
-	<tr data-order="CHANGES_ALWAYS" id="CHANGES_ALWAYS">
+	<tr data-order="CHANGEFREQ_ALWAYS" id="CHANGEFREQ_ALWAYS">
 
 		<td class="attributes"><code>string</code></td>
 		<td class="name"><code>
-				<a href="source-class-Coast.Sitemap.html#11" title="Go to source code"><b>CHANGES_ALWAYS</b></a>
+				<a href="source-class-Coast.Sitemap.html#11" title="Go to source code"><b>CHANGEFREQ_ALWAYS</b></a>
 		</code></td>
 		<td class="value"><code><span class="php-quote">'always'</span></code></td>
 		<td class="description"><div>
-			<a href="#CHANGES_ALWAYS" class="anchor">#</a>
+			<a href="#CHANGEFREQ_ALWAYS" class="anchor">#</a>
 
 			<div class="description short">
 				
@@ -307,15 +274,15 @@
 			</div>
 		</div></td>
 	</tr>
-	<tr data-order="CHANGES_HOURLY" id="CHANGES_HOURLY">
+	<tr data-order="CHANGEFREQ_HOURLY" id="CHANGEFREQ_HOURLY">
 
 		<td class="attributes"><code>string</code></td>
 		<td class="name"><code>
-				<a href="source-class-Coast.Sitemap.html#12" title="Go to source code"><b>CHANGES_HOURLY</b></a>
+				<a href="source-class-Coast.Sitemap.html#12" title="Go to source code"><b>CHANGEFREQ_HOURLY</b></a>
 		</code></td>
 		<td class="value"><code><span class="php-quote">'hourly'</span></code></td>
 		<td class="description"><div>
-			<a href="#CHANGES_HOURLY" class="anchor">#</a>
+			<a href="#CHANGEFREQ_HOURLY" class="anchor">#</a>
 
 			<div class="description short">
 				
@@ -327,15 +294,15 @@
 			</div>
 		</div></td>
 	</tr>
-	<tr data-order="CHANGES_DAILY" id="CHANGES_DAILY">
+	<tr data-order="CHANGEFREQ_DAILY" id="CHANGEFREQ_DAILY">
 
 		<td class="attributes"><code>string</code></td>
 		<td class="name"><code>
-				<a href="source-class-Coast.Sitemap.html#13" title="Go to source code"><b>CHANGES_DAILY</b></a>
+				<a href="source-class-Coast.Sitemap.html#13" title="Go to source code"><b>CHANGEFREQ_DAILY</b></a>
 		</code></td>
 		<td class="value"><code><span class="php-quote">'daily'</span></code></td>
 		<td class="description"><div>
-			<a href="#CHANGES_DAILY" class="anchor">#</a>
+			<a href="#CHANGEFREQ_DAILY" class="anchor">#</a>
 
 			<div class="description short">
 				
@@ -347,15 +314,15 @@
 			</div>
 		</div></td>
 	</tr>
-	<tr data-order="CHANGES_WEEKLY" id="CHANGES_WEEKLY">
+	<tr data-order="CHANGEFREQ_WEEKLY" id="CHANGEFREQ_WEEKLY">
 
 		<td class="attributes"><code>string</code></td>
 		<td class="name"><code>
-				<a href="source-class-Coast.Sitemap.html#14" title="Go to source code"><b>CHANGES_WEEKLY</b></a>
+				<a href="source-class-Coast.Sitemap.html#14" title="Go to source code"><b>CHANGEFREQ_WEEKLY</b></a>
 		</code></td>
 		<td class="value"><code><span class="php-quote">'weekly'</span></code></td>
 		<td class="description"><div>
-			<a href="#CHANGES_WEEKLY" class="anchor">#</a>
+			<a href="#CHANGEFREQ_WEEKLY" class="anchor">#</a>
 
 			<div class="description short">
 				
@@ -367,15 +334,15 @@
 			</div>
 		</div></td>
 	</tr>
-	<tr data-order="CHANGES_MONTHLY" id="CHANGES_MONTHLY">
+	<tr data-order="CHANGEFREQ_MONTHLY" id="CHANGEFREQ_MONTHLY">
 
 		<td class="attributes"><code>string</code></td>
 		<td class="name"><code>
-				<a href="source-class-Coast.Sitemap.html#15" title="Go to source code"><b>CHANGES_MONTHLY</b></a>
+				<a href="source-class-Coast.Sitemap.html#15" title="Go to source code"><b>CHANGEFREQ_MONTHLY</b></a>
 		</code></td>
 		<td class="value"><code><span class="php-quote">'monthly'</span></code></td>
 		<td class="description"><div>
-			<a href="#CHANGES_MONTHLY" class="anchor">#</a>
+			<a href="#CHANGEFREQ_MONTHLY" class="anchor">#</a>
 
 			<div class="description short">
 				
@@ -387,15 +354,15 @@
 			</div>
 		</div></td>
 	</tr>
-	<tr data-order="CHANGES_YEARLY" id="CHANGES_YEARLY">
+	<tr data-order="CHANGEFREQ_YEARLY" id="CHANGEFREQ_YEARLY">
 
 		<td class="attributes"><code>string</code></td>
 		<td class="name"><code>
-				<a href="source-class-Coast.Sitemap.html#16" title="Go to source code"><b>CHANGES_YEARLY</b></a>
+				<a href="source-class-Coast.Sitemap.html#16" title="Go to source code"><b>CHANGEFREQ_YEARLY</b></a>
 		</code></td>
 		<td class="value"><code><span class="php-quote">'yearly'</span></code></td>
 		<td class="description"><div>
-			<a href="#CHANGES_YEARLY" class="anchor">#</a>
+			<a href="#CHANGEFREQ_YEARLY" class="anchor">#</a>
 
 			<div class="description short">
 				
@@ -407,15 +374,15 @@
 			</div>
 		</div></td>
 	</tr>
-	<tr data-order="CHANGES_NEVER" id="CHANGES_NEVER">
+	<tr data-order="CHANGEFREQ_NEVER" id="CHANGEFREQ_NEVER">
 
 		<td class="attributes"><code>string</code></td>
 		<td class="name"><code>
-				<a href="source-class-Coast.Sitemap.html#17" title="Go to source code"><b>CHANGES_NEVER</b></a>
+				<a href="source-class-Coast.Sitemap.html#17" title="Go to source code"><b>CHANGEFREQ_NEVER</b></a>
 		</code></td>
 		<td class="value"><code><span class="php-quote">'never'</span></code></td>
 		<td class="description"><div>
-			<a href="#CHANGES_NEVER" class="anchor">#</a>
+			<a href="#CHANGEFREQ_NEVER" class="anchor">#</a>
 
 			<div class="description short">
 				
@@ -432,33 +399,15 @@
 
 
 
-	<table class="summary" id="properties">
-	<caption>Properties summary</caption>
-	<tr data-order="_xml" id="$_xml">
-		<td class="attributes"><code>
-			protected  
-			mixed
+
+	<table class="summary inherited">
+	<caption>Properties inherited from <a href="class-Coast.Xml.html#properties">Coast\Xml</a></caption>
+	<tr>
+		<td><code>
+			<a href="class-Coast.Xml.html#$_xml"><var>$_xml</var></a>
 		</code></td>
-
-		<td class="name">
-				<a href="source-class-Coast.Sitemap.html#19" title="Go to source code"><var>$_xml</var></a>
-		</td>
-		<td class="value"><code></code></td>
-		<td class="description"><div>
-			<a href="#$_xml" class="anchor">#</a>
-
-			<div class="description short">
-				
-			</div>
-
-			<div class="description detailed hidden">
-				
-
-			</div>
-		</div></td>
 	</tr>
 	</table>
-
 
 
 

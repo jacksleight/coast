@@ -7,7 +7,7 @@
 	<title>Class Coast\File\Data\Log | Coast API Documentation</title>
 
 	<script type="text/javascript" src="resources/combined.js?2587632619"></script>
-	<script type="text/javascript" src="elementlist.js?3170320727"></script>
+	<script type="text/javascript" src="elementlist.js?3514180990"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360">
 
 </head>
@@ -247,10 +247,8 @@
 	<caption>Methods inherited from <a href="class-Coast.File.Data.html#methods">Coast\File\Data</a></caption>
 	<tr>
 		<td><code>
-			<a href="class-Coast.File.Data.html#_buffer">buffer()</a>, 
 			<a href="class-Coast.File.Data.html#_close">close()</a>, 
 			<a href="class-Coast.File.Data.html#_get">get()</a>, 
-			<a href="class-Coast.File.Data.html#_handle">handle()</a>, 
 			<a href="class-Coast.File.Data.html#_read">read()</a>, 
 			<a href="class-Coast.File.Data.html#_seek">seek()</a>, 
 			<a href="class-Coast.File.Data.html#_truncate">truncate()</a>, 
@@ -265,6 +263,7 @@
 			<a href="class-Coast.File.html#_accessTime">accessTime()</a>, 
 			<a href="class-Coast.File.html#_changeTime">changeTime()</a>, 
 			<a href="class-Coast.File.html#_copy">copy()</a>, 
+			<a href="class-Coast.File.html#_createTempoary">createTempoary()</a>, 
 			<a href="class-Coast.File.html#_dir">dir()</a>, 
 			<a href="class-Coast.File.html#_hash">hash()</a>, 
 			<a href="class-Coast.File.html#_modifyTime">modifyTime()</a>, 
@@ -274,7 +273,6 @@
 			<a href="class-Coast.File.html#_remove">remove()</a>, 
 			<a href="class-Coast.File.html#_rename">rename()</a>, 
 			<a href="class-Coast.File.html#_size">size()</a>, 
-			<a href="class-Coast.File.html#_tempoary">tempoary()</a>, 
 			<a href="class-Coast.File.html#_touch">touch()</a>
 		</code></td>
 	</tr>
@@ -296,16 +294,16 @@
 	<tr>
 		<td><code>
 			<a href="class-Coast.Path.html#___toString">__toString()</a>, 
-			<a href="class-Coast.Path.html#_absolute">absolute()</a>, 
-			<a href="class-Coast.Path.html#_basename">basename()</a>, 
-			<a href="class-Coast.Path.html#_dirname">dirname()</a>, 
-			<a href="class-Coast.Path.html#_extname">extname()</a>, 
-			<a href="class-Coast.Path.html#_filename">filename()</a>, 
+			<a href="class-Coast.Path.html#_baseName">baseName()</a>, 
+			<a href="class-Coast.Path.html#_dirName">dirName()</a>, 
+			<a href="class-Coast.Path.html#_extName">extName()</a>, 
+			<a href="class-Coast.Path.html#_fileName">fileName()</a>, 
 			<a href="class-Coast.Path.html#_isAbsolute">isAbsolute()</a>, 
 			<a href="class-Coast.Path.html#_isRelative">isRelative()</a>, 
 			<a href="class-Coast.Path.html#_isWithin">isWithin()</a>, 
-			<a href="class-Coast.Path.html#_name">name()</a>, 
-			<a href="class-Coast.Path.html#_relative">relative()</a>
+			<a href="class-Coast.Path.html#_toAbsolute">toAbsolute()</a>, 
+			<a href="class-Coast.Path.html#_toRelative">toRelative()</a>, 
+			<a href="class-Coast.Path.html#_toString">toString()</a>
 		</code></td>
 	</tr>
 	</table>
@@ -317,17 +315,6 @@
 
 
 
-	<table class="summary inherited">
-	<caption>Constants inherited from <a href="class-Coast.Path.html#constants">Coast\Path</a></caption>
-	<tr>
-		<td><code>
-			<a href="class-Coast.Path.html#BASENAME"><b>BASENAME</b></a>, 
-			<a href="class-Coast.Path.html#DIRNAME"><b>DIRNAME</b></a>, 
-			<a href="class-Coast.Path.html#EXTNAME"><b>EXTNAME</b></a>, 
-			<a href="class-Coast.Path.html#FILENAME"><b>FILENAME</b></a>
-		</code></td>
-	</tr>
-	</table>
 
 
 
@@ -344,7 +331,7 @@
 	<caption>Properties inherited from <a href="class-Coast.Path.html#properties">Coast\Path</a></caption>
 	<tr>
 		<td><code>
-			<a href="class-Coast.Path.html#$_name"><var>$_name</var></a>
+			<a href="class-Coast.Path.html#$_value"><var>$_value</var></a>
 		</code></td>
 	</tr>
 	</table>

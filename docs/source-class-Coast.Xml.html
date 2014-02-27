@@ -3,8 +3,9 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="generator" content="ApiGen 2.8.0">
+	<meta name="robots" content="noindex">
 
-	<title>Function Coast\array_filter_null | Coast API Documentation</title>
+	<title>File Coast/Xml.php | Coast API Documentation</title>
 
 	<script type="text/javascript" src="resources/combined.js?2587632619"></script>
 	<script type="text/javascript" src="elementlist.js?3514180990"></script>
@@ -61,7 +62,7 @@
 				<li><a href="class-Coast.Path.html">Path</a></li>
 				<li><a href="class-Coast.Sitemap.html">Sitemap</a></li>
 				<li><a href="class-Coast.Url.html">Url</a></li>
-				<li><a href="class-Coast.Xml.html">Xml</a></li>
+				<li class="active"><a href="class-Coast.Xml.html">Xml</a></li>
 			</ul>
 
 
@@ -76,7 +77,7 @@
 			<ul>
 				<li><a href="function-Coast.array_column.html">array_column</a></li>
 				<li><a href="function-Coast.array_diff_key.html">array_diff_key</a></li>
-				<li class="active"><a href="function-Coast.array_filter_null.html">array_filter_null</a></li>
+				<li><a href="function-Coast.array_filter_null.html">array_filter_null</a></li>
 				<li><a href="function-Coast.array_filter_null_recursive.html">array_filter_null_recursive</a></li>
 				<li><a href="function-Coast.array_intersect_key.html">array_intersect_key</a></li>
 				<li><a href="function-Coast.array_mean.html">array_mean</a></li>
@@ -117,8 +118,9 @@
 			<li>
 				<a href="namespace-Coast.html" title="Summary of Coast"><span>Namespace</span></a>
 			</li>
-			<li class="active">
-<span>Function</span>			</li>
+			<li>
+				<a href="class-Coast.Xml.html" title="Summary of Coast\Xml"><span>Class</span></a>
+			</li>
 		</ul>
 		<ul>
 			<li>
@@ -135,48 +137,33 @@
 		</ul>
 	</div>
 
-<div id="content" class="function">
-	<h1>Function array_filter_null</h1>
-
-
-	<div class="description">
-	
-<p>Remove null values from array.</p>
-
-	</div>
-
-	<div class="info">
-		<b>Namespace:</b> <a href="namespace-Coast.html">Coast</a><br>
-		
-		<b>Located at</b> <a href="source-function-Coast.array_filter_null.html#78-92" title="Go to source code">Coast.php</a><br>
-	</div>
-
-
-	<table class="summary" id="parameters">
-	<caption>Parameters summary</caption>
-	<tr id="$array">
-		<td class="name"><code>array</code></td>
-		<td class="value"><code><var>$array</var></code></td>
-		<td>
-			
-		</td>
-	</tr>
-	</table>
-
-	<table class="summary" id="returns">
-	<caption>Return value summary</caption>
-	<tr>
-		<td class="name"><code>
-			array
-		</code></td>
-		<td>
-			
-		</td>
-	</tr>
-	</table>
-
-
-</div>
+<pre><code><span id="1" class="l"><a class="l" href="#1"> 1: </a><span class="xlang">&lt;?php</span>
+</span><span id="2" class="l"><a class="l" href="#2"> 2: </a><span class="php-comment">/*
+</span></span><span id="3" class="l"><a class="l" href="#3"> 3: </a><span class="php-comment"> * Copyright 2014 Jack Sleight &lt;http://jacksleight.com/&gt;
+</span></span><span id="4" class="l"><a class="l" href="#4"> 4: </a><span class="php-comment"> * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
+</span></span><span id="5" class="l"><a class="l" href="#5"> 5: </a><span class="php-comment"> */</span>
+</span><span id="6" class="l"><a class="l" href="#6"> 6: </a>
+</span><span id="7" class="l"><a class="l" href="#7"> 7: </a><span class="php-keyword1">namespace</span> Coast;
+</span><span id="8" class="l"><a class="l" href="#8"> 8: </a>
+</span><span id="9" class="l"><a class="l" href="#9"> 9: </a><span class="php-keyword1">abstract</span> <span class="php-keyword1">class</span> <a id="Xml" href="#Xml">Xml</a>
+</span><span id="10" class="l"><a class="l" href="#10">10: </a>{
+</span><span id="11" class="l"><a class="l" href="#11">11: </a>    <span class="php-keyword1">protected</span> <span class="php-var"><a id="$_xml" href="#$_xml">$_xml</a></span>;
+</span><span id="12" class="l"><a class="l" href="#12">12: </a>
+</span><span id="13" class="l"><a class="l" href="#13">13: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_toString" href="#_toString">toString</a>()
+</span><span id="14" class="l"><a class="l" href="#14">14: </a>    {
+</span><span id="15" class="l"><a class="l" href="#15">15: </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;_xml-&gt;asXML();
+</span><span id="16" class="l"><a class="l" href="#16">16: </a>    }
+</span><span id="17" class="l"><a class="l" href="#17">17: </a>
+</span><span id="18" class="l"><a class="l" href="#18">18: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_writeFile" href="#_writeFile">writeFile</a>(\Coast\<span class="php-keyword2">File</span> <span class="php-var">$file</span>)
+</span><span id="19" class="l"><a class="l" href="#19">19: </a>    {
+</span><span id="20" class="l"><a class="l" href="#20">20: </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;_xml-&gt;asXML(<span class="php-var">$file</span>-&gt;toString());
+</span><span id="21" class="l"><a class="l" href="#21">21: </a>    }
+</span><span id="22" class="l"><a class="l" href="#22">22: </a>
+</span><span id="23" class="l"><a class="l" href="#23">23: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="___toString" href="#___toString">__toString</a>()
+</span><span id="24" class="l"><a class="l" href="#24">24: </a>    {
+</span><span id="25" class="l"><a class="l" href="#25">25: </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;toString();
+</span><span id="26" class="l"><a class="l" href="#26">26: </a>    }
+</span><span id="27" class="l"><a class="l" href="#27">27: </a></span>}</code></pre>
 
 	<div id="footer">
 		Coast API Documentation API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
