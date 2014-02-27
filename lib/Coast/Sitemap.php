@@ -25,7 +25,7 @@ class Sitemap extends \Coast\Xml
     public function add(\Coast\Url $loc, \DateTime $lastmod = null, $changefreq = null, $priority = null)
     {
         $url = $this->_xml->addChild('url');
-        $loc = $url->addChild('loc', $loc->name());
+        $loc = $url->addChild('loc', $loc->toString());
         if (isset($lastmod)) {
             $url->addChild('lastmod', $lastmod->format(\DateTime::W3C));
         }

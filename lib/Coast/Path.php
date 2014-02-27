@@ -11,16 +11,11 @@ namespace Coast;
  */
 class Path
 {
-    const DIRNAME  = PATHINFO_DIRNAME;
-    const BASENAME = PATHINFO_BASENAME;
-    const EXTNAME  = PATHINFO_EXTENSION;
-    const FILENAME = PATHINFO_FILENAME;
-
     /**
-     * Full path name.
+     * Full path value.
      * @var string
      */
-    protected $_name;
+    protected $_value;
 
     /**
      * Constructs a new path object.
@@ -33,7 +28,7 @@ class Path
         $name = $name != '/'
             ? rtrim($name, '/')
             : $name;
-        $this->_name = $name;
+        $this->_value = $name;
     }
 
     /**
@@ -41,11 +36,9 @@ class Path
      * @param  string $part The part to return.
      * @return string
      */ 
-    public function name($part = null)
+    public function toString()
     {
-        return isset($part)
-            ? pathinfo($this->_name, $part)
-            : $this->_name;
+        return $this->_value;
     }
 
     /**
@@ -54,7 +47,7 @@ class Path
      */
     public function dirName()
     {
-        return $this->name(self::DIRNAME);
+        return pathinfo($this->_value, PATHINFO_DIRNAME);
     }
 
     /**
@@ -63,7 +56,7 @@ class Path
      */
     public function baseName()
     {
-        return $this->name(self::BASENAME);
+        return pathinfo($this->_value, PATHINFO_BASENAME);
     }
 
     /**
@@ -72,7 +65,7 @@ class Path
      */
     public function extName()
     {
-        return $this->name(self::EXTNAME);
+        return pathinfo($this->_value, PATHINFO_EXTENSION);
     }
 
     /**
@@ -81,7 +74,7 @@ class Path
      */
     public function fileName()
     {
-        return $this->name(self::FILENAME);
+        return pathinfo($this->_value, PATHINFO_FILENAME);
     }
 
     /**
@@ -90,7 +83,7 @@ class Path
      */
     public function __toString()
     {
-        return $this->name();
+        return $this->_value;
     }
 
     /**
@@ -100,8 +93,8 @@ class Path
      */
     public function isWithin(\Coast\Path $parent)
     {
-        $path = $this->name();
-        $parts = \explode(PATH_SEPARATOR, $parent->name());    
+        $path = $this->_value;
+        $parts = \explode(PATH_SEPARATOR, $parent->toString());    
         foreach ($parts as $part) {
             if (\preg_match('/^' . \preg_quote($part, '/') . '/', $path)) {
                 return true;
@@ -115,14 +108,14 @@ class Path
      * @param  Coast\Path $base base absolute path.
      * @return Coast\Path
      */
-    public function absolute(\Coast\Path $base)
+    public function toAbsolute(\Coast\Path $base)
     {
         if (!$this->isRelative() || !$base->isAbsolute()) {
-            throw new \Exception("Path '" . $this->name() . "' is not relative or base path '" . $base->name() . "' is not absolute");
+            throw new \Exception("Path '{$this}' is not relative or base path '{$base}' is not absolute");
         }
 
-        $source = explode('/', $base->name());
-        $target = explode('/', $this->name());
+        $source = explode('/', $base->toString());
+        $target = explode('/', $this->_value);
         
         $name = $source;
         array_pop($name);
@@ -144,14 +137,14 @@ class Path
      * @param  Coast\Path $base Base absolute path.
      * @return Coast\Path
      */
-    public function relative(\Coast\Path $base)
+    public function toRelative(\Coast\Path $base)
     {
         if (!$this->isAbsolute() || !$base->isAbsolute()) {
-            throw new \Exception("Source path '" . $this->name() . "' is not absolute or base path '" . $base->name() . "' is not absolute");
+            throw new \Exception("Source path '{$this}' is not absolute or base path '{$base}' is not absolute");
         }
         
-        $source = explode('/', $base->name());
-        $target = explode('/', $this->name());
+        $source = explode('/', $base->toString());
+        $target = explode('/', $this->_value);
 
         $name = $target;
         foreach ($source as $i => $part) {
@@ -174,7 +167,7 @@ class Path
      */
     public function isAbsolute()
     {
-        return substr($this->name(), 0, 1) == '/';
+        return substr($this->_value, 0, 1) == '/';
     }
 
     /**

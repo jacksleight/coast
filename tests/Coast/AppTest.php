@@ -103,8 +103,11 @@ class AppTest extends \PHPUnit_Framework_TestCase
     {
         $app = new App();
         $app->set('url', new Url());
-        $this->assertEquals('/test', $app->url('test')->name());
+        $this->assertEquals('/test', $app->url('test')->toString());
+    }
 
+    public function testAccessException()
+    {
         $app = new App();
         $app->set('invalid', true);
         $this->setExpectedException('Coast\App\Exception');
