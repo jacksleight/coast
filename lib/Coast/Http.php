@@ -53,7 +53,7 @@ class Http
             throw new \Exception("URL scheme is not HTTP or HTTPS");
         }
         
-        $ch = curl_init($url->name());
+        $ch = curl_init($url->toString());
         curl_setopt($ch, CURLOPT_HEADER, true);
         if (!ini_get('open_basedir')) {
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);

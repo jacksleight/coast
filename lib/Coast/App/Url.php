@@ -62,7 +62,7 @@ class Url implements \Coast\App\Access
 
     public function base()
     {
-        return new \Coast\Url($this->_options->base->name());
+        return new \Coast\Url($this->_options->base->toString());
     }
 
     public function string($string, $base = true)
@@ -138,7 +138,7 @@ class Url implements \Coast\App\Access
         }
 
         $file = $path;
-        $path = $path->relative($this->_options->dir);
+        $path = $path->toRelative($this->_options->dir);
         if ($base) {
             $path = $cdn && isset($this->_options->cdnBase)
                 ? $this->_options->cdnBase . $path

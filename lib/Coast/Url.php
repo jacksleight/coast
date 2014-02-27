@@ -60,7 +60,7 @@ class Url
         $this->fragment($data['fragment']);
     }
     
-    public function name($to = null, $start = false)
+    public function toString($to = null, $start = false)
     {
         $parts = array_fill(self::PART_SCHEME, self::PART_FRAGMENT + 1, null);
         
@@ -111,7 +111,7 @@ class Url
 
     public function __toString()
     {
-        return $this->name();
+        return $this->toString();
     }
     
     public function scheme($value = null)

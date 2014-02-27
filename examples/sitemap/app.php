@@ -13,7 +13,7 @@ $app->add(function(Request $req, Response $res) {
 	$sitemap->add(
 		new \Coast\Url('http://coastphp.com/'),
 		new \DateTime(),
-		Sitemap::CHANGES_WEEKLY,
+		Sitemap::CHANGEFREQ_WEEKLY,
 		1
 	);
     return $res->xml($sitemap);

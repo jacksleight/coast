@@ -12,18 +12,18 @@ class Dir extends \Coast\File\Path implements \IteratorAggregate
     {
         parent::__construct($path);
         if (isset($mode)) {
-            $this->make($mode);
+            $this->create($mode);
         }
     }
 
     public function iterator($recursive = false, $mode = \RecursiveIteratorIterator::LEAVES_ONLY, $flags = 0)
     {
-        return new \Coast\Dir\Iterator($this->name(), $recursive, $mode, $flags);
+        return new \Coast\Dir\Iterator($this->_value, $recursive, $mode, $flags);
     }
 
-    public function make($mode = null)
+    public function create($mode = null)
     {
-        $stack = explode('/', $this->name());
+        $stack = explode('/', $this->_value);
         $parts = [];
         while (count($stack) > 0) {
             array_push($parts, array_shift($stack));
@@ -47,7 +47,7 @@ class Dir extends \Coast\File\Path implements \IteratorAggregate
                 $path->remove();
             }
         }
-        rmdir($this->name());
+        rmdir($this->_value);
         return $this;
     }
 
@@ -59,7 +59,7 @@ class Dir extends \Coast\File\Path implements \IteratorAggregate
                     $path->chmod($mode);
                 }
             }
-            chmod($this->name(), $mode);
+            chmod($this->_value, $mode);
             return $this;
         }
         return parent::permissions();
@@ -79,12 +79,12 @@ class Dir extends \Coast\File\Path implements \IteratorAggregate
 
     public function file($path)
     {
-        return new \Coast\File("{$this->name()}/{$path}");
+        return new \Coast\File("{$this->_value}/{$path}");
     }
 
     public function dir($path, $mode = null)
     {
-        return new \Coast\Dir("{$this->name()}/{$path}", $mode);
+        return new \Coast\Dir("{$this->_value}/{$path}", $mode);
     }
 
     public function getIterator()

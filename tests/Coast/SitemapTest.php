@@ -24,14 +24,14 @@ class SitemapTest extends \PHPUnit_Framework_TestCase
 
     public function testString()
     {
-        $this->assertEquals($this->_output, $this->_sitemap->string());        
+        $this->assertEquals($this->_output, $this->_sitemap->toString());        
         $this->assertEquals($this->_output, (string) $this->_sitemap);        
     }
 
     public function testFile()
     {
-        $file = \Coast\File::tempoary();
-        $this->_sitemap->file($file);
+        $file = \Coast\File::createTempoary();
+        $this->_sitemap->writeFile($file);
         $file = $file->open('r');
         $this->assertEquals($this->_output, $file->read());
         $file = $file->close();

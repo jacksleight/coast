@@ -47,7 +47,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         $path = new \Coast\Path("{$name}." . $this->_options->extension);
         if (count($this->_stack) > 0) {
             $path = $path->isRelative()
-                ? $path->absolute($this->_stack[0]['path'])
+                ? $path->toAbsolute($this->_stack[0]['path'])
                 : $path;
             $params    = array_merge($this->_stack[0]['params'], $params);
         } else if ($path->isRelative()) {
@@ -94,7 +94,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         $this->start();
         try {
             extract($_params);
-            include $_file->name();
+            include $_file->toString();
         } catch (\Exception $e) {
             while ($this->_stack[0]['captures'] > 0) {
                 echo $this->end();
@@ -139,6 +139,9 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         return ob_get_clean();
     }
 
+    /**
+     * Move these
+     */
     protected function escape($string)
     {
         return htmlspecialchars($string, ENT_COMPAT, 'UTF-8');

@@ -26,16 +26,16 @@ class Response
         return $this->_status;
     }
 
-    public function headers()
-    {
-        return $this->_headers;
-    }
-
     public function header($name)
     {
         return isset($this->_headers[strtolower($name)])
             ? $this->_headers[strtolower($name)]
             : null;
+    }
+
+    public function headers()
+    {
+        return $this->_headers;
     }
 
     public function body()

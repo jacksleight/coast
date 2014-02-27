@@ -10,18 +10,18 @@ abstract class Xml
 {
     protected $_xml;
 
-    public function string()
+    public function toString()
     {
         return $this->_xml->asXML();
     }
 
-    public function file(\Coast\File $file)
+    public function writeFile(\Coast\File $file)
     {
-        return $this->_xml->asXML($file->name());
+        return $this->_xml->asXML($file->toString());
     }
 
     public function __toString()
     {
-        return $this->string();
+        return $this->toString();
     }
 }

@@ -37,7 +37,7 @@ class Content
         return isset($this->_data[$name]);
     }
 
-    public function string()
+    public function toString()
     {
         return implode($this->_data);
     }
@@ -54,6 +54,6 @@ class Content
 
     public function __toString()
     {
-        return $this->string();
+        return $this->toString();
     }
 }

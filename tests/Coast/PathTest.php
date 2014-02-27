@@ -10,7 +10,7 @@ class PathTest extends \PHPUnit_Framework_TestCase
         $path = new Path('/dir/base.ext');
 
         $this->assertEquals('/dir/base.ext', (string) $path);
-        $this->assertEquals('/dir/base.ext', $path->name());
+        $this->assertEquals('/dir/base.ext', $path->toString());
         $this->assertEquals('/dir', $path->dirName());
         $this->assertEquals('base.ext', $path->baseName());
         $this->assertEquals('ext', $path->extName());
@@ -31,7 +31,7 @@ class PathTest extends \PHPUnit_Framework_TestCase
         $a = new Path('../four');
         $b = new Path('/one/two/three');
 
-        $this->assertEquals('/one/four', $a->absolute($b)->name());
+        $this->assertEquals('/one/four', $a->toAbsolute($b)->toString());
     }
 
     public function testAbsoluteException()
@@ -40,7 +40,7 @@ class PathTest extends \PHPUnit_Framework_TestCase
         $b = new Path('/one/two/three');
 
         $this->setExpectedException('Exception');
-        $this->assertEquals('/one/four', $b->absolute($a)->name());
+        $b->toAbsolute($a);
     }
 
     public function testRelative()
@@ -48,7 +48,7 @@ class PathTest extends \PHPUnit_Framework_TestCase
         $a = new Path('/one/four');
         $b = new Path('/one/two/three');
 
-        $this->assertEquals('../four', $a->relative($b)->name());
+        $this->assertEquals('../four', $a->toRelative($b)->toString());
     }
 
     public function testRelativeException()
@@ -57,7 +57,7 @@ class PathTest extends \PHPUnit_Framework_TestCase
         $b = new Path('../');
 
         $this->setExpectedException('Exception');
-        $this->assertEquals('../four', $a->relative($b)->name());
+        $a->toRelative($b);
     }
 
     public function testType()
