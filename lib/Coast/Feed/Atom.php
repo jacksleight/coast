@@ -6,10 +6,8 @@
 
 namespace Coast\Feed;
 
-class Atom
+class Atom extends \Coast\Xml
 {
-    protected $_xml;
-
     public function __construct($title, \Coast\Url $link, $author, \DateTime $updated)
     {
         $this->_xml = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><feed/>');
@@ -32,15 +30,5 @@ class Atom
         if (isset($summary)) {
             $entry->addChild('summary', $summary);
         }
-    }
-
-    public function xml()
-    {
-        return $this->_xml->asXML();
-    }
-
-    public function __toString()
-    {
-        return $this->xml();
     }
 }

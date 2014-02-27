@@ -6,17 +6,15 @@
 
 namespace Coast;
 
-class Sitemap
+class Sitemap extends \Coast\Xml
 {
-    const CHANGES_ALWAYS  = 'always';
-    const CHANGES_HOURLY  = 'hourly';
-    const CHANGES_DAILY   = 'daily';
-    const CHANGES_WEEKLY  = 'weekly';
-    const CHANGES_MONTHLY = 'monthly';
-    const CHANGES_YEARLY  = 'yearly';
-    const CHANGES_NEVER   = 'never';
-
-    protected $_xml;
+    const CHANGEFREQ_ALWAYS  = 'always';
+    const CHANGEFREQ_HOURLY  = 'hourly';
+    const CHANGEFREQ_DAILY   = 'daily';
+    const CHANGEFREQ_WEEKLY  = 'weekly';
+    const CHANGEFREQ_MONTHLY = 'monthly';
+    const CHANGEFREQ_YEARLY  = 'yearly';
+    const CHANGEFREQ_NEVER   = 'never';
 
     public function __construct()
     {
@@ -24,49 +22,18 @@ class Sitemap
        $this->_xml->addAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
     }
 
-    public function add(\Coast\Url $loc, \DateTime $modified = null, $changes = null, $priority = null)
+    public function add(\Coast\Url $loc, \DateTime $lastmod = null, $changefreq = null, $priority = null)
     {
-        if (is_array($changes)) {
-            list($since, $count) = $changes;
-            if ($count == 0) {
-                $changes = self::CHANGES_NEVER;
-            } else {
-                $ratio = (((new \DateTime())->getTimestamp() - $since->getTimestamp()) / 3600) / $count;
-                $intervals = [
-                    self::CHANGES_YEARLY  => 8760,
-                    self::CHANGES_MONTHLY => 730,
-                    self::CHANGES_WEEKLY  => 168,
-                    self::CHANGES_DAILY   => 24,
-                    self::CHANGES_HOURLY  => 1,
-                    self::CHANGES_ALWAYS  => 0,
-                ];
-                foreach ($intervals as $changes => $interval) {
-                    if ($ratio >= $interval) {
-                        break;
-                    }
-                }
-            }
-        }
         $url = $this->_xml->addChild('url');
         $loc = $url->addChild('loc', $loc->name());
-        if (isset($modified)) {
-            $url->addChild('lastmod', $modified->format(\DateTime::W3C));
+        if (isset($lastmod)) {
+            $url->addChild('lastmod', $lastmod->format(\DateTime::W3C));
         }
-        if (isset($changes)) {
-            $url->addChild('changefreq', $changes);
+        if (isset($changefreq)) {
+            $url->addChild('changefreq', $changefreq);
         }
         if (isset($priority)) {
             $url->addChild('priority', number_format($priority, 1, '.', null));
         }
-    }
-
-    public function xml()
-    {
-        return $this->_xml->asXML();
-    }
-
-    public function __toString()
-    {
-        return $this->xml();
     }
 }

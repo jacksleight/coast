@@ -7,5 +7,8 @@ gulp.task('phpunit', function() {
 });
 
 gulp.task('watch', function() {
-	gulp.watch('tests/**/*.php', ['phpunit']);
+	gulp.watch([
+		'lib/**/*.php',
+		'tests/**/*.php'
+	], ['phpunit']);
 });
