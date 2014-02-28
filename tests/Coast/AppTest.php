@@ -92,11 +92,6 @@ class AppTest extends \PHPUnit_Framework_TestCase
         ];
         $app->params($params);
         $this->assertEquals($params, $app->params());
-
-        $app = new App();
-        $app->test = 'OK';
-        $this->assertTrue(isset($app->test));
-        $this->assertEquals('OK', $app->test);
     }
 
     public function testAccess()

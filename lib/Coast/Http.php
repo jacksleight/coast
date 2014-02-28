@@ -70,7 +70,7 @@ class Http
         } elseif ($method == self::METHOD_POST) {
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $data instanceof \Coast\File
-                ? '@' . $data->name()
+                ? '@' . $data->toString()
                 : $data);
         }
         
