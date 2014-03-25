@@ -123,15 +123,15 @@ class Url
         return $this->_scheme;
     }
 
-    public function http()
+    public function isHttp()
     {
-        $scheme = strtolower($this->getScheme());
+        $scheme = strtolower($this->scheme());
         return $scheme == self::SCHEME_HTTP || $scheme == self::SCHEME_HTTPS;
     }
     
-    public function https()
+    public function isHttps()
     {
-        $scheme = strtolower($this->getScheme());
+        $scheme = strtolower($this->scheme());
         return $scheme == self::SCHEME_HTTPS;
     }
     
