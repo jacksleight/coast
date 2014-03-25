@@ -21,14 +21,23 @@ class Path
      * Constructs a new path object.
      * @param string $name Full path name.
      */
-    public function __construct($name)
+    public function __construct($value)
     {
-        $name = str_replace('\\', '/', $name);
-        $name = preg_replace('/\/+/', '/', $name);
-        $name = $name != '/'
-            ? rtrim($name, '/')
-            : $name;
-        $this->_value = $name;
+        $this->value($value);
+    }
+
+    /**
+     * Set the value.
+     * @param string $name Full path name.
+     */
+    public function value($value = null)
+    {
+        if (isset($value)) {
+            $value = str_replace('\\', '/', $value);
+            $value = preg_replace('/\/+/', '/', $value);
+            $this->_value = $value;
+        }
+        return $this->_value;
     }
 
     /**
@@ -38,7 +47,7 @@ class Path
      */ 
     public function toString()
     {
-        return $this->_value;
+        return $this->value();
     }
 
     /**

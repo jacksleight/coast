@@ -11,6 +11,9 @@ class Url implements \Coast\App\Access
     use \Coast\App\Access\Implementation;
     use \Coast\Options;
 
+    const VERSION_QUERY  = 'query';
+    const VERSION_SUFFIX = 'suffix';
+
     public function __construct(array $options = array())
     {
         $this->options(array_merge([
@@ -18,7 +21,7 @@ class Url implements \Coast\App\Access
             'dir'     => '',
             'cdnBase' => null,
             'router'  => null,
-            'version' => true,
+            'version' => self::VERSION_QUERY,
         ], $options));
     }
 
@@ -138,16 +141,24 @@ class Url implements \Coast\App\Access
         }
 
         $file = $path;
-        $path = $path->toRelative($this->_options->dir);
+        $path = $file->toRelative($this->_options->dir);
+       
         if ($base) {
-            $path = $cdn && isset($this->_options->cdnBase)
+            $url = new \Coast\Url($cdn && isset($this->_options->cdnBase)
                 ? $this->_options->cdnBase . $path
-                : $this->_options->base . $path;
+                : $this->_options->base . $path);
+        } else {
+            $url = new \Coast\Url($path);
         }
 
-        $url = new \Coast\Url($path);
-        if ($version && $file instanceof \Coast\File && $file->exists()) {
-            $url->queryParam($file->modifyTime()->getTimestamp(), '');
+        if (isset($version) && $file instanceof \Coast\File && $file->exists()) {
+            $modifyTime = $file->modifyTime()->getTimestamp();
+            if ($version == self::VERSION_QUERY) {
+                $url->queryParam($modifyTime, '');
+            } else if ($version == self::VERSION_SUFFIX) {
+                $path = $url->path();
+                $path->value("{$path->dirName()}/{$path->fileName()}.{$modifyTime}.{$path->extName()}");
+            }
         }
 
         return $url;

@@ -174,7 +174,9 @@ class Url
     public function path($value = null)
     {
         if (isset($value)) {
-            $this->_path = $value;
+            $this->_path = !$value instanceof \Coast\Path
+                ? new \Coast\Path("{$value}")
+                : $value;
             return $this;
         }
         return $this->_path;
