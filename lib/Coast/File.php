@@ -28,7 +28,7 @@ class File extends \Coast\File\Path
     
     public function open($mode = 'r')
     {
-        $this->_handle = fopen($this->_value, $mode);
+        $this->_handle = fopen($this->_name, $mode);
         return $this;
     }
 
@@ -124,9 +124,18 @@ class File extends \Coast\File\Path
             ? $name
             : $this->baseName());
         $upload
-            ? move_uploaded_file($this->_value, $path)
-            : rename($this->_value, $path);
-        return new \Coast\File($path);
+            ? move_uploaded_file($this->_name, $path)
+            : rename($this->_name, $path);
+        $this->_name = $path;
+        return $this;
+    }
+
+    public function rename($name)
+    {
+        $path = $this->dirName() . '/' . $name;
+        rename($this->_name, $path);
+        $this->_name = $path;
+        return $this;
     }
 
     public function copy(\Coast\Dir $dir, $name = null)
@@ -134,27 +143,20 @@ class File extends \Coast\File\Path
         $path = $dir->toString() . '/' . (isset($name)
             ? $name
             : $this->baseName());
-        copy($this->_value, $path);
-        return new \Coast\File($path);
-    }
-
-    public function rename($name)
-    {
-        $path = $this->dirName() . '/' . $name;
-        rename($this->_value, $path);
+        copy($this->_name, $path);
         return new \Coast\File($path);
     }
 
     public function remove()
     {
-        unlink($this->_value);
+        unlink($this->_name);
         return $this;
     }
 
     public function permissions($mode = null)
     {
         if (isset($mode)) {
-            chmod($this->_value, $mode);
+            chmod($this->_name, $mode);
             return $this;
         }
         return parent::permissions();
@@ -162,18 +164,18 @@ class File extends \Coast\File\Path
 
     public function touch(\DateTime $modify = null, \DateTime $access = null)
     {
-        touch($this->_value, $modify->getTimestamp(), $access->getTimestamp());
+        touch($this->_name, $modify->getTimestamp(), $access->getTimestamp());
         return $this;
     }
 
     public function size()
     {
-        return filesize($this->_value);
+        return filesize($this->_name);
     }
 
     public function hash($type)
     {
-        return hash_file($type, $this->_value);
+        return hash_file($type, $this->_name);
     }
 
     public function dir($mode = null)
@@ -183,16 +185,16 @@ class File extends \Coast\File\Path
 
     public function accessTime()
     {
-        return (new \DateTime())->setTimestamp(fileatime($this->_value));
+        return (new \DateTime())->setTimestamp(fileatime($this->_name));
     }
 
     public function changeTime()
     {
-        return (new \DateTime())->setTimestamp(filectime($this->_value));
+        return (new \DateTime())->setTimestamp(filectime($this->_name));
     }
 
     public function modifyTime()
     {
-        return (new \DateTime())->setTimestamp(filemtime($this->_value));
+        return (new \DateTime())->setTimestamp(filemtime($this->_name));
     }
 }

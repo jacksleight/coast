@@ -12,10 +12,10 @@ namespace Coast;
 class Path
 {
     /**
-     * Full path value.
+     * Full path name.
      * @var string
      */
-    protected $_value;
+    protected $_name;
 
     /**
      * Constructs a new path object.
@@ -23,67 +23,30 @@ class Path
      */
     public function __construct($value)
     {
-        $this->value($value);
+        $this->name($value);
     }
 
     /**
-     * Set the value.
+     * Get/set the name.
      * @param string $name Full path name.
      */
-    public function value($value = null)
+    public function name($value = null)
     {
         if (isset($value)) {
             $value = str_replace('\\', '/', $value);
             $value = preg_replace('/\/+/', '/', $value);
-            $this->_value = $value;
+            $this->_name = $value;
         }
-        return $this->_value;
+        return $this->_name;
     }
 
     /**
-     * Get full path name or part.
-     * @param  string $part The part to return.
+     * Aliases `name`
      * @return string
      */ 
     public function toString()
     {
-        return $this->value();
-    }
-
-    /**
-     * Get the directory name.
-     * @return string
-     */
-    public function dirName()
-    {
-        return pathinfo($this->_value, PATHINFO_DIRNAME);
-    }
-
-    /**
-     * Get the base name.
-     * @return string
-     */
-    public function baseName()
-    {
-        return pathinfo($this->_value, PATHINFO_BASENAME);
-    }
-
-    /**
-     * Get the extension name.
-     * @return string
-     */
-    public function extName()
-    {
-        return pathinfo($this->_value, PATHINFO_EXTENSION);
-    }
-
-    /**
-     * Get the file name.
-     * @return string
-     */
-    public function fileName()
-    {
-        return pathinfo($this->_value, PATHINFO_FILENAME);
+        return $this->name();
     }
 
     /**
@@ -92,7 +55,85 @@ class Path
      */
     public function __toString()
     {
-        return $this->_value;
+        return $this->name();
+    }
+
+    /**
+     * Get/set the directory name.
+     * @return string
+     */
+    public function dirName($value = null)
+    {
+        if (isset($value)) {
+            $parts = pathinfo($this->_name);
+            $this->_name = "{$value}/{$parts['basename']}";
+            return $this;
+        }
+        return pathinfo($this->_name, PATHINFO_DIRNAME);
+    }
+
+    /**
+     * Get/set the base name.
+     * @return string
+     */
+    public function baseName($value = null)
+    {
+        if (isset($value)) {
+            $parts = pathinfo($this->_name);
+            $this->_name = "{$parts['dirname']}/{$value}";
+            return $this;
+        }
+        return pathinfo($this->_name, PATHINFO_BASENAME);
+    }
+
+    /**
+     * Get/set the file name.
+     * @return string
+     */
+    public function fileName($value = null)
+    {
+        if (isset($value)) {
+            $parts = pathinfo($this->_name);
+            $this->_name = "{$parts['dirname']}/{$value}.{$parts['extension']}";
+            return $this;
+        }
+        return pathinfo($this->_name, PATHINFO_FILENAME);
+    }
+
+    /**
+     * Get/set the extension name.
+     * @return string
+     */
+    public function extName($value = null)
+    {
+        if (isset($value)) {
+            $parts = pathinfo($this->_name);
+            $this->_name = "{$parts['dirname']}/{$parts['filename']}.{$value}";
+            return $this;
+        }
+        return pathinfo($this->_name, PATHINFO_EXTENSION);
+    }
+
+    /**
+     * Add prefix.
+     * @return string
+     */
+    public function prefix($value)
+    {
+        $parts = pathinfo($this->_name);
+        $this->_name = "{$parts['dirname']}/{$value}{$parts['filename']}.{$parts['extension']}";
+        return $this;
+    }
+
+    /**
+     * Add suffix.
+     * @return string
+     */
+    public function suffix($value)
+    {
+        $parts = pathinfo($this->_name);
+        $this->_name = "{$parts['dirname']}/{$parts['filename']}{$value}.{$parts['extension']}";
+        return $this;
     }
 
     /**
@@ -102,7 +143,7 @@ class Path
      */
     public function isWithin(\Coast\Path $parent)
     {
-        $path = $this->_value;
+        $path = $this->_name;
         $parts = \explode(PATH_SEPARATOR, $parent->toString());    
         foreach ($parts as $part) {
             if (\preg_match('/^' . \preg_quote($part, '/') . '/', $path)) {
@@ -124,7 +165,7 @@ class Path
         }
 
         $source = explode('/', $base->toString());
-        $target = explode('/', $this->_value);
+        $target = explode('/', $this->_name);
         
         $name = $source;
         array_pop($name);
@@ -153,7 +194,7 @@ class Path
         }
         
         $source = explode('/', $base->toString());
-        $target = explode('/', $this->_value);
+        $target = explode('/', $this->_name);
 
         $name = $target;
         foreach ($source as $i => $part) {
@@ -176,7 +217,7 @@ class Path
      */
     public function isAbsolute()
     {
-        return substr($this->_value, 0, 1) == '/';
+        return substr($this->_name, 0, 1) == '/';
     }
 
     /**

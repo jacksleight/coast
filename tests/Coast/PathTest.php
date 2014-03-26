@@ -11,10 +11,56 @@ class PathTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('/dir/base.ext', (string) $path);
         $this->assertEquals('/dir/base.ext', $path->toString());
+    }
+
+    public function testDirName()
+    {
+        $path = new Path('/dir/base.ext');
+
         $this->assertEquals('/dir', $path->dirName());
+        $path->dirName('/other');
+        $this->assertEquals('/other/base.ext', $path->name());
+    }
+
+    public function testBaseName()
+    {
+        $path = new Path('/dir/base.ext');
+
         $this->assertEquals('base.ext', $path->baseName());
-        $this->assertEquals('ext', $path->extName());
+        $path->baseName('image.jpg');
+        $this->assertEquals('/dir/image.jpg', $path->name());
+    }
+
+    public function testFileName()
+    {
+        $path = new Path('/dir/base.ext');
+
         $this->assertEquals('base', $path->fileName());
+        $path->fileName('image');
+        $this->assertEquals('/dir/image.ext', $path->name());
+    }
+
+    public function testExtName()
+    {
+        $path = new Path('/dir/base.ext');
+
+        $this->assertEquals('ext', $path->extName());
+        $path->extName('jpg');
+        $this->assertEquals('/dir/base.jpg', $path->name());
+    }
+
+    public function testPrefix()
+    {
+        $path = new Path('/dir/base.ext');
+        $path->prefix('new-');
+        $this->assertEquals('/dir/new-base.ext', $path->name());
+    }
+
+    public function testSuffix()
+    {
+        $path = new Path('/dir/base.ext');
+        $path->suffix('-new');
+        $this->assertEquals('/dir/base-new.ext', $path->name());
     }
 
     public function testWithin()
