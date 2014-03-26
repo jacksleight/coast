@@ -12,6 +12,7 @@ class Url implements \Coast\App\Access
     use \Coast\Options;
 
     const VERSION_QUERY  = 'query';
+    const VERSION_PREFIX = 'prefix';
     const VERSION_SUFFIX = 'suffix';
 
     public function __construct(array $options = array())
@@ -140,24 +141,22 @@ class Url implements \Coast\App\Access
             throw new \Coast\App\Exception("Path '{$path}' is not within base directory");
         }
 
-        $file = $path;
-        $path = $file->toRelative($this->_options->dir);
-       
+        $url = $path->toRelative($this->_options->dir);
         if ($base) {
-            $url = new \Coast\Url($cdn && isset($this->_options->cdnBase)
-                ? $this->_options->cdnBase . $path
-                : $this->_options->base . $path);
-        } else {
-            $url = new \Coast\Url($path);
+            $url = $cdn && isset($this->_options->cdnBase)
+                ? $this->_options->cdnBase . $url
+                : $this->_options->base . $url;
         }
+        $url = new \Coast\Url($url);
 
-        if (isset($version) && $file instanceof \Coast\File && $file->exists()) {
-            $modifyTime = $file->modifyTime()->getTimestamp();
+        if (isset($version) && $path instanceof \Coast\File && $path->exists()) {
+            $modifyTime = $path->modifyTime()->getTimestamp();
             if ($version == self::VERSION_QUERY) {
                 $url->queryParam($modifyTime, '');
+            } else if ($version == self::VERSION_PREFIX) {
+                $url->path()->prefix("{$modifyTime}.");
             } else if ($version == self::VERSION_SUFFIX) {
-                $path = $url->path();
-                $path->value("{$path->dirName()}/{$path->fileName()}.{$modifyTime}.{$path->extName()}");
+                $url->path()->suffix(".{$modifyTime}");
             }
         }
 
