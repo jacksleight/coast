@@ -17,7 +17,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
     {
         $this->options(array_merge([
             'dir'       => null,
-            'extension' => 'phtml',
+            'extension' => 'php',
         ], $options));
     }
 
