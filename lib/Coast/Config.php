@@ -27,11 +27,9 @@ class Config
             $files = [$files];
         }
         foreach ($files as $file) {
-            $data = [];
-            require (string) $file;
             $this->_data = array_merge_recursive(
                 $this->_data,
-                $data
+                require (string) $file
             );
         }
     }
