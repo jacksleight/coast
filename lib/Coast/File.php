@@ -121,7 +121,7 @@ class File extends \Coast\File\Path
     public function moveUpload(\Coast\Dir $dir, $baseName = null)
     {
         $name = "{$dir}/" . (isset($baseName)
-            ? $baseName
+            ? $this->_parseBaseName($baseName)
             : $this->baseName());
         move_uploaded_file($this->_name, $name);
         $this->_name = $name;
@@ -131,7 +131,7 @@ class File extends \Coast\File\Path
     public function copy(\Coast\Dir $dir, $baseName = null)
     {
         $name = "{$dir}/" . (isset($baseName)
-            ? $baseName
+            ? $this->_parseBaseName($baseName)
             : $this->baseName());
         copy($this->_name, $name);
         return new \Coast\File($name);

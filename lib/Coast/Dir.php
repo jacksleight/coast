@@ -32,7 +32,7 @@ class Dir extends \Coast\File\Path implements \IteratorAggregate
     public function copy(\Coast\Dir $dir, $baseName = null, $recursive = false)
     {
         $name = "{$dir}/" . (isset($baseName)
-            ? $baseName
+            ? $this->_parseBaseName($baseName)
             : $this->baseName());
         $umask = umask(0);
         mkdir($name, 0777, true);

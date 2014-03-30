@@ -33,9 +33,7 @@ class Path
     public function name($value = null)
     {
         if (isset($value)) {
-            $value = str_replace('\\', '/', $value);
-            $value = preg_replace('/\/+/', '/', $value);
-            $this->_name = $value;
+            $this->_name = str_replace(DIRECTORY_SEPARATOR, '/', $value);
         }
         return $this->_name;
     }

@@ -44,7 +44,7 @@ abstract class Path extends \Coast\Path
     public function move(\Coast\Dir $dir, $baseName = null)
     {
         $name = "{$dir}/" . (isset($baseName)
-            ? $baseName
+            ? $this->_parseBaseName($baseName)
             : $this->baseName());
         rename($this->_name, $name);
         $this->_name = $name;
@@ -55,7 +55,7 @@ abstract class Path extends \Coast\Path
     {
         $name = (isset($dir)
             ? $dir
-            : $this->dir()) . "/{$baseName}";
+            : $this->dir()) . "/{$this->_parseBaseName($baseName)}";
         rename($this->_name, $name);
         $this->_name = $name;
         return $this;
@@ -64,4 +64,23 @@ abstract class Path extends \Coast\Path
     abstract public function copy(\Coast\Dir $dir, $baseName = null);
     
     abstract public function remove();
+
+    public function _parseBaseName($baseName)
+    {
+        if (is_array($baseName)) {
+            $baseName = array_intersect_key($baseName, [
+                'baseName' => null,
+                'fileName' => null,
+                'extName'  => null,
+                'prefix'   => null,
+                'suffix'   => null,
+            ]);
+            $path = new \Coast\Path($this->baseName());
+            foreach ($baseName as $method => $value) {
+                $path->$method($value);
+            }
+            $baseName = $path->baseName();
+        }
+        return $baseName;
+    }
 }
