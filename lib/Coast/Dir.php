@@ -8,11 +8,11 @@ namespace Coast;
 
 class Dir extends \Coast\File\Path implements \IteratorAggregate
 {
-    public function __construct($path, $mode = null)
+    public function __construct($path, $create = false)
     {
         parent::__construct($path);
-        if (isset($mode)) {
-            $this->create($mode);
+        if ($create) {
+            $this->create($create);
         }
     }
 
@@ -21,30 +21,38 @@ class Dir extends \Coast\File\Path implements \IteratorAggregate
         return new \Coast\Dir\Iterator($this->_name, $recursive, $mode, $flags);
     }
 
-    public function create($mode = null)
+    public function create()
     {
-        $stack = explode('/', $this->_name);
-        $parts = [];
-        while (count($stack) > 0) {
-            array_push($parts, array_shift($stack));
-            $create = implode('/', $parts);
-            if (strlen($create) == 0) {
-                continue;
-            }
-            if (!is_dir($create)) {
-                if (mkdir($create) && isset($mode)) {
-                    chmod($create, $mode);
-                }
+        $umask = umask(0);
+        mkdir($this->_name, 0777, true);
+        umask($umask);
+        return $this;
+    }
+
+    public function copy(\Coast\Dir $dir, $baseName = null, $recursive = false)
+    {
+        $name = "{$dir}/" . (isset($baseName)
+            ? $baseName
+            : $this->baseName());
+        $umask = umask(0);
+        mkdir($name, 0777, true);
+        if ($recursive) {
+            foreach ($this->iterator(null, true, \RecursiveIteratorIterator::SELF_FIRST) as $child) {
+                $copy = "{$name}/{$child->toRelative($this)}";
+                $child->isDir()
+                    ? mkdir($copy, 0777, true)
+                    : copy($child->name(), $copy);
             }
         }
-        return $this;
+        umask($umask);
+        return new \Coast\Dir($name);
     }
 
     public function remove($recursive = false)
     {
         if ($recursive) {
-            foreach ($this->iterator(null, true, \RecursiveIteratorIterator::CHILD_FIRST) as $path) {
-                $path->remove();
+            foreach ($this->iterator(null, true, \RecursiveIteratorIterator::CHILD_FIRST) as $child) {
+                $child->remove();
             }
         }
         rmdir($this->_name);
@@ -55,8 +63,8 @@ class Dir extends \Coast\File\Path implements \IteratorAggregate
     {
         if (isset($mode)) {
             if ($recursive) {
-                foreach ($this->iterator(null, true, \RecursiveIteratorIterator::CHILD_FIRST) as $path) {
-                    $path->chmod($mode);
+                foreach ($this->iterator(null, true, \RecursiveIteratorIterator::CHILD_FIRST) as $child) {
+                    $child->chmod($mode);
                 }
             }
             chmod($this->_name, $mode);

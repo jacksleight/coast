@@ -118,33 +118,23 @@ class File extends \Coast\File\Path
         return $this;
     }
 
-    public function move(\Coast\Dir $dir, $name = null, $upload = false)
+    public function moveUpload(\Coast\Dir $dir, $baseName = null)
     {
-        $path = $dir->toString() . '/' . (isset($name)
-            ? $name
+        $name = "{$dir}/" . (isset($baseName)
+            ? $baseName
             : $this->baseName());
-        $upload
-            ? move_uploaded_file($this->_name, $path)
-            : rename($this->_name, $path);
-        $this->_name = $path;
+        move_uploaded_file($this->_name, $name);
+        $this->_name = $name;
         return $this;
     }
 
-    public function rename($name)
+    public function copy(\Coast\Dir $dir, $baseName = null)
     {
-        $path = $this->dirName() . '/' . $name;
-        rename($this->_name, $path);
-        $this->_name = $path;
-        return $this;
-    }
-
-    public function copy(\Coast\Dir $dir, $name = null)
-    {
-        $path = $dir->toString() . '/' . (isset($name)
-            ? $name
+        $name = "{$dir}/" . (isset($baseName)
+            ? $baseName
             : $this->baseName());
-        copy($this->_name, $path);
-        return new \Coast\File($path);
+        copy($this->_name, $name);
+        return new \Coast\File($name);
     }
 
     public function remove()

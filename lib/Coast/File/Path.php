@@ -40,6 +40,28 @@ abstract class Path extends \Coast\Path
     {
         return substr(sprintf('%o', fileperms($this->_name)), -4);
     }
+
+    public function move(\Coast\Dir $dir, $baseName = null)
+    {
+        $name = "{$dir}/" . (isset($baseName)
+            ? $baseName
+            : $this->baseName());
+        rename($this->_name, $name);
+        $this->_name = $name;
+        return $this;
+    }
+
+    public function rename($baseName, \Coast\Dir $dir = null)
+    {
+        $name = (isset($dir)
+            ? $dir
+            : $this->dir()) . "/{$baseName}";
+        rename($this->_name, $name);
+        $this->_name = $name;
+        return $this;
+    }
+
+    abstract public function copy(\Coast\Dir $dir, $baseName = null);
     
     abstract public function remove();
 }
