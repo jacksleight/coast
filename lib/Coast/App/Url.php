@@ -11,10 +11,6 @@ class Url implements \Coast\App\Access
     use \Coast\App\Access\Implementation;
     use \Coast\Options;
 
-    const VERSION_QUERY  = 'query';
-    const VERSION_PREFIX = 'prefix';
-    const VERSION_SUFFIX = 'suffix';
-
     public function __construct(array $options = array())
     {
         $this->options(array_merge([
@@ -22,7 +18,7 @@ class Url implements \Coast\App\Access
             'dir'     => '',
             'cdnBase' => null,
             'router'  => null,
-            'version' => self::VERSION_QUERY,
+            'version' => true,
         ], $options));
     }
 
@@ -150,13 +146,10 @@ class Url implements \Coast\App\Access
         $url = new \Coast\Url($url);
 
         if (isset($version) && $path instanceof \Coast\File && $path->exists()) {
-            $modifyTime = $path->modifyTime()->getTimestamp();
-            if ($version == self::VERSION_QUERY) {
-                $url->queryParam($modifyTime, '');
-            } else if ($version == self::VERSION_PREFIX) {
-                $url->path()->prefix("{$modifyTime}.");
-            } else if ($version == self::VERSION_SUFFIX) {
-                $url->path()->suffix(".{$modifyTime}");
+            if ($version instanceof \Closure) {
+                $version($path, $url);
+            } else if ($version) {
+                $url->queryParam($path->modifyTime()->getTimestamp(), '');
             }
         }
 
