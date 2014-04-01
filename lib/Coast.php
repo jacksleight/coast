@@ -11,7 +11,7 @@ namespace Coast;
  * @param  mixed   $file
  * @return mixed
  */
-function import($_file, $_vars = [])
+function import($_file, array $_vars = array())
 {
     global $_coastImport;
     if (!isset($_coastImport)) {
