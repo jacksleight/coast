@@ -7,6 +7,24 @@
 namespace Coast;
 
 /**
+ * Require a file without leaking variables into the global scope.
+ * @param  mixed   $file
+ * @return mixed
+ */
+function import($file)
+{
+    global $_coastRequire;
+    if (!isset($_coastRequire)) {
+        $_coastRequire = [];
+    }
+    $file = realpath($file);
+    if (!array_key_exists($file, $_coastRequire)) {
+        $_coastRequire[$file] = require $file;
+    }
+    return $_coastRequire[$file];
+}
+
+/**
  * Is array key/value pairs.
  * @param  array   $array
  * @return boolean
