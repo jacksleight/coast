@@ -17,12 +17,15 @@ function import($_file, array $_vars = array())
     if (!isset($_coastImport)) {
         $_coastImport = [];
     }
-    $_file = realpath($_file);
-    if (!array_key_exists($_file, $_coastImport)) {
-        $_coastImport[$_file] = require $_file;
+    $_real = realpath($_file);
+    if (!$_real) {
+        throw new \Exception("File '{$_file}' could not be found");
     }
-    extract($_vars);
-    return $_coastImport[$_file];
+    if (!array_key_exists($_real, $_coastImport)) {
+        extract($_vars);
+        $_coastImport[$_real] = require $_real;
+    }
+    return $_coastImport[$_real];
 }
 
 /**
