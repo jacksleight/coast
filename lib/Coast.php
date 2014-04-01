@@ -11,17 +11,18 @@ namespace Coast;
  * @param  mixed   $file
  * @return mixed
  */
-function import($file)
+function import($_file, $_vars = [])
 {
-    global $_coastRequire;
-    if (!isset($_coastRequire)) {
-        $_coastRequire = [];
+    global $_coastImport;
+    if (!isset($_coastImport)) {
+        $_coastImport = [];
     }
-    $file = realpath($file);
-    if (!array_key_exists($file, $_coastRequire)) {
-        $_coastRequire[$file] = require $file;
+    $_file = realpath($_file);
+    if (!array_key_exists($_file, $_coastImport)) {
+        $_coastImport[$_file] = require $_file;
     }
-    return $_coastRequire[$file];
+    extract($_vars);
+    return $_coastImport[$_file];
 }
 
 /**
