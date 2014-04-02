@@ -59,6 +59,16 @@ class App
     }
 
     /**
+     * Require a file without leaking variables into the global scope.
+     * @param  mixed   $file
+     * @return mixed
+     */
+    public function import($_file, array $_vars = array())
+    {
+        return \Coast\import($_file, array_merge(['app' => $this], $_vars));
+    }
+
+    /**
      * Get environment variables.
      * @param  string $name
      * @return [type]
