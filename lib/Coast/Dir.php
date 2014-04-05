@@ -11,7 +11,7 @@ class Dir extends \Coast\File\Path implements \IteratorAggregate
     public function __construct($path, $create = false)
     {
         parent::__construct($path);
-        if ($create) {
+        if ($create && !$this->exists()) {
             $this->create($create);
         }
     }
@@ -90,9 +90,9 @@ class Dir extends \Coast\File\Path implements \IteratorAggregate
         return new \Coast\File("{$this->_name}/{$path}");
     }
 
-    public function dir($path, $mode = null)
+    public function dir($path, $create = false)
     {
-        return new \Coast\Dir("{$this->_name}/{$path}", $mode);
+        return new \Coast\Dir("{$this->_name}/{$path}", $create);
     }
 
     public function getIterator()
