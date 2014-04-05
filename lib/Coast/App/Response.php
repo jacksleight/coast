@@ -63,6 +63,17 @@ class Response
             : null;
     }
 
+    public function headers(array $headers = null)
+    {
+        if (isset($headers)) {
+            foreach ($headers as $name => $value) {
+                $this->header($name, $value);
+            }
+            return $this;
+        }
+        return $this->_headers;
+    }
+
     public function type($value = null)
     {
         if (isset($value)) {
@@ -130,7 +141,7 @@ class Response
             ->body((string) $data);
     }
 
-    public function redirect($type, $url)
+    public function redirect($url, $type = 301)
     {
         return $this
             ->status($type)
