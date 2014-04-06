@@ -67,4 +67,16 @@ class Model
         }
         unset($this->{$name});
     }
+
+    public function __call($name, array $args)
+    {
+        if ($name[0] == '_') {
+            throw new Exception("Access to '{$name}' is prohibited");  
+        }
+        if (isset($args[0])) {
+            $this->__set($name, $args[0]);
+        } else {
+            $this->__get($name);
+        }        
+    }
 }
