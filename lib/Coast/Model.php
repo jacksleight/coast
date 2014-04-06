@@ -74,9 +74,9 @@ class Model
             throw new Exception("Access to '{$name}' is prohibited");  
         }
         if (isset($args[0])) {
-            $this->__set($name, $args[0]);
-        } else {
-            $this->__get($name);
-        }        
+            $this->{$name} = $args[0];
+            return $this;
+        }
+        return $this->{$name};
     }
 }
