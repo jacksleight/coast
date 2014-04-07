@@ -84,7 +84,7 @@ class Request
         $this->path(implode('/', $path));
 
         $this->queryParams($this->_clean($_GET));
-        $this->bodyParams($this->_clean(array_merge($_POST, $_FILES)));
+        $this->bodyParams(array_merge($this->_clean($_POST), $_FILES));
         $this->body(file_get_contents('php://input'));
         $this->cookies($_COOKIE);
 

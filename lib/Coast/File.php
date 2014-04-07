@@ -168,9 +168,9 @@ class File extends \Coast\File\Path
         return hash_file($type, $this->_name);
     }
 
-    public function dir($mode = null)
+    public function dir($create = false)
     {
-        return new \Coast\Dir($this->dirName(), $mode);
+        return new \Coast\Dir($this->dirName(), $create);
     }
 
     public function accessTime()
