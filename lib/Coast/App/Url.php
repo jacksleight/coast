@@ -109,7 +109,7 @@ class Url implements \Coast\App\Access
         $dir = !$dir instanceof \Coast\Dir
             ? new \Coast\Dir("{$dir}")
             : $dir;
-        return $this->path($dir, $base, $cdn);
+        return $this->path($dir, $base, $cdn, $version);
     }
 
     public function file($file, $base = true, $cdn = true, $version = null)
@@ -117,7 +117,7 @@ class Url implements \Coast\App\Access
         $file = !$file instanceof \Coast\File
             ? new \Coast\File("{$file}")
             : $file;
-        return $this->path($file, $base, $cdn);
+        return $this->path($file, $base, $cdn, $version);
     }
 
     public function path($path, $base = true, $cdn = true, $version = null)
