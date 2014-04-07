@@ -121,7 +121,7 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
         }
         $regex = '/^' . implode($stack) . '$/';
 
-        $this->_routes[$name] = [
+        $route = [
             'methods' => $methods,
             'path'    => $path,
             'regex'   => $regex,
@@ -129,6 +129,7 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
             'params'  => $params,
             'target'  => $target,
         ];
+        $this->_routes = array_merge([$name => $route], $this->_routes);
         return $this;
     }
 

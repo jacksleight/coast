@@ -6,6 +6,9 @@
 
 namespace Coast\App\Controller;
 
+use Coast\App\Request,
+    Coast\App\Response;
+
 abstract class Action
 {
     protected $_controller;
@@ -30,9 +33,9 @@ abstract class Action
         return call_user_func_array(array($this->_controller, $name), $args);
     }
 
-    public function preDispatch()
+    public function preDispatch(Request $req, Response $res)
     {}
 
-    public function postDispatch()
+    public function postDispatch(Request $req, Response $res)
     {}
 }

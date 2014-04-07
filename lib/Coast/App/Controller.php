@@ -41,7 +41,7 @@ class Controller implements \Coast\App\Access, \Coast\App\Routable
         $this->_history = [];
         $this->_queue($name, $action, $params);
 
-        $final = null;
+        $result = null;
         while (count($this->_stack) > 0) {
             $item = array_shift($this->_stack);
             $this->_history[] = $item;
@@ -60,18 +60,17 @@ class Controller implements \Coast\App\Access, \Coast\App\Routable
             } else {
                 $object = $this->_actions[$class];
             }
-
             if (!method_exists($object, $action)) {
                 throw new \Coast\App\Exception("Controller action '{$name}::{$action}' does not exist");
             }
 
-            $result = call_user_func_array(array($object, $action), $params);
-            if ($action != 'preDispatch' && $action != 'postDispatch') {
-                $final = $result;
+            $result = call_user_func_array([$object, $action], $params);
+            if (isset($result)) {
+                $this->_stack = [];
             }
         }
 
-        return $final;
+        return $result;
     }
 
     protected function _queue($name, $action, $params)
