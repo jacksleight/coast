@@ -33,28 +33,25 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         
     public function has($name)
     {
-        $path = new \Coast\Path("{$name}." . $this->_options->extension);
-        if ($path->isRelative()) {
-            throw new \Coast\App\Exception("Initial path '{$path}' is relative");
-        }
+        $path = new \Coast\Path("{$name}");
+        $path = $this->_nameToPath($path);
 
-        $file = $this->_options->dir->file($path);    
+        $file = $this->_options->dir->file();
         return $file->exists();
     }
         
     public function render($name, array $params = array())
     {
-        $path = new \Coast\Path("{$name}." . $this->_options->extension);
+        $path = new \Coast\Path("{$name}");
         if (count($this->_stack) > 0) {
             $path = $path->isRelative()
                 ? $path->toAbsolute($this->_stack[0]['path'])
                 : $path;
-            $params    = array_merge($this->_stack[0]['params'], $params);
-        } else if ($path->isRelative()) {
-            throw new \Coast\App\Exception("Initial path '{$path}' is relative");
+            $params = array_merge($this->_stack[0]['params'], $params);
         }
-
-        $file = $this->_options->dir->file($path);    
+        $path = $this->_nameToPath($path);
+        
+        $file = $this->_options->dir->file($path);
         if (!$file->exists()) {
             if (count($this->_stack) == 0) {
                 throw new \Coast\App\Exception("View file '{$path}' does not exist");
@@ -87,6 +84,11 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         array_shift($this->_stack);
 
         return $content;
+    }
+
+    protected function _nameToPath(\Coast\Path $path)
+    {
+        return new \Coast\File("{$path}." . $this->_options->extension);
     }
 
     protected function _run($_file, array $_params = array())
