@@ -211,11 +211,7 @@ class Url
             $this->queryParams($params);
             return $this;
         }
-        $query = array();
-        foreach ($this->queryParams() as $name => $value) {
-            $query[] = $name . (strlen($value) ? '=' . urlencode($value) : null);
-        }
-        return implode('&', $query);
+        return http_build_query($this->queryParams());
     }
 
     public function fragment($value = null)

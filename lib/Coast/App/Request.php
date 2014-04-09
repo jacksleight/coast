@@ -102,13 +102,7 @@ class Request
         foreach ($params as $name => $value) {
             if (preg_match('/^_/', $name)) {
                 unset($params[$name]);
-                continue;
             }
-            $value = trim($value);
-            if (strlen($value) == 0) {
-                $value = null;
-            }
-            $params[$name] = $value;
         }
         return $params;
     }
