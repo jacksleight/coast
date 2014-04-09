@@ -93,6 +93,7 @@ class Dir extends \Coast\File\Path implements \IteratorAggregate
 
     public function dir($path, $create = false)
     {
+        $path = ltrim($path, '/');
         return new \Coast\Dir("{$this->_name}/{$path}", $create);
     }
 
