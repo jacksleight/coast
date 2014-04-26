@@ -51,7 +51,7 @@ class Request
         return $this->_response;
     }
 
-    public function import()
+    public function fromGlobals()
     {
         $this->params(isset($_SERVER['argv']) ? $_SERVER['argv'] : []);
         

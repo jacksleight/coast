@@ -26,7 +26,7 @@ class Response
         return $this->_req;
     }
 
-    public function export()
+    public function toGlobals()
     {
         if (session_status() == PHP_SESSION_ACTIVE) {
             $_SESSION = $this->_req->sessions();
