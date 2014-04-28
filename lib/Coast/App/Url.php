@@ -14,26 +14,23 @@ class Url implements \Coast\App\Access
     public function __construct(array $options = array())
     {
         $this->options(array_merge([
-            'base'    => '/',
-            'dir'     => '',
-            'cdnBase' => null,
-            'router'  => null,
-            'version' => true,
+            'path'        => '/',
+            'dir'         => getcwd(),
+            'cdnUrl'      => null,
+            'router'      => null,
+            'isVersioned' => true,
         ], $options));
     }
 
     protected function _initialize($name, $value)
     {
         switch ($name) {
-            case 'base':
-            case 'cdnBase':
+            case 'path':
+            case 'cdnUrl':
                 $value = new \Coast\Url("{$value}");
                 break;
             case 'dir':
                 $value = new \Coast\Dir("{$value}");
-                $value = $value->isRelative()
-                    ? new \Coast\Dir(getcwd() . "/{$value}")
-                    : $value;
                 break;
         }
         return $value;
@@ -62,14 +59,14 @@ class Url implements \Coast\App\Access
 
     public function base()
     {
-        return new \Coast\Url($this->_options->base->toString());
+        return new \Coast\Url($this->_options->path->toString());
     }
 
     public function string($string, $base = true)
     {
         $path = (string) $string;
         return new \Coast\Url($base
-            ? $this->_options->base . $path
+            ? $this->_options->path . $path
             : $path);
     }
 
@@ -95,7 +92,7 @@ class Url implements \Coast\App\Access
         }
         $path = ltrim($this->_options->router->reverse($name, $params), '/');
         return new \Coast\Url($base
-            ? $this->_options->base . $path
+            ? $this->_options->path . $path
             : $path);
     }
 
@@ -104,34 +101,34 @@ class Url implements \Coast\App\Access
         return $url;
     }
 
-    public function dir($dir, $base = true, $cdn = true, $version = null)
+    public function dir($dir, $base = true, $cdn = true, $isVersioned = null)
     {
         $dir = !$dir instanceof \Coast\Dir
             ? new \Coast\Dir("{$dir}")
             : $dir;
-        return $this->path($dir, $base, $cdn, $version);
+        return $this->path($dir, $base, $cdn, $isVersioned);
     }
 
-    public function file($file, $base = true, $cdn = true, $version = null)
+    public function file($file, $base = true, $cdn = true, $isVersioned = null)
     {
         $file = !$file instanceof \Coast\File
             ? new \Coast\File("{$file}")
             : $file;
-        return $this->path($file, $base, $cdn, $version);
+        return $this->path($file, $base, $cdn, $isVersioned);
     }
 
-    public function path($path, $base = true, $cdn = true, $version = null)
+    public function path($path, $base = true, $cdn = true, $isVersioned = null)
     {
-        $version = isset($version)
-            ? $version
-            : $this->_options->version;
+        $isVersioned = isset($isVersioned)
+            ? $isVersioned
+            : $this->_options->isVersioned;
 
         $path = !$path instanceof \Coast\Path
             ? new \Coast\Path("{$path}")
             : $path;
         $class = get_class($path);
         $path = $path->isRelative()
-            ? new $class(getcwd() . "/{$path}")
+            ? new $class($this->_options->dir . "/{$path}")
             : $path;
         if (!$path->isWithin($this->_options->dir)) {
             throw new \Coast\App\Exception("Path '{$path}' is not within base directory");
@@ -139,17 +136,17 @@ class Url implements \Coast\App\Access
 
         $url = $path->toRelative($this->_options->dir);
         if ($base) {
-            $url = $cdn && isset($this->_options->cdnBase)
-                ? $this->_options->cdnBase . $url
-                : $this->_options->base . $url;
+            $url = $cdn && isset($this->_options->cdnUrl)
+                ? $this->_options->cdnUrl . $url
+                : $this->_options->path . $url;
         }
         $url = new \Coast\Url($url);
 
-        if (isset($version) && $path instanceof \Coast\File && $path->exists()) {
-            if ($version instanceof \Closure) {
-                $version($url, $path);
-            } else if ($version) {
-                $url->queryParam($path->modifyTime()->getTimestamp(), '');
+        if (isset($isVersioned) && $path instanceof \Coast\File && $path->exists()) {
+            if ($isVersioned instanceof \Closure) {
+                $isVersioned($url, $path);
+            } else if ($isVersioned) {
+                $url->queryParam('v', $path->modifyTime()->getTimestamp());
             }
         }
 

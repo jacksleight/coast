@@ -16,8 +16,8 @@ class View implements \Coast\App\Access, \Coast\App\Executable
     public function __construct(array $options = array())
     {
         $this->options(array_merge([
-            'dir'       => null,
-            'extension' => 'php',
+            'dir'     => null,
+            'extName' => 'php',
         ], $options));
     }
 
@@ -33,7 +33,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         
     public function has($name)
     {
-        $path = new \Coast\Path("{$name}." . $this->_options->extension);
+        $path = new \Coast\Path("{$name}." . $this->_options->extName);
         if (!$path->isAbsolute()) {
             $path = new \Coast\Path("/{$path}");
         }
@@ -43,7 +43,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         
     public function render($name, array $params = array())
     {
-        $path = new \Coast\Path("{$name}." . $this->_options->extension);
+        $path = new \Coast\Path("{$name}." . $this->_options->extName);
         if (count($this->_stack) > 0) {
             $path = $path->isRelative()
                 ? $path->toAbsolute($this->_stack[0]['path'])
