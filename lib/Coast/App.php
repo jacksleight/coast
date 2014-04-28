@@ -6,6 +6,11 @@
 
 namespace Coast;
 
+use Coast\App\Request,
+    Coast\App\Response,
+    Coast\App\Executable,
+    Coast\App\Exception;
+
 /**
  * Coast application object.
  */
@@ -186,8 +191,8 @@ class App
             $value = $name;
             $name  = null;
         }
-        if (!$value instanceof \Closure && !$value instanceof \Coast\App\Executable) {
-            throw new \Coast\App\Exception("Param '{$name}' is not a closure or instance of Coast\App\Executable");
+        if (!$value instanceof \Closure && !$value instanceof Executable) {
+            throw new Exception("Param '{$name}' is not a closure or instance of Coast\App\Executable");
         }
         array_push($this->_stack, $value instanceof \Closure
             ? $value->bindTo($this)
@@ -201,11 +206,18 @@ class App
     /**
      * Execute the application, running middleware in order.
      * @param  Coast\App\Request $req Request object.
-     * @return Coast\App\Response Response object
+     * @param  Coast\App\Response $res Response object.
      */
-    public function execute(\Coast\App\Request $req)
+    public function execute(Request $req = null, Response $res = null)
     {
-        $res = $req->response();
+        $auto = false;
+        if (!isset($req)) {
+            $auto = true;
+            $req  = (new Request())->fromGlobals();
+            $res  = (new Response($req));
+        } else if (!isset($res)) {
+            throw new Exception('You must pass a Response object when passing a Request object');
+        }
 
         $this->set('req', $req)
              ->set('res', $res);
@@ -219,14 +231,14 @@ class App
             }
             if ((bool) $result !== true) {
                 if (isset($this->_notFoundHandler)) {
-                    call_user_func($this->_notFoundHandler, $req, $res);
+                    $result = call_user_func($this->_notFoundHandler, $req, $res);
                 } else {
-                    throw new \Coast\App\Exception('Nothing successfully handled the request');
+                    throw new Exception('Nothing successfully handled the request');
                 }
             }
         } catch (\Exception $e) {
             if (isset($this->_errorHandler)) {
-                call_user_func($this->_errorHandler, $req, $res, $e);
+                $result = call_user_func($this->_errorHandler, $req, $res, $e);
             } else {
                 throw $e;
             }
@@ -234,7 +246,11 @@ class App
         $this->set('req', null)
              ->set('res', null);
         
-        return $res;
+        if ($auto) {
+            $res->toGlobals();
+        } else {
+            return $result;
+        }
     }
 
     /**
@@ -298,7 +314,7 @@ class App
     {
         $value = $this->get($name);
         if (!is_object($value) || !method_exists($value, 'call')) {
-            throw new \Coast\App\Exception("Param '{$name}' is not an object or does not have a call method");
+            throw new Exception("Param '{$name}' is not an object or does not have a call method");
         }
         return call_user_func_array(array($value, 'call'), $args);
     }

@@ -22,8 +22,6 @@ class Request
     
     const PORT_HTTP     = 80;
     const PORT_HTTPS    = 443;
-
-    protected $_response;
     
     protected $_sessions    = [];
     protected $_params      = [];
@@ -40,16 +38,6 @@ class Request
     protected $_bodyParams  = [];
     protected $_body        = [];
     protected $_cookies     = [];
-
-    public function __construct()
-    {
-        $this->_response = new \Coast\App\Response($this);
-    }
-
-    public function response()
-    {
-        return $this->_response;
-    }
 
     public function fromGlobals()
     {

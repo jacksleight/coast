@@ -55,7 +55,7 @@ $app->add(function(Request $req, Response $res) {
     return $res->text('Hello World');
 });
 
-$app->execute((new Request())->import())->export();
+$app->execute();
 ```
     
 Then run:
@@ -72,8 +72,6 @@ And load it up in the browser at: [http://localhost:8000/](http://localhost:8000
 2. Initialise a `Coast\App` object.
 3. Add middleware to handle the request.
 4. Call `execute` to run the application.
-
-The `execute` method expects a `Coast\App\Request` object, and returns a `Coast\App\Response` object. The `import` method imports all of the request data from PHP's globals, and the `export` method exports the response data to the output buffer. It's also possible construct the request data manually, and inspect the response, which is useful for testing.
 
 ## Documentation
 
