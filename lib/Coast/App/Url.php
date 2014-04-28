@@ -14,7 +14,8 @@ class Url implements \Coast\App\Access
     public function __construct(array $options = array())
     {
         $this->options(array_merge([
-            'path'        => '/',
+            'base'        => '/',
+            'pathBase'    => null,
             'dir'         => getcwd(),
             'cdnUrl'      => null,
             'router'      => null,
@@ -25,7 +26,8 @@ class Url implements \Coast\App\Access
     protected function _initialize($name, $value)
     {
         switch ($name) {
-            case 'path':
+            case 'base':
+            case 'pathBase':
             case 'cdnUrl':
                 $value = new \Coast\Url("{$value}");
                 break;
@@ -59,14 +61,14 @@ class Url implements \Coast\App\Access
 
     public function base()
     {
-        return new \Coast\Url($this->_options->path->toString());
+        return new \Coast\Url($this->_options->base->toString());
     }
 
     public function string($string, $base = true)
     {
         $path = (string) $string;
         return new \Coast\Url($base
-            ? $this->_options->path . $path
+            ? $this->_options->base . $path
             : $path);
     }
 
@@ -92,7 +94,7 @@ class Url implements \Coast\App\Access
         }
         $path = ltrim($this->_options->router->reverse($name, $params), '/');
         return new \Coast\Url($base
-            ? $this->_options->path . $path
+            ? $this->_options->base . $path
             : $path);
     }
 
@@ -138,7 +140,9 @@ class Url implements \Coast\App\Access
         if ($base) {
             $url = $cdn && isset($this->_options->cdnUrl)
                 ? $this->_options->cdnUrl . $url
-                : $this->_options->path . $url;
+                : (isset($this->_options->pathBase)
+                    ? $this->_options->pathBase
+                    : $this->_options->base) . $url;
         }
         $url = new \Coast\Url($url);
 

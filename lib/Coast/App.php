@@ -14,7 +14,7 @@ use Coast\App\Request,
 /**
  * Coast application object.
  */
-class App
+class App implements Executable
 {
     const MODE_CLI  = 'cli';
     const MODE_HTTP = 'http';
