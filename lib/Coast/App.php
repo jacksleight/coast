@@ -9,7 +9,8 @@ namespace Coast;
 use Coast\App\Request,
     Coast\App\Response,
     Coast\App\Executable,
-    Coast\App\Exception;
+    Coast\App\Exception,
+    Coast\File;
 
 /**
  * Coast application object.
@@ -20,6 +21,12 @@ class App implements Executable
     
     const MODE_CLI  = 'cli';
     const MODE_HTTP = 'http';
+    
+    /**
+     * Root directory.
+     * @var Coast\Dir
+     */
+    protected $_dir;
     
     /**
      * Environment variables.
@@ -53,14 +60,16 @@ class App implements Executable
 
     /**
      * Construct a new Coast application.
-     * @param array $options Options.
+     * @param array $opts Options.
      * @param array $envs Additional environment variables.
      */
-    public function __construct(array $options = array(), array $envs = array())
+    public function __construct($dir, array $opts = array(), array $envs = array())
     {
-        $this->options(array_merge([
+        $this->_dir = new \Coast\Dir("{$dir}");
+
+        $this->opts(array_merge([
             'path' => null,
-        ], $options));
+        ], $opts));
 
         $this->_envs = array_merge(array(
             'MODE' => isset($_SERVER['HTTP_HOST']) ? self::MODE_HTTP : self::MODE_CLI,
@@ -77,13 +86,28 @@ class App implements Executable
      */
     public function import($_file, array $_vars = array())
     {
+        $_file = !$_file instanceof File
+            ? new \Coast\File("{$_file}")
+            : $_file;
+        $_file = $_file->isRelative()
+            ? $this->app->dir()->file($_file)
+            : $_file;
         return \Coast\import($_file, array_merge(['app' => $this], $_vars));
+    }
+
+    /**
+     * Get root directory.
+     * @return Coast\Dir
+     */
+    public function dir()
+    {
+        return $this->_dir;
     }
 
     /**
      * Get environment variables.
      * @param  string $name
-     * @return [type]
+     * @return mixed
      */
     public function env($name)
     {
@@ -226,8 +250,8 @@ class App implements Executable
             throw new Exception('You must pass a Response object when passing a Request object');
         }
 
-        if (isset($this->_options->path)) {
-            if (!preg_match('/^(' . preg_quote($this->_options->path, '/') . ')(?:\/(.*))?$/', $req->path(), $path)) {
+        if (isset($this->_opts->path)) {
+            if (!preg_match('/^(' . preg_quote($this->_opts->path, '/') . ')(?:\/(.*))?$/', $req->path(), $path)) {
                 return null;
             }
             $base = $req->base();
@@ -262,7 +286,7 @@ class App implements Executable
         $this->set('req', null)
              ->set('res', null);
 
-        if (isset($this->_options->path)) {
+        if (isset($this->_opts->path)) {
             $req->base($base)
                 ->path($path[0]);
         }
