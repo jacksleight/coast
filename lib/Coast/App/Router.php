@@ -18,18 +18,18 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
 
     protected $_routes = [];
 
-    public function __construct(array $options = array())
+    public function __construct(array $opts = array())
     {
-        $this->options(array_merge([
+        $this->opts(array_merge([
             'target' => null,
-        ], $options));
+        ], $opts));
     }
 
     public function app(\Coast\App $app)
     {
         $this->_app = $app;
-        if ($this->_options->target instanceof \Coast\App\Access) {
-            $this->_options->target->app($app);
+        if ($this->_opts->target instanceof \Coast\App\Access) {
+            $this->_opts->target->app($app);
         }
         return $this;
     }
@@ -200,8 +200,8 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
             'route' => $match,
         ], $match['params']));
         
-        if (isset($this->_options->target)) {
-            return $this->_options->target->route($req, $res);
+        if (isset($this->_opts->target)) {
+            return $this->_opts->target->route($req, $res);
         } else if (isset($match['target'])) {
             return $match['target']($req, $res, $this->app);
         } else {

@@ -8,24 +8,35 @@ namespace Coast;
 
 trait Options
 {
-    protected $_options = null;
+    protected $_opts = [];
 
-    public function options(array $options = null)
+    public function opt($name, $value = null)
     {
-        if (!isset($this->_options)) {
-            $this->_options = new \stdClass();
+        if (isset($value)) {
+            $this->_opts[$name] = $value;
+            return $this;
         }
-        if (isset($options)) {
-            foreach ($options as $name => $value) {
-                $this->_options->$name = isset($value)
-                    ? $this->_initialize($name, $value)
-                    : $value;
-            }
-        }
-        return $this->_options;
+        return isset($this->_opts[$name])
+            ? $this->_optInit($name, $this->_opts[$name])
+            : null;
     }
 
-    protected function _initialize($name, $value)
+    public function opts(array $opts = null)
+    {
+        if (isset($opts)) {
+            foreach ($opts as $name => $value) {
+                $this->_opts[$name] = $value;
+            }
+            return $this;
+        }
+        $opts = [];
+        foreach ($this->_opts as $name => $value) {
+            $opts[$name] = $this->_optInit($name, $value);
+        }
+        return $this->_opts;
+    }
+
+    protected function _optInit($name, $value)
     {
         return $value;
     }

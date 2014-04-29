@@ -15,11 +15,11 @@ class Controller implements \Coast\App\Access, \Coast\App\Routable
     protected $_history = [];
     protected $_actions = [];
 
-    public function __construct(array $options = array())
+    public function __construct(array $opts = array())
     {
-        $this->options(array_merge([
+        $this->opts(array_merge([
             'namespace' => null,
-        ], $options));
+        ], $opts));
     }
 
     public function forward($action, $name = null)
@@ -47,7 +47,7 @@ class Controller implements \Coast\App\Access, \Coast\App\Routable
             $this->_history[] = $item;
             list($name, $action, $params) = $item;
 
-            $class = $this->_options->namespace . '\\' . implode('\\', array_map('ucfirst', explode('_', $name)));
+            $class = $this->_opts->namespace . '\\' . implode('\\', array_map('ucfirst', explode('_', $name)));
             if (!isset($this->_actions[$class])) {
                 if (!class_exists($class)) {
                     throw new \Coast\App\Exception("Controller '{$name}' does not exist");

@@ -13,15 +13,15 @@ class View implements \Coast\App\Access, \Coast\App\Executable
 
     protected $_stack = [];
 
-    public function __construct(array $options = array())
+    public function __construct(array $opts = array())
     {
-        $this->options(array_merge([
+        $this->opts(array_merge([
             'dir'     => null,
             'extName' => 'php',
-        ], $options));
+        ], $opts));
     }
 
-    protected function _initialize($name, $value)
+    protected function _optInit($name, $value)
     {
         switch ($name) {
             case 'dir':
@@ -33,17 +33,17 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         
     public function has($name)
     {
-        $path = new \Coast\Path("{$name}." . $this->_options->extName);
+        $path = new \Coast\Path("{$name}." . $this->_opts->extName);
         if (!$path->isAbsolute()) {
             $path = new \Coast\Path("/{$path}");
         }
-        $file = $this->_options->dir->file($path);    
+        $file = $this->_opts->dir->file($path);    
         return $file->exists();
     }
         
     public function render($name, array $params = array())
     {
-        $path = new \Coast\Path("{$name}." . $this->_options->extName);
+        $path = new \Coast\Path("{$name}." . $this->_opts->extName);
         if (count($this->_stack) > 0) {
             $path = $path->isRelative()
                 ? $path->toAbsolute($this->_stack[0]['path'])
@@ -52,7 +52,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         } else if (!$path->isAbsolute()) {
             $path = new \Coast\Path("/{$path}");
         }
-        $file = $this->_options->dir->file($path);    
+        $file = $this->_opts->dir->file($path);    
         if (!$file->exists()) {
             if (count($this->_stack) == 0) {
                 throw new \Coast\App\Exception("View file '{$path}' does not exist");

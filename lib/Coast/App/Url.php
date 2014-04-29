@@ -11,19 +11,19 @@ class Url implements \Coast\App\Access
     use \Coast\App\Access\Implementation;
     use \Coast\Options;
 
-    public function __construct(array $options = array())
+    public function __construct(array $opts = array())
     {
-        $this->options(array_merge([
+        $this->opts(array_merge([
             'base'        => '/',
             'dir'         => getcwd(),
             'dirBase'     => null,
             'cdnBase'     => null,
             'router'      => null,
             'isVersioned' => true,
-        ], $options));
+        ], $opts));
     }
 
-    protected function _initialize($name, $value)
+    protected function _optInit($name, $value)
     {
         switch ($name) {
             case 'base':
@@ -32,7 +32,12 @@ class Url implements \Coast\App\Access
                 $value = new \Coast\Url("{$value}");
                 break;
             case 'dir':
-                $value = new \Coast\Dir("{$value}");
+                $value = !$value instanceof Dir
+                    ? new \Coast\Dir("{$value}")
+                    : $value;
+                $value = $value->isRelative()
+                    ? $this->app->dir()->dir($value)
+                    : $value;
                 break;
         }
         return $value;
@@ -61,20 +66,20 @@ class Url implements \Coast\App\Access
 
     public function base()
     {
-        return $this->_options->base;
+        return $this->_opts->base;
     }
 
     public function dirBase()
     {
-        return isset($this->_options->dirBase)
-            ? $this->_options->dirBase
-            : $this->_options->base;
+        return isset($this->_opts->dirBase)
+            ? $this->_opts->dirBase
+            : $this->_opts->base;
     }
 
     public function cdnBase()
     {
-        return isset($this->_options->cdnBase)
-            ? $this->_options->cdnBase
+        return isset($this->_opts->cdnBase)
+            ? $this->_opts->cdnBase
             : $this->dirBase();
     }
 
@@ -82,13 +87,13 @@ class Url implements \Coast\App\Access
     {
         $path = (string) $string;
         return new \Coast\Url($base
-            ? $this->_options->base . $path
+            ? $this->_opts->base . $path
             : $path);
     }
 
     public function route(array $params = array(), $name = null, $reset = false, $base = true)
     {
-        if (!isset($this->_options->router)) {
+        if (!isset($this->_opts->router)) {
             throw new \Coast\App\Exception("Router option has not been set");
         }
         $route = isset($this->req)
@@ -106,9 +111,9 @@ class Url implements \Coast\App\Access
                 $params
             );
         }
-        $path = ltrim($this->_options->router->reverse($name, $params), '/');
+        $path = ltrim($this->_opts->router->reverse($name, $params), '/');
         return new \Coast\Url($base
-            ? $this->_options->base . $path
+            ? $this->_opts->base . $path
             : $path);
     }
 
@@ -137,20 +142,20 @@ class Url implements \Coast\App\Access
     {
         $isVersioned = isset($isVersioned)
             ? $isVersioned
-            : $this->_options->isVersioned;
+            : $this->_opts->isVersioned;
 
         $path = !$path instanceof \Coast\Path
             ? new \Coast\Path("{$path}")
             : $path;
         $class = get_class($path);
         $path = $path->isRelative()
-            ? new $class($this->_options->dir . "/{$path}")
+            ? new $class($this->_opts->dir . "/{$path}")
             : $path;
-        if (!$path->isWithin($this->_options->dir)) {
+        if (!$path->isWithin($this->_opts->dir)) {
             throw new \Coast\App\Exception("Path '{$path}' is not within base directory");
         }
 
-        $url = $path->toRelative($this->_options->dir);
+        $url = $path->toRelative($this->_opts->dir);
         if ($base) {
             $url = $cdn
                 ? $this->cdnBase() . $url
