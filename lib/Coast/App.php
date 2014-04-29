@@ -16,6 +16,8 @@ use Coast\App\Request,
  */
 class App implements Executable
 {
+    use \Coast\Options;
+    
     const MODE_CLI  = 'cli';
     const MODE_HTTP = 'http';
     
@@ -51,10 +53,15 @@ class App implements Executable
 
     /**
      * Construct a new Coast application.
+     * @param array $options Options.
      * @param array $envs Additional environment variables.
      */
-    public function __construct(array $envs = array())
+    public function __construct(array $options = array(), array $envs = array())
     {
+        $this->options(array_merge([
+            'path' => null,
+        ], $options));
+
         $this->_envs = array_merge(array(
             'MODE' => isset($_SERVER['HTTP_HOST']) ? self::MODE_HTTP : self::MODE_CLI,
         ), $_ENV, $envs);
@@ -219,6 +226,15 @@ class App implements Executable
             throw new Exception('You must pass a Response object when passing a Request object');
         }
 
+        if (isset($this->_options->path)) {
+            if (!preg_match('/^(' . preg_quote($this->_options->path, '/') . ')(?:\/(.*))?$/', $req->path(), $path)) {
+                return null;
+            }
+            $base = $req->base();
+            $req->base("{$base}{$path[1]}/")
+                ->path(isset($path[2]) ? $path[2] : '');
+        }
+
         $this->set('req', $req)
              ->set('res', $res);
         try {
@@ -245,6 +261,11 @@ class App implements Executable
         }
         $this->set('req', null)
              ->set('res', null);
+
+        if (isset($this->_options->path)) {
+            $req->base($base)
+                ->path($path[0]);
+        }
         
         if ($auto) {
             $res->toGlobals();

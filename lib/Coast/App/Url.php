@@ -15,9 +15,9 @@ class Url implements \Coast\App\Access
     {
         $this->options(array_merge([
             'base'        => '/',
-            'pathBase'    => null,
             'dir'         => getcwd(),
-            'cdnUrl'      => null,
+            'dirBase'     => null,
+            'cdnBase'     => null,
             'router'      => null,
             'isVersioned' => true,
         ], $options));
@@ -27,8 +27,8 @@ class Url implements \Coast\App\Access
     {
         switch ($name) {
             case 'base':
-            case 'pathBase':
-            case 'cdnUrl':
+            case 'dirBase':
+            case 'cdnBase':
                 $value = new \Coast\Url("{$value}");
                 break;
             case 'dir':
@@ -61,7 +61,21 @@ class Url implements \Coast\App\Access
 
     public function base()
     {
-        return new \Coast\Url($this->_options->base->toString());
+        return $this->_options->base;
+    }
+
+    public function dirBase()
+    {
+        return isset($this->_options->dirBase)
+            ? $this->_options->dirBase
+            : $this->_options->base;
+    }
+
+    public function cdnBase()
+    {
+        return isset($this->_options->cdnBase)
+            ? $this->_options->cdnBase
+            : $this->dirBase();
     }
 
     public function string($string, $base = true)
@@ -138,11 +152,9 @@ class Url implements \Coast\App\Access
 
         $url = $path->toRelative($this->_options->dir);
         if ($base) {
-            $url = $cdn && isset($this->_options->cdnUrl)
-                ? $this->_options->cdnUrl . $url
-                : (isset($this->_options->pathBase)
-                    ? $this->_options->pathBase
-                    : $this->_options->base) . $url;
+            $url = $cdn
+                ? $this->cdnBase() . $url
+                : $this->dirBase() . $url;
         }
         $url = new \Coast\Url($url);
 
