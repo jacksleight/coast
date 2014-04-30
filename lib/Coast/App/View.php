@@ -9,41 +9,49 @@ namespace Coast\App;
 class View implements \Coast\App\Access, \Coast\App\Executable
 {
     use \Coast\App\Access\Implementation;
-    use \Coast\Options;
+
+    protected $_baseDir;
+
+    protected $_extName = 'php';
 
     protected $_stack = [];
 
-    public function __construct(array $opts = array())
+    public function __construct(\Coast\Dir $baseDir)
     {
-        $this->opts(array_merge([
-            'dir'     => null,
-            'extName' => 'php',
-        ], $opts));
+        $this->baseDir($baseDir);
     }
 
-    protected function _optInit($name, $value)
+    public function baseDir(\Coast\Dir $baseDir = null)
     {
-        switch ($name) {
-            case 'dir':
-                $value = new \Coast\Dir("{$value}");
-                break;
+        if (isset($baseDir)) {
+            $this->_baseDir = $baseDir;
+            return $this;
         }
-        return $value;
+        return $this->_baseDir;
+    }
+
+    public function extName($extName = null)
+    {
+        if (isset($extName)) {
+            $this->_extName = $extName;
+            return $this;
+        }
+        return $this->_extName;
     }
         
     public function has($name)
     {
-        $path = new \Coast\Path("{$name}." . $this->_opts->extName);
+        $path = new \Coast\Path("{$name}." . $this->_extName);
         if (!$path->isAbsolute()) {
             $path = new \Coast\Path("/{$path}");
         }
-        $file = $this->_opts->dir->file($path);    
+        $file = $this->_baseDir->file($path);    
         return $file->exists();
     }
         
     public function render($name, array $params = array())
     {
-        $path = new \Coast\Path("{$name}." . $this->_opts->extName);
+        $path = new \Coast\Path("{$name}." . $this->_extName);
         if (count($this->_stack) > 0) {
             $path = $path->isRelative()
                 ? $path->toAbsolute($this->_stack[0]['path'])
@@ -52,7 +60,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         } else if (!$path->isAbsolute()) {
             $path = new \Coast\Path("/{$path}");
         }
-        $file = $this->_opts->dir->file($path);    
+        $file = $this->_baseDir->file($path);    
         if (!$file->exists()) {
             if (count($this->_stack) == 0) {
                 throw new \Coast\App\Exception("View file '{$path}' does not exist");

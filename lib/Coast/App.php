@@ -7,26 +7,32 @@
 namespace Coast;
 
 use Coast\App\Request,
-    Coast\App\Response,
-    Coast\App\Executable,
     Coast\App\Exception,
-    Coast\File;
+    Coast\App\Executable,
+    Coast\App\Response,
+    Coast\Dir,
+    Coast\File,
+    Coast\Path;
 
 /**
  * Coast application object.
  */
 class App implements Executable
-{
-    use \Coast\Options;
-    
+{   
     const MODE_CLI  = 'cli';
     const MODE_HTTP = 'http';
     
     /**
-     * Root directory.
+     * Base directory.
      * @var Coast\Dir
      */
-    protected $_dir;
+    protected $_baseDir;
+    
+    /**
+     * Path.
+     * @var Coast\Path
+     */
+    protected $_path;
     
     /**
      * Environment variables.
@@ -60,23 +66,53 @@ class App implements Executable
 
     /**
      * Construct a new Coast application.
-     * @param array $opts Options.
+     * @param mixed $baseDir Base directory.
      * @param array $envs Additional environment variables.
      */
-    public function __construct($dir, array $opts = array(), array $envs = array())
+    public function __construct($baseDir, array $envs = array())
     {
-        $this->_dir = new \Coast\Dir("{$dir}");
-
-        $this->opts(array_merge([
-            'path' => null,
-        ], $opts));
+        $this->baseDir(!$baseDir instanceof Dir
+            ? new Dir("{$baseDir}")
+            : $baseDir);
 
         $this->_envs = array_merge(array(
             'MODE' => isset($_SERVER['HTTP_HOST']) ? self::MODE_HTTP : self::MODE_CLI,
         ), $_ENV, $envs);
-
-        date_default_timezone_set('UTC');
+        
         $this->set('app', $this);
+    }
+
+    /**
+     * Get/set base directory.
+     * @return Coast\Dir
+     */
+    public function baseDir(\Coast\Dir $baseDir = null)
+    {
+        if (isset($baseDir)) {
+            $this->_baseDir = $baseDir;
+            return $this;
+        }
+        return $this->_baseDir;
+    }
+
+    /**
+     * Get child directory.
+     * @return Coast\Dir
+     */
+    public function dir($path = null, $create = false)
+    {
+        return isset($path)
+            ? $this->_baseDir->dir($path, $create)
+            : $this->_baseDir;
+    }
+
+    /**
+     * Get child file.
+     * @return Coast\File
+     */
+    public function file($path)
+    {
+        return $this->_baseDir->file($path);
     }
 
     /**
@@ -84,24 +120,23 @@ class App implements Executable
      * @param  mixed   $file
      * @return mixed
      */
-    public function import($_file, array $_vars = array())
+    public function import(File $_file, array $_vars = array())
     {
-        $_file = !$_file instanceof File
-            ? new \Coast\File("{$_file}")
-            : $_file;
-        $_file = $_file->isRelative()
-            ? $this->app->dir()->file($_file)
-            : $_file;
         return \Coast\import($_file, array_merge(['app' => $this], $_vars));
     }
 
     /**
-     * Get root directory.
-     * @return Coast\Dir
+     * Get/set root path.
+     * @param  Coast\Path $name
+     * @return mixed
      */
-    public function dir()
+    public function path(Path $path = null)
     {
-        return $this->_dir;
+        if (isset($path)) {
+            $this->_path = $path;
+            return $this;
+        }
+        return $this->_path;
     }
 
     /**
@@ -250,8 +285,8 @@ class App implements Executable
             throw new Exception('You must pass a Response object when passing a Request object');
         }
 
-        if (isset($this->_opts->path)) {
-            if (!preg_match('/^(' . preg_quote($this->_opts->path, '/') . ')(?:\/(.*))?$/', $req->path(), $path)) {
+        if (isset($this->_path)) {
+            if (!preg_match('/^(' . preg_quote($this->_path->toString(), '/') . ')(?:\/(.*))?$/', $req->path(), $path)) {
                 return null;
             }
             $base = $req->base();
@@ -286,7 +321,7 @@ class App implements Executable
         $this->set('req', null)
              ->set('res', null);
 
-        if (isset($this->_opts->path)) {
+        if (isset($this->_path)) {
             $req->base($base)
                 ->path($path[0]);
         }

@@ -9,17 +9,27 @@ namespace Coast\App;
 class Controller implements \Coast\App\Access, \Coast\App\Routable
 {
     use \Coast\App\Access\Implementation;
-    use \Coast\Options;
     
-    protected $_stack   = [];
+    protected $_classNamespace;
+    
+    protected $_stack = [];
+    
     protected $_history = [];
+    
     protected $_actions = [];
 
-    public function __construct(array $opts = array())
+    public function __construct($classNamespace)
     {
-        $this->opts(array_merge([
-            'namespace' => null,
-        ], $opts));
+        $this->classNamespace($classNamespace);
+    }
+
+    public function classNamespace($classNamespace = null)
+    {
+        if (isset($classNamespace)) {
+            $this->_classNamespace = $classNamespace;
+            return $this;
+        }
+        return $this->_classNamespace;
     }
 
     public function forward($action, $name = null)
@@ -47,7 +57,7 @@ class Controller implements \Coast\App\Access, \Coast\App\Routable
             $this->_history[] = $item;
             list($name, $action, $params) = $item;
 
-            $class = $this->_opts->namespace . '\\' . implode('\\', array_map('ucfirst', explode('_', $name)));
+            $class = $this->_classNamespace . '\\' . implode('\\', array_map('ucfirst', explode('_', $name)));
             if (!isset($this->_actions[$class])) {
                 if (!class_exists($class)) {
                     throw new \Coast\App\Exception("Controller '{$name}' does not exist");

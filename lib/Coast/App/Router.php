@@ -14,24 +14,32 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
     const METHOD_DELETE = \Coast\App\Request::METHOD_DELETE;
 
     use \Coast\App\Access\Implementation;
-    use \Coast\Options;
+
+    protected $_target;
 
     protected $_routes = [];
 
-    public function __construct(array $opts = array())
+    public function __construct(\Coast\App\Routable $target = null)
     {
-        $this->opts(array_merge([
-            'target' => null,
-        ], $opts));
+        $this->target($target);
     }
 
     public function app(\Coast\App $app)
     {
         $this->_app = $app;
-        if ($this->_opts->target instanceof \Coast\App\Access) {
-            $this->_opts->target->app($app);
+        if ($this->_target instanceof \Coast\App\Access) {
+            $this->_target->app($app);
         }
         return $this;
+    }
+
+    public function target(\Coast\App\Routable $target = null)
+    {
+        if (isset($target)) {
+            $this->_target = $target;
+            return $this;
+        }
+        return $this->_target;
     }
 
     public function all($name, $path, $params = null, \Closure $target = null)
@@ -200,8 +208,8 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
             'route' => $match,
         ], $match['params']));
         
-        if (isset($this->_opts->target)) {
-            return $this->_opts->target->route($req, $res);
+        if (isset($this->_target)) {
+            return $this->_target->route($req, $res);
         } else if (isset($match['target'])) {
             return $match['target']($req, $res, $this->app);
         } else {
