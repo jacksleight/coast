@@ -6,7 +6,7 @@
 
 namespace Coast\App;
 
-class Url implements \Coast\App\Access
+class UrlResolver implements \Coast\App\Access
 {
     use \Coast\App\Access\Implementation;
 

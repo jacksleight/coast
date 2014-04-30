@@ -6,7 +6,7 @@
 
 namespace Coast\App;
 
-class View implements \Coast\App\Access, \Coast\App\Executable
+class ViewRenderer implements \Coast\App\Access, \Coast\App\Executable
 {
     use \Coast\App\Access\Implementation;
 
