@@ -193,7 +193,8 @@ class UrlResolver implements \Coast\App\Access
 
         if ($isVersioned && $path instanceof \Coast\File && $path->exists()) {
             if (isset($this->_versionCallback)) {
-                $this->_versionCallback($url, $path);
+                $callback = $this->_versionCallback;
+                $callback($url, $path);
             } else {
                 $url->queryParam('v', $path->modifyTime()->getTimestamp());
             }
