@@ -16,9 +16,9 @@ class Dir extends \Coast\File\Path implements \IteratorAggregate
         }
     }
 
-    public function iterator($recursive = false, $mode = \RecursiveIteratorIterator::LEAVES_ONLY, $flags = 0)
+    public function iterator($flags = null, $recursive = false, $mode = null)
     {
-        return new \Coast\Dir\Iterator($this->_name, $recursive, $mode, $flags);
+        return new \Coast\Dir\Iterator($this->_name, $flags, $recursive, $mode);
     }
 
     public function create()
