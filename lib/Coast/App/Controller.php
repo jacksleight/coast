@@ -89,7 +89,7 @@ class Controller implements \Coast\App\Access, \Coast\App\Routable
         $path  = [];
         $names = ['all'];
         while (count($parts) > 0) {
-            $path[]     = array_shift($parts);
+            $path[]  = array_shift($parts);
             $names[] = implode('_', $path);
         }
 
@@ -113,9 +113,13 @@ class Controller implements \Coast\App\Access, \Coast\App\Routable
 
     public function route(\Coast\App\Request $req, \Coast\App\Response $res)
     {        
+        $parts      = explode('_', $req->controller);
+        $parts      = array_map('\Coast\str_camel_upper', $parts);
+        $controller = implode('\\', $parts);
+        $action     = \Coast\str_camel_lower($req->action);
         return $this->dispatch(
-            \Coast\str_camel_upper($req->param('controller')),
-            \Coast\str_camel_upper($req->param('action')),
+            $controller,
+            $action,
             [$req, $res]
         );
     }
