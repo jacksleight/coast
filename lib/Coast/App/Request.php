@@ -101,9 +101,10 @@ class Request
             $this->_sessions[$name] = $value;
             return $this;
         }
-        return isset($this->_sessions[$name])
-            ? $this->_sessions[$name]
-            : null;
+        if (!isset($this->_sessions[$name])) {
+            $this->_sessions[$name] = new \stdClass;
+        }        
+        return $this->_sessions[$name];
     }
 
     public function &sessions(array $sessions = null)
