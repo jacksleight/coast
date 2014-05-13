@@ -21,17 +21,38 @@ class Config
      * Consutruct a new config object.
      * @param array $files List of PHP files to parse.
      */
-    public function __construct($files)
+    public function __construct($files = array())
+    {
+        $this->load($files);
+    }
+
+    /**
+     * Load files.
+     * @param  string $name
+     * @return mixed
+     */
+    public function load($files)
     {
         if (!is_array($files)) {
             $files = [$files];
         }
         foreach ($files as $file) {
-            $this->_data = array_merge_recursive(
-                $this->_data,
-                require (string) $file
-            );
+            $this->fromArray(require (string) $file);
         }
+    }
+
+    /**
+     * Import from an array.
+     * @param  string $name
+     * @return mixed
+     */
+    public function fromArray(array $data) 
+    {
+        $this->_data = \Coast\array_merge_smart(
+            $this->_data,
+            $data
+        );
+        return $this;
     }
 
     /**
