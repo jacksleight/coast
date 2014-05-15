@@ -2,7 +2,7 @@
     "name": "jacksleight/coast",
     "type": "library",
     "description": "Web application framework for PHP 5.5+",
-    "keywords": ["framework", "coast", "express", "connect"],
+    "keywords": ["framework", "coast"],
     "homepage": "http://coastphp.com/",
     "license": "MIT",
     "authors": [
@@ -19,5 +19,9 @@
     "autoload": {
         "psr-4": {"Coast\\": "lib//Coast//"},
         "files": ["lib/Coast.php"]
+    },
+    "suggest": {
+        "doctrine/orm": "Powerful ORM library, Coast extensions provided by jacksleight/coast-doctrine",
+        "nesbot/carbon": "Powerful date and time library, supported by jacksleight/coast-doctrine"
     }
 }
