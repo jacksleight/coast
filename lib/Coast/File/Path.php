@@ -83,4 +83,10 @@ abstract class Path extends \Coast\Path
         }
         return $baseName;
     }
+
+    public function toReal()
+    {
+        $class = get_class($this);
+        return new $class(realpath($this->_name));
+    }
 }
