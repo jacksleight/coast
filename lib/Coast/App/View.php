@@ -10,24 +10,40 @@ class View implements \Coast\App\Access, \Coast\App\Executable
 {
     use \Coast\App\Access\Implementation;
 
-    protected $_baseDir;
+    protected $_baseDirs = [];
 
     protected $_extName = 'php';
 
     protected $_stack = [];
 
-    public function __construct(\Coast\Dir $baseDir)
+    public function __construct($baseDirs)
     {
-        $this->baseDir($baseDir);
+        if (!is_array($baseDirs)) {
+            $baseDirs = [$baseDirs];
+        }
+        $this->baseDirs($baseDirs);
     }
 
-    public function baseDir(\Coast\Dir $baseDir = null)
+    public function baseDir($name, \Coast\Dir $baseDir = null)
     {
         if (isset($baseDir)) {
-            $this->_baseDir = $baseDir;
+            $this->_baseDirs[$name] = $baseDir;
             return $this;
         }
-        return $this->_baseDir;
+        return isset($this->_baseDirs[$name])
+            ? $this->_baseDirs[$name]
+            : null;;
+    }
+
+    public function baseDirs(array $baseDirs = null)
+    {
+        if (isset($baseDirs)) {
+            foreach ($baseDirs as $name => $baseDir) {
+                $this->baseDir($name, $baseDir);
+            }
+            return $this;
+        }
+        return $this->_baseDirs;
     }
 
     public function extName($extName = null)
@@ -39,40 +55,58 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         return $this->_extName;
     }
         
-    public function has($name)
+    public function has($name, $set = null)
     {
+        if (!isset($set)) {
+            reset($this->_baseDirs);
+            $set = key($this->baseDirs);
+        }
         $path = new \Coast\Path("{$name}." . $this->_extName);
         if (!$path->isAbsolute()) {
             $path = new \Coast\Path("/{$path}");
         }
-        $file = $this->_baseDir->file($path);    
+        if (!isset($this->_baseDirs[$set])) {
+            return false;
+        }
+        $file = $this->_baseDirs[$set]->file($path);    
         return $file->exists();
     }
         
-    public function render($name, array $params = array())
+    public function render($name, array $params = array(), $set = null)
     {
         $path = new \Coast\Path("{$name}." . $this->_extName);
         if (count($this->_stack) > 0) {
-            $path = $path->isRelative()
-                ? $path->toAbsolute($this->_stack[0]['path'])
-                : $path;
-            $params = array_merge($this->_stack[0]['params'], $params);
-        } else if (!$path->isAbsolute()) {
-            $path = new \Coast\Path("/{$path}");
-        }
-        $file = $this->_baseDir->file($path);    
-        if (!$file->exists()) {
-            if (count($this->_stack) == 0) {
-                throw new \Coast\App\Exception("View file '{$path}' does not exist");
-            } else {
-                throw new \Coast\App\Exception("View file '{$path}' does not exist");                
+            if (!isset($set)) {
+                $path = $path->isRelative()
+                    ? $path->toAbsolute($this->_stack[0]['path'])
+                    : $path;
+                $set = $this->_stack[0]['set'];
+            } else if (!$path->isAbsolute()) {
+                $path = new \Coast\Path("/{$path}");
             }
+            $params = array_merge($this->_stack[0]['params'], $params);
+        } else {
+            if (!$path->isAbsolute()) {
+                $path = new \Coast\Path("/{$path}");
+            }
+            if (!isset($set)) {
+                reset($this->_baseDirs);
+                $set = key($this->_baseDirs);
+            }
+        }
+        if (!isset($this->_baseDirs[$set])) {
+            throw new \Coast\App\Exception("View set '{$set}' does not exist");
+        }
+        $file = $this->_baseDirs[$set]->file($path);    
+        if (!$file->exists()) {
+            throw new \Coast\App\Exception("View file '{$path}' does not exist");
         }
 
         array_unshift($this->_stack, [
             'name'     => $name, 
             'path'     => $path, 
             'params'   => $params, 
+            'set'   => $set,
             'layout'   => null, 
             'block'    => null, 
             'content'  => new \Coast\App\View\Content(), 
