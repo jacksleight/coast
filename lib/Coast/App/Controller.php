@@ -10,7 +10,7 @@ class Controller implements \Coast\App\Access, \Coast\App\Routable
 {
     use \Coast\App\Access\Implementation;
     
-    protected $_classNamespace;
+    protected $_classNamespaces = [];
     
     protected $_stack = [];
     
@@ -18,21 +18,37 @@ class Controller implements \Coast\App\Access, \Coast\App\Routable
     
     protected $_actions = [];
 
-    public function __construct($classNamespace)
+    public function __construct($classNamespaces)
     {
-        $this->classNamespace($classNamespace);
+        if (!is_array($classNamespaces)) {
+            $classNamespaces = [$classNamespaces];
+        }
+        $this->classNamespaces($classNamespaces);
     }
 
-    public function classNamespace($classNamespace = null)
+    public function classNamespace($name, $classNamespace = null)
     {
         if (isset($classNamespace)) {
-            $this->_classNamespace = $classNamespace;
+            $this->_classNamespaces[$name] = $classNamespace;
             return $this;
         }
-        return $this->_classNamespace;
+        return isset($this->_classNamespaces[$name])
+            ? $this->_classNamespaces[$name]
+            : null;
     }
 
-    public function forward($action, $name = null)
+    public function classNamespaces(array $classNamespaces = null)
+    {
+        if (isset($classNamespaces)) {
+            foreach ($classNamespaces as $name => $classNamespace) {
+                $this->classNamespace($name, $classNamespace);
+            }
+            return $this;
+        }
+        return $this->_classNamespaces;
+    }
+
+    public function forward($action, $name = null, $set = null)
     {
         if (count($this->_history) > 0) {
             $item = $this->_history[count($this->_history) - 1];
@@ -40,16 +56,24 @@ class Controller implements \Coast\App\Access, \Coast\App\Routable
                 ? $name
                 : $item[0];
             $params = $item[2];
+            $set = isset($set)
+                ? $set
+                : $item[3];
         }
         $this->_stack = array();
-        $this->_queue($name, $action, $params);
+        $this->_queue($name, $action, $params, $set);
     }
 
-    public function dispatch($name, $action, $params = array())
+    public function dispatch($name, $action, $params = array(), $set = null)
     {
+        if (!isset($set)) {
+            reset($this->_classNamespaces);
+            $set = key($this->_classNamespaces);
+        }
+
         $this->_stack   = [];
         $this->_history = [];
-        $this->_queue($name, $action, $params);
+        $this->_queue($name, $action, $params, $set);
 
         $result = null;
         while (count($this->_stack) > 0) {
@@ -57,21 +81,24 @@ class Controller implements \Coast\App\Access, \Coast\App\Routable
             $this->_history[] = $item;
             list($name, $action, $params) = $item;
 
-            $class = $this->_classNamespace . '\\' . implode('\\', array_map('ucfirst', explode('_', $name)));
+            if (!isset($this->_classNamespaces[$set])) {
+                throw new \Coast\App\Exception("Controller set '{$set}' does not exist");
+            }
+            $class = $this->_classNamespaces[$set] . '\\' . implode('\\', array_map('ucfirst', explode('_', $name)));
             if (!isset($this->_actions[$class])) {
                 if (!class_exists($class)) {
-                    throw new \Coast\App\Exception("Controller '{$name}' does not exist");
+                    throw new \Coast\App\Exception("Controller '{$set}:{$name}' does not exist");
                 }
                 $object = new $class($this);
                 if (!$object instanceof \Coast\App\Controller\Action) {
-                    throw new \Coast\App\Exception("Controller '{$name}' is not an instance of \Coast\App\Controller\Action");
+                    throw new \Coast\App\Exception("Controller '{$set}:{$name}' is not an instance of \Coast\App\Controller\Action");
                 }
                 $this->_actions[$class] = $object;
             } else {
                 $object = $this->_actions[$class];
             }
             if (!method_exists($object, $action)) {
-                throw new \Coast\App\Exception("Controller action '{$name}::{$action}' does not exist");
+                throw new \Coast\App\Exception("Controller action '{$set}:{$name}:{$action}' does not exist");
             }
 
             $result = call_user_func_array([$object, $action], $params);
@@ -83,7 +110,7 @@ class Controller implements \Coast\App\Access, \Coast\App\Routable
         return $result;
     }
 
-    protected function _queue($name, $action, $params)
+    protected function _queue($name, $action, $params, $set)
     {
         $parts = explode('_', $name);
         $path  = [];
@@ -97,11 +124,11 @@ class Controller implements \Coast\App\Access, \Coast\App\Routable
 
         $stack = [];
         foreach ($names as $name) {
-            $stack[] = [$name, 'preDispatch', $params];
+            $stack[] = [$name, 'preDispatch', $params, $set];
         }
-        $stack[] = [$final, $action, $params];
+        $stack[] = [$final, $action, $params, $set];
         foreach (array_reverse($names) as $name) {
-            $stack[] = [$name, 'postDispatch', $params];
+            $stack[] = [$name, 'postDispatch', $params, $set];
         }
 
         foreach ($stack as $item) {
@@ -117,10 +144,12 @@ class Controller implements \Coast\App\Access, \Coast\App\Routable
         $parts      = array_map('\Coast\str_camel_upper', $parts);
         $controller = implode('\\', $parts);
         $action     = \Coast\str_camel_lower($req->action);
+        $set        = isset($req->set) ? \Coast\str_camel_lower($req->set) : null;
         return $this->dispatch(
             $controller,
             $action,
-            [$req, $res]
+            [$req, $res],
+            $set
         );
     }
 }

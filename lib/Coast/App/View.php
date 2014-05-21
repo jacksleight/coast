@@ -99,14 +99,14 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         }
         $file = $this->_baseDirs[$set]->file($path);    
         if (!$file->exists()) {
-            throw new \Coast\App\Exception("View file '{$path}' does not exist");
+            throw new \Coast\App\Exception("View file '{$set}:{$path}' does not exist");
         }
 
         array_unshift($this->_stack, [
             'name'     => $name, 
             'path'     => $path, 
             'params'   => $params, 
-            'set'   => $set,
+            'set'      => $set,
             'layout'   => null, 
             'block'    => null, 
             'content'  => new \Coast\App\View\Content(), 
