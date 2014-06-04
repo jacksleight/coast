@@ -18,7 +18,7 @@ class Controller implements \Coast\App\Access, \Coast\App\Routable
     
     protected $_actions = [];
 
-    public function __construct($classNamespaces)
+    public function __construct($classNamespaces = array())
     {
         if (!is_array($classNamespaces)) {
             $classNamespaces = [$classNamespaces];

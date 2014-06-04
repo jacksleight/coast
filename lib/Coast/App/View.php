@@ -16,7 +16,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
 
     protected $_stack = [];
 
-    public function __construct($baseDirs)
+    public function __construct($baseDirs = array())
     {
         if (!is_array($baseDirs)) {
             $baseDirs = [$baseDirs];
