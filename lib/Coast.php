@@ -232,6 +232,20 @@ function str_uchr($code)
     return \html_entity_decode('&'. (\is_numeric($code) ? '#' . $code : $code) .';', ENT_NOQUOTES, 'utf-8');
 }
 
+function str_trim_smart($value, $limit, $overflow = null)
+{
+    $pos = strlen($value) > $limit
+        ? strpos($value, ' ', $limit)
+        : false;
+    if ($pos !== false) {
+        $value = \substr($value, 0, $pos);
+        if (isset($overflow)) {
+            $value = \rtrim($value, ' .,!?') . $overflow;
+        }
+    }
+    return $value;
+}
+
 function str_to_bytes($value)
 {
     $value = \trim($value);
