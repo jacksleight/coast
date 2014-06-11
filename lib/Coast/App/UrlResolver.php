@@ -196,7 +196,7 @@ class UrlResolver implements \Coast\App\Access
                 $callback = $this->_versionCallback;
                 $callback($url, $path);
             } else {
-                $url->queryParam('v', $path->modifyTime()->getTimestamp());
+                $url->queryParam($path->modifyTime()->getTimestamp(), '');
             }
         }
 
