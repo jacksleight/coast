@@ -54,10 +54,10 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         }
         return $this->_extName;
     }
-        
-    public function file($name, $set = null)
+                
+    public function has($name, $set = null)
     {
-        if (!isset($set)) {
+          if (!isset($set)) {
             reset($this->_baseDirs);
             $set = key($this->_baseDirs);
         }
@@ -68,12 +68,8 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         if (!isset($this->_baseDirs[$set])) {
             return false;
         }
-        return $this->_baseDirs[$set]->file($path);
-    }
-        
-    public function has($name, $set = null)
-    {
-        return $this->file($name, $set)->exists();
+        $file = $this->_baseDirs[$set]->file($path);
+        return $file->exists();
     }
         
     public function render($name, array $params = array(), $set = null)
