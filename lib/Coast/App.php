@@ -76,7 +76,7 @@ class App implements Executable
             : $baseDir);
 
         $this->_envs = array_merge(array(
-            'MODE' => isset($_SERVER['HTTP_HOST']) ? self::MODE_HTTP : self::MODE_CLI,
+            'MODE' => php_sapi_name() == 'cli' ? self::MODE_CLI : self::MODE_HTTP,
         ), $_ENV, $envs);
         
         $this->set('app', $this);
@@ -393,9 +393,9 @@ class App implements Executable
     public function __call($name, array $args)
     {
         $value = $this->get($name);
-        if (!is_object($value) || !method_exists($value, 'call')) {
-            throw new Exception("Param '{$name}' is not an object or does not have a call method");
+        if (!is_object($value) || !method_exists($value, '__invoke')) {
+            throw new Exception("Param '{$name}' is not an object or does not have an __invoke method");
         }
-        return call_user_func_array(array($value, 'call'), $args);
+        return call_user_func_array(array($value, '__invoke'), $args);
     }
 }

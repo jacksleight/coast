@@ -29,7 +29,7 @@ class UrlResolver implements \Coast\App\Access
         $this->router($router);
     }
 
-    public function call()
+    public function __invoke()
     {
         $args = func_get_args();
         if (!isset($args[0])) {
