@@ -6,6 +6,8 @@
 
 namespace Coast;
 
+use Exception;
+
 class Model
 {
     public function toArray()
@@ -35,8 +37,10 @@ class Model
         }
         if (method_exists($this, $name)) {
             return $this->{$name}();
-        } else {
+        } else if (property_exists($this, $name)) {
             return $this->{$name};
+        } else {
+            throw new Exception("Property or method '{$name}' is not defined");  
         }
     }
 
@@ -47,8 +51,10 @@ class Model
         }
         if (method_exists($this, $name)) {
             $this->{$name}($value);
-        } else {
+        } else if (property_exists($this, $name)) {
             $this->{$name} = $value;
+        } else {
+            throw new Exception("Property or method '{$name}' is not defined");  
         }
     }
 
@@ -57,7 +63,11 @@ class Model
         if ($name[0] == '_') {
             throw new Exception("Access to '{$name}' is prohibited");  
         }
-        return isset($this->{$name});
+        if (property_exists($this, $name)) {
+            return isset($this->{$name});
+        } else {
+            throw new Exception("Property or method '{$name}' is not defined");  
+        }
     }
 
     public function __unset($name)
@@ -65,7 +75,11 @@ class Model
         if ($name[0] == '_') {
             throw new Exception("Access to '{$name}' is prohibited");  
         }
-        unset($this->{$name});
+        if (property_exists($this, $name)) {
+            unset($this->{$name});
+        } else {
+            throw new Exception("Property or method '{$name}' is not defined");  
+        }
     }
 
     public function __call($name, array $args)
@@ -74,9 +88,9 @@ class Model
             throw new Exception("Access to '{$name}' is prohibited");  
         }
         if (isset($args[0])) {
-            $this->{$name} = $args[0];
+            $this->__set($name, $args[0]);
             return $this;
         }
-        return $this->{$name};
+        return $this->__get($name);
     }
 }

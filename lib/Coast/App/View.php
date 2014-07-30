@@ -16,7 +16,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
 
     protected $_stack = [];
 
-    public function __construct($baseDirs)
+    public function __construct($baseDirs = array())
     {
         if (!is_array($baseDirs)) {
             $baseDirs = [$baseDirs];
@@ -54,12 +54,12 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         }
         return $this->_extName;
     }
-        
+                
     public function has($name, $set = null)
     {
-        if (!isset($set)) {
+          if (!isset($set)) {
             reset($this->_baseDirs);
-            $set = key($this->baseDirs);
+            $set = key($this->_baseDirs);
         }
         $path = new \Coast\Path("{$name}." . $this->_extName);
         if (!$path->isAbsolute()) {
@@ -68,7 +68,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         if (!isset($this->_baseDirs[$set])) {
             return false;
         }
-        $file = $this->_baseDirs[$set]->file($path);    
+        $file = $this->_baseDirs[$set]->file($path);
         return $file->exists();
     }
         

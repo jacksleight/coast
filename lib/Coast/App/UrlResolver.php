@@ -33,7 +33,7 @@ class UrlResolver implements \Coast\App\Access
     {
         $args = func_get_args();
         if (!isset($args[0])) {
-            $method = 'baseUrl';
+            $method = 'string';
         } else if (is_array($args[0])) {
             $method = 'route';
         } else if ($args[0] instanceof \Coast\Url) {
@@ -104,7 +104,7 @@ class UrlResolver implements \Coast\App\Access
         return $this->_versionCallback;
     }
 
-    public function string($string, $isBased = true)
+    public function string($string = null, $isBased = true)
     {
         $path = (string) $string;
         return new \Coast\Url($isBased
@@ -196,7 +196,7 @@ class UrlResolver implements \Coast\App\Access
                 $callback = $this->_versionCallback;
                 $callback($url, $path);
             } else {
-                $url->queryParam('v', $path->modifyTime()->getTimestamp());
+                $url->queryParam($path->modifyTime()->getTimestamp(), '');
             }
         }
 
