@@ -53,7 +53,7 @@ class Http
             throw new \Exception("URL scheme is not HTTP or HTTPS");
         }
         
-        $ch = curl_init($url->toString());
+        $ch = curl_init((string) $url);
         curl_setopt($ch, CURLOPT_HEADER, true);
         if (!ini_get('open_basedir')) {
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
@@ -70,7 +70,7 @@ class Http
         } elseif ($method == self::METHOD_POST) {
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $data instanceof \Coast\File
-                ? '@' . $data->toString()
+                ? '@' . (string) $data
                 : $data);
         }
         

@@ -286,7 +286,7 @@ class App implements Executable
         }
 
         if (isset($this->_path)) {
-            if (!preg_match('/^(' . preg_quote($this->_path->toString(), '/') . ')(?:\/(.*))?$/', $req->path(), $path)) {
+            if (!preg_match('/^(' . preg_quote((string) $this->_path, '/') . ')(?:\/(.*))?$/', $req->path(), $path)) {
                 return null;
             }
             $base = $req->base();
@@ -386,16 +386,16 @@ class App implements Executable
     }
 
     /**
-     * Attempts to call the `call` method of the parameter named `$name`
+     * Attempts to call parameter named `$name`
      * @param string $name
      * @param array $args
      */
     public function __call($name, array $args)
     {
         $value = $this->get($name);
-        if (!is_object($value) || !method_exists($value, '__invoke')) {
-            throw new Exception("Param '{$name}' is not an object or does not have an __invoke method");
+        if (!is_callable($value)) {
+            throw new \Coast\App\Exception("Param '{$name}' is not callable");
         }
-        return call_user_func_array(array($value, '__invoke'), $args);
+        return call_user_func_array($value, $args);
     }
 }

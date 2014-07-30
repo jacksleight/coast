@@ -17,7 +17,7 @@ abstract class Xml
 
     public function writeFile(\Coast\File $file)
     {
-        return $this->_xml->asXML($file->toString());
+        return $this->_xml->asXML((string) $file);
     }
 
     public function __toString()

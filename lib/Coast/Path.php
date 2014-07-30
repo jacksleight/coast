@@ -142,7 +142,7 @@ class Path
     public function isWithin(\Coast\Path $parent)
     {
         $path = $this->_name;
-        $parts = \explode(PATH_SEPARATOR, $parent->toString());    
+        $parts = \explode(PATH_SEPARATOR, (string) $parent);    
         foreach ($parts as $part) {
             if (\preg_match('/^' . \preg_quote($part, '/') . '/', $path)) {
                 return true;
@@ -162,7 +162,7 @@ class Path
             throw new \Exception("Path '{$this}' is not relative or base path '{$base}' is not absolute");
         }
 
-        $source = explode('/', $base->toString());
+        $source = explode('/', (string) $base);
         $target = explode('/', $this->_name);
         
         $name = $source;
@@ -191,7 +191,7 @@ class Path
             throw new \Exception("Source path '{$this}' is not absolute or base path '{$base}' is not absolute");
         }
         
-        $source = explode('/', $base->toString());
+        $source = explode('/', (string) $base);
         $target = explode('/', $this->_name);
 
         $name = $target;

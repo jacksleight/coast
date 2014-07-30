@@ -134,7 +134,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         $this->start();
         try {
             extract($_params);
-            include $_file->toString();
+            include (string) $_file;
         } catch (\Exception $e) {
             while ($this->_stack[0]['captures'] > 0) {
                 echo $this->end();
