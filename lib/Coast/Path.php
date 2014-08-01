@@ -30,10 +30,10 @@ class Path
      * Get/set the name.
      * @param string $name Full path name.
      */
-    public function name($value = null)
+    public function name($name = null)
     {
-        if (isset($value)) {
-            $this->_name = str_replace(DIRECTORY_SEPARATOR, '/', $value);
+        if (func_num_args() > 0) {
+            $this->_name = str_replace(DIRECTORY_SEPARATOR, '/', $name);
         }
         return $this->_name;
     }
@@ -60,11 +60,11 @@ class Path
      * Get/set the directory name.
      * @return string
      */
-    public function dirName($value = null)
+    public function dirName($dirName = null)
     {
-        if (isset($value)) {
+        if (func_num_args() > 0) {
             $parts = pathinfo($this->_name);
-            $this->_name = "{$value}/{$parts['basename']}";
+            $this->_name = "{$dirName}/{$parts['basename']}";
             return $this;
         }
         return pathinfo($this->_name, PATHINFO_DIRNAME);
@@ -74,11 +74,11 @@ class Path
      * Get/set the base name.
      * @return string
      */
-    public function baseName($value = null)
+    public function baseName($baseName = null)
     {
-        if (isset($value)) {
+        if (func_num_args() > 0) {
             $parts = pathinfo($this->_name);
-            $this->_name = "{$parts['dirname']}/{$value}";
+            $this->_name = "{$parts['dirname']}/{$baseName}";
             return $this;
         }
         return pathinfo($this->_name, PATHINFO_BASENAME);
@@ -88,11 +88,11 @@ class Path
      * Get/set the file name.
      * @return string
      */
-    public function fileName($value = null)
+    public function fileName($fileName = null)
     {
-        if (isset($value)) {
+        if (func_num_args() > 0) {
             $parts = pathinfo($this->_name);
-            $this->_name = "{$parts['dirname']}/{$value}.{$parts['extension']}";
+            $this->_name = "{$parts['dirname']}/{$fileName}.{$parts['extension']}";
             return $this;
         }
         return pathinfo($this->_name, PATHINFO_FILENAME);
@@ -102,11 +102,11 @@ class Path
      * Get/set the extension name.
      * @return string
      */
-    public function extName($value = null)
+    public function extName($extName = null)
     {
-        if (isset($value)) {
+        if (func_num_args() > 0) {
             $parts = pathinfo($this->_name);
-            $this->_name = "{$parts['dirname']}/{$parts['filename']}.{$value}";
+            $this->_name = "{$parts['dirname']}/{$parts['filename']}.{$extName}";
             return $this;
         }
         return pathinfo($this->_name, PATHINFO_EXTENSION);
@@ -116,10 +116,10 @@ class Path
      * Add prefix.
      * @return string
      */
-    public function prefix($value)
+    public function prefix($prefix)
     {
         $parts = pathinfo($this->_name);
-        $this->_name = "{$parts['dirname']}/{$value}{$parts['filename']}.{$parts['extension']}";
+        $this->_name = "{$parts['dirname']}/{$prefix}{$parts['filename']}.{$parts['extension']}";
         return $this;
     }
 
@@ -127,10 +127,10 @@ class Path
      * Add suffix.
      * @return string
      */
-    public function suffix($value)
+    public function suffix($suffix)
     {
         $parts = pathinfo($this->_name);
-        $this->_name = "{$parts['dirname']}/{$parts['filename']}{$value}.{$parts['extension']}";
+        $this->_name = "{$parts['dirname']}/{$parts['filename']}{$suffix}.{$parts['extension']}";
         return $this;
     }
 

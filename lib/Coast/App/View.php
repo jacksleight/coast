@@ -26,7 +26,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
 
     public function baseDir($name, \Coast\Dir $baseDir = null)
     {
-        if (isset($baseDir)) {
+        if (func_num_args() > 0) {
             $this->_baseDirs[$name] = $baseDir;
             return $this;
         }
@@ -37,7 +37,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
 
     public function baseDirs(array $baseDirs = null)
     {
-        if (isset($baseDirs)) {
+        if (func_num_args() > 0) {
             foreach ($baseDirs as $name => $baseDir) {
                 $this->baseDir($name, $baseDir);
             }
@@ -48,7 +48,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
 
     public function extName($extName = null)
     {
-        if (isset($extName)) {
+        if (func_num_args() > 0) {
             $this->_extName = $extName;
             return $this;
         }

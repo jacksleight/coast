@@ -97,7 +97,7 @@ class Request
 
     public function &session($name, $value = null)
     {
-        if (isset($value)) {
+        if (func_num_args() > 1) {
             $this->_sessions[$name] = $value;
             return $this;
         }
@@ -109,7 +109,7 @@ class Request
 
     public function &sessions(array $sessions = null)
     {
-        if (isset($sessions)) {
+        if (func_num_args() > 0) {
             foreach ($sessions as $name => $value) {
                 $this->session($name, $value);
             }
@@ -120,7 +120,7 @@ class Request
 
     public function param($name, $value = null)
     {
-        if (isset($value)) {
+        if (func_num_args() > 1) {
             $this->_params[$name] = $value;
             return $this;
         }
@@ -131,7 +131,7 @@ class Request
 
     public function params(array $params = null)
     {
-        if (isset($params)) {
+        if (func_num_args() > 0) {
             foreach ($params as $name => $value) {
                 $this->param($name, $value);
             }
@@ -173,7 +173,7 @@ class Request
 
     public function server($name, $value = null)
     {
-        if (isset($value)) {
+        if (func_num_args() > 1) {
             $this->_servers[$name] = $value;
             return $this;
         }
@@ -184,7 +184,7 @@ class Request
 
     public function servers(array $servers = null)
     {
-        if (isset($servers)) {
+        if (func_num_args() > 0) {
             foreach ($servers as $name => $value) {
                 $this->server($name, $value);
             }
@@ -193,19 +193,19 @@ class Request
         return $this->_servers;
     }
 
-    public function protocol($value = null)
+    public function protocol($protocol = null)
     {
-        if (isset($value)) {
-            $this->_protocol = $value;
+        if (func_num_args() > 0) {
+            $this->_protocol = $protocol;
             return $this;
         }
         return $this->_protocol;
     }
 
-    public function method($value = null)
+    public function method($method = null)
     {
-        if (isset($value)) {
-            $this->_method = $value;
+        if (func_num_args() > 0) {
+            $this->_method = $method;
             return $this;
         }
         return $this->_method;
@@ -255,7 +255,7 @@ class Request
 
     public function headers(array $headers = null)
     {
-        if (isset($headers)) {
+        if (func_num_args() > 0) {
             foreach ($headers as $name => $value) {
                 $this->header($name, $value);
             }
@@ -264,10 +264,10 @@ class Request
         return $this->_headers;
     }
 
-    public function scheme($value = null)
+    public function scheme($scheme = null)
     {
-        if (isset($value)) {
-            $this->_scheme = $value;
+        if (func_num_args() > 0) {
+            $this->_scheme = $scheme;
             return $this;
         }
         return $this->_scheme;
@@ -278,37 +278,37 @@ class Request
         return $this->scheme() == self::SCHEME_HTTPS;
     }
 
-    public function host($value = null)
+    public function host($host = null)
     {
-        if (isset($value)) {
-            $this->_host = $value;
+        if (func_num_args() > 0) {
+            $this->_host = $host;
             return $this;
         }
         return $this->_host;
     }
 
-    public function port($value = null)
+    public function port($port = null)
     {
-        if (isset($value)) {
-            $this->_port = $value;
+        if (func_num_args() > 0) {
+            $this->_port = $port;
             return $this;
         }
         return $this->_port;
     }
 
-    public function base($value = null)
+    public function base($base = null)
     {
-        if (isset($value)) {
-            $this->_base = $value;
+        if (func_num_args() > 0) {
+            $this->_base = $base;
             return $this;
         }
         return $this->_base;
     }
 
-    public function path($value = null)
+    public function path($path = null)
     {
-        if (isset($value)) {
-            $this->_path = $value;
+        if (func_num_args() > 0) {
+            $this->_path = $path;
             return $this;
         }
         return $this->_path;
@@ -316,7 +316,7 @@ class Request
 
     public function queryParam($name, $value = null)
     {
-        if (isset($value)) {
+        if (func_num_args() > 1) {
             $this->_queryParams[$name] = $value;
             $this->param($name, $value);
             return $this;
@@ -326,10 +326,10 @@ class Request
             : null;
     }
 
-    public function queryParams(array $querys = null)
+    public function queryParams(array $queryParams = null)
     {
-        if (isset($querys)) {
-            foreach ($querys as $name => $value) {
+        if (func_num_args() > 0) {
+            foreach ($queryParams as $name => $value) {
                 $this->queryParam($name, $value);
             }
             return $this;
@@ -339,7 +339,7 @@ class Request
 
     public function bodyParam($name, $value = null)
     {
-        if (isset($value)) {
+        if (func_num_args() > 1) {
             $this->_bodyParams[$name] = $value;
             $this->param($name, $value);
             return $this;
@@ -349,10 +349,10 @@ class Request
             : null;
     }
 
-    public function bodyParams(array $datas = null)
+    public function bodyParams(array $bodyParams = null)
     {
-        if (isset($datas)) {
-            foreach ($datas as $name => $value) {
+        if (func_num_args() > 0) {
+            foreach ($bodyParams as $name => $value) {
                 $this->bodyParam($name, $value);
             }
             return $this;
@@ -360,10 +360,10 @@ class Request
         return $this->_bodyParams;
     }
 
-    public function body($value = null)
+    public function body($body = null)
     {
-        if (isset($value)) {
-            $this->_body = $value;
+        if (func_num_args() > 0) {
+            $this->_body = $body;
             return $this;
         }
         return $this->_body;
@@ -381,7 +381,7 @@ class Request
 
     public function cookie($name, $value = null)
     {
-        if (isset($value)) {
+        if (func_num_args() > 1) {
             $this->_cookies[$name] = $value;
             return $this;
         }
@@ -392,7 +392,7 @@ class Request
 
     public function cookies(array $cookies = null)
     {
-        if (isset($cookies)) {
+        if (func_num_args() > 0) {
             foreach ($cookies as $name => $value) {
                 $this->cookie($name, $value);
             }

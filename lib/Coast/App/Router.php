@@ -35,7 +35,7 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
 
     public function target(\Coast\App\Routable $target = null)
     {
-        if (isset($target)) {
+        if (func_num_args() > 0) {
             $this->_target = $target;
             return $this;
         }

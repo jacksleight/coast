@@ -42,10 +42,10 @@ class Response
         echo $this->body();
     }
 
-    public function status($value = null)
+    public function status($status = null)
     {
-        if (isset($value)) {
-            $this->_status = $value;
+        if (func_num_args() > 0) {
+            $this->_status = $status;
             return $this;
         }
         return $this->_status;
@@ -65,7 +65,7 @@ class Response
 
     public function headers(array $headers = null)
     {
-        if (isset($headers)) {
+        if (func_num_args() > 0) {
             foreach ($headers as $name => $value) {
                 $this->header($name, $value);
             }
@@ -74,10 +74,10 @@ class Response
         return $this->_headers;
     }
 
-    public function type($value = null)
+    public function type($type = null)
     {
-        if (isset($value)) {
-            $this->header('Content-Type', $value);
+        if (func_num_args() > 0) {
+            $this->header('Content-Type', $type);
             return $this;
         }
         return $this->header('Content-Type');
@@ -85,7 +85,7 @@ class Response
 
     public function cookie($name, $value = null, $age = null, $path = null, $domain = null, $secure = false, $http = false)
     {
-        if (isset($value)) {
+        if (func_num_args() > 0) {
             if (!isset($path)) {
                 $path = $this->_req->base();
             }
@@ -97,48 +97,48 @@ class Response
             : null;
     }
 
-    public function body($data = null)
+    public function body($body = null)
     {
-        if (isset($data)) {
-            $this->_body = $data;
+        if (func_num_args() > 0) {
+            $this->_body = $body;
             return $this;
         }
         return $this->_body;
     }
 
-    public function text($data)
+    public function text($text)
     {
         return $this
             ->type('text/plain')
-            ->body((string) $data);
+            ->body((string) $text);
     }
 
-    public function html($data)
+    public function html($html)
     {
         return $this
             ->type('text/html')
-            ->body((string) $data);
+            ->body((string) $html);
     }
 
-    public function json($data, $options = JSON_PRETTY_PRINT, $depth = 512)
+    public function json($json, $options = JSON_PRETTY_PRINT, $depth = 512)
     {
         return $this
             ->type('application/json')
-            ->body(json_encode($data, $options, $depth));
+            ->body(json_encode($json, $options, $depth));
     }
 
-    public function xml($data, $type = null, $options = null)
+    public function xml($xml, $type = null, $options = null)
     {  
-        if ($data instanceof \SimpleXMLElement) {
-            $data = $data->asXML();
-        } else if ($data instanceof \DOMDocument) {
-            $data = $data->saveXML($options);
+        if ($xml instanceof \SimpleXMLElement) {
+            $xml = $xml->asXML();
+        } else if ($xml instanceof \DOMDocument) {
+            $xml = $xml->saveXML($options);
         }
         return $this
             ->type(isset($type)
                 ? "application/{$type}+xml"
                 : 'application/xml')
-            ->body((string) $data);
+            ->body((string) $xml);
     }
 
     public function redirect($url, $type = 301)

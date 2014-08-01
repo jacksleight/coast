@@ -28,7 +28,7 @@ class Controller implements \Coast\App\Access, \Coast\App\Routable
 
     public function classNamespace($name, $classNamespace = null)
     {
-        if (isset($classNamespace)) {
+        if (func_num_args() > 0) {
             $this->_classNamespaces[$name] = $classNamespace;
             return $this;
         }
@@ -39,7 +39,7 @@ class Controller implements \Coast\App\Access, \Coast\App\Routable
 
     public function classNamespaces(array $classNamespaces = null)
     {
-        if (isset($classNamespaces)) {
+        if (func_num_args() > 0) {
             foreach ($classNamespaces as $name => $classNamespace) {
                 $this->classNamespace($name, $classNamespace);
             }

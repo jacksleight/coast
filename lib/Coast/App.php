@@ -88,7 +88,7 @@ class App implements Executable
      */
     public function baseDir(\Coast\Dir $baseDir = null)
     {
-        if (isset($baseDir)) {
+        if (func_num_args() > 0) {
             $this->_baseDir = $baseDir;
             return $this;
         }
@@ -132,7 +132,7 @@ class App implements Executable
      */
     public function path(Path $path = null)
     {
-        if (isset($path)) {
+        if (func_num_args() > 0) {
             $this->_path = $path;
             return $this;
         }
@@ -186,7 +186,7 @@ class App implements Executable
      */
     public function param($name, $value = null)
     {
-        if (isset($value)) {
+        if (func_num_args() > 1) {
             if ($value instanceof \Coast\App\Access) {
                 $value->app($this);
             }
@@ -205,7 +205,7 @@ class App implements Executable
      */
     public function params(array $params = null)
     {
-        if (isset($params)) {
+        if (func_num_args() > 0) {
             foreach ($params as $name => $value) {
                 $this->param($name, $value);
             }

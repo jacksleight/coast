@@ -114,10 +114,10 @@ class Url
         return $this->toString();
     }
     
-    public function scheme($value = null)
+    public function scheme($scheme = null)
     {
-        if (isset($value)) {
-            $this->_scheme = $value;
+        if (func_num_args() > 0) {
+            $this->_scheme = $scheme;
             return $this;
         }
         return $this->_scheme;
@@ -135,48 +135,48 @@ class Url
         return $scheme == self::SCHEME_HTTPS;
     }
     
-    public function username($value = null)
+    public function username($username = null)
     {
-        if (isset($value)) {
-            $this->_username = $value;
+        if (func_num_args() > 0) {
+            $this->_username = $username;
             return $this;
         }
         return $this->_username;
     }
 
-    public function password($value = null)
+    public function password($password = null)
     {
-        if (isset($value)) {
-            $this->_password = $value;
+        if (func_num_args() > 0) {
+            $this->_password = $password;
             return $this;
         }
         return $this->_password;
     }
     
-    public function host($value = null)
+    public function host($host = null)
     {
-        if (isset($value)) {
-            $this->_host = $value;
+        if (func_num_args() > 0) {
+            $this->_host = $host;
             return $this;
         }
         return $this->_host;
     }
 
-    public function port($value = null)
+    public function port($port = null)
     {
-        if (isset($value)) {
-            $this->_port = $value;
+        if (func_num_args() > 0) {
+            $this->_port = $port;
             return $this;
         }
         return $this->_port;
     }
 
-    public function path($value = null)
+    public function path($path = null)
     {
-        if (isset($value)) {
-            $this->_path = !$value instanceof \Coast\Path
-                ? new \Coast\Path("{$value}")
-                : $value;
+        if (func_num_args() > 0) {
+            $this->_path = !$path instanceof \Coast\Path
+                ? new \Coast\Path("{$path}")
+                : $path;
             return $this;
         }
         return $this->_path;
@@ -184,7 +184,7 @@ class Url
 
     public function queryParam($name, $value = null)
     {
-        if (isset($value)) {
+        if (func_num_args() > 1) {
             $this->_queryParams[$name] = $value;
             return $this;
         }
@@ -195,7 +195,7 @@ class Url
 
     public function queryParams(array $querys = null)
     {
-        if (isset($querys)) {
+        if (func_num_args() > 0) {
             foreach ($querys as $name => $value) {
                 $this->queryParam($name, $value);
             }
@@ -204,20 +204,20 @@ class Url
         return $this->_queryParams;
     }
 
-    public function query($value = null)
+    public function query($query = null)
     {
-        if (isset($value)) {
-            parse_str($value, $params);
+        if (func_num_args() > 0) {
+            parse_str($query, $params);
             $this->queryParams($params);
             return $this;
         }
         return http_build_query($this->queryParams());
     }
 
-    public function fragment($value = null)
+    public function fragment($fragment = null)
     {
-        if (isset($value)) {
-            $this->_fragment = $value;
+        if (func_num_args() > 0) {
+            $this->_fragment = $fragment;
             return $this;
         }
         return $this->_fragment;

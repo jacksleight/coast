@@ -52,7 +52,7 @@ class UrlResolver implements \Coast\App\Access
 
     public function baseUrl(\Coast\Url $baseUrl = null)
     {
-        if (isset($baseUrl)) {
+        if (func_num_args() > 0) {
             $this->_baseUrl = $baseUrl;
             return $this;
         }
@@ -61,7 +61,7 @@ class UrlResolver implements \Coast\App\Access
 
     public function cdnUrl(\Coast\Url $cdnUrl = null)
     {
-        if (isset($cdnUrl)) {
+        if (func_num_args() > 0) {
             $this->_cdnUrl = $cdnUrl;
             return $this;
         }
@@ -70,7 +70,7 @@ class UrlResolver implements \Coast\App\Access
 
     public function baseDir(\Coast\Dir $baseDir = null)
     {
-        if (isset($baseDir)) {
+        if (func_num_args() > 0) {
             $this->_baseDir = $baseDir;
             return $this;
         }
@@ -79,7 +79,7 @@ class UrlResolver implements \Coast\App\Access
 
     public function router(\Coast\App\Router $router = null)
     {
-        if (isset($router)) {
+        if (func_num_args() > 0) {
             $this->_router = $router;
             return $this;
         }
@@ -88,7 +88,7 @@ class UrlResolver implements \Coast\App\Access
 
     public function isVersioned($isVersioned = null)
     {
-        if (isset($isVersioned)) {
+        if (func_num_args() > 0) {
             $this->_isVersioned = $isVersioned;
             return $this;
         }
@@ -97,7 +97,7 @@ class UrlResolver implements \Coast\App\Access
 
     public function versionCallback(\Closure $versionCallback = null)
     {
-        if (isset($versionCallback)) {
+        if (func_num_args() > 0) {
             $this->_versionCallback = $versionCallback;
             return $this;
         }
