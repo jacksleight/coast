@@ -75,7 +75,7 @@ And load it up in the browser at: [http://localhost:8000/](http://localhost:8000
 
 ## Documentation
 
-* [API Documentation](http://rawgithub.com/jacksleight/coast/master/docs/index.html)  
+* [API Documentation](https://rawgit.com/jacksleight/coast/docs/index.html)  
 * [Examples](examples) (see the [test suite](tests/Coast) for further code exammples)
 
 ## Requirements
