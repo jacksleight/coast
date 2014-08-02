@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="generator" content="ApiGen 2.8.0">
+
+	<title>Class Coast\Path | Coast API Documentation</title>
+
+	<script type="text/javascript" src="resources/combined.js?895998081"></script>
+	<script type="text/javascript" src="elementlist.js?3972778709"></script>
+	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360">
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+
+		<div id="groups">
+			<h3>Namespaces</h3>
+			<ul>
+				<li class="active"><a href="namespace-Coast.html">Coast<span></span></a>
+						<ul>
+				<li><a href="namespace-Coast.App.html">App<span></span></a>
+						<ul>
+				<li><a href="namespace-Coast.App.Access.html">Access</a>
+						</li>
+				<li><a href="namespace-Coast.App.Controller.html">Controller</a>
+						</li>
+				<li><a href="namespace-Coast.App.View.html">View</a>
+						</li>
+							</ul></li>
+				<li><a href="namespace-Coast.Dir.html">Dir</a>
+						</li>
+				<li><a href="namespace-Coast.Feed.html">Feed</a>
+						</li>
+				<li><a href="namespace-Coast.File.html">File</a>
+						</li>
+				<li><a href="namespace-Coast.Http.html">Http</a>
+						</li>
+							</ul></li>
+			</ul>
+		</div>
+
+		<hr>
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li><a href="class-Coast.App.html">App</a></li>
+				<li><a href="class-Coast.Config.html">Config</a></li>
+				<li><a href="class-Coast.Dir.html">Dir</a></li>
+				<li><a href="class-Coast.File.html">File</a></li>
+				<li><a href="class-Coast.Http.html">Http</a></li>
+				<li><a href="class-Coast.Model.html">Model</a></li>
+				<li class="active"><a href="class-Coast.Path.html">Path</a></li>
+				<li><a href="class-Coast.Sitemap.html">Sitemap</a></li>
+				<li><a href="class-Coast.Url.html">Url</a></li>
+				<li><a href="class-Coast.Xml.html">Xml</a></li>
+			</ul>
+
+
+
+
+
+			<h3>Functions</h3>
+			<ul>
+				<li><a href="function-Coast.array_column.html">array_column</a></li>
+				<li><a href="function-Coast.array_diff_key.html">array_diff_key</a></li>
+				<li><a href="function-Coast.array_filter_null.html">array_filter_null</a></li>
+				<li><a href="function-Coast.array_filter_null_recursive.html">array_filter_null_recursive</a></li>
+				<li><a href="function-Coast.array_intersect_key.html">array_intersect_key</a></li>
+				<li><a href="function-Coast.array_mean.html">array_mean</a></li>
+				<li><a href="function-Coast.array_merge_smart.html">array_merge_smart</a></li>
+				<li><a href="function-Coast.array_pairs.html">array_pairs</a></li>
+				<li><a href="function-Coast.gcd.html">gcd</a></li>
+				<li><a href="function-Coast.import.html">import</a></li>
+				<li><a href="function-Coast.is_array_assoc.html">is_array_assoc</a></li>
+				<li><a href="function-Coast.math_ratio.html">math_ratio</a></li>
+				<li><a href="function-Coast.str_camel.html">str_camel</a></li>
+				<li><a href="function-Coast.str_camel_lower.html">str_camel_lower</a></li>
+				<li><a href="function-Coast.str_camel_split.html">str_camel_split</a></li>
+				<li><a href="function-Coast.str_camel_upper.html">str_camel_upper</a></li>
+				<li><a href="function-Coast.str_simplify.html">str_simplify</a></li>
+				<li><a href="function-Coast.str_size_format.html">str_size_format</a></li>
+				<li><a href="function-Coast.str_to_bytes.html">str_to_bytes</a></li>
+				<li><a href="function-Coast.str_trim_smart.html">str_trim_smart</a></li>
+				<li><a href="function-Coast.str_uchr.html">str_uchr</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="">
+		<input type="hidden" name="ie" value="UTF-8">
+		<input type="text" name="q" class="text">
+		<input type="submit" value="Search">
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="namespace-Coast.html" title="Summary of Coast"><span>Namespace</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+			</li>
+			<li>
+				<a href="deprecated.html" title="List of deprecated elements"><span>Deprecated</span></a>
+			</li>
+			<li>
+				<a href="todo.html" title="Todo list"><span>Todo</span></a>
+			</li>
+		</ul>
+		<ul>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class Path</h1>
+
+
+	<div class="description">
+	
+<p>Path object.</p>
+
+	</div>
+
+
+
+	<div>
+		<h4>Direct known subclasses</h4>
+			<a href="class-Coast.File.Path.html">Coast\File\Path</a>
+	</div>
+
+	<div>
+		<h4>Indirect known subclasses</h4>
+			<a href="class-Coast.Dir.html">Coast\Dir</a>, 
+			<a href="class-Coast.File.html">Coast\File</a>
+	</div>
+
+
+
+
+
+	<div class="info">
+		
+		
+		<b>Namespace:</b> <a href="namespace-Coast.html">Coast</a><br>
+		
+
+		<b>Located at</b> <a href="source-class-Coast.Path.html#9-229" title="Go to source code">Coast/Path.php</a><br>
+	</div>
+
+
+
+	<table class="summary" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="__construct" id="___construct">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___construct">#</a>
+		<code><a href="source-class-Coast.Path.html#20-27" title="Go to source code">__construct</a>( <span>string <var>$value</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Constructs a new path object.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Constructs a new path object.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$value</var></dt>
+					<dd><code>string</code><br>$name Full path name.</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="name" id="_name">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_name">#</a>
+		<code><a href="source-class-Coast.Path.html#29-39" title="Go to source code">name</a>( <span>string <var>$name</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Get/set the name.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get/set the name.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$name</var></dt>
+					<dd><code>string</code><br>$name Full path name.</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="toString" id="_toString">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_toString">#</a>
+		<code><a href="source-class-Coast.Path.html#41-48" title="Go to source code">toString</a>( )</code>
+
+		<div class="description short">
+			
+<p>Aliases <code>name</code></p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Aliases <code>name</code></p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="__toString" id="___toString">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___toString">#</a>
+		<code><a href="source-class-Coast.Path.html#50-57" title="Go to source code">__toString</a>( )</code>
+
+		<div class="description short">
+			
+<p>Aliases <code>name</code></p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Aliases <code>name</code></p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="dirName" id="_dirName">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_dirName">#</a>
+		<code><a href="source-class-Coast.Path.html#59-71" title="Go to source code">dirName</a>( <span>mixed <var>$dirName</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Get/set the directory name.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get/set the directory name.</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="baseName" id="_baseName">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_baseName">#</a>
+		<code><a href="source-class-Coast.Path.html#73-85" title="Go to source code">baseName</a>( <span>mixed <var>$baseName</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Get/set the base name.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get/set the base name.</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="fileName" id="_fileName">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_fileName">#</a>
+		<code><a href="source-class-Coast.Path.html#87-99" title="Go to source code">fileName</a>( <span>mixed <var>$fileName</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Get/set the file name.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get/set the file name.</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="extName" id="_extName">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_extName">#</a>
+		<code><a href="source-class-Coast.Path.html#101-113" title="Go to source code">extName</a>( <span>mixed <var>$extName</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Get/set the extension name.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get/set the extension name.</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="prefix" id="_prefix">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_prefix">#</a>
+		<code><a href="source-class-Coast.Path.html#115-124" title="Go to source code">prefix</a>( <span>mixed <var>$prefix</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Add prefix.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Add prefix.</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="suffix" id="_suffix">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_suffix">#</a>
+		<code><a href="source-class-Coast.Path.html#126-135" title="Go to source code">suffix</a>( <span>mixed <var>$suffix</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Add suffix.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Add suffix.</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="isWithin" id="_isWithin">
+
+		<td class="attributes"><code>
+			 public 
+			boolean
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_isWithin">#</a>
+		<code><a href="source-class-Coast.Path.html#137-152" title="Go to source code">isWithin</a>( <span><code><a href="class-Coast.Path.html">Coast\Path</a></code> <var>$parent</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Check if path is within another</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Check if path is within another</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$parent</var></dt>
+					<dd><code><code><a href="class-Coast.Path.html">Coast\Path</a></code></code><br>$target path to check against.</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>boolean</code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="toAbsolute" id="_toAbsolute">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-Coast.Path.html">Coast\Path</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_toAbsolute">#</a>
+		<code><a href="source-class-Coast.Path.html#154-181" title="Go to source code">toAbsolute</a>( <span><code><a href="class-Coast.Path.html">Coast\Path</a></code> <var>$base</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Get absolute path from relative path.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get absolute path from relative path.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$base</var></dt>
+					<dd><code><code><a href="class-Coast.Path.html">Coast\Path</a></code></code><br>$base base absolute path.</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-Coast.Path.html">Coast\Path</a></code></code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="toRelative" id="_toRelative">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-Coast.Path.html">Coast\Path</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_toRelative">#</a>
+		<code><a href="source-class-Coast.Path.html#183-210" title="Go to source code">toRelative</a>( <span><code><a href="class-Coast.Path.html">Coast\Path</a></code> <var>$base</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Get relative path from absolute path.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get relative path from absolute path.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$base</var></dt>
+					<dd><code><code><a href="class-Coast.Path.html">Coast\Path</a></code></code><br>$base Base absolute path.</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-Coast.Path.html">Coast\Path</a></code></code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="isAbsolute" id="_isAbsolute">
+
+		<td class="attributes"><code>
+			 public 
+			boolean
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_isAbsolute">#</a>
+		<code><a href="source-class-Coast.Path.html#212-219" title="Go to source code">isAbsolute</a>( )</code>
+
+		<div class="description short">
+			
+<p>Is path absolute.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Is path absolute.</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>boolean</code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="isRelative" id="_isRelative">
+
+		<td class="attributes"><code>
+			 public 
+			boolean
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_isRelative">#</a>
+		<code><a href="source-class-Coast.Path.html#221-228" title="Go to source code">isRelative</a>( )</code>
+
+		<div class="description short">
+			
+<p>Is path relative.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Is path relative.</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>boolean</code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+
+
+
+
+
+	<table class="summary" id="properties">
+	<caption>Properties summary</caption>
+	<tr data-order="_name" id="$_name">
+		<td class="attributes"><code>
+			protected  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Coast.Path.html#14-18" title="Go to source code"><var>$_name</var></a>
+		</td>
+		<td class="value"><code></code></td>
+		<td class="description"><div>
+			<a href="#$_name" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Full path name.</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Full path name.</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+</div>
+
+	<div id="footer">
+		Coast API Documentation API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
+	</div>
+</div>
+</div>
+</body>
+</html>

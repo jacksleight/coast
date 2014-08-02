@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="generator" content="ApiGen 2.8.0">
+
+	<title>Class Coast\App | Coast API Documentation</title>
+
+	<script type="text/javascript" src="resources/combined.js?895998081"></script>
+	<script type="text/javascript" src="elementlist.js?3972778709"></script>
+	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360">
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+
+		<div id="groups">
+			<h3>Namespaces</h3>
+			<ul>
+				<li class="active"><a href="namespace-Coast.html">Coast<span></span></a>
+						<ul>
+				<li><a href="namespace-Coast.App.html">App<span></span></a>
+						<ul>
+				<li><a href="namespace-Coast.App.Access.html">Access</a>
+						</li>
+				<li><a href="namespace-Coast.App.Controller.html">Controller</a>
+						</li>
+				<li><a href="namespace-Coast.App.View.html">View</a>
+						</li>
+							</ul></li>
+				<li><a href="namespace-Coast.Dir.html">Dir</a>
+						</li>
+				<li><a href="namespace-Coast.Feed.html">Feed</a>
+						</li>
+				<li><a href="namespace-Coast.File.html">File</a>
+						</li>
+				<li><a href="namespace-Coast.Http.html">Http</a>
+						</li>
+							</ul></li>
+			</ul>
+		</div>
+
+		<hr>
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li class="active"><a href="class-Coast.App.html">App</a></li>
+				<li><a href="class-Coast.Config.html">Config</a></li>
+				<li><a href="class-Coast.Dir.html">Dir</a></li>
+				<li><a href="class-Coast.File.html">File</a></li>
+				<li><a href="class-Coast.Http.html">Http</a></li>
+				<li><a href="class-Coast.Model.html">Model</a></li>
+				<li><a href="class-Coast.Path.html">Path</a></li>
+				<li><a href="class-Coast.Sitemap.html">Sitemap</a></li>
+				<li><a href="class-Coast.Url.html">Url</a></li>
+				<li><a href="class-Coast.Xml.html">Xml</a></li>
+			</ul>
+
+
+
+
+
+			<h3>Functions</h3>
+			<ul>
+				<li><a href="function-Coast.array_column.html">array_column</a></li>
+				<li><a href="function-Coast.array_diff_key.html">array_diff_key</a></li>
+				<li><a href="function-Coast.array_filter_null.html">array_filter_null</a></li>
+				<li><a href="function-Coast.array_filter_null_recursive.html">array_filter_null_recursive</a></li>
+				<li><a href="function-Coast.array_intersect_key.html">array_intersect_key</a></li>
+				<li><a href="function-Coast.array_mean.html">array_mean</a></li>
+				<li><a href="function-Coast.array_merge_smart.html">array_merge_smart</a></li>
+				<li><a href="function-Coast.array_pairs.html">array_pairs</a></li>
+				<li><a href="function-Coast.gcd.html">gcd</a></li>
+				<li><a href="function-Coast.import.html">import</a></li>
+				<li><a href="function-Coast.is_array_assoc.html">is_array_assoc</a></li>
+				<li><a href="function-Coast.math_ratio.html">math_ratio</a></li>
+				<li><a href="function-Coast.str_camel.html">str_camel</a></li>
+				<li><a href="function-Coast.str_camel_lower.html">str_camel_lower</a></li>
+				<li><a href="function-Coast.str_camel_split.html">str_camel_split</a></li>
+				<li><a href="function-Coast.str_camel_upper.html">str_camel_upper</a></li>
+				<li><a href="function-Coast.str_simplify.html">str_simplify</a></li>
+				<li><a href="function-Coast.str_size_format.html">str_size_format</a></li>
+				<li><a href="function-Coast.str_to_bytes.html">str_to_bytes</a></li>
+				<li><a href="function-Coast.str_trim_smart.html">str_trim_smart</a></li>
+				<li><a href="function-Coast.str_uchr.html">str_uchr</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="">
+		<input type="hidden" name="ie" value="UTF-8">
+		<input type="text" name="q" class="text">
+		<input type="submit" value="Search">
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="namespace-Coast.html" title="Summary of Coast"><span>Namespace</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+			</li>
+			<li>
+				<a href="deprecated.html" title="List of deprecated elements"><span>Deprecated</span></a>
+			</li>
+			<li>
+				<a href="todo.html" title="Todo list"><span>Todo</span></a>
+			</li>
+		</ul>
+		<ul>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class App</h1>
+
+
+	<div class="description">
+	
+<p>Coast application object.</p>
+
+	</div>
+
+	<dl class="tree">
+		<dd style="padding-left:0px">
+<b><span>Coast\App</span></b>			
+			 implements 
+				<a href="class-Coast.App.Executable.html"><span>Coast\App\Executable</span></a>
+			
+			
+		</dd>
+	</dl>
+
+
+
+
+
+
+
+
+	<div class="info">
+		
+		
+		<b>Namespace:</b> <a href="namespace-Coast.html">Coast</a><br>
+		
+
+		<b>Located at</b> <a href="source-class-Coast.App.html#17-401" title="Go to source code">Coast/App.php</a><br>
+	</div>
+
+
+
+	<table class="summary" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="__construct" id="___construct">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___construct">#</a>
+		<code><a href="source-class-Coast.App.html#67-83" title="Go to source code">__construct</a>( <span>mixed <var>$baseDir</var></span>, <span>array <var>$envs</var> = <span class="php-keyword1">array</span>()</span> )</code>
+
+		<div class="description short">
+			
+<p>Construct a new Coast application.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Construct a new Coast application.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$baseDir</var></dt>
+					<dd><code>mixed</code><br>$baseDir Base directory.</dd>
+					<dt><var>$envs</var></dt>
+					<dd><code>array</code><br>$envs Additional environment variables.</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="baseDir" id="_baseDir">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-Coast.Dir.html">Coast\Dir</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_baseDir">#</a>
+		<code><a href="source-class-Coast.App.html#85-96" title="Go to source code">baseDir</a>( <span><code><a href="class-Coast.Dir.html">Coast\Dir</a></code> <var>$baseDir</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Get/set base directory.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get/set base directory.</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-Coast.Dir.html">Coast\Dir</a></code></code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="dir" id="_dir">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-Coast.Dir.html">Coast\Dir</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_dir">#</a>
+		<code><a href="source-class-Coast.App.html#98-107" title="Go to source code">dir</a>( <span>mixed <var>$path</var> = <span class="php-keyword1">null</span></span>, <span>mixed <var>$create</var> = <span class="php-keyword1">false</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Get child directory.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get child directory.</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-Coast.Dir.html">Coast\Dir</a></code></code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="file" id="_file">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-Coast.File.html">Coast\File</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_file">#</a>
+		<code><a href="source-class-Coast.App.html#109-116" title="Go to source code">file</a>( <span>mixed <var>$path</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Get child file.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get child file.</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-Coast.File.html">Coast\File</a></code></code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="import" id="_import">
+
+		<td class="attributes"><code>
+			 public 
+			mixed
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_import">#</a>
+		<code><a href="source-class-Coast.App.html#118-126" title="Go to source code">import</a>( <span><code><a href="class-Coast.File.html">Coast\File</a></code> <var>$_file</var></span>, <span>array <var>$_vars</var> = <span class="php-keyword1">array</span>()</span> )</code>
+
+		<div class="description short">
+			
+<p>Require a file without leaking variables into the global scope.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Require a file without leaking variables into the global scope.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$_file</var></dt>
+					<dd><code>mixed</code><br>$file</dd>
+					<dt><var>$_vars</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>mixed</code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="path" id="_path">
+
+		<td class="attributes"><code>
+			 public 
+			mixed
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_path">#</a>
+		<code><a href="source-class-Coast.App.html#128-140" title="Go to source code">path</a>( <span><code><a href="class-Coast.Path.html">Coast\Path</a></code> <var>$path</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Get/set root path.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get/set root path.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$path</var></dt>
+					<dd><code><code><a href="class-Coast.Path.html">Coast\Path</a></code></code><br>$name</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>mixed</code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="env" id="_env">
+
+		<td class="attributes"><code>
+			 public 
+			mixed
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_env">#</a>
+		<code><a href="source-class-Coast.App.html#142-152" title="Go to source code">env</a>( <span>string <var>$name</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Get environment variables.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get environment variables.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$name</var></dt>
+					<dd><code>string</code><br>$name</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>mixed</code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="mode" id="_mode">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_mode">#</a>
+		<code><a href="source-class-Coast.App.html#154-161" title="Go to source code">mode</a>( )</code>
+
+		<div class="description short">
+			
+<p>Get the mode (HTTP or CLI).</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get the mode (HTTP or CLI).</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="isHttp" id="_isHttp">
+
+		<td class="attributes"><code>
+			 public 
+			boolean
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_isHttp">#</a>
+		<code><a href="source-class-Coast.App.html#163-170" title="Go to source code">isHttp</a>( )</code>
+
+		<div class="description short">
+			
+<p>Is mode HTTP.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Is mode HTTP.</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>boolean</code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="isCli" id="_isCli">
+
+		<td class="attributes"><code>
+			 public 
+			boolean
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_isCli">#</a>
+		<code><a href="source-class-Coast.App.html#172-179" title="Go to source code">isCli</a>( )</code>
+
+		<div class="description short">
+			
+<p>Is mode CLI.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Is mode CLI.</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>boolean</code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="param" id="_param">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-Coast.App.html">Coast\App</a></code>|mixed
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_param">#</a>
+		<code><a href="source-class-Coast.App.html#181-199" title="Go to source code">param</a>( <span>string <var>$name</var></span>, <span>mixed <var>$value</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Set/get param.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set/get param.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$name</var></dt>
+					<dd><code>string</code><br>$name</dd>
+					<dt><var>$value</var></dt>
+					<dd><code>mixed</code><br>$value</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-Coast.App.html">Coast\App</a></code>|mixed</code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="params" id="_params">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-Coast.App.html">Coast\App</a></code>|array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_params">#</a>
+		<code><a href="source-class-Coast.App.html#201-215" title="Go to source code">params</a>( <span>array <var>$params</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Set/get multiple params.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set/get multiple params.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$params</var></dt>
+					<dd><code>array</code><br>$params</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-Coast.App.html">Coast\App</a></code>|array</code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="set" id="_set">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-Coast.App.html">Coast\App</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_set">#</a>
+		<code><a href="source-class-Coast.App.html#217-226" title="Go to source code">set</a>( <span>string <var>$name</var></span>, <span>mixed <var>$value</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Set a parameter.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set a parameter.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$name</var></dt>
+					<dd><code>string</code><br>$name</dd>
+					<dt><var>$value</var></dt>
+					<dd><code>mixed</code><br>$value</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-Coast.App.html">Coast\App</a></code></code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="get" id="_get">
+
+		<td class="attributes"><code>
+			 public 
+			mixed
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_get">#</a>
+		<code><a href="source-class-Coast.App.html#228-236" title="Go to source code">get</a>( <span>string <var>$name</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Get a parameter.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get a parameter.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$name</var></dt>
+					<dd><code>string</code><br>$name</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>mixed</code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="has" id="_has">
+
+		<td class="attributes"><code>
+			 public 
+			boolean
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_has">#</a>
+		<code><a href="source-class-Coast.App.html#238-246" title="Go to source code">has</a>( <span>string <var>$name</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Check if a parameter exists.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Check if a parameter exists.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$name</var></dt>
+					<dd><code>string</code><br>$name</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>boolean</code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="add" id="_add">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-Coast.App.html">Coast\App</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_add">#</a>
+		<code><a href="source-class-Coast.App.html#248-270" title="Go to source code">add</a>( <span>string <var>$name</var></span>, <span>Closure|<code><a href="class-Coast.App.Executable.html">Coast\App\Executable</a></code> <var>$value</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Add middleware to the stack.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Add middleware to the stack.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$name</var></dt>
+					<dd><code>string</code><br>$name</dd>
+					<dt><var>$value</var></dt>
+					<dd><code>Closure|<code><a href="class-Coast.App.Executable.html">Coast\App\Executable</a></code></code><br>$value</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-Coast.App.html">Coast\App</a></code></code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="execute" id="_execute">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_execute">#</a>
+		<code><a href="source-class-Coast.App.html#272-334" title="Go to source code">execute</a>( <span><code><a href="class-Coast.App.Request.html">Coast\App\Request</a></code> <var>$req</var> = <span class="php-keyword1">null</span></span>, <span><code><a href="class-Coast.App.Response.html">Coast\App\Response</a></code> <var>$res</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Execute the application, running middleware in order.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Execute the application, running middleware in order.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$req</var></dt>
+					<dd><code><code><a href="class-Coast.App.Request.html">Coast\App\Request</a></code></code><br>$req Request object.</dd>
+					<dt><var>$res</var></dt>
+					<dd><code><code><a href="class-Coast.App.Response.html">Coast\App\Response</a></code></code><br>$res Response object.</dd>
+				</dl></div>
+
+
+
+
+
+				<h4>Implementation of</h4>
+				<div class="list"><code><a href="class-Coast.App.Executable.html#_execute">Coast\App\Executable::execute()</a></code></div>
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="notFoundHandler" id="_notFoundHandler">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-Coast.App.html">Coast\App</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_notFoundHandler">#</a>
+		<code><a href="source-class-Coast.App.html#336-345" title="Go to source code">notFoundHandler</a>( <span>Closure <var>$notFoundHandler</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Set the not found handler</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set the not found handler</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$notFoundHandler</var></dt>
+					<dd><code>Closure</code><br>$notFoundHandler</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-Coast.App.html">Coast\App</a></code></code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="errorHandler" id="_errorHandler">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-Coast.App.html">Coast\App</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_errorHandler">#</a>
+		<code><a href="source-class-Coast.App.html#347-356" title="Go to source code">errorHandler</a>( <span>Closure <var>$errorHandler</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Set the error handler</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set the error handler</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$errorHandler</var></dt>
+					<dd><code>Closure</code><br>$errorHandler</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-Coast.App.html">Coast\App</a></code></code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="__set" id="___set">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___set">#</a>
+		<code><a href="source-class-Coast.App.html#358-366" title="Go to source code">__set</a>( <span>string <var>$name</var></span>, <span>mixed <var>$value</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Alias of <code>set</code></p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Alias of <code>set</code></p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$name</var></dt>
+					<dd><code>string</code><br>$name</dd>
+					<dt><var>$value</var></dt>
+					<dd><code>mixed</code><br>$value</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="__get" id="___get">
+
+		<td class="attributes"><code>
+			 public 
+			mixed
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___get">#</a>
+		<code><a href="source-class-Coast.App.html#368-376" title="Go to source code">__get</a>( <span>string <var>$name</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Alias of <code>get</code></p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Alias of <code>get</code></p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$name</var></dt>
+					<dd><code>string</code><br>$name</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>mixed</code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="__isset" id="___isset">
+
+		<td class="attributes"><code>
+			 public 
+			boolean
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___isset">#</a>
+		<code><a href="source-class-Coast.App.html#378-386" title="Go to source code">__isset</a>( <span>string <var>$name</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Alias of <code>has</code></p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Alias of <code>has</code></p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$name</var></dt>
+					<dd><code>string</code><br>$name</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>boolean</code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="__call" id="___call">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___call">#</a>
+		<code><a href="source-class-Coast.App.html#388-400" title="Go to source code">__call</a>( <span>string <var>$name</var></span>, <span>array <var>$args</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Attempts to call parameter named <code>$name</code></p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Attempts to call parameter named <code>$name</code></p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$name</var></dt>
+					<dd><code>string</code><br>$name</dd>
+					<dt><var>$args</var></dt>
+					<dd><code>array</code><br>$args</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+
+	<table class="summary" id="constants">
+	<caption>Constants summary</caption>
+	<tr data-order="MODE_CLI" id="MODE_CLI">
+
+		<td class="attributes"><code>string</code></td>
+		<td class="name"><code>
+				<a href="source-class-Coast.App.html#22" title="Go to source code"><b>MODE_CLI</b></a>
+		</code></td>
+		<td class="value"><code><span class="php-quote">'cli'</span></code></td>
+		<td class="description"><div>
+			<a href="#MODE_CLI" class="anchor">#</a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="MODE_HTTP" id="MODE_HTTP">
+
+		<td class="attributes"><code>string</code></td>
+		<td class="name"><code>
+				<a href="source-class-Coast.App.html#23" title="Go to source code"><b>MODE_HTTP</b></a>
+		</code></td>
+		<td class="value"><code><span class="php-quote">'http'</span></code></td>
+		<td class="description"><div>
+			<a href="#MODE_HTTP" class="anchor">#</a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+	<table class="summary" id="properties">
+	<caption>Properties summary</caption>
+	<tr data-order="_baseDir" id="$_baseDir">
+		<td class="attributes"><code>
+			protected  
+			<code><a href="class-Coast.Dir.html">Coast\Dir</a></code>
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Coast.App.html#25-29" title="Go to source code"><var>$_baseDir</var></a>
+		</td>
+		<td class="value"><code></code></td>
+		<td class="description"><div>
+			<a href="#$_baseDir" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Base directory.</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Base directory.</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="_path" id="$_path">
+		<td class="attributes"><code>
+			protected  
+			<code><a href="class-Coast.Path.html">Coast\Path</a></code>
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Coast.App.html#31-35" title="Go to source code"><var>$_path</var></a>
+		</td>
+		<td class="value"><code></code></td>
+		<td class="description"><div>
+			<a href="#$_path" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Path.</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Path.</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="_envs" id="$_envs">
+		<td class="attributes"><code>
+			protected  
+			array
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Coast.App.html#37-41" title="Go to source code"><var>$_envs</var></a>
+		</td>
+		<td class="value"><code>[]</code></td>
+		<td class="description"><div>
+			<a href="#$_envs" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Environment variables.</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Environment variables.</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="_params" id="$_params">
+		<td class="attributes"><code>
+			protected  
+			array
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Coast.App.html#43-47" title="Go to source code"><var>$_params</var></a>
+		</td>
+		<td class="value"><code>[]</code></td>
+		<td class="description"><div>
+			<a href="#$_params" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Parameters.</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Parameters.</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="_stack" id="$_stack">
+		<td class="attributes"><code>
+			protected  
+			array
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Coast.App.html#49-53" title="Go to source code"><var>$_stack</var></a>
+		</td>
+		<td class="value"><code>[]</code></td>
+		<td class="description"><div>
+			<a href="#$_stack" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Middleware stack.</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Middleware stack.</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="_notFoundHandler" id="$_notFoundHandler">
+		<td class="attributes"><code>
+			protected  
+			Closure
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Coast.App.html#55-59" title="Go to source code"><var>$_notFoundHandler</var></a>
+		</td>
+		<td class="value"><code></code></td>
+		<td class="description"><div>
+			<a href="#$_notFoundHandler" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Handler for requests that are not handled by middleware.</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Handler for requests that are not handled by middleware.</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="_errorHandler" id="$_errorHandler">
+		<td class="attributes"><code>
+			protected  
+			Closure
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Coast.App.html#61-65" title="Go to source code"><var>$_errorHandler</var></a>
+		</td>
+		<td class="value"><code></code></td>
+		<td class="description"><div>
+			<a href="#$_errorHandler" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Handler for errors thrown in middleware.</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Handler for errors thrown in middleware.</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+</div>
+
+	<div id="footer">
+		Coast API Documentation API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
+	</div>
+</div>
+</div>
+</body>
+</html>
