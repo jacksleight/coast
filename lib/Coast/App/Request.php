@@ -41,7 +41,8 @@ class Request
 
     public function fromGlobals()
     {
-        $this->params(isset($_SERVER['argv']) ? $_SERVER['argv'] : []);
+        global $argv;
+        $this->params(isset($argv) ? $argv : []);
         
         $this->servers($_SERVER);
 
