@@ -79,7 +79,7 @@ class App implements Executable
             'MODE' => php_sapi_name() == 'cli' ? self::MODE_CLI : self::MODE_HTTP,
         ), $_ENV, $envs);
         
-        $this->set('app', $this);
+        $this->param('app', $this);
     }
 
     /**
@@ -215,57 +215,19 @@ class App implements Executable
     }
 
     /**
-     * Set a parameter.
-     * @param string $name
-     * @param mixed $value
-     * @return self
-     */
-    public function set($name, $value)
-    {
-        return $this->param($name, $value);
-    }
-
-    /**
-     * Get a parameter.
-     * @param  string $name
-     * @return mixed
-     */
-    public function get($name)
-    {
-        return $this->param($name);
-    }
-
-    /**
-     * Check if a parameter exists.
-     * @param  string  $name
-     * @return boolean
-     */
-    public function has($name)
-    {
-        return isset($this->_params[$name]);
-    }
-
-    /**
      * Add middleware to the stack.
      * @param string $name
      * @param Closure|Coast\App\Executable $value
      * @return self
      */
-    public function add($name, $value = null)
+    public function stack($value)
     {
-        if (!isset($value)) {
-            $value = $name;
-            $name  = null;
-        }
         if (!$value instanceof \Closure && !$value instanceof Executable) {
-            throw new Exception("Param '{$name}' is not a closure or instance of Coast\App\Executable");
+            throw new Exception("Object is not a closure or instance of Coast\App\Executable");
         }
         array_push($this->_stack, $value instanceof \Closure
             ? $value->bindTo($this)
             : [$value, 'execute']);
-        if (isset($name)) {
-            $this->set($name, $value);
-        }
         return $this;
     }
 
@@ -294,8 +256,8 @@ class App implements Executable
                 ->path(isset($path[2]) ? $path[2] : '');
         }
 
-        $this->set('req', $req)
-             ->set('res', $res);
+        $this->param('req', $req)
+             ->param('res', $res);
         try {
             $result = null;
             foreach($this->_stack as $item) {
@@ -318,8 +280,8 @@ class App implements Executable
                 throw $e;
             }
         }
-        $this->set('req', null)
-             ->set('res', null);
+        $this->param('req', null)
+             ->param('res', null);
 
         if (isset($this->_path)) {
             $req->base($base)
@@ -356,33 +318,44 @@ class App implements Executable
     }
 
     /**
-     * Alias of `set`
+     * Set a parameter.
      * @param string $name
      * @param mixed $value
+     * @return self
      */
     public function __set($name, $value)
     {
-        return $this->set($name, $value);
+        return $this->param($name, $value);
     }
 
     /**
-     * Alias of `get`
-     * @param string $name
+     * Get a parameter.
+     * @param  string $name
      * @return mixed
      */
     public function __get($name)
     {
-        return $this->get($name);
+        return $this->param($name);
     }
-    
+
     /**
-     * Alias of `has`
-     * @param string $name
-     * @return bool
+     * Check if a parameter exists.
+     * @param  string  $name
+     * @return boolean
      */
     public function __isset($name)
     {
-        return $this->has($name);
+        return $this->param($name) !== null;
+    }
+
+    /**
+     * Unset a parameter.
+     * @param  string  $name
+     * @return boolean
+     */
+    public function __unset($name)
+    {
+        return $this->param($name, null);
     }
 
     /**
@@ -392,7 +365,7 @@ class App implements Executable
      */
     public function __call($name, array $args)
     {
-        $value = $this->get($name);
+        $value = $this->param($name);
         if (!is_callable($value)) {
             throw new \Coast\App\Exception("Param '{$name}' is not callable");
         }

@@ -141,37 +141,6 @@ class Request
         return $this->_params;
     }
 
-    /**
-     * Set a parameter.
-     * @param string $name
-     * @param mixed $value
-     * @return self
-     */
-    public function set($name, $value)
-    {
-        return $this->param($name, $value);
-    }
-
-    /**
-     * Get a parameter.
-     * @param  string $name
-     * @return mixed
-     */
-    public function get($name)
-    {
-        return $this->param($name);
-    }
-
-    /**
-     * Check if a parameter exists.
-     * @param  string  $name
-     * @return boolean
-     */
-    public function has($name)
-    {
-        return isset($this->_params[$name]);
-    }
-
     public function server($name, $value = null)
     {
         if (func_num_args() > 1) {
@@ -417,32 +386,43 @@ class Request
     }
 
     /**
-     * Alias of `set`
+     * Set a parameter.
      * @param string $name
      * @param mixed $value
+     * @return self
      */
     public function __set($name, $value)
     {
-        return $this->set($name, $value);
+        return $this->param($name, $value);
     }
 
     /**
-     * Alias of `get`
-     * @param string $name
+     * Get a parameter.
+     * @param  string $name
      * @return mixed
      */
     public function __get($name)
     {
-        return $this->get($name);
+        return $this->param($name);
     }
-    
+
     /**
-     * Alias of `has`
-     * @param string $name
-     * @return bool
+     * Check if a parameter exists.
+     * @param  string  $name
+     * @return boolean
      */
     public function __isset($name)
     {
-        return $this->has($name);
+        return $this->param($name) !== null;
+    }
+
+    /**
+     * Unset a parameter.
+     * @param  string  $name
+     * @return boolean
+     */
+    public function __unset($name)
+    {
+        return $this->param($name, null);
     }
 }

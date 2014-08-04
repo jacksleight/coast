@@ -12,10 +12,10 @@ namespace Coast;
 class Config
 {
     /**
-     * Config data.
+     * Config opts.
      * @var array
      */
-    protected $_data = [];
+    protected $_opts = [];
 
     /**
      * Consutruct a new config object.
@@ -46,54 +46,44 @@ class Config
      * @param  string $name
      * @return mixed
      */
-    public function fromArray(array $data) 
+    public function fromArray(array $opts) 
     {
-        $this->_data = \Coast\array_merge_smart(
-            $this->_data,
-            $data
+        $this->_opts = \Coast\array_merge_smart(
+            $this->_opts,
+            $opts
         );
         return $this;
     }
 
-    /**
-     * Get a param.
-     * @param  string $name
-     * @return mixed
-     */
-    public function get($name)
+    public function opt($name, $value = null)
     {
-        return isset($this->_data[$name])
-            ? $this->_data[$name]
+        if (func_num_args() > 1) {
+            $this->_opts[$name] = $value;
+            return $this;
+        }
+        return isset($this->_opts[$name])
+            ? $this->_opts[$name]
             : null;
     }
 
-    /**
-     * Check if a param is set.
-     * @param  string  $name
-     * @return boolean
-     */
-    public function has($name)
+    public function opts(array $opts = null)
     {
-        return isset($this->_data[$name]);
+        if (func_num_args() > 0) {
+            foreach ($opts as $name => $value) {
+                $this->opt($name, $value);
+            }
+            return $this;
+        }
+        return $this->_opts;
     }
 
-    /**
-     * Alias of `get`
-     * @param string $name
-     * @return mixed
-     */
     public function __get($name)
     {
-        return $this->get($name);
+        return $this->opt($name);
     }
-    
-    /**
-     * Alias of `has`
-     * @param string $name
-     * @return bool
-     */
+
     public function __isset($name)
     {
-        return $this->has($name);
+        return $this->opt($name) !== null;
     }
 }

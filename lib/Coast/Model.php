@@ -30,20 +30,6 @@ class Model
         return $this;
     }
 
-    public function __get($name)
-    {
-        if ($name[0] == '_') {
-            throw new Exception("Access to '{$name}' is prohibited");  
-        }
-        if (method_exists($this, $name)) {
-            return $this->{$name}();
-        } else if (property_exists($this, $name)) {
-            return $this->{$name};
-        } else {
-            throw new Exception("Property or method '{$name}' is not defined");  
-        }
-    }
-
     public function __set($name, $value)
     {
         if ($name[0] == '_') {
@@ -58,13 +44,29 @@ class Model
         }
     }
 
+    public function __get($name)
+    {
+        if ($name[0] == '_') {
+            throw new Exception("Access to '{$name}' is prohibited");  
+        }
+        if (method_exists($this, $name)) {
+            return $this->{$name}();
+        } else if (property_exists($this, $name)) {
+            return $this->{$name};
+        } else {
+            throw new Exception("Property or method '{$name}' is not defined");  
+        }
+    }
+
     public function __isset($name)
     {
         if ($name[0] == '_') {
             throw new Exception("Access to '{$name}' is prohibited");  
         }
-        if (property_exists($this, $name)) {
-            return isset($this->{$name});
+        if (method_exists($this, $name)) {
+            return $this->{$name}() !== null;
+        } else if (property_exists($this, $name)) {
+            return $this->{$name} !== null;
         } else {
             throw new Exception("Property or method '{$name}' is not defined");  
         }
@@ -76,7 +78,7 @@ class Model
             throw new Exception("Access to '{$name}' is prohibited");  
         }
         if (property_exists($this, $name)) {
-            unset($this->{$name});
+            $this->{$name} = null;
         } else {
             throw new Exception("Property or method '{$name}' is not defined");  
         }

@@ -8,48 +8,62 @@ namespace Coast\App\View;
 
 class Content
 {
-    protected $_data = [];
+    protected $_blocks = [];
 
-    public function __construct(array $data = array())
+    public function __construct(array $blocks = array())
     {
-        $this->_data = $data;
+        $this->_blocks = $blocks;
     }
 
-    public function add($value, $name = null)
+    public function block($name, $value = null)
     {
-        if (isset($name)) {
-            $this->_data[$name] = $value;
-        } else {
-            $this->_data[] = $value;
+        if (func_num_args() > 1) {
+            if (isset($name)) {
+                $this->_blocks[$name] = $value;
+            } else {
+                $this->_blocks[] = $value;
+            }
+            return $this;
         }
-        return $this;
-    }
-
-    public function get($name)
-    {
-        return isset($this->_data[$name])
-            ? $this->_data[$name]
+        return isset($this->_blocks[$name])
+            ? $this->_blocks[$name]
             : null;
     }
 
-    public function has($name)
+    public function blocks(array $blocks = null)
     {
-        return isset($this->_data[$name]);
+        if (func_num_args() > 0) {
+            foreach ($blocks as $name => $value) {
+                $this->block($name, $value);
+            }
+            return $this;
+        }
+        return $this->_blocks;
     }
 
-    public function toString()
+    public function __set($name, $value)
     {
-        return implode($this->_data);
+        $this->block($name, $value);
     }
 
     public function __get($name)
     {
-        return $this->get($name);
+        return $this->block($name);
     }
 
     public function __isset($name)
     {
-        return $this->has($name);
+        return $this->block($name) !== null;
+    }
+
+    public function __unset($name)
+    {
+        $this->block($name, null);
+    }
+
+    public function toString()
+    {
+        return implode($this->_blocks);
     }
 
     public function __toString()
