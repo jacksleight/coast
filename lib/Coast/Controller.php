@@ -4,9 +4,9 @@
  * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
  */
 
-namespace Coast\App;
+namespace Coast;
 
-class Controller implements \Coast\App\Access, \Coast\App\Routable
+class Controller implements \Coast\App\Access, \Coast\Router\Routable
 {
     use \Coast\App\Access\Implementation;
     
@@ -18,12 +18,14 @@ class Controller implements \Coast\App\Access, \Coast\App\Routable
     
     protected $_actions = [];
 
-    public function __construct($classNamespaces = array())
+    public function __construct(array $options = array())
     {
-        if (!is_array($classNamespaces)) {
-            $classNamespaces = [$classNamespaces];
+        foreach ($options as $name => $value) {
+            if ($name[0] == '_') {
+                throw new Exception("Access to '{$name}' is prohibited");  
+            }
+            $this->$name($value);
         }
-        $this->classNamespaces($classNamespaces);
     }
 
     public function classNamespace($name, $classNamespace = null)
@@ -90,8 +92,8 @@ class Controller implements \Coast\App\Access, \Coast\App\Routable
                     throw new \Coast\App\Exception("Controller '{$set}:{$name}' does not exist");
                 }
                 $object = new $class($this);
-                if (!$object instanceof \Coast\App\Controller\Action) {
-                    throw new \Coast\App\Exception("Controller '{$set}:{$name}' is not an instance of \Coast\App\Controller\Action");
+                if (!$object instanceof \Coast\Controller\Action) {
+                    throw new \Coast\App\Exception("Controller '{$set}:{$name}' is not an instance of \Coast\Controller\Action");
                 }
                 $this->_actions[$class] = $object;
             } else {
@@ -138,7 +140,7 @@ class Controller implements \Coast\App\Access, \Coast\App\Routable
         }
     }
 
-    public function route(\Coast\App\Request $req, \Coast\App\Response $res)
+    public function route(\Coast\Request $req, \Coast\Response $res)
     {        
         $parts      = explode('_', $req->controller);
         $parts      = array_map('\Coast\str_camel_upper', $parts);

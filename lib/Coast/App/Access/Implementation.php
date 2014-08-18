@@ -12,8 +12,11 @@ trait Implementation
 
     public function app(\Coast\App $app)
     {
-        $this->_app = $app;
-        return $this;
+        if (func_num_args() > 0) {
+            $this->_app = $app;
+            return $this;
+        }
+        return $this->_app;
     }
 
     public function __get($name)

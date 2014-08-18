@@ -4,14 +4,14 @@
  * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
  */
 
-namespace Coast\App;
+namespace Coast;
 
 class Router implements \Coast\App\Access, \Coast\App\Executable
 {
-    const METHOD_GET    = \Coast\App\Request::METHOD_GET;
-    const METHOD_POST   = \Coast\App\Request::METHOD_POST;
-    const METHOD_PUT    = \Coast\App\Request::METHOD_PUT;
-    const METHOD_DELETE = \Coast\App\Request::METHOD_DELETE;
+    const METHOD_GET    = \Coast\Request::METHOD_GET;
+    const METHOD_POST   = \Coast\Request::METHOD_POST;
+    const METHOD_PUT    = \Coast\Request::METHOD_PUT;
+    const METHOD_DELETE = \Coast\Request::METHOD_DELETE;
 
     use \Coast\App\Access\Implementation;
 
@@ -19,9 +19,14 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
 
     protected $_routes = [];
 
-    public function __construct(\Coast\App\Routable $target = null)
+    public function __construct(array $options = array())
     {
-        $this->target($target);
+        foreach ($options as $name => $value) {
+            if ($name[0] == '_') {
+                throw new Exception("Access to '{$name}' is prohibited");  
+            }
+            $this->$name($value);
+        }
     }
 
     public function app(\Coast\App $app)
@@ -33,7 +38,7 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
         return $this;
     }
 
-    public function target(\Coast\App\Routable $target = null)
+    public function target(\Coast\Router\Routable $target = null)
     {
         if (func_num_args() > 0) {
             $this->_target = $target;
@@ -198,7 +203,7 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
         return implode('/', $path);
     }
 
-    public function execute(\Coast\App\Request $req, \Coast\App\Response $res)
+    public function execute(\Coast\Request $req, \Coast\Response $res)
     {
         $match = $this->match($req->method(), $req->path());
         if (!$match) {

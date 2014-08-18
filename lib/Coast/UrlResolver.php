@@ -4,7 +4,7 @@
  * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
  */
 
-namespace Coast\App;
+namespace Coast;
 
 class UrlResolver implements \Coast\App\Access
 {
@@ -18,15 +18,16 @@ class UrlResolver implements \Coast\App\Access
 
     protected $_router;
 
-    protected $_isVersioned = true;
+    protected $_cacheBuster;
 
-    protected $_versionCallback;
-
-    public function __construct(\Coast\Url $baseUrl, \Coast\Dir $baseDir = null, \Coast\App\Router $router = null)
+    public function __construct(array $options = array())
     {
-        $this->baseUrl($baseUrl);
-        $this->baseDir($baseDir);
-        $this->router($router);
+        foreach ($options as $name => $value) {
+            if ($name[0] == '_') {
+                throw new Exception("Access to '{$name}' is prohibited");  
+            }
+            $this->$name($value);
+        }
     }
 
     public function __invoke()
@@ -77,7 +78,7 @@ class UrlResolver implements \Coast\App\Access
         return $this->_baseDir;
     }
 
-    public function router(\Coast\App\Router $router = null)
+    public function router(\Coast\Router $router = null)
     {
         if (func_num_args() > 0) {
             $this->_router = $router;
@@ -86,33 +87,24 @@ class UrlResolver implements \Coast\App\Access
         return $this->_router;
     }
 
-    public function isVersioned($isVersioned = null)
+    public function cacheBuster(\Closure $cacheBuster = null)
     {
         if (func_num_args() > 0) {
-            $this->_isVersioned = $isVersioned;
+            $this->_cacheBuster = $cacheBuster;
             return $this;
         }
-        return $this->_isVersioned;
+        return $this->_cacheBuster;
     }
 
-    public function versionCallback(\Closure $versionCallback = null)
-    {
-        if (func_num_args() > 0) {
-            $this->_versionCallback = $versionCallback;
-            return $this;
-        }
-        return $this->_versionCallback;
-    }
-
-    public function string($string = null, $isBased = true)
+    public function string($string = null, $base = true)
     {
         $path = (string) $string;
-        return new \Coast\Url($isBased
+        return new \Coast\Url($base
             ? $this->_baseUrl . $path
             : $path);
     }
 
-    public function route(array $params = array(), $name = null, $reset = false, $isBased = true)
+    public function route(array $params = array(), $name = null, $reset = false, $base = true)
     {
         if (!isset($this->_router)) {
             throw new \Coast\App\Exception("Router has not been set");
@@ -134,7 +126,7 @@ class UrlResolver implements \Coast\App\Access
             );
         }
         $path = ltrim($this->_router->reverse($name, $params), '/');
-        return new \Coast\Url($isBased
+        return new \Coast\Url($base
             ? $this->_baseUrl . $path
             : $path);
     }
@@ -147,31 +139,27 @@ class UrlResolver implements \Coast\App\Access
         return $url;
     }
 
-    public function dir($dir, $isBased = true, $isCdnd = true, $isVersioned = null)
+    public function dir($dir, $base = true, $cdn = true, $cacheBust = true)
     {
         $dir = !$dir instanceof \Coast\Dir
             ? new \Coast\Dir("{$dir}")
             : $dir;
-        return $this->path($dir, $isBased, $isCdnd, $isVersioned);
+        return $this->path($dir, $base, $cdn, $cacheBust);
     }
 
-    public function file($file, $isBased = true, $isCdnd = true, $isVersioned = null)
+    public function file($file, $base = true, $cdn = true, $cacheBust = true)
     {
         $file = !$file instanceof \Coast\File
             ? new \Coast\File("{$file}")
             : $file;
-        return $this->path($file, $isBased, $isCdnd, $isVersioned);
+        return $this->path($file, $base, $cdn, $cacheBust);
     }
 
-    public function path($path, $isBased = true, $isCdnd = true, $isVersioned = null)
+    public function path($path, $base = true, $cdn = true, $cacheBust = true)
     {
         if (!isset($this->_baseDir)) {
             throw new \Coast\App\Exception("Base directory has not been set");
         }
-
-        $isVersioned = isset($isVersioned)
-            ? $isVersioned
-            : $this->_isVersioned;
 
         $path = !$path instanceof \Coast\Path
             ? new \Coast\Path("{$path}")
@@ -181,24 +169,20 @@ class UrlResolver implements \Coast\App\Access
             ? new $class("{$this->_baseDir}/{$path}")
             : $path;
         $path = $path->toReal();
-        if (!$path->isWithin($this->_baseDir)) {
-            throw new \Coast\App\Exception("Path '{$path}' is not within base directory '{$this->_baseDir}'");
-        }
 
-        $url = new \Coast\Url($path->toRelative($this->_baseDir));
-        if ($isBased) {
-            $url = new \Coast\Url($isCdnd && isset($this->_cdnUrl)
-                ? $this->_cdnUrl . $url
-                : $this->_baseUrl . $url);
-        }
-
-        if ($isVersioned && $path instanceof \Coast\File && $path->exists()) {
-            if (isset($this->_versionCallback)) {
-                $callback = $this->_versionCallback;
-                $callback($url, $path);
+        $url = $path->toRelative($this->_baseDir);
+        if ($base) {
+            if ($cdn && isset($this->_cdnUrl)) {
+                $url = $this->_cdnUrl . $url;
             } else {
-                $url->queryParam($path->modifyTime()->getTimestamp(), '');
+                $url = $this->_baseUrl . $url;
             }
+        }
+        $url = new \Coast\Url($url);
+
+        if ($cacheBust && isset($this->_cacheBuster) && $path instanceof \Coast\File && $path->isReadable()) {
+            $callback = $this->_cacheBuster;
+            $callback($url, $path);
         }
 
         return $url;

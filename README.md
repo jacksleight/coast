@@ -44,8 +44,8 @@ Create a new file called `app.php` containing:
 ```php
 <?php
 use Coast\App,
-    Coast\App\Request, 
-    Coast\App\Response;
+    Coast\Request, 
+    Coast\Response;
 
 chdir(__DIR__);
 require 'vendor/autoload.php';

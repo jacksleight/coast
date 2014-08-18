@@ -8,5 +8,5 @@ namespace Coast\App;
 
 interface Executable
 {
-    public function execute(\Coast\App\Request $req, \Coast\App\Response $res);
+    public function execute(\Coast\Request $req, \Coast\Response $res);
 }

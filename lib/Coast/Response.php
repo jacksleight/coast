@@ -4,21 +4,20 @@
  * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
  */
 
-namespace Coast\App;
+namespace Coast;
 
 class Response
 {
     protected $_req;
     
-    protected $_status  = null;
+    protected $_status  = 200;
     protected $_headers = [];
     protected $_cookies = [];
     protected $_body    = '';
 
-    public function __construct(\Coast\App\Request $req)
+    public function __construct(\Coast\Request $req)
     {
         $this->_req = $req;
-        $this->status(200);
     }
 
     public function request()

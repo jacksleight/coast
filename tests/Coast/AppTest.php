@@ -2,9 +2,9 @@
 namespace Coast;
 
 use Coast\App, 
-    Coast\App\Request,
-    Coast\App\Response,
-    Coast\App\UrlResolver,
+    Coast\Request,
+    Coast\Response,
+    Coast\UrlResolver,
     Coast\Url;
 
 class AppTest extends \PHPUnit_Framework_TestCase

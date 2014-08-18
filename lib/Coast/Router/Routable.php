@@ -4,9 +4,9 @@
  * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
  */
 
-namespace Coast\App;
+namespace Coast\Router;
 
 interface Routable
 {
-    public function route(\Coast\App\Request $req, \Coast\App\Response $res);
+    public function route(\Coast\Request $req, \Coast\Response $res);
 }

@@ -6,10 +6,10 @@
 
 namespace Coast;
 
-use Coast\App\Request,
+use Coast\Request,
     Coast\App\Exception,
     Coast\App\Executable,
-    Coast\App\Response,
+    Coast\Response,
     Coast\Dir,
     Coast\File,
     Coast\Path;
@@ -233,8 +233,8 @@ class App implements Executable
 
     /**
      * Execute the application, running middleware in order.
-     * @param  Coast\App\Request $req Request object.
-     * @param  Coast\App\Response $res Response object.
+     * @param  Coast\Request $req Request object.
+     * @param  Coast\Response $res Response object.
      */
     public function execute(Request $req = null, Response $res = null)
     {

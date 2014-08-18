@@ -4,46 +4,48 @@
  * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
  */
 
-namespace Coast\App;
+namespace Coast;
 
 class View implements \Coast\App\Access, \Coast\App\Executable
 {
     use \Coast\App\Access\Implementation;
 
-    protected $_baseDirs = [];
+    protected $_dirs = [];
 
     protected $_extName = 'php';
 
     protected $_stack = [];
 
-    public function __construct($baseDirs = array())
+    public function __construct(array $options = array())
     {
-        if (!is_array($baseDirs)) {
-            $baseDirs = [$baseDirs];
+        foreach ($options as $name => $value) {
+            if ($name[0] == '_') {
+                throw new Exception("Access to '{$name}' is prohibited");  
+            }
+            $this->$name($value);
         }
-        $this->baseDirs($baseDirs);
     }
 
-    public function baseDir($name, \Coast\Dir $baseDir = null)
+    public function dir($name, \Coast\Dir $dir = null)
     {
         if (func_num_args() > 0) {
-            $this->_baseDirs[$name] = $baseDir;
+            $this->_dirs[$name] = $dir;
             return $this;
         }
-        return isset($this->_baseDirs[$name])
-            ? $this->_baseDirs[$name]
+        return isset($this->_dirs[$name])
+            ? $this->_dirs[$name]
             : null;;
     }
 
-    public function baseDirs(array $baseDirs = null)
+    public function dirs(array $dirs = null)
     {
         if (func_num_args() > 0) {
-            foreach ($baseDirs as $name => $baseDir) {
-                $this->baseDir($name, $baseDir);
+            foreach ($dirs as $name => $dir) {
+                $this->dir($name, $dir);
             }
             return $this;
         }
-        return $this->_baseDirs;
+        return $this->_dirs;
     }
 
     public function extName($extName = null)
@@ -58,17 +60,17 @@ class View implements \Coast\App\Access, \Coast\App\Executable
     public function has($name, $set = null)
     {
           if (!isset($set)) {
-            reset($this->_baseDirs);
-            $set = key($this->_baseDirs);
+            reset($this->_dirs);
+            $set = key($this->_dirs);
         }
         $path = new \Coast\Path("{$name}." . $this->_extName);
         if (!$path->isAbsolute()) {
             $path = new \Coast\Path("/{$path}");
         }
-        if (!isset($this->_baseDirs[$set])) {
+        if (!isset($this->_dirs[$set])) {
             return false;
         }
-        $file = $this->_baseDirs[$set]->file($path);
+        $file = $this->_dirs[$set]->file($path);
         return $file->exists();
     }
         
@@ -90,14 +92,14 @@ class View implements \Coast\App\Access, \Coast\App\Executable
                 $path = new \Coast\Path("/{$path}");
             }
             if (!isset($set)) {
-                reset($this->_baseDirs);
-                $set = key($this->_baseDirs);
+                reset($this->_dirs);
+                $set = key($this->_dirs);
             }
         }
-        if (!isset($this->_baseDirs[$set])) {
+        if (!isset($this->_dirs[$set])) {
             throw new \Coast\App\Exception("View set '{$set}' does not exist");
         }
-        $file = $this->_baseDirs[$set]->file($path);    
+        $file = $this->_dirs[$set]->file($path);    
         if (!$file->exists()) {
             throw new \Coast\App\Exception("View file '{$set}:{$path}' does not exist");
         }
@@ -109,7 +111,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
             'set'      => $set,
             'layout'   => null, 
             'block'    => null, 
-            'content'  => new \Coast\App\View\Content(), 
+            'content'  => new \Coast\View\Content(), 
             'captures' => 0,
         ]);
         $this->_run($file, $params);
@@ -197,7 +199,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         return strip_tags($string);
     }
 
-    public function execute(\Coast\App\Request $req, \Coast\App\Response $res)
+    public function execute(\Coast\Request $req, \Coast\Response $res)
     {        
         $path = $req->path();
         $path = '/' . (strlen($path) ? $path : 'index');
