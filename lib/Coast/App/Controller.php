@@ -4,9 +4,9 @@
  * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
  */
 
-namespace Coast;
+namespace Coast\App;
 
-class Controller implements \Coast\App\Access, \Coast\Router\Routable
+class Controller implements \Coast\App\Access, \Coast\App\Router\Routable
 {
     use \Coast\App\Access\Implementation;
     
@@ -92,8 +92,8 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
                     throw new \Coast\App\Exception("Controller '{$set}:{$name}' does not exist");
                 }
                 $object = new $class($this);
-                if (!$object instanceof \Coast\Controller\Action) {
-                    throw new \Coast\App\Exception("Controller '{$set}:{$name}' is not an instance of \Coast\Controller\Action");
+                if (!$object instanceof \Coast\App\Controller\Action) {
+                    throw new \Coast\App\Exception("Controller '{$set}:{$name}' is not an instance of \Coast\App\Controller\Action");
                 }
                 $this->_actions[$class] = $object;
             } else {

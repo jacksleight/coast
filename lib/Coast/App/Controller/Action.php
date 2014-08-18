@@ -4,7 +4,7 @@
  * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
  */
 
-namespace Coast\Controller;
+namespace Coast\App\Controller;
 
 use Coast\Request,
     Coast\Response;
@@ -13,7 +13,7 @@ abstract class Action
 {
     protected $_controller;
 
-    public function __construct(\Coast\Controller $controller)
+    public function __construct(\Coast\App\Controller $controller)
     {
         $this->_controller = $controller;
     }

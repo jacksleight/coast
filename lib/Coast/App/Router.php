@@ -4,7 +4,7 @@
  * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
  */
 
-namespace Coast;
+namespace Coast\App;
 
 class Router implements \Coast\App\Access, \Coast\App\Executable
 {
@@ -38,7 +38,7 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
         return $this;
     }
 
-    public function target(\Coast\Router\Routable $target = null)
+    public function target(\Coast\App\Router\Routable $target = null)
     {
         if (func_num_args() > 0) {
             $this->_target = $target;

@@ -4,7 +4,7 @@
  * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
  */
 
-namespace Coast;
+namespace Coast\App;
 
 class View implements \Coast\App\Access, \Coast\App\Executable
 {
@@ -111,7 +111,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
             'set'      => $set,
             'layout'   => null, 
             'block'    => null, 
-            'content'  => new \Coast\View\Content(), 
+            'content'  => new \Coast\App\View\Content(), 
             'captures' => 0,
         ]);
         $this->_run($file, $params);

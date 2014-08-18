@@ -4,7 +4,7 @@
  * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
  */
 
-namespace Coast;
+namespace Coast\App;
 
 class UrlResolver implements \Coast\App\Access
 {
@@ -78,7 +78,7 @@ class UrlResolver implements \Coast\App\Access
         return $this->_baseDir;
     }
 
-    public function router(\Coast\Router $router = null)
+    public function router(\Coast\App\Router $router = null)
     {
         if (func_num_args() > 0) {
             $this->_router = $router;
