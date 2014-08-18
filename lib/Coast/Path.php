@@ -170,7 +170,7 @@ class Path
         foreach ($target as $part) {
             if ($part == '..') {
                 array_pop($name);
-            } elseif ($part != '.' && $part != '') {
+            } else if ($part != '.' && $part != '') {
                 $name[] = $part;
             }
         }
@@ -201,6 +201,32 @@ class Path
             } else {
                 $name = array_pad($name, (count($name) + (count($source) - $i) - 1) * -1, '..');
                 break;
+            }
+        }
+        $name = implode('/', $name);
+
+        $class = get_class($this);
+        return new $class($name);
+    }
+
+    /**
+     * Reduce absolute path with relative parts to real path.
+     * @return Coast\Path
+     */
+    public function toReal()
+    {
+        if (!$this->isAbsolute()) {
+            throw new \Exception("Path '{$this}' is not absolute");
+        }
+
+        $target = explode('/', $this->_name);
+        
+        $name = [];
+        foreach ($target as $part) {
+            if ($part == '..') {
+                array_pop($name);
+            } else if ($part != '.') {
+                $name[] = $part;
             }
         }
         $name = implode('/', $name);

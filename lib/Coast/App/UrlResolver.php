@@ -180,6 +180,7 @@ class UrlResolver implements \Coast\App\Access
         $path = $path->isRelative()
             ? new $class("{$this->_baseDir}/{$path}")
             : $path;
+        $path = $path->toReal();
         if (!$path->isWithin($this->_baseDir)) {
             throw new \Coast\App\Exception("Path '{$path}' is not within base directory '{$this->_baseDir}'");
         }
