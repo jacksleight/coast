@@ -211,7 +211,7 @@ class Url
             $this->queryParams($params);
             return $this;
         }
-        return http_build_query($this->queryParams());
+        return http_build_query($this->queryParams(), '', '&amp;');
     }
 
     public function fragment($fragment = null)
