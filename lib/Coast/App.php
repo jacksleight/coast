@@ -47,10 +47,10 @@ class App implements Executable
     protected $_params = [];
 
     /**
-     * Middleware stack.
+     * Executables stack.
      * @var array
      */
-    protected $_stack = [];
+    protected $_executables = [];
 
     /**
      * Handler for requests that are not handled by middleware.
@@ -215,19 +215,19 @@ class App implements Executable
     }
 
     /**
-     * Add middleware to the stack.
+     * Add executable to the stack.
      * @param string $name
      * @param Closure|Coast\App\Executable $value
      * @return self
      */
-    public function stack($value)
+    public function executable($executable)
     {
-        if (!$value instanceof \Closure && !$value instanceof Executable) {
+        if (!$executable instanceof \Closure && !$executable instanceof Executable) {
             throw new Exception("Object is not a closure or instance of Coast\App\Executable");
         }
-        array_push($this->_stack, $value instanceof \Closure
-            ? $value->bindTo($this)
-            : [$value, 'execute']);
+        array_push($this->_executables, $executable instanceof \Closure
+            ? $executable->bindTo($this)
+            : [$executable, 'execute']);
         return $this;
     }
 
@@ -260,8 +260,8 @@ class App implements Executable
              ->param('res', $res);
         try {
             $result = null;
-            foreach($this->_stack as $item) {
-                $result = call_user_func($item, $req, $res);
+            foreach($this->_executables as $executable) {
+                $result = call_user_func($executable, $req, $res);
                 if (isset($result)) {
                     break;
                 }
