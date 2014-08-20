@@ -7,11 +7,18 @@
 namespace Coast\App;
 
 use Coast\Request,
-    Coast\Response;
+    Coast\Response,
+    Coast\File,
+    Coast\Url,
+    Coast\App\Exception,
+    Intervention\Image\Image as InterventionImage,
+    Intervention\Image\ImageManager;
 
 class Image implements \Coast\App\Access, \Coast\App\Executable
 {
     use \Coast\App\Access\Implementation;
+
+    protected $_manager;
 
     protected $_baseDir;
 
@@ -31,6 +38,10 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
             }
             $this->$name($value);
         }
+
+        $this->_manager = new ImageManager([
+            'driver' => extension_loaded('imagick') ? 'imagick' : 'gd',
+        ]);
     }
 
     public function baseDir(\Coast\Dir $baseDir = null)
@@ -93,23 +104,23 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
 
     public function __invoke($file, $transforms = array(), array $params = array())
     {
-        $file = !$file instanceof \Coast\File
-            ? new \Coast\File("{$file}")
+        $file = !$file instanceof File
+            ? new File("{$file}")
             : $file;
         $file = $file->isRelative()
-            ? new \Coast\File("{$this->_baseDir}/{$file}")
+            ? new File("{$this->_baseDir}/{$file}")
             : $file;
         $file = $file->toReal();
         if (!$file->isWithin($this->_baseDir)) {
-            throw new \Coast\App\Exception("File '{$file}' is not within base directory '{$this->_baseDir}'");
+            throw new Exception("File '{$file}' is not within base directory '{$this->_baseDir}'");
         } else if (!$file->isReadable()) {
-            throw new \Coast\App\Exception("File '{$file}' is not readable");
+            throw new Exception("File '{$file}' is not readable");
         }
 
         $transforms = (array) $transforms;
         foreach ($transforms as $i => $name) {
             if (!isset($this->_transforms[$name])) {
-                throw new \Coast\App\Exception("Transform '{$name}' is not defined");
+                throw new Exception("Transform '{$name}' is not defined");
             }
             $transforms[$i] = (string) $name;
         }
@@ -138,19 +149,19 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
             return;
         }
 
-        $file = new \Coast\File("{$this->_baseDir}/{$req->file}");
+        $file = new File("{$this->_baseDir}/{$req->file}");
         $file = $file->toReal();
         if (!$file->isWithin($this->_baseDir)) {
-            throw new \Coast\App\Exception("File '{$file}' is not within base directory '{$this->_baseDir}'");
+            throw new Exception("File '{$file}' is not within base directory '{$this->_baseDir}'");
         } else if (!$file->isReadable()) {
-            throw new \Coast\App\Exception("File '{$file}' is not readable");
+            throw new Exception("File '{$file}' is not readable");
         }
 
         $transforms = $req->transforms;
         $params     = isset($req->params) ? $req->params : [];
         $output     = $this->_generateOutput($file, $transforms, $params);
 
-        $image = new \Intervention\Image\Image($file->name());
+        $image = $this->_manager->make($file->name());
         foreach ($transforms as $name) {
             $this->run($name, $image, $params);
         }
@@ -161,12 +172,12 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
             : $this->_urlResolver->file($output));
     }
 
-    public function run($name, \Intervention\Image\Image $image, array $params = array())
+    public function run($name, InterventionImage $image, array $params = array())
     {
         $this->_transforms[$name]($image, $params);
     }
 
-    protected function _generateOutput(\Coast\File $file, $transforms, array $params)
+    protected function _generateOutput(File $file, $transforms, array $params)
     {
         sort($transforms);
         ksort($params);
@@ -192,7 +203,7 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
         if (isset($category)) {
             $parts[] = $category;
         }
-        return new \Coast\Url('http://lorempixel.com/' . implode('/', $parts) . '/');
+        return new Url('http://lorempixel.com/' . implode('/', $parts) . '/');
     }
 
     public function unsplash($width, $height = null, $gray = false)
@@ -203,6 +214,6 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
         }
         $parts[] = $width;
         $parts[] = isset($height) ? $height : $width;
-        return new \Coast\Url('http://unsplash.it/' . implode('/', $parts) . '/?random');
+        return new Url('http://unsplash.it/' . implode('/', $parts) . '/?random');
     }
 }
