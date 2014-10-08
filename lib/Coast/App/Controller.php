@@ -10,7 +10,7 @@ class Controller implements \Coast\App\Access, \Coast\App\Router\Routable
 {
     use \Coast\App\Access\Implementation;
     
-    protected $_classNamespaces = [];
+    protected $_nspaces = [];
     
     protected $_stack = [];
     
@@ -28,26 +28,26 @@ class Controller implements \Coast\App\Access, \Coast\App\Router\Routable
         }
     }
 
-    public function classNamespace($name, $classNamespace = null)
+    public function nspace($name, $nspace = null)
     {
         if (func_num_args() > 0) {
-            $this->_classNamespaces[$name] = $classNamespace;
+            $this->_nspaces[$name] = $nspace;
             return $this;
         }
-        return isset($this->_classNamespaces[$name])
-            ? $this->_classNamespaces[$name]
+        return isset($this->_nspaces[$name])
+            ? $this->_nspaces[$name]
             : null;
     }
 
-    public function classNamespaces(array $classNamespaces = null)
+    public function nspaces(array $nspaces = null)
     {
         if (func_num_args() > 0) {
-            foreach ($classNamespaces as $name => $classNamespace) {
-                $this->classNamespace($name, $classNamespace);
+            foreach ($nspaces as $name => $nspace) {
+                $this->nspace($name, $nspace);
             }
             return $this;
         }
-        return $this->_classNamespaces;
+        return $this->_nspaces;
     }
 
     public function forward($action, $name = null, $set = null)
@@ -69,8 +69,8 @@ class Controller implements \Coast\App\Access, \Coast\App\Router\Routable
     public function dispatch($name, $action, $params = array(), $set = null)
     {
         if (!isset($set)) {
-            reset($this->_classNamespaces);
-            $set = key($this->_classNamespaces);
+            reset($this->_nspaces);
+            $set = key($this->_nspaces);
         }
 
         $this->_stack   = [];
@@ -83,10 +83,10 @@ class Controller implements \Coast\App\Access, \Coast\App\Router\Routable
             $this->_history[] = $item;
             list($name, $action, $params) = $item;
 
-            if (!isset($this->_classNamespaces[$set])) {
+            if (!isset($this->_nspaces[$set])) {
                 throw new \Coast\App\Exception("Controller set '{$set}' does not exist");
             }
-            $class = $this->_classNamespaces[$set] . '\\' . implode('\\', array_map('ucfirst', explode('_', $name)));
+            $class = $this->_nspaces[$set] . '\\' . implode('\\', array_map('ucfirst', explode('_', $name)));
             if (!isset($this->_actions[$class])) {
                 if (!class_exists($class)) {
                     throw new \Coast\App\Exception("Controller '{$set}:{$name}' does not exist");
