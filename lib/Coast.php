@@ -157,6 +157,16 @@ function array_mean(array $array)
     return \array_sum($array) / \count($array);
 }
 
+function to_object(array $array)
+{
+    foreach ($array as $key => $value) {
+        if (is_array($value)) {
+            $array[$key] = to_object($value);
+        }
+    }
+    return (object) $array;
+}
+
 /**
  * Calculate the greatest common denominator of two values.
  * @param  float $a
