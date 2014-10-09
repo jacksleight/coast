@@ -38,6 +38,18 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
         return $this;
     }
 
+    public function has($name)
+    {
+        return isset($this->_routes[$name]);
+    }
+
+    public function route($name)
+    {
+        return isset($this->_routes[$name])
+            ? $this->_routes[$name]
+            : null;
+    }
+
     public function target(\Coast\App\Router\Routable $target = null)
     {
         if (func_num_args() > 0) {
@@ -142,7 +154,7 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
             'params'  => $params,
             'target'  => $target,
         ];
-        $this->_routes = array_merge([$name => $route], $this->_routes);
+        $this->_routes = [$name => $route] + $this->_routes;
         return $this;
     }
 
@@ -205,20 +217,20 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
 
     public function execute(\Coast\Request $req, \Coast\Response $res)
     {
-        $match = $this->match($req->method(), $req->path());
-        if (!$match) {
+        $route = $this->match($req->method(), $req->path());
+        if (!$route) {
             return false;
         }
         $req->params(array_merge([
-            'route' => $match,
-        ], $match['params']));
+            'route' => $route,
+        ], $route['params']));
         
-        if (isset($this->_target)) {
+        if (isset($route['target'])) {
+            return $route['target']($req, $res, $this->app);
+        } else if (isset($this->_target)) {
             return $this->_target->route($req, $res);
-        } else if (isset($match['target'])) {
-            return $match['target']($req, $res, $this->app);
         } else {
-            throw new \Coast\App\Exception("There's noting to route '{$match['name']}' to");
+            throw new \Coast\App\Exception("There's nothing to route '{$route['name']}' to");
         }        
     }
 }
