@@ -10,9 +10,9 @@ trait Implementation
 {
     protected $_app;
 
-    public function app(\Coast\App $app)
+    public function app(\Coast\App $app = null)
     {
-        if (func_num_args() > 0) {
+        if (func_num_args() > 0 && !isset($this->_app)) {
             $this->_app = $app;
             return $this;
         }

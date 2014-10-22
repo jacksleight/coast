@@ -29,7 +29,7 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
         }
     }
 
-    public function app(\Coast\App $app)
+    public function app(\Coast\App $app = null)
     {
         $this->_app = $app;
         if ($this->_target instanceof \Coast\App\Access) {
