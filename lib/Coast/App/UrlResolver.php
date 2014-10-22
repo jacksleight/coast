@@ -34,21 +34,21 @@ class UrlResolver implements \Coast\App\Access
     {
         $args = func_get_args();
         if (!isset($args[0])) {
-            $method = 'string';
+            $func = array($this, 'string');
         } else if (is_array($args[0])) {
-            $method = 'route';
+            $func = array($this, 'route');
         } else if ($args[0] instanceof \Coast\Url) {
-            $method = 'url';
+            $func = array($this, 'url');
         } else if ($args[0] instanceof \Coast\Dir) {
-            $method = 'dir';
+            $func = array($this, 'dir');
         } else if ($args[0] instanceof \Coast\File) {
-            $method = 'file';
+            $func = array($this, 'file');
         } else if ($args[0] instanceof \Coast\Path) {
-            $method = 'path';
+            $func = array($this, 'path');
         } else {
-            $method = 'string';
+            $func = array($this, 'string');
         }
-        return call_user_func_array(array($this, $method), $args);
+        return call_user_func_array($func, $args);
     }
 
     public function baseUrl(\Coast\Url $baseUrl = null)
