@@ -17,8 +17,10 @@
     "satooshi/php-coveralls": "0.6.*"
   },
   "autoload": {
-    "psr-4": {"Coast\\": "lib//Coast//"},
-    "files": ["lib/Coast.php"]
+    "psr-4": {
+      "Coast\\": "lib/"
+    },
+    "files": ["funcs/funcs.php"]
   },
   "suggest": {
     "jacksleight/coast-doctrine": "for integration with Doctrine ORM",
