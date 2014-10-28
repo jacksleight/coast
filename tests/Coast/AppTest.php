@@ -26,10 +26,10 @@ class AppTest extends \PHPUnit_Framework_TestCase
     public function testExecute()
     {
         $app = new App(__DIR__);
-        $app->add(function(Request $req, Response $res) {
+        $app->executable(function(Request $req, Response $res) {
             return $res->text('OK');
         });
-        $app->add('test', function(Request $req, Response $res) {
+        $app->executable(function(Request $req, Response $res) {
             return $res->text('OK');
         });
         $app->execute($req = new Request(), $res = new Response($req));
@@ -73,9 +73,8 @@ class AppTest extends \PHPUnit_Framework_TestCase
     public function testParam()
     {
         $app = new App(__DIR__);
-        $app->set('test', 'OK');
-        $this->assertTrue($app->has('test'));
-        $this->assertEquals('OK', $app->get('test'));
+        $app->param('test', 'OK');
+        $this->assertEquals('OK', $app->param('test'));
 
         $app = new App(__DIR__);
         $app->test = 'OK';
@@ -98,14 +97,16 @@ class AppTest extends \PHPUnit_Framework_TestCase
     public function testAccess()
     {
         $app = new App(__DIR__);
-        $app->set('url', new UrlResolver(new Url('/')));
+        $app->param('url', new UrlResolver([
+            'baseUrl' => new Url('/'),
+        ]));
         $this->assertEquals('/test', $app->url('test')->toString());
     }
 
     public function testAccessException()
     {
         $app = new App(__DIR__);
-        $app->set('invalid', true);
+        $app->param('invalid', true);
         $this->setExpectedException('Coast\App\Exception');
         $app->invalid();
     }
