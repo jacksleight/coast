@@ -1,0 +1,44 @@
+{
+    "users": {
+        "1": {
+            "id": 1,
+            "name": "Ivy Anderson"
+        },
+        "2": {
+            "id": 2,
+            "name": "Igor Frank"
+        },
+        "3": {
+            "id": 3,
+            "name": "Ferris Mcknight"
+        },
+        "4": {
+            "id": 4,
+            "name": "Xandra Burnett"
+        },
+        "5": {
+            "id": 5,
+            "name": "Daphne Johns"
+        },
+        "6": {
+            "id": 6,
+            "name": "Leonard Holmes"
+        },
+        "7": {
+            "id": 7,
+            "name": "Alisa Sullivan"
+        },
+        "8": {
+            "id": 8,
+            "name": "Dean Campos"
+        },
+        "9": {
+            "id": 9,
+            "name": "Devin Stafford"
+        },
+        "10": {
+            "id": 10,
+            "name": "Nissim Burris"
+        }
+    }
+}
