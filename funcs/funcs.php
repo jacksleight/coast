@@ -157,14 +157,16 @@ function array_mean(array $array)
     return \array_sum($array) / \count($array);
 }
 
-function to_object(array $array)
+function array_object_smart(array $array)
 {
     foreach ($array as $key => $value) {
         if (is_array($value)) {
-            $array[$key] = to_object($value);
+            $array[$key] = array_object_smart($value);
         }
     }
-    return (object) $array;
+    return \Coast\is_array_assoc($array)
+        ? (object) $array
+        : $array;
 }
 
 /**
