@@ -46,11 +46,10 @@ use Coast\App,
     Coast\Request, 
     Coast\Response;
 
-chdir(__DIR__);
-require 'vendor/autoload.php';
+require __DIR__ . '/vendor/autoload.php';
 
-$app = new App();
-$app->add(function(Request $req, Response $res) {
+$app = new App(__DIR__);
+$app->executable(function(Request $req, Response $res) {
     return $res->text('Hello World');
 });
 
