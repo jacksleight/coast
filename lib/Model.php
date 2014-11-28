@@ -6,9 +6,10 @@
 
 namespace Coast;
 
-use Exception;
+use Exception,
+    ArrayAccess;
 
-class Model
+class Model implements ArrayAccess
 {
     public function toArray()
     {
@@ -94,5 +95,25 @@ class Model
             return $this;
         }
         return $this->__get($name);
+    }
+
+    public function offsetSet($offset, $value)
+    {
+       return $this->__set($offset, $value);
+    }
+
+    public function offsetExists($offset)
+    {
+        return $this->__isset($offset);
+    }
+
+    public function offsetUnset($offset)
+    {
+        return $this->__unset($offset);
+    }
+
+    public function offsetGet($offset)
+    {
+        return $this->__get($offset);
     }
 }
