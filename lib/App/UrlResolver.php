@@ -178,7 +178,7 @@ class UrlResolver implements \Coast\App\Access
                 $url = $this->_baseUrl . $url;
             }
         }
-        $url = new \Coast\Url($url);
+        $url = (new \Coast\Url())->path($url);
 
         if ($cacheBust && isset($this->_cacheBuster) && $path instanceof \Coast\File && $path->isReadable()) {
             $callback = $this->_cacheBuster;
