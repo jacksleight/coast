@@ -376,13 +376,13 @@ class Request
         $default = 
             ($this->scheme() == self::SCHEME_HTTP  && $this->port() == self::PORT_HTTP) ||
             ($this->scheme() == self::SCHEME_HTTPS && $this->port() == self::PORT_HTTPS);
-        $url = new \Coast\Url();
-        $url->scheme($this->scheme());
-        $url->host($this->host());
-        $url->port(!$default ? $this->port() : null);
-        $url->path($this->base() . $this->path());
-        $url->queryParams($this->queryParams());
-        return $url;
+        return new \Coast\Url([
+            'scheme'      => $this->scheme(),
+            'host'        => $this->host(),
+            'port'        => !$default ? $this->port() : null,
+            'path'        => $this->base() . $this->path(),
+            'queryParams' => $this->queryParams(),
+        ]);
     }
 
     /**

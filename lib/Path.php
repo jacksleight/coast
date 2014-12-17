@@ -21,9 +21,9 @@ class Path
      * Constructs a new path object.
      * @param string $name Full path name.
      */
-    public function __construct($value)
+    public function __construct($name)
     {
-        $this->name($value);
+        $this->name($name);
     }
 
     /**
@@ -36,15 +36,6 @@ class Path
             $this->_name = str_replace(DIRECTORY_SEPARATOR, '/', $name);
         }
         return $this->_name;
-    }
-
-    /**
-     * Aliases `name`
-     * @return string
-     */ 
-    public function toString()
-    {
-        return $this->name();
     }
 
     /**
