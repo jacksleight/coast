@@ -6,6 +6,8 @@
 
 namespace Coast\App;
 
+use Coast\App\View\Content;
+
 class View implements \Coast\App\Access, \Coast\App\Executable
 {
     use \Coast\App\Access\Implementation;
@@ -74,10 +76,10 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         return $file->exists();
     }
         
-    public function render($name, array $params = array(), $set = null, $reset = false)
+    public function render($name, array $params = array(), $set = null, Content $extend = null)
     {
         $path = new \Coast\Path("{$name}." . $this->_extName);
-        if (count($this->_stack) > 0) {
+        if (count($this->_stack)) {
             if (!isset($set)) {
                 $path = $path->isRelative()
                     ? $path->toAbsolute($this->_stack[0]['path'])
@@ -86,9 +88,6 @@ class View implements \Coast\App\Access, \Coast\App\Executable
             } else if (!$path->isAbsolute()) {
                 $path = new \Coast\Path("/{$path}");
             }
-            $params = $reset
-                ? $params
-                : array_merge($this->_stack[0]['params'], $params);
         } else {
             if (!$path->isAbsolute()) {
                 $path = new \Coast\Path("/{$path}");
@@ -111,28 +110,28 @@ class View implements \Coast\App\Access, \Coast\App\Executable
             'path'     => $path, 
             'params'   => $params, 
             'set'      => $set,
-            'layout'   => null, 
+            'parent'   => null, 
             'block'    => null, 
-            'content'  => new \Coast\App\View\Content(), 
+            'content'  => new Content(), 
+            'extend'   => $extend, 
             'captures' => 0,
         ]);
         $this->_run($file, $params);
         $content = $this->_stack[0]['content'];
-        if (isset($this->_stack[0]['layout'])) {
+        if (isset($this->_stack[0]['parent'])) {
+            list($extend, $name, $params, $set) = $this->_stack[0]['parent'];
             $content = $this->render(
-                $this->_stack[0]['layout'][0],
-                array_merge(
-                    $this->_stack[0]['layout'][1],
-                    array('content' => $content)
-                ),
-                $this->_stack[0]['layout'][2]
-            );
+                $name,
+                array_merge($params, ['content' => $content]),
+                $set,
+                $extend ? $content : null
+            );           
         }
         array_shift($this->_stack);
 
         return $content;
     }
-
+        
     protected function _run($_file, array $_params = array())
     {
         $this->start();
@@ -155,10 +154,35 @@ class View implements \Coast\App\Access, \Coast\App\Executable
             $this->end();
         }
     }
-
-    protected function layout($name, array $params = array(), $set = null)
+        
+    public function child($name, array $params = array(), $set = null)
     {
-        $this->_stack[0]['layout'] = [$name, $params, $set];
+        if (!count($this->_stack)) {
+            throw new \Exception("Cannot call child() before render()");
+        }
+
+        $params = array_merge($this->_stack[0]['params'], $params);
+        return $this->render($name, $params, $set);      
+    }
+
+    protected function parent($name, array $params = array(), $set = null)
+    {
+        if (!count($this->_stack)) {
+            throw new \Exception("Cannot call parent() before render()");
+        }
+        
+        $params = array_merge($this->_stack[0]['params'], $params);
+        $this->_stack[0]['parent'] = [false, $name, $params, $set];
+    }
+
+    protected function extend($name, array $params = array(), $set = null)
+    {
+        if (!count($this->_stack)) {
+            throw new \Exception("Cannot call extend() before render()");
+        }
+        
+        $params = array_merge($this->_stack[0]['params'], $params);
+        $this->_stack[0]['parent'] = [true, $name, $params, $set];
     }
 
     protected function block($name)
@@ -169,6 +193,12 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         }
         $this->_stack[0]['block'] = $name;
         $this->start();
+
+        if (isset($this->_stack[0]['extend']->{$name})) {
+            $this->_stack[0]['content']->block($name, $this->_stack[0]['extend']->{$name});
+            return false;
+        }
+        return true;
     }
     
     protected function start()
@@ -183,9 +213,6 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         return ob_get_clean();
     }
 
-    /**
-     * Move these
-     */
     protected function escape($string)
     {
         return htmlspecialchars($string, ENT_COMPAT, 'UTF-8');

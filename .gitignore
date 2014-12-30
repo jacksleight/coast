@@ -1,6 +1,7 @@
 /vendor
 /report
 /build
+/sandbox
 /node_modules
 
 composer.lock
