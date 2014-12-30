@@ -74,7 +74,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         return $file->exists();
     }
         
-    public function render($name, array $params = array(), $set = null)
+    public function render($name, array $params = array(), $set = null, $reset = false)
     {
         $path = new \Coast\Path("{$name}." . $this->_extName);
         if (count($this->_stack) > 0) {
@@ -86,7 +86,9 @@ class View implements \Coast\App\Access, \Coast\App\Executable
             } else if (!$path->isAbsolute()) {
                 $path = new \Coast\Path("/{$path}");
             }
-            $params = array_merge($this->_stack[0]['params'], $params);
+            $params = $reset
+                ? $params
+                : array_merge($this->_stack[0]['params'], $params);
         } else {
             if (!$path->isAbsolute()) {
                 $path = new \Coast\Path("/{$path}");
