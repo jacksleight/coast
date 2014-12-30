@@ -56,7 +56,7 @@ class Url
             !isset($this->_pass) &&
             !isset($this->_host) &&
             !isset($this->_port) &&
-            !isset($this->_path)) {
+            (!isset($this->_path) || $this->_path->name()[0] != '/')) {
             $string = ltrim($string, '/');
         } else if (!isset($this->_path) &&
             !isset($this->_fragment) &&
