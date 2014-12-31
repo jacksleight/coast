@@ -76,7 +76,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         return $file->exists();
     }
         
-    public function render($name, array $params = array(), $set = null, Content $extend = null)
+    public function render($name, array $params = array(), $set = null, Content $previous = null, $extend = false)
     {
         $path = new \Coast\Path("{$name}." . $this->_extName);
         if (count($this->_stack)) {
@@ -113,19 +113,15 @@ class View implements \Coast\App\Access, \Coast\App\Executable
             'parent'   => null, 
             'block'    => null, 
             'content'  => new Content(), 
+            'previous' => $previous, 
             'extend'   => $extend, 
             'captures' => 0,
         ]);
         $this->_run($file, $params);
         $content = $this->_stack[0]['content'];
         if (isset($this->_stack[0]['parent'])) {
-            list($extend, $name, $params, $set) = $this->_stack[0]['parent'];
-            $content = $this->render(
-                $name,
-                array_merge($params, ['content' => $content]),
-                $set,
-                $extend ? $content : null
-            );           
+            list($name, $params, $set, $extend) = $this->_stack[0]['parent'];
+            $content = $this->render($name, $params, $set, $content, $extend);           
         }
         array_shift($this->_stack);
 
@@ -172,7 +168,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         }
         
         $params = array_merge($this->_stack[0]['params'], $params);
-        $this->_stack[0]['parent'] = [false, $name, $params, $set];
+        $this->_stack[0]['parent'] = [$name, $params, $set, false];
     }
 
     protected function extend($name, array $params = array(), $set = null)
@@ -182,7 +178,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         }
         
         $params = array_merge($this->_stack[0]['params'], $params);
-        $this->_stack[0]['parent'] = [true, $name, $params, $set];
+        $this->_stack[0]['parent'] = [$name, $params, $set, true];
     }
 
     protected function block($name)
@@ -194,11 +190,18 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         $this->_stack[0]['block'] = $name;
         $this->start();
 
-        if (isset($this->_stack[0]['extend']->{$name})) {
-            $this->_stack[0]['content']->block($name, $this->_stack[0]['extend']->{$name});
+        if ($this->_stack[0]['extend'] && isset($this->_stack[0]['previous']->{$name})) {
+            $this->_stack[0]['content']->block($name, $this->_stack[0]['previous']->{$name});
             return false;
         }
         return true;
+    }
+
+    protected function content($name = null)
+    {
+        return isset($name)
+            ? $this->_stack[0]['previous']->block($name)
+            : $this->_stack[0]['previous'];
     }
     
     protected function start()
