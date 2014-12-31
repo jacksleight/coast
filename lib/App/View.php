@@ -181,12 +181,15 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         $this->_stack[0]['parent'] = [$name, $params, $set, true];
     }
 
-    protected function block($name)
+    protected function block($name = null)
     {
         $content = trim($this->end());
         if (strlen($content) > 0 ) {
             $this->_stack[0]['content']->block($this->_stack[0]['block'], $content);
         }
+        $name = isset($name)
+            ? $name
+            : $this->_stack[0]['content']->next();
         $this->_stack[0]['block'] = $name;
         $this->start();
 

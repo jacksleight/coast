@@ -41,6 +41,14 @@ class Content
         return $this->_blocks;
     }
 
+    public function next()
+    {
+        $temp = array_combine($keys = array_keys($this->_blocks), $keys);
+        $temp[] = null;
+        end($temp);
+        return key($temp);
+    }
+
     public function __set($name, $value)
     {
         $this->block($name, $value);
