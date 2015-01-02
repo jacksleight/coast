@@ -202,6 +202,9 @@ class View implements \Coast\App\Access, \Coast\App\Executable
 
     protected function content($name = null)
     {
+        if (!isset($this->_stack[0]['previous'])) {
+            return;
+        }
         return isset($name)
             ? $this->_stack[0]['previous']->block($name)
             : $this->_stack[0]['previous'];
