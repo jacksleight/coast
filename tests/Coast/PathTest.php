@@ -10,7 +10,7 @@ class PathTest extends \PHPUnit_Framework_TestCase
         $path = new Path('/dir/base.ext');
 
         $this->assertEquals('/dir/base.ext', (string) $path);
-        $this->assertEquals('/dir/base.ext', $path->toString());
+        $this->assertEquals('/dir/base.ext', $path->name());
     }
 
     public function testDirName()
@@ -77,7 +77,7 @@ class PathTest extends \PHPUnit_Framework_TestCase
         $a = new Path('../four');
         $b = new Path('/one/two/three');
 
-        $this->assertEquals('/one/four', $a->toAbsolute($b)->toString());
+        $this->assertEquals('/one/four', $a->toAbsolute($b)->name());
     }
 
     public function testAbsoluteException()
@@ -94,7 +94,7 @@ class PathTest extends \PHPUnit_Framework_TestCase
         $a = new Path('/one/four');
         $b = new Path('/one/two/three');
 
-        $this->assertEquals('../four', $a->toRelative($b)->toString());
+        $this->assertEquals('../four', $a->toRelative($b)->name());
     }
 
     public function testRelativeException()
@@ -113,5 +113,17 @@ class PathTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($abs->isAbsolute());
         $this->assertTrue($rel->isRelative());
+    }
+
+    public function testReal()
+    {
+        $path = new Path(__DIR__ . '/..');
+        $real = $path->toReal();
+
+        $this->assertEquals($real->name(), realpath(__DIR__ . '/..'));
+
+        $path = new Path('./');
+        $this->setExpectedException('Exception');
+        $path->toReal();
     }
 }

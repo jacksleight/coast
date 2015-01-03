@@ -40,9 +40,6 @@ class Url
     public function fromString($value)
     {
         $parts = parse_url($value);
-        if (!$parts) {
-            return;
-        }
         $this->fromArray($parts);
         return $this;
     }
@@ -56,7 +53,7 @@ class Url
             !isset($this->_pass) &&
             !isset($this->_host) &&
             !isset($this->_port) &&
-            (!isset($this->_path) || $this->_path->name()[0] != '/')) {
+            (!isset($this->_path) || substr($this->_path->name(), 0, 1) != '/')) {
             $string = ltrim($string, '/');
         } else if (!isset($this->_path) &&
             !isset($this->_fragment) &&
@@ -111,32 +108,6 @@ class Url
         return $this->toString();
     }
     
-    public function parts($parts = null)
-    {
-        if (func_num_args() > 0) {
-            $parts = array_merge([
-                'scheme'   => null,
-                'user'     => null,
-                'pass'     => null,
-                'host'     => null,
-                'port'     => null,
-                'path'     => null,
-                'query'    => null,
-                'fragment' => null,
-            ], $parts);
-            $this->scheme($parts['scheme']);
-            $this->user($parts['user']);
-            $this->pass($parts['pass']);
-            $this->host($parts['host']);
-            $this->port($parts['port']);
-            $this->path($parts['path']);
-            $this->query($parts['query']);
-            $this->fragment($parts['fragment']);
-            return $this;
-        }
-        return $this->_scheme;
-    }
-    
     public function scheme($scheme = null)
     {
         if (func_num_args() > 0) {
@@ -149,13 +120,13 @@ class Url
     public function isHttp()
     {
         $scheme = strtolower($this->scheme());
-        return $scheme == self::SCHEME_HTTP || $scheme == self::SCHEME_HTTPS;
+        return $scheme == 'http' || $scheme == 'https';
     }
     
     public function isHttps()
     {
         $scheme = strtolower($this->scheme());
-        return $scheme == self::SCHEME_HTTPS;
+        return $scheme == 'https';
     }
     
     public function user($user = null)
