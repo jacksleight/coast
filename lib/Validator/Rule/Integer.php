@@ -12,7 +12,7 @@ class Integer extends Rule
 {
 	protected function _validate($value)
 	{
-		if (!filter_var($value, FILTER_VALIDATE_INT)) {
+		if (strval(intval($value)) !== (string) $value) {
 		 	$this->error();
 		}
 	}

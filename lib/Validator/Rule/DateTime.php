@@ -19,6 +19,9 @@ class DateTime extends Rule
 
 	protected function _validate($value)
 	{
+		if ($value instanceof \DateTime) {
+			return;
+		}
 		$date	= \DateTime::createFromFormat($this->_format, $value);
 		$errors	= \DateTime::getLastErrors();         
     	if ($errors['warning_count'] || $errors['error_count']) {
