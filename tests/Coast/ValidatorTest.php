@@ -11,7 +11,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $validator = new Rule\Boolean();
         $this->assertTrue($validator(true));
         $this->assertTrue($validator(1));
-        $this->assertTrue($validator('yes'));
+        $this->assertTrue($validator('0'));
         $this->assertFalse($validator('text'));
     }
 
@@ -108,6 +108,13 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $validator = new Rule\Password(2, 2, 2, 2);
         $this->assertTrue($validator('aaBB00??'));
         $this->assertFalse($validator('aB0?'));
+    }
+
+    public function testString()
+    {
+        $validator = new Rule\String();
+        $this->assertTrue($validator('text'));
+        $this->assertFalse($validator([]));
     }
 
     public function testRegex()
