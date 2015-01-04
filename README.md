@@ -1,8 +1,8 @@
 # Coast
 
 [![Packagist](http://img.shields.io/packagist/v/jacksleight/coast.svg?style=flat-square)](https://packagist.org/packages/jacksleight/coast)
-[![Travis](http://img.shields.io/travis/jacksleight/coast.svg?style=flat-square)](https://travis-ci.org/jacksleight/coast)
-[![Coverage Status](http://img.shields.io/coveralls/jacksleight/coast.svg?style=flat-square)](https://coveralls.io/r/jacksleight/coast)
+[![Travis](http://img.shields.io/travis/jacksleight/coast/dev.svg?style=flat-square)](https://travis-ci.org/jacksleight/coast)
+[![Coverage Status](http://img.shields.io/coveralls/jacksleight/coast/dev.svg?style=flat-square)](https://coveralls.io/r/jacksleight/coast)
 [![License](http://img.shields.io/packagist/l/jacksleight/coast.svg?style=flat-square)](https://packagist.org/packages/jacksleight/coast)
 
 Coast is a web application framework for PHP 5.5+. The goal of Coast is to provide a simple, lightweight and flexible framework for building high-performance, modern web apps. Some parts of the API were inspired by the Connect and Express node.js frameworks, others are my own (possibly ridiculous) ideas.
