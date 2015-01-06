@@ -31,7 +31,7 @@ class Response
             $_SESSION = $this->_req->sessions();
             session_write_close();
         }
-        header($this->_req->protocol() . $this->_status);
+        http_response_code($this->_status);
         foreach ($this->_headers as $name => $value) {
             header("{$name}: {$value}");
         }
