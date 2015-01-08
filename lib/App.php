@@ -258,6 +258,7 @@ class App implements Executable
 
         $this->param('req', $req)
              ->param('res', $res);
+        $this->_preExecute();
         try {
             $result = null;
             foreach($this->_executables as $executable) {
@@ -280,6 +281,7 @@ class App implements Executable
                 throw $e;
             }
         }
+        $this->_postExecute();
         $this->param('req', null)
              ->param('res', null);
 
@@ -294,6 +296,12 @@ class App implements Executable
             return $result;
         }
     }
+
+    protected function _preExecute()
+    {}
+
+    protected function _postExecute()
+    {}
 
     /**
      * Set the not found handler
