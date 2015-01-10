@@ -19,7 +19,7 @@ class Trim extends Rule
 
     protected $_mode;
 
-	public function __construct($chars = '-', $mode = self::MODE_BOTH)
+	public function __construct($chars = null, $mode = self::MODE_BOTH)
 	{
         $this->chars($chars);
 		$this->mode($mode);
@@ -45,6 +45,10 @@ class Trim extends Rule
 
     protected function _filter($value)
     {
-        return call_user_func($this->_mode, $value, $this->_chars);
+        $args = [$value];
+        if (isset($this->_chars)) {
+            $args[] = $this->_chars;
+        }
+        return call_user_func_array($this->_mode, $args);
     }
 }
