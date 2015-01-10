@@ -12,6 +12,9 @@ abstract class Rule
 
 	protected $_errors = [];
 
+	public function __construct()
+	{}
+
 	public function name($name = null)
     {
         if (func_num_args() > 0) {

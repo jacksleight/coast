@@ -12,9 +12,6 @@ class Arr extends Rule
 {
 	protected $_name = 'array';
 
-	public function __construct()
-	{}
-
 	protected function _validate($value)
 	{
 		if (!is_array($value)) {

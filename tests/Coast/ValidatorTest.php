@@ -67,9 +67,9 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($validator('text'));
     }
 
-    public function testNumeric()
+    public function testNumber()
     {
-        $validator = new Rule\Numeric();
+        $validator = new Rule\Number();
         $this->assertTrue($validator(1));
         $this->assertTrue($validator(1.5));
         $this->assertFalse($validator('text'));
@@ -162,7 +162,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $validator = (new Validator())
             ->set()
-            ->numeric()
+            ->number()
             ->range(10, 20);
         $this->assertFalse($validator(5));
         $this->assertEquals($validator->errors(), array(
@@ -182,7 +182,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $validator = (new Validator())
             ->set()
             ->break()
-            ->numeric()
+            ->number()
             ->range(10, 20);
         $this->assertFalse($validator(null));
         $this->assertEquals($validator->errors(), array(
