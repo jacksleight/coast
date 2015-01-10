@@ -18,9 +18,27 @@ class Length extends Rule
 
 	public function __construct($min = null, $max = null)
 	{
-		$this->_min = $min;
-		$this->_max = $max;
+		$this->min($min);
+		$this->max($max);
 	}
+
+    public function min($min = null)
+    {
+        if (func_num_args() > 0) {
+            $this->_min = $min;
+            return $this;
+        }
+        return $this->_min;
+    }
+
+    public function max($max = null)
+    {
+        if (func_num_args() > 0) {
+            $this->_max = $max;
+            return $this;
+        }
+        return $this->_max;
+    }
 
 	protected function _validate($value)
 	{

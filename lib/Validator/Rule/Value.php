@@ -14,8 +14,17 @@ class Value extends Rule
 
 	public function __construct($value)
 	{
-		$this->_value = $value;
+		$this->value($value);
 	}
+
+    public function value($value = null)
+    {
+        if (func_num_args() > 0) {
+            $this->_value = $value;
+            return $this;
+        }
+        return $this->_value;
+    }
 
 	protected function _validate($value)
 	{

@@ -22,11 +22,47 @@ class Password extends Rule
 
 	public function __construct($lower = 0, $upper = 0, $digit = 0, $special = 0)
 	{
-		$this->_lower	= $lower;
-		$this->_upper	= $upper;
-		$this->_digit	= $digit;
-		$this->_special	= $special;
+		$this->lower($lower);
+		$this->upper($upper);
+		$this->digit($digit);
+		$this->special($special);
 	}
+
+    public function lower($lower = null)
+    {
+        if (func_num_args() > 0) {
+            $this->_lower = $lower;
+            return $this;
+        }
+        return $this->_lower;
+    }
+
+    public function upper($upper = null)
+    {
+        if (func_num_args() > 0) {
+            $this->_upper = $upper;
+            return $this;
+        }
+        return $this->_upper;
+    }
+
+    public function digit($digit = null)
+    {
+        if (func_num_args() > 0) {
+            $this->_digit = $digit;
+            return $this;
+        }
+        return $this->_digit;
+    }
+
+    public function special($special = null)
+    {
+        if (func_num_args() > 0) {
+            $this->_special = $special;
+            return $this;
+        }
+        return $this->_special;
+    }
 
 	protected function _validate($value)
 	{

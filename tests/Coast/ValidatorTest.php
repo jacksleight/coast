@@ -161,9 +161,9 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     public function testErrors()
     {
         $validator = (new Validator())
-            ->true(['set'])
-            ->true(['numeric'])
-            ->true(['range', 10, 20]);
+            ->set()
+            ->numeric()
+            ->range(10, 20);
         $this->assertFalse($validator(5));
         $this->assertEquals($validator->errors(), array(
             0 => array(
@@ -180,9 +180,10 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     public function testBreak()
     {
         $validator = (new Validator())
-            ->true(['set'], true)
-            ->true(['numeric'])
-            ->true(['range', 10, 20]);
+            ->set()
+            ->break()
+            ->numeric()
+            ->range(10, 20);
         $this->assertFalse($validator(null));
         $this->assertEquals($validator->errors(), array(
             0 => array(
@@ -196,14 +197,14 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     public function testFalse()
     {
         $validator = (new Validator())
-            ->false(['set']);
+            ->notSet();
         $this->assertTrue($validator(null));
     }
 
     public function testSteps()
     {
         $validator1 = (new Validator())
-            ->true(['set']);
+            ->set();
         $validator2 = (new Validator())
             ->steps($validator1->steps());
         $this->assertFalse($validator1(null));

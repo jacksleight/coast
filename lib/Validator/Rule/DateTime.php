@@ -14,8 +14,17 @@ class DateTime extends Rule
 
 	public function __construct($format)
 	{
-		$this->_format = $format;
+		$this->format($format);
 	}
+
+    public function format($format = null)
+    {
+        if (func_num_args() > 0) {
+            $this->_format = $format;
+            return $this;
+        }
+        return $this->_format;
+    }
 
 	protected function _validate($value)
 	{

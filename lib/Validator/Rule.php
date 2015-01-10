@@ -8,12 +8,33 @@ namespace Coast\Validator;
 
 abstract class Rule
 {
+	protected $_name;
+
 	protected $_errors = [];
 
-	public function name()
-	{
-		$parts = explode('\\', get_class($this));
+	public function name($name = null)
+    {
+        if (func_num_args() > 0) {
+            $this->_name = $name;
+            return $this;
+        }
+        if (isset($this->_name)) {
+        	return $this->_name;
+        }
+        $parts = explode('\\', get_class($this));
 		return lcfirst(array_pop($parts));
+    }
+
+	public function params()
+	{
+		$params = [];
+		foreach (get_object_vars($this) as $key => $value) {
+			if (in_array($key, ['_name', '_errors'])) {
+				continue;
+			}
+			$params[ltrim($key, '_')] = $value;
+		}
+		return $params;
 	}
 
 	abstract protected function _validate($value);
@@ -25,6 +46,11 @@ abstract class Rule
 		return !count($this->_errors);
 	}
 
+	public function isValid()
+	{
+		return !count($this->_errors);
+	}
+
 	public function __invoke($value)
 	{
 		return $this->validate($value);
@@ -32,14 +58,7 @@ abstract class Rule
 
 	public function error($name = null)
 	{
-		$params = [];
-		foreach (get_object_vars($this) as $key => $value) {
-			if ($key == '_errors') {
-				continue;
-			}
-			$params[ltrim($key, '_')] = $value;
-		}
-		$this->_errors[] = [$this->name(), $name, $params];
+		$this->_errors[] = [$this->name(), $name, $this->params()];
 		return $this;
 	}
 

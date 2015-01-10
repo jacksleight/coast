@@ -10,7 +10,20 @@ use Coast\Validator\Rule;
 
 class Validator extends Rule
 {
-	protected $_steps = [];
+    const STEP_BREAK = 'break';
+
+    protected $_steps = [];
+
+    protected $_rules = [];
+
+    public function step($step)
+    {
+        $this->_steps[] = $step;
+        if ($step instanceof Rule) {
+            $this->_rules[$step->name()][] = $step;
+        }
+        return $this;
+    }
 
     public function steps(array $steps = null)
     {
@@ -23,39 +36,69 @@ class Validator extends Rule
         return $this->_steps;
     }
 
-    public function true($rule, $break = false)
+    public function rule($name)
     {
-    	$this->_steps[] = [true, $this->_parse($rule), $break];
-    	return $this;
+        return isset($this->_rules[$name])
+            ? $this->_rules[$name]
+            : null;
     }
 
-    public function false($rule, $break = false)
+    public function rules()
     {
-    	$this->_steps[] = [false, $this->_parse($rule), $break];
-    	return $this;
+        return $this->_rules;
     }
 
-	protected function _parse($rule)
-	{
-		if (!$rule instanceof Rule) {
-			$name   = array_shift($rule);
-			$class	= get_class() . '\\Rule\\' . ucfirst($name);
-			$reflec	= new \ReflectionClass($class);
-			$rule	= $reflec->newInstanceArgs($rule);
-		}
-		return $rule;
-	}
+    public function __call($name, $args)
+    {
+        if ($name == self::STEP_BREAK) {
+            $step = $name;
+        } else {
+            $not = false;
+            if (preg_match('/^not(\w+)$/', $name, $match)) {
+                $not  = true;
+                $name = $match[1];
+            }
+            $map = [
+                'array' => 'arr',
+            ];
+            if (isset($map[$name])) {
+                $name = $map[$name];
+            }
+            $class  = get_class() . '\\Rule\\' . ucfirst($name);
+            $reflec = new \ReflectionClass($class);
+            $step   = $reflec->newInstanceArgs($args);
+            if ($not) {
+                $step = new Rule\Not($step);
+            }
+        }
+        return $this->step($step);
+    }
 
-	public function _validate($value)
-	{
-		foreach ($this->_steps as $step) {
-			list($result, $rule, $break) = $step;
-			if ($rule($value) != $result) {
-				$this->_errors = array_merge($this->_errors, $rule->errors());
-				if ($break) {
-					break;
-				}
-			}
-		}
-	}
+    public function _validate($value)
+    {
+        $result = null;
+        foreach ($this->_steps as $step) {
+            if ($step == self::STEP_BREAK && $result === false) {
+                break;
+            } else if ($step instanceof Rule) {
+                $result = $step($value);
+                if (!$result) {
+                    $this->_errors = array_merge($this->_errors, $step->errors());
+                }
+            }    
+        }
+    }
+
+    public function __clone()
+    {
+        $steps = $this->_steps;
+        $this->_steps = [];
+        $this->_rules = [];
+        foreach ($steps as $step) {
+            if ($step instanceof Rule) {
+                $step = clone $step;
+            }
+            $this->step($step);
+        }
+    }
 }

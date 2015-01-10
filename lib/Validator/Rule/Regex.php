@@ -11,20 +11,21 @@ use Coast\Validator\Rule;
 class Regex extends Rule
 {
 	protected $_regex;
-	protected $_name;
 
 	public function __construct($regex, $name = null)
 	{
-		$this->_regex = $regex;
-		$this->_name  = $name;
+		$this->regex($regex);
+		$this->name($name);
 	}
 
-	public function name()
-	{
-		return isset($this->_name)
-			? $this->_name
-			: parent::name();
-	}
+    public function regex($regex = null)
+    {
+        if (func_num_args() > 0) {
+            $this->_regex = $regex;
+            return $this;
+        }
+        return $this->_regex;
+    }
 
 	protected function _validate($value)
 	{

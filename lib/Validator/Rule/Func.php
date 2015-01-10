@@ -11,20 +11,21 @@ use Coast\Validator\Rule;
 class Func extends Rule
 {
 	protected $_func;
-	protected $_name;
 
 	public function __construct(callable $func, $name = null)
 	{
-		$this->_func = $func;
-		$this->_name = $name;
+		$this->func($func);
+		$this->name($name);
 	}
 
-	public function name()
-	{
-		return isset($this->_name)
-			? $this->_name
-			: parent::name();
-	}
+	public function func($func = null)
+    {
+        if (func_num_args() > 0) {
+            $this->_func = $func;
+            return $this;
+        }
+        return $this->_func;
+    }
 
 	protected function _validate($value)
 	{
