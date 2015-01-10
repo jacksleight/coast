@@ -10,6 +10,8 @@ use Coast\Filter\Rule;
 
 class Filter extends Rule
 {
+    const STEP_BREAK = 'break';
+
 	protected $_steps = [];
 
 	protected $_rules = [];
@@ -48,18 +50,24 @@ class Filter extends Rule
 
 	public function __call($name, $args)
 	{
-        $class  = get_class() . '\\Rule\\' . ucfirst($name);
-        $reflec = new \ReflectionClass($class);
-        $step   = $reflec->newInstanceArgs($args);
+        if ($name == self::STEP_BREAK) {
+            $step = $name;
+        } else {
+            $class  = get_class() . '\\Rule\\' . ucfirst($name);
+            $reflec = new \ReflectionClass($class);
+            $step   = $reflec->newInstanceArgs($args);
+        }        
 		return $this->step($step);
 	}
 
 	public function _filter($value)
 	{
 		foreach ($this->_steps as $step) {
-			if ($step instanceof Rule) {
-				$value = $step($value);
-			}
+			if ($step == self::STEP_BREAK && $value === null) {
+                break;
+            } else if ($step instanceof Rule) {
+                $value = $step($value);
+            }
 		}
 		return $value;
 	}
