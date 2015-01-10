@@ -215,7 +215,7 @@ function str_camel_lower($string)
 
 function str_camel_upper($string)
 {
-    return \str_replace(' ', null, \ucwords(\Coast\str_simplify($string, ' ')));
+    return \str_replace(' ', null, \ucwords(\Coast\str_slugify($string, ' ')));
 }
 
 function str_camel_split($string, $space = ' ')
