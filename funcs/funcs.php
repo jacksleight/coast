@@ -191,14 +191,11 @@ function math_ratio($a, $b)
     return [$a / $gcd, $b / $gcd];
 }
 
-function str_simplify($string, $spacer = '', $lowercase = true)
+function str_slugify($string, $space = '-')
 {
-    if ($lowercase) {
-        $string = \strtolower($string);
-    }
     $string = \preg_replace('/(^[^a-z0-9]+|[^a-z0-9]+$)/i', '', $string);
     $string = \preg_replace('/\'+/i', '', $string);
-    $string = \preg_replace('/[^a-z0-9]+/i', $spacer, $string);
+    $string = \preg_replace('/[^a-z0-9]+/i', $space, $string);
     return $string;
 }
 
@@ -221,14 +218,14 @@ function str_camel_upper($string)
     return \str_replace(' ', null, \ucwords(\Coast\str_simplify($string, ' ')));
 }
 
-function str_camel_split($string, $spacer = ' ')
+function str_camel_split($string, $space = ' ')
 {
-    $string = \preg_replace('/([A-Z]+)([A-Z][a-z])/', '$1'.$spacer.'$2', $string);
-    $string = \preg_replace('/([a-zd])([A-Z])/', '$1'.$spacer.'$2', $string);
+    $string = \preg_replace('/([A-Z]+)([A-Z][a-z])/', '$1'.$space.'$2', $string);
+    $string = \preg_replace('/([a-zd])([A-Z])/', '$1'.$space.'$2', $string);
     return $string;
 }
 
-function str_size_format($size, $decimals = 2, $spacer = ' ')
+function str_size_format($size, $decimals = 2, $space = ' ')
 {
     if (!$size) {
         return null;
@@ -236,7 +233,7 @@ function str_size_format($size, $decimals = 2, $spacer = ' ')
     $names = ['B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
     $floor = \floor(log($size, 1024));
     $round = \round($size / \pow(1024, $floor), $decimals);
-    return $round . $spacer . $names[$floor];
+    return $round . $space . $names[$floor];
 }
 
 function str_uchr($code)
