@@ -146,7 +146,7 @@ class Controller implements \Coast\App\Access, \Coast\App\Router\Routable
         $parts      = array_map('\Coast\str_camel_upper', $parts);
         $controller = implode('\\', $parts);
         $action     = \Coast\str_camel_lower($req->action);
-        $set        = isset($req->set) ? \Coast\str_camel_lower($req->set) : null;
+        $set        = isset($req->set) ? $req->set : null;
         return $this->dispatch(
             $controller,
             $action,
