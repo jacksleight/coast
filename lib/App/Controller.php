@@ -17,6 +17,8 @@ class Controller implements \Coast\App\Access, \Coast\App\Router\Routable
     protected $_history = [];
     
     protected $_actions = [];
+    
+    protected $_all;
 
     public function __construct(array $options = array())
     {
@@ -50,6 +52,15 @@ class Controller implements \Coast\App\Access, \Coast\App\Router\Routable
         return $this->_nspaces;
     }
 
+    public function all($all = null)
+    {
+        if (func_num_args() > 0) {
+            $this->_all = $all;
+            return $this;
+        }
+        return $this->_all;
+    }
+
     public function forward($action, $name = null, $set = null)
     {
         if (count($this->_history) > 0) {
@@ -81,7 +92,7 @@ class Controller implements \Coast\App\Access, \Coast\App\Router\Routable
         while (count($this->_stack) > 0) {
             $item = array_shift($this->_stack);
             $this->_history[] = $item;
-            list($name, $action, $params) = $item;
+            list($name, $action, $params, $set) = $item;
 
             if (!isset($this->_nspaces[$set])) {
                 throw new \Coast\App\Exception("Controller set '{$set}' does not exist");
@@ -116,7 +127,7 @@ class Controller implements \Coast\App\Access, \Coast\App\Router\Routable
     {
         $parts = explode('_', $name);
         $path  = [];
-        $names = ['all'];
+        $names = [];
         while (count($parts) > 0) {
             $path[]  = array_shift($parts);
             $names[] = implode('_', $path);
@@ -126,11 +137,15 @@ class Controller implements \Coast\App\Access, \Coast\App\Router\Routable
 
         $stack = [];
         foreach ($names as $name) {
-            $stack[] = [$name, 'preDispatch', $params, $set];
+            array_push($stack, [$name, 'preDispatch', $params, $set]);
         }
-        $stack[] = [$final, $action, $params, $set];
+        array_push($stack, [$final, $action, $params, $set]);
         foreach (array_reverse($names) as $name) {
-            $stack[] = [$name, 'postDispatch', $params, $set];
+            array_push($stack, [$name, 'postDispatch', $params, $set]);
+        }
+        if (isset($this->_all)) {
+            array_unshift($stack, [$this->_all[0], 'preDispatch', $params, $this->_all[1]]);
+            array_push($stack, [$this->_all[0], 'postDispatch', $params, $this->_all[1]]);
         }
 
         foreach ($stack as $item) {
