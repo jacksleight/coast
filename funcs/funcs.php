@@ -220,8 +220,7 @@ function str_camel_upper($string)
 
 function str_camel_split($string, $space = ' ')
 {
-    $string = \preg_replace('/([A-Z]+)([A-Z][a-z])/', '$1'.$space.'$2', $string);
-    $string = \preg_replace('/([a-zd])([A-Z])/', '$1'.$space.'$2', $string);
+    $string = \preg_replace(array('/(?<=[^A-Z])([A-Z])/', '/(?<=[^0-9])([0-9])/'), ' $0', $string);
     return $string;
 }
 
