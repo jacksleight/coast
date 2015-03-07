@@ -6,22 +6,35 @@
 
 namespace Coast;
 
-class Xml
-{
-    protected $_root;
+use SimpleXMLElement;
 
-    public function __construct($root, $version = '1.0', $encoding = 'UTF-8')
+class Xml extends SimpleXMLElement
+{
+    public function addCData($value)
     {
-        $this->_root = new Xml\Element('<?xml version="' . $version . '" encoding="' . $encoding . '"?><' . $root . '/>');
+        $node = dom_import_simplexml($this);
+        $node->appendChild($node->ownerDocument->createCDATASection($value));
+        return $this;
     }
 
-    public function __call($name, $args)
+	public function toArray()
+	{
+		$xml = simplexml_load_string($this->asXML(), 'SimpleXMLElement', LIBXML_NOCDATA);
+		return json_decode(json_encode((array) $xml), true);
+	}
+
+    public function toString()
     {
-        return call_user_func_array([$this->_root, $name], $args);
+        return $this->asXML();
     }
 
     public function __toString()
     {
-        return $this->_root->__toString();
+        return $this->toString();
+    }
+
+    public function writeFile(\Coast\File $file)
+    {
+        return $this->asXML((string) $file);
     }
 }

@@ -344,7 +344,7 @@ class Request
         return json_decode($this->_body, $assoc, $depth, $options);
     }
 
-    public function xml($class = '\SimpleXMLElement', $options = 0, $namespace = '', $prefix = false)
+    public function xml($class = '\Coast\Xml', $options = 0, $namespace = '', $prefix = false)
     {
         return new $class($this->_body, $options, false, $namespace, $prefix);
     }

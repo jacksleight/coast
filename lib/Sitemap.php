@@ -8,7 +8,7 @@ namespace Coast;
 
 use Coast\Xml;
 
-class Sitemap extends Xml
+class Sitemap
 {
     const CHANGEFREQ_ALWAYS  = 'always';
     const CHANGEFREQ_HOURLY  = 'hourly';
@@ -18,15 +18,17 @@ class Sitemap extends Xml
     const CHANGEFREQ_YEARLY  = 'yearly';
     const CHANGEFREQ_NEVER   = 'never';
 
+    protected $_xml;
+
     public function __construct()
     {
-        parent::__construct('urlset');
-        $this->_root->addAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
+        $this->_xml = new Xml('<?xml version="1.0" encoding="UTF-8"?><urlset/>');
+        $this->_xml->addAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
     }
 
     public function add(\Coast\Url $loc, \DateTime $lastmod = null, $changefreq = null, $priority = null)
     {
-        $url = $this->_root->addChild('url');
+        $url = $this->_xml->addChild('url');
         $loc = $url->addChild('loc', (string) $loc);
         if (isset($lastmod)) {
             $url->addChild('lastmod', $lastmod->format(\DateTime::W3C));
@@ -37,5 +39,20 @@ class Sitemap extends Xml
         if (isset($priority)) {
             $url->addChild('priority', number_format($priority, 1, '.', null));
         }
+    }
+
+    public function toString()
+    {
+        return $this->_xml->toString();
+    }
+
+    public function __toString()
+    {
+        return $this->toString();
+    }
+
+    public function writeFile(\Coast\File $file)
+    {
+        return $this->_xml->writeFile($file);
     }
 }
