@@ -6,22 +6,22 @@
 
 namespace Coast;
 
-abstract class Xml
+class Xml
 {
-    protected $_xml;
+    protected $_root;
 
-    public function toString()
+    public function __construct($root, $version = '1.0', $encoding = 'UTF-8')
     {
-        return $this->_xml->asXML();
+        $this->_root = new Xml\Element('<?xml version="' . $version . '" encoding="' . $encoding . '"?><' . $root . '/>');
     }
 
-    public function writeFile(\Coast\File $file)
+    public function __call($name, $args)
     {
-        return $this->_xml->asXML((string) $file);
+        return call_user_func_array([$this->_root, $name], $args);
     }
 
     public function __toString()
     {
-        return $this->toString();
+        return $this->_root->__toString();
     }
 }

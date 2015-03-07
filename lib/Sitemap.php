@@ -6,7 +6,9 @@
 
 namespace Coast;
 
-class Sitemap extends \Coast\Xml
+use Coast\Xml;
+
+class Sitemap extends Xml
 {
     const CHANGEFREQ_ALWAYS  = 'always';
     const CHANGEFREQ_HOURLY  = 'hourly';
@@ -18,13 +20,13 @@ class Sitemap extends \Coast\Xml
 
     public function __construct()
     {
-       $this->_xml = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><urlset/>');
-       $this->_xml->addAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
+        parent::__construct('urlset');
+        $this->_root->addAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
     }
 
     public function add(\Coast\Url $loc, \DateTime $lastmod = null, $changefreq = null, $priority = null)
     {
-        $url = $this->_xml->addChild('url');
+        $url = $this->_root->addChild('url');
         $loc = $url->addChild('loc', (string) $loc);
         if (isset($lastmod)) {
             $url->addChild('lastmod', $lastmod->format(\DateTime::W3C));
