@@ -256,15 +256,24 @@ function str_trim_smart($value, $limit, $overflow = null)
 
 function str_to_bytes($value)
 {
-    $value = \trim($value);
-    $last = \strtolower($value[\strlen($value)-1]);
-    switch($last) {
-        case 'g':
-            $value *= 1024;
-        case 'm':
-            $value *= 1024;
-        case 'k':
-            $value *= 1024;
+    if (is_numeric($value)) {
+       return $value;
     }
-    return $value;
+    $value  = trim($value);  
+    $size   = substr($value, 0, -1);  
+    $suffix = substr($value, -1);  
+    switch(strtoupper($suffix)) {
+        case 'P':
+            $size *= 1024;
+        case 'T':
+            $size *= 1024;
+        case 'G':
+            $size *= 1024;
+        case 'M':
+            $size *= 1024;
+        case 'K':
+            $size *= 1024;
+            break;
+    }
+    return $size;
 }
