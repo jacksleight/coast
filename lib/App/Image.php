@@ -176,7 +176,7 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
         foreach ($transforms as $name) {
             $this->run($name, $image, $params);
         }
-        $image->save($output->name());
+        $image->save($output->name(), isset($image->quality) ? $image->quality : 90);
 
         return $res->redirect(isset($this->_outputUrlResolver)
             ? $this->_outputUrlResolver->file($output)
