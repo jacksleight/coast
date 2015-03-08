@@ -1,5 +1,5 @@
 <?php
-namespace Coast;
+namespace Coast\Test;
 
 use Coast\Sitemap;
 
@@ -24,14 +24,14 @@ class SitemapTest extends \PHPUnit_Framework_TestCase
 
     public function testString()
     {
-        $this->assertEquals($this->_output, $this->_sitemap->toString());        
-        $this->assertEquals($this->_output, (string) $this->_sitemap);        
+        $this->assertEquals($this->_output, $this->_sitemap->toXml()->toString());        
+        $this->assertEquals($this->_output, (string) $this->_sitemap->toXml());        
     }
 
     public function testFile()
     {
         $file = \Coast\File::createTemp();
-        $this->_sitemap->writeFile($file);
+        $this->_sitemap->toXml()->writeFile($file);
         $file->open('r');
         $this->assertEquals($this->_output, $file->read());
         $file->close();

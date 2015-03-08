@@ -1,5 +1,5 @@
 <?php
-namespace Coast;
+namespace Coast\Test;
 
 use Coast\Validator,
     Coast\Validator\Rule;

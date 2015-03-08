@@ -1,16 +1,16 @@
 <?php
-namespace Coast\Feed;
+namespace Coast\Test;
 
-use Coast\Feed\Atom;
+use Coast\Feed;
 
-class AtomTest extends \PHPUnit_Framework_TestCase
+class FeedTest extends \PHPUnit_Framework_TestCase
 {
     protected $_feed;
     protected $_output;
 
     public function setUp()
     {
-        $this->_feed = new Atom(
+        $this->_feed = new Feed(
             'Coast',
             new \Coast\Url('http://coastphp.com/'),
             'Jack Sleight',
@@ -30,14 +30,14 @@ class AtomTest extends \PHPUnit_Framework_TestCase
 
     public function testString()
     {
-        $this->assertEquals($this->_output, $this->_feed->toString());        
-        $this->assertEquals($this->_output, (string) $this->_feed);        
+        $this->assertEquals($this->_output, $this->_feed->toXml()->toString());        
+        $this->assertEquals($this->_output, (string) $this->_feed->toXml());        
     }
 
     public function testFile()
     {
         $file = \Coast\File::createTemp();
-        $this->_feed->writeFile($file);
+        $this->_feed->toXml()->writeFile($file);
         $file->open('r');
         $this->assertEquals($this->_output, $file->read());
         $file->close();

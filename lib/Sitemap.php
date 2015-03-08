@@ -41,18 +41,8 @@ class Sitemap
         }
     }
 
-    public function toString()
+    public function toXml()
     {
-        return $this->_xml->toString();
-    }
-
-    public function __toString()
-    {
-        return $this->toString();
-    }
-
-    public function writeFile(\Coast\File $file)
-    {
-        return $this->_xml->writeFile($file);
+        return $this->_xml;
     }
 }
