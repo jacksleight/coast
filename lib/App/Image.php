@@ -20,6 +20,8 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
 
     protected $_manager;
 
+    protected $_driver = 'gd';
+
     protected $_baseDir;
 
     protected $_outputDir;
@@ -42,8 +44,17 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
         }
 
         $this->_manager = new ImageManager([
-            'driver' => extension_loaded('imagick') ? 'imagick' : 'gd',
+            'driver' => $this->_driver,
         ]);
+    }
+
+    public function driver($driver = null)
+    {
+        if (isset($driver)) {
+            $this->_driver = $driver;
+            return $this;
+        }
+        return $this->_driver;
     }
 
     public function baseDir(\Coast\Dir $baseDir = null)
