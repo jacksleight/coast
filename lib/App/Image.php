@@ -136,7 +136,7 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
         if (!$file->isWithin($this->_baseDir)) {
             throw new Exception("File '{$file}' is not within base directory '{$this->_baseDir}'");
         } else if (!$file->isReadable()) {
-            throw new Exception("File '{$file}' is not readable");
+            return $this->_urlResolver->file($file);
         }
 
         $transforms = (array) $transforms;
