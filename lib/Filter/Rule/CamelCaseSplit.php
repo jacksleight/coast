@@ -9,7 +9,7 @@ namespace Coast\Filter\Rule;
 use Coast;
 use Coast\Filter\Rule;
 
-class Slugify extends Rule
+class CamelCaseSplit extends Rule
 {
     protected $_space;
 
