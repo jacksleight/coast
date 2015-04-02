@@ -6,6 +6,8 @@
 
 namespace Coast;
 
+use Coast\File;
+
 class Response
 {
     protected $_req;
@@ -13,7 +15,7 @@ class Response
     protected $_status  = 200;
     protected $_headers = [];
     protected $_cookies = [];
-    protected $_body    = '';
+    protected $_body    = null;
 
     public function __construct(\Coast\Request $request = null)
     {
@@ -44,7 +46,14 @@ class Response
         foreach ($this->_cookies as $name => $params) {
             call_user_func_array('setcookie', $params);
         }
-        echo $this->body();
+        if ($this->_body instanceof File) {
+            $this->_body->output();
+            if ($this->_body->isOpen()) {
+                $this->_body->close();
+            }
+        } else {
+            echo $this->_body;
+        }
     }
 
     public function status($status = null)
@@ -144,6 +153,19 @@ class Response
                 ? "application/{$type}+xml"
                 : 'application/xml')
             ->body((string) $xml);
+    }
+
+    public function file(File $file, $type, $name = null)
+    {  
+        if ($name === true) {
+            $name = $file->baseName();
+        }
+        $this->_body = $file;
+        return $this
+            ->type($type)
+            ->header('Cache-Control', "public")
+            ->header('Content-Length', $file->size())
+            ->header('Content-Disposition', "attachment" . (isset($name) ? "; filename={$name}" : null));
     }
 
     public function redirect($url, $type = 301)
