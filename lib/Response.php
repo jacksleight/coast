@@ -15,20 +15,26 @@ class Response
     protected $_cookies = [];
     protected $_body    = '';
 
-    public function __construct(\Coast\Request $req)
+    public function __construct(\Coast\Request $request = null)
     {
-        $this->_req = $req;
+        $this->request($request);
     }
 
-    public function request()
+    public function request(\Coast\Request $request = null)
     {
-        return $this->_req;
+        if (func_num_args() > 0) {
+            $this->_request = $request;
+            return $this;
+        }
+        return $this->_request;
     }
 
     public function toGlobals()
     {
         if (session_status() == PHP_SESSION_ACTIVE) {
-            $_SESSION = $this->_req->sessions();
+            if (isset($this->_request)) {
+                $_SESSION = $this->_request->sessions();
+            }
             session_write_close();
         }
         http_response_code($this->_status);
@@ -85,8 +91,8 @@ class Response
     public function cookie($name, $value = null, $age = null, $path = null, $domain = null, $secure = false, $http = false)
     {
         if (func_num_args() > 0) {
-            if (!isset($path)) {
-                $path = $this->_req->base();
+            if (!isset($path) && isset($this->_request)) {
+                $path = $this->_request->base();
             }
             $this->_cookies[$name] = [$name, $value, (isset($age) ? time() + $age : null), $path, $domain, $secure, $http];
             return $this;
