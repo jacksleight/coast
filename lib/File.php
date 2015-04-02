@@ -39,7 +39,7 @@ class File extends \Coast\File\Path
 
     public function close()
     {
-        if (!isset($this->_handle)) {
+        if (!$this->isOpen()) {
             throw new \Exception("File '{$this}' is not open");
         }
         fclose($this->_handle);
@@ -49,24 +49,20 @@ class File extends \Coast\File\Path
 
     public function read($length = null)
     {
-        if (!isset($this->_handle)) {
+        if (!$this->isOpen()) {
             throw new \Exception("File '{$this}' is not open");
         }
-        if (isset($length)) {
-            return fread($this->_handle, $length);
-        } else {
-            if (strpos($this->_name, 'php://') === 0) {
-                return stream_get_contents($this->_handle);
-            } else {
-                $size = $this->size();
-                return fread($this->_handle, $size ? $size : 1);
-            }
+        if (!isset($length)) {
+            $this->rewind();
+            $size = $this->size();
+            $length = $size ? $size : 1;
         }
+        return fread($this->_handle, $length);
     }
 
     public function write($string, $length = null)
     {
-        if (!isset($this->_handle)) {
+        if (!$this->isOpen()) {
             throw new \Exception("File '{$this}' is not open");
         }
         isset($length)
@@ -77,7 +73,7 @@ class File extends \Coast\File\Path
 
     public function get($length = null)
     {
-        if (!isset($this->_handle)) {
+        if (!$this->isOpen()) {
             throw new \Exception("File '{$this}' is not open");
         }
         return isset($length)
@@ -87,7 +83,7 @@ class File extends \Coast\File\Path
 
     public function put($string, $length = null)
     {
-        if (!isset($this->_handle)) {
+        if (!$this->isOpen()) {
             throw new \Exception("File '{$this}' is not open");
         }
         $this->write($string, $length) . $this->write("\n");
@@ -96,7 +92,7 @@ class File extends \Coast\File\Path
 
     public function getCsv($length = 0)
     {
-        if (!isset($this->_handle)) {
+        if (!$this->isOpen()) {
             throw new \Exception("File '{$this}' is not open");
         }
         return fgetcsv($this->_handle, $length, $this->_chars[0], $this->_chars[1], $this->_chars[2]);
@@ -104,7 +100,7 @@ class File extends \Coast\File\Path
 
     public function putCsv($array)
     {
-        if (!isset($this->_handle)) {
+        if (!$this->isOpen()) {
             throw new \Exception("File '{$this}' is not open");
         }
         fputcsv($this->_handle, $array, $this->_chars[0], $this->_chars[1]);
@@ -113,7 +109,7 @@ class File extends \Coast\File\Path
 
     public function seek($offset, $whence = SEEK_SET)
     {
-        if (!isset($this->_handle)) {
+        if (!$this->isOpen()) {
             throw new \Exception("File '{$this}' is not open");
         }
         fseek($this->_handle, $offset, $whence);
@@ -122,7 +118,7 @@ class File extends \Coast\File\Path
 
     public function rewind()
     {
-        if (!isset($this->_handle)) {
+        if (!$this->isOpen()) {
             throw new \Exception("File '{$this}' is not open");
         }
         rewind($this->_handle);
@@ -131,7 +127,7 @@ class File extends \Coast\File\Path
 
     public function truncate($length = 0)
     {
-        if (!isset($this->_handle)) {
+        if (!$this->isOpen()) {
             throw new \Exception("File '{$this}' is not open");
         }
         ftruncate($this->_handle, $length);
@@ -140,10 +136,26 @@ class File extends \Coast\File\Path
 
     public function tell()
     {
-        if (!isset($this->_handle)) {
+        if (!$this->isOpen()) {
             throw new \Exception("File '{$this}' is not open");
         }
         return ftell($this->_handle);
+    }
+
+    public function output()
+    {
+        if ($this->isOpen()) {
+            $this->rewind();
+            fpassthru($this->_handle);
+        } else {
+            readfile($this->_name);
+        }        
+        return $this;
+    }
+
+    public function isOpen()
+    {
+        return isset($this->_handle);
     }
 
     public function moveUpload(\Coast\Dir $dir, $baseName = null)
@@ -188,7 +200,12 @@ class File extends \Coast\File\Path
 
     public function size()
     {
-        return filesize($this->_name);
+        if ($this->isOpen()) {
+            $stat = fstat($this->_handle);
+            return $stat['size'];
+        } else {
+            return filesize($this->_name);
+        }
     }
 
     public function hash($type)
