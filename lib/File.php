@@ -20,6 +20,11 @@ class File extends \Coast\File\Path
         return new \Coast\File($path);
     }
 
+    public static function createMemory($max = null)
+    {
+        return new \Coast\File("php://temp" . (isset($max) ? "/maxmemory:{$max}" : null));
+    }
+
     public function chars($delimiter = ',', $enclosure = '"', $escape = '\\')
     {
         $this->_chars = [$delimiter, $enclosure, $escape];
@@ -47,10 +52,16 @@ class File extends \Coast\File\Path
         if (!isset($this->_handle)) {
             throw new \Exception("File '{$this}' is not open");
         }
-        $size = $this->size();
-        return isset($length)
-            ? fread($this->_handle, $length)
-            : fread($this->_handle, $size ? $size : 1);
+        if (isset($length)) {
+            return fread($this->_handle, $length);
+        } else {
+            if (strpos($this->_name, 'php://') === 0) {
+                return stream_get_contents($this->_handle);
+            } else {
+                $size = $this->size();
+                return fread($this->_handle, $size ? $size : 1);
+            }
+        }
     }
 
     public function write($string, $length = null)
@@ -109,6 +120,15 @@ class File extends \Coast\File\Path
         return $this;
     }
 
+    public function rewind()
+    {
+        if (!isset($this->_handle)) {
+            throw new \Exception("File '{$this}' is not open");
+        }
+        rewind($this->_handle);
+        return $this;
+    }
+
     public function truncate($length = 0)
     {
         if (!isset($this->_handle)) {
@@ -116,6 +136,14 @@ class File extends \Coast\File\Path
         }
         ftruncate($this->_handle, $length);
         return $this;
+    }
+
+    public function tell()
+    {
+        if (!isset($this->_handle)) {
+            throw new \Exception("File '{$this}' is not open");
+        }
+        return ftell($this->_handle);
     }
 
     public function moveUpload(\Coast\Dir $dir, $baseName = null)
