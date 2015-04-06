@@ -6,14 +6,5 @@
 
 namespace Coast\Validator\Rule;
 
-use Coast\Validator\Rule;
-
-class Float extends Rule
-{
-	protected function _validate($value)
-	{
-		if (!is_numeric($value)) {
-		 	$this->error();
-		}
-	}
-}
+class Decimal extends Float
+{}
