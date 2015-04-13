@@ -40,8 +40,6 @@ class Model implements ArrayAccess
             $this->{$name}($value);
         } else if (property_exists($this, $name)) {
             $this->{$name} = $value;
-        } else {
-            throw new Exception("Property or method '{$name}' is not defined");  
         }
     }
 
