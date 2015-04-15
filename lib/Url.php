@@ -46,6 +46,18 @@ class Url
 
     public function toString()
     {
+        // Optimisation to skip complex URL build when all we have is a path
+        if (!isset($this->_scheme) &&
+            !isset($this->_user) &&
+            !isset($this->_pass) &&
+            !isset($this->_host) &&
+            !isset($this->_port) &&
+            !count($this->_queryParams) &&
+            !isset($this->_fragment) &&
+            isset($this->_path)) {
+            return $this->_path->name();
+        }
+
         $string = http_build_url($this->toArray());
         $string = preg_replace('/^(mailto|tel):\/{3}/', '$1:', $string);
         if (!isset($this->_scheme) &&
