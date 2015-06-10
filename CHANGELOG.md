@@ -1,5 +1,9 @@
 # Coast Changelog
 
+### 0.4.1
+
+* [to do]
+
 ### 0.4.0
 
 * [to do]
