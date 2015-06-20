@@ -12,7 +12,7 @@
 This example shows how to add `Coast\App\View` to the app as a named parameter and then use that in your middleware, however it can also be used as middleware directly:
 
 ```php
-$app->add(new View(['dir' => 'views']));
+$app->executable(new View(['dir' => 'views']));
 ```
 
 A request for `/example/page` will map to `[view dir]/example/page.phtml`.
@@ -20,5 +20,5 @@ A request for `/example/page` will map to `[view dir]/example/page.phtml`.
 If you need access to the view object elsewhere in your application the `add` method can also save the middleware as a named parameter:
 
 ```php
-$app->add('view', new View(['dir' => 'views']));
+$app->executable('view', new View(['dir' => 'views']));
 ```

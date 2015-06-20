@@ -11,15 +11,16 @@ if (php_sapi_name() == 'cli-server' && $_SERVER['REQUEST_URI'] == '/example.png'
 }
 
 date_default_timezone_set('UTC');
-require __DIR__ . '/vendor/autoload.php';
+require __DIR__ . '/../autoload.php';
 
 $app = new App(__DIR__);
-$app->add('router', new Router())
-    ->set('url', new UrlResolver(
-        new \Coast\Url((new Request())->fromGlobals()->base()),
-        $app->dir(),
-        $app->router
-    ))
+$app->param('router', new Router())
+    ->executable($app->router)
+    ->param('url', new UrlResolver([
+        'baseUrl'     => new \Coast\Url((new Request())->fromGlobals()->base()),
+        'baseDir'     => $app->dir(),
+        'router'      => $app->router,
+    ]))
     ->notFoundHandler(function(Request $req, Response $res) {
         $res->status(404)
             ->text("Not Found");

@@ -4,10 +4,10 @@ use Coast\App,
     Coast\Response;
 
 date_default_timezone_set('UTC');
-require __DIR__ . '/vendor/autoload.php';
+require __DIR__ . '/../autoload.php';
 
 $app = new App(__DIR__);
-$app->add(function(Request $req, Response $res) {
+$app->executable(function(Request $req, Response $res) {
         if ($req->path() == 'null') {
             return;
         } else if ($req->path() == 'true') {
@@ -20,7 +20,7 @@ $app->add(function(Request $req, Response $res) {
         }
         return $res->text('Try /null, /true, /false or /error.');    
     })
-    ->add(function(Request $req, Response $res) {
+    ->executable(function(Request $req, Response $res) {
         return $res->text('Second middleware.');    
     })
     ->notFoundHandler(function(Request $req, Response $res) {

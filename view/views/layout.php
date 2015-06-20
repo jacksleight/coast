@@ -5,8 +5,8 @@
     <title><?= $title ?></title>
 </head>
 <body>
-    <?= $content->top ?>
+    <?= $this->content('top') ?>
     <hr>
-    <?= $content->bottom ?>
+    <?= $this->content('bottom') ?>
 </body>
 </html>

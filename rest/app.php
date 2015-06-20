@@ -5,11 +5,12 @@ use Coast\App,
     Coast\App\Router;
 
 date_default_timezone_set('UTC');
-require __DIR__ . '/vendor/autoload.php';
+require __DIR__ . '/../autoload.php';
 
 $app = new App(__DIR__);
-$app->set('data', json_decode(file_get_contents($app->file('data.json')), true)) // Placeholder data
-    ->add('router', new Router())
+$app->param('data', json_decode(file_get_contents($app->file('data.json')), true)) // Placeholder data
+    ->param('router', new Router())
+    ->executable($app->router)
     ->notFoundHandler(function(Request $req, Response $res) {
         $res->status(404)
             ->text("Not Found");

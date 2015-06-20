@@ -4,10 +4,10 @@ use Coast\App,
     Coast\Response;
 
 date_default_timezone_set('UTC');
-require __DIR__ . '/vendor/autoload.php';
+require __DIR__ . '/../autoload.php';
 
 $app = new App(__DIR__);
-$app->add(function(Request $req, Response $res) {    
+$app->executable(function(Request $req, Response $res) {    
         return $res->text('Hello World');
     });
 

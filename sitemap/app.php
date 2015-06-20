@@ -5,10 +5,10 @@ use Coast\App,
     Coast\Sitemap;
 
 date_default_timezone_set('UTC');
-require __DIR__ . '/vendor/autoload.php';
+require __DIR__ . '/../autoload.php';
 
 $app = new App(__DIR__);
-$app->add(function(Request $req, Response $res) {    
+$app->executable(function(Request $req, Response $res) {    
 	$sitemap = new Sitemap();
 	$sitemap->add(
 		new \Coast\Url('http://coastphp.com/'),
@@ -16,7 +16,7 @@ $app->add(function(Request $req, Response $res) {
 		Sitemap::CHANGEFREQ_WEEKLY,
 		1
 	);
-    return $res->xml($sitemap);
+    return $res->xml($sitemap->toXml());
 });
 
 $app->execute();
