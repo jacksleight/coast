@@ -5,13 +5,13 @@
 * [**Middleware**](middleware)  
     Example of how middleware return values and errors are handled.
 * [**View**](view)  
-    Usage of the `Coast\App\View` component.
+    Usage of the `Coast\View` component.
 * [**Router**](router)  
-    Usage of the `Coast\App\Router` component.
+    Usage of the `Coast\Router` component.
 * **Controller**  
-    Usage of the `Coast\App\Controller` component.
+    Usage of the `Coast\Controller` component.
 * [**URL**](url)  
-    Usage of the `Coast\App\URL` component.
+    Usage of the `Coast\UrlResolver` component.
 * [**RESTful JSON API**](rest)  
     Example of a basic RESTful JSON API.
 * **Web Site**  
@@ -19,7 +19,7 @@
 * [**Sitemap**](sitemap)  
     Usage of the `Coast\Sitemap` component.
 * [**Feed**](feed)  
-    Usage of the `Coast\Feed\Atom` component.
+    Usage of the `Coast\Feed` component.
 
 ## Running
 

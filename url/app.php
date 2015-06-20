@@ -2,8 +2,8 @@
 use Coast\App,
     Coast\Request, 
     Coast\Response,
-    Coast\App\Router,
-    Coast\App\UrlResolver;
+    Coast\Router,
+    Coast\UrlResolver;
 
 // Placeholder code, this allows PHP's CLI server to serve the example file
 if (php_sapi_name() == 'cli-server' && $_SERVER['REQUEST_URI'] == '/example.png') {

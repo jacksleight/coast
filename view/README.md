@@ -9,7 +9,7 @@
 
 ## Usage as Middleware
 
-This example shows how to add `Coast\App\View` to the app as a named parameter and then use that in your middleware, however it can also be used as middleware directly:
+This example shows how to add `Coast\View` to the app as a named parameter and then use that in your middleware, however it can also be used as middleware directly:
 
 ```php
 $app->executable(new View(['dir' => 'views']));

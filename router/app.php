@@ -2,7 +2,7 @@
 use Coast\App,
     Coast\Request, 
     Coast\Response,
-    Coast\App\Router;
+    Coast\Router;
 
 date_default_timezone_set('UTC');
 require __DIR__ . '/../autoload.php';
