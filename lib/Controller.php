@@ -4,9 +4,11 @@
  * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
  */
 
-namespace Coast\App;
+namespace Coast;
 
-class Controller implements \Coast\App\Access, \Coast\App\Router\Routable
+use Coast\Controller\Exception;
+
+class Controller implements \Coast\App\Access, \Coast\Router\Routable
 {
     use \Coast\App\Access\Implementation;
     
@@ -95,23 +97,23 @@ class Controller implements \Coast\App\Access, \Coast\App\Router\Routable
             list($name, $action, $params, $set) = $item;
 
             if (!isset($this->_nspaces[$set])) {
-                throw new \Coast\App\Exception("Controller set '{$set}' does not exist");
+                throw new Exception("Controller set '{$set}' does not exist");
             }
             $class = $this->_nspaces[$set] . '\\' . implode('\\', array_map('ucfirst', explode('_', $name)));
             if (!isset($this->_actions[$class])) {
                 if (!class_exists($class)) {
-                    throw new \Coast\App\Exception("Controller '{$set}:{$name}' does not exist");
+                    throw new Exception("Controller '{$set}:{$name}' does not exist");
                 }
                 $object = new $class($this);
-                if (!$object instanceof \Coast\App\Controller\Action) {
-                    throw new \Coast\App\Exception("Controller '{$set}:{$name}' is not an instance of \Coast\App\Controller\Action");
+                if (!$object instanceof \Coast\Controller\Action) {
+                    throw new Exception("Controller '{$set}:{$name}' is not an instance of \Coast\Controller\Action");
                 }
                 $this->_actions[$class] = $object;
             } else {
                 $object = $this->_actions[$class];
             }
             if (!method_exists($object, $action)) {
-                throw new \Coast\App\Exception("Controller action '{$set}:{$name}:{$action}' does not exist");
+                throw new Exception("Controller action '{$set}:{$name}:{$action}' does not exist");
             }
 
             $result = call_user_func_array([$object, $action], $params);

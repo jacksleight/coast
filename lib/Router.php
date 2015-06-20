@@ -4,7 +4,9 @@
  * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
  */
 
-namespace Coast\App;
+namespace Coast;
+
+use Coast\Router\Exception;
 
 class Router implements \Coast\App\Access, \Coast\App\Executable
 {
@@ -50,7 +52,7 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
             : null;
     }
 
-    public function target(\Coast\App\Router\Routable $target = null)
+    public function target(\Coast\Router\Routable $target = null)
     {
         if (func_num_args() > 0) {
             $this->_target = $target;
@@ -185,7 +187,7 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
     public function reverse($name, array $params = array())
     {
         if (!isset($this->_routes[$name])) {
-            throw new \Coast\App\Exception("Route '{$name}' does not exist");
+            throw new Exception("Route '{$name}' does not exist");
         }
 
         $route = $this->_routes[$name];
@@ -202,7 +204,7 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
                 } else if ($match[3] == '?') {
                     $value = null;
                 } else {
-                    throw new \Coast\App\Exception("Parameter '{$match[1]}' missing");
+                    throw new Exception("Parameter '{$match[1]}' missing");
                 }
             } else {
                 $value = $part;
@@ -230,7 +232,7 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
         } else if (isset($this->_target)) {
             return $this->_target->route($req, $res);
         } else {
-            throw new \Coast\App\Exception("There's nothing to route '{$route['name']}' to");
+            throw new Exception("There's nothing to route '{$route['name']}' to");
         }        
     }
 }

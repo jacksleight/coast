@@ -4,15 +4,15 @@
  * Any redistribution or reproduction of part or all of the contents in any form is prohibited.
  */
 
-namespace Coast\App;
+namespace Coast;
 
-use Coast\Request,
-    Coast\Response,
-    Coast\File,
-    Coast\Url,
-    Coast\App\Exception,
-    Intervention\Image\Image as InterventionImage,
-    Intervention\Image\ImageManager;
+use Coast\Request;
+use Coast\Response;
+use Coast\File;
+use Coast\Url;
+use Intervention\Image\Image as InterventionImage;
+use Intervention\Image\ImageManager;
+use Coast\Image\Exception;
 
 class Image implements \Coast\App\Access, \Coast\App\Executable
 {
@@ -73,7 +73,7 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
         return $this->_outputDir;
     }
 
-    public function urlResolver(\Coast\App\UrlResolver $urlResolver = null)
+    public function urlResolver(\Coast\UrlResolver $urlResolver = null)
     {
         if (isset($urlResolver)) {
             $this->_urlResolver = $urlResolver;
@@ -82,7 +82,7 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
         return $this->_urlResolver;
     }
 
-    public function outputUrlResolver(\Coast\App\UrlResolver $outputUrlResolver = null)
+    public function outputUrlResolver(\Coast\UrlResolver $outputUrlResolver = null)
     {
         if (isset($outputUrlResolver)) {
             $this->_outputUrlResolver = $outputUrlResolver;

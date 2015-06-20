@@ -4,7 +4,9 @@
  * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
  */
 
-namespace Coast\App;
+namespace Coast;
+
+use Coast\UrlResolver\Exception;
 
 class UrlResolver implements \Coast\App\Access
 {
@@ -78,7 +80,7 @@ class UrlResolver implements \Coast\App\Access
         return $this->_baseDir;
     }
 
-    public function router(\Coast\App\Router $router = null)
+    public function router(\Coast\Router $router = null)
     {
         if (func_num_args() > 0) {
             $this->_router = $router;
@@ -107,7 +109,7 @@ class UrlResolver implements \Coast\App\Access
     public function route(array $params = array(), $name = null, $reset = false, $base = true)
     {
         if (!isset($this->_router)) {
-            throw new \Coast\App\Exception("Router has not been set");
+            throw new Exception("Router has not been set");
         }
 
         $route = isset($this->req)
@@ -115,7 +117,7 @@ class UrlResolver implements \Coast\App\Access
             : null;
         if (!isset($name)) {
             if (!isset($route)) {
-                throw new \Coast\App\Exception("Route not specified and no previous route is avaliable");
+                throw new Exception("Route not specified and no previous route is avaliable");
             }
             $name = $route['name'];
         }
@@ -158,7 +160,7 @@ class UrlResolver implements \Coast\App\Access
     public function path($path, $base = true, $cdn = true, $cacheBust = true)
     {
         if (!isset($this->_baseDir)) {
-            throw new \Coast\App\Exception("Base directory has not been set");
+            throw new Exception("Base directory has not been set");
         }
 
         $path = !$path instanceof \Coast\Path

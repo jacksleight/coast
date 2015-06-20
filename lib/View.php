@@ -4,9 +4,10 @@
  * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
  */
 
-namespace Coast\App;
+namespace Coast;
 
-use Coast\App\View\Content;
+use Coast\View\Content;
+use Coast\View\Exception;
 
 class View implements \Coast\App\Access, \Coast\App\Executable
 {
@@ -98,11 +99,11 @@ class View implements \Coast\App\Access, \Coast\App\Executable
             }
         }
         if (!isset($this->_dirs[$set])) {
-            throw new \Coast\App\Exception("View set '{$set}' does not exist");
+            throw new Exception("View set '{$set}' does not exist");
         }
         $file = $this->_dirs[$set]->file($path);    
         if (!$file->exists()) {
-            throw new \Coast\App\Exception("View file '{$set}:{$path}' does not exist");
+            throw new Exception("View file '{$set}:{$path}' does not exist");
         }
 
         array_unshift($this->_stack, [
@@ -154,7 +155,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
     public function child($name, array $params = array(), $set = null)
     {
         if (!count($this->_stack)) {
-            throw new \Exception("Cannot call child() before render()");
+            throw new Exception("Cannot call child() before render()");
         }
 
         $params = array_merge($this->_stack[0]['params'], $params);
@@ -164,7 +165,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
     protected function parent($name, array $params = array(), $set = null)
     {
         if (!count($this->_stack)) {
-            throw new \Exception("Cannot call parent() before render()");
+            throw new Exception("Cannot call parent() before render()");
         }
         
         $params = array_merge($this->_stack[0]['params'], $params);
@@ -174,7 +175,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
     protected function extend($name, array $params = array(), $set = null)
     {
         if (!count($this->_stack)) {
-            throw new \Exception("Cannot call extend() before render()");
+            throw new Exception("Cannot call extend() before render()");
         }
         
         $params = array_merge($this->_stack[0]['params'], $params);
