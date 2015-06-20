@@ -32,8 +32,6 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
 
     protected $_transforms = [];
 
-    protected $_placeholderGenerator;
-
     public function __construct(array $options = array())
     {
         foreach ($options as $name => $value) {
@@ -91,15 +89,6 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
             return $this;
         }
         return $this->_outputUrlResolver;
-    }
-
-    public function placeholderGenerator(\Closure $placeholderGenerator = null)
-    {
-        if (func_num_args() > 0) {
-            $this->_placeholderGenerator = $placeholderGenerator;
-            return $this;
-        }
-        return $this->_placeholderGenerator;
     }
 
     public function transform($name, $value = null)
@@ -212,14 +201,5 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
         return $this->_outputDir
             ->dir("{$id[0]}/{$id[1]}", true)
             ->file("{$id}.{$file->extName()}");
-    }
-
-    public function placeholder($width, $height = null, $grayscale = false)
-    {
-        if (!isset($this->_placeholderGenerator)) {
-            throw new Exception("Placeholder generator has not be set");
-        }
-        $callback = $this->_placeholderGenerator;
-        return $callback($width, $height, $grayscale);
     }
 }
