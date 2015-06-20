@@ -113,7 +113,7 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
         return $this->_transforms;
     }
 
-    public function __invoke($file, $transforms = array(), array $params = array())
+    public function __invoke($file, array $params = array(), $transforms = 'default')
     {
         $file = !$file instanceof File
             ? new File("{$file}")
