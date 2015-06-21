@@ -70,16 +70,12 @@ class App implements Executable
      * @param mixed $baseDir Base directory.
      * @param array $envs Additional environment variables.
      */
-    public function __construct($baseDir, array $envs = array())
+    public function __construct($baseDir = null, array $envs = array())
     {
-        $this->baseDir(!$baseDir instanceof Dir
-            ? new Dir("{$baseDir}")
-            : $baseDir);
-
+        $this->baseDir($baseDir);
         $this->_envs = array_merge(array(
             'MODE' => php_sapi_name() == 'cli' ? self::MODE_CLI : self::MODE_HTTP,
         ), $_ENV, $envs);
-        
         $this->param('app', $this);
     }
 
@@ -87,9 +83,12 @@ class App implements Executable
      * Get/set base directory.
      * @return Coast\Dir
      */
-    public function baseDir(\Coast\Dir $baseDir = null)
+    public function baseDir($baseDir = null)
     {
         if (func_num_args() > 0) {
+            $baseDir = isset($baseDir) && !$baseDir instanceof Dir
+                ? new Dir("{$baseDir}")
+                : $baseDir;
             $this->_baseDir = $baseDir;
             return $this;
         }
@@ -102,6 +101,9 @@ class App implements Executable
      */
     public function dir($path = null, $create = false)
     {
+        if (!isset($this->_baseDir)) {
+            throw new App\Exception('Base directory not set');
+        }
         return isset($path)
             ? $this->_baseDir->dir($path, $create)
             : $this->_baseDir;
@@ -113,6 +115,9 @@ class App implements Executable
      */
     public function file($path)
     {
+        if (!isset($this->_baseDir)) {
+            throw new App\Exception('Base directory not set');
+        }
         return $this->_baseDir->file($path);
     }
 
@@ -122,8 +127,14 @@ class App implements Executable
      * @param  array   $vars
      * @return mixed
      */
-    public function load(File $file, array $vars = array())
+    public function load($file, array $vars = array())
     {
+        $file = !$file instanceof File
+            ? new File("{$file}")
+            : $file;
+        $file = $file->isRelative()
+            ? $this->file($file)
+            : $file;
         return \Coast\load($file, array_merge(['app' => $this], $vars));
     }
 
@@ -133,8 +144,14 @@ class App implements Executable
      * @param  array   $vars
      * @return mixed
      */
-    public function lazy(File $file, array $vars = array())
+    public function lazy($file, array $vars = array())
     {
+        $file = !$file instanceof File
+            ? new File("{$file}")
+            : $file;
+        $file = $file->isRelative()
+            ? $this->file($file)
+            : $file;
         return new Lazy($file, array_merge(['app' => $this], $vars));
     }
 
@@ -393,6 +410,10 @@ class App implements Executable
     public function __call($name, array $args)
     {
         $value = $this->param($name);
+        if ($value instanceof Lazy) {
+            $value = $value->load();
+            $this->param($name, $value);
+        }
         if (!is_callable($value)) {
             throw new \Coast\App\Exception("Param '{$name}' is not callable");
         }
