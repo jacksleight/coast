@@ -278,3 +278,40 @@ function str_to_bytes($value)
     }
     return $size;
 }
+
+function str_css($properties)
+{
+    $lines = array();
+    foreach ($properties as $name => $value) {
+        $lines[] = "{$name}: {$value};";
+    }
+    return implode(' ', $lines);
+}
+
+function str_css_ratio($width, $height)
+{
+    return \Coast\str_css(array(
+        'padding-top' => (($height / $width) * 100) . "%",
+    ));
+}
+
+function str_css_ratio_slope($smallWidth, $smallHeight, $largeWidth, $largeHeight)
+{
+    $slope = ($largeHeight - $smallHeight) / ($largeWidth - $smallWidth);
+    return \Coast\str_css(array(
+        'padding-top' => ($slope * 100) . "%",
+        'height'      => ($smallHeight - $smallWidth * $slope) . 'px'
+    ));
+}
+
+function str_html_attrs(array $attrs, $prefix = null)
+{
+    $prefix = isset($prefix)
+        ? "{$prefix}-"
+        : $prefix;
+    $items = [];
+    foreach ($attrs as $name => $value) {
+        $items[] = "{$prefix}{$name}" . (isset($value) ? "=\"{$value}\"" : null);
+    }
+    return implode(' ', $items);
+}
