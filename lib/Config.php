@@ -18,7 +18,7 @@ class Config
     protected $_opts = [];
 
     /**
-     * Consutruct a new config object.
+     * Construct a new config object.
      * @param array $files List of PHP files to parse.
      */
     public function __construct($files = array())
