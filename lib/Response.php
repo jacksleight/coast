@@ -155,17 +155,20 @@ class Response
             ->body((string) $xml);
     }
 
-    public function file(File $file, $type, $name = null)
+    public function file(File $file, $type, $download = false, $name = null)
     {  
         if ($name === true) {
             $name = $file->baseName();
         }
         $this->_body = $file;
-        return $this
+        $this
             ->type($type)
             ->header('Cache-Control', "public")
-            ->header('Content-Length', $file->size())
-            ->header('Content-Disposition', "attachment" . (isset($name) ? "; filename={$name}" : null));
+            ->header('Content-Length', $file->size());
+        if ($download) {
+            $this->header('Content-Disposition', "attachment" . (isset($name) ? "; filename={$name}" : null));
+        }
+        return $this;
     }
 
     public function redirect($url, $type = 301)
