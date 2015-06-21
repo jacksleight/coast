@@ -35,6 +35,7 @@ class Model implements ArrayAccess
         if ($name[0] == '_') {
             throw new Model\Exception("Access to '{$name}' is prohibited");  
         }
+        $name = \Coast\str_camel($name);
         if (method_exists($this, $name)) {
             $this->{$name}($value);
         } else if (property_exists($this, $name)) {
@@ -47,12 +48,13 @@ class Model implements ArrayAccess
         if ($name[0] == '_') {
             throw new Model\Exception("Access to '{$name}' is prohibited");  
         }
+        $name = \Coast\str_camel($name);
         if (method_exists($this, $name)) {
             return $this->{$name}();
         } else if (property_exists($this, $name)) {
             return $this->{$name};
         } else {
-            throw new Model\Exception("Property or method '{$name}' is not defined");  
+            return null;
         }
     }
 
@@ -61,12 +63,13 @@ class Model implements ArrayAccess
         if ($name[0] == '_') {
             throw new Model\Exception("Access to '{$name}' is prohibited");  
         }
+        $name = \Coast\str_camel($name);
         if (method_exists($this, $name)) {
             return $this->{$name}() !== null;
         } else if (property_exists($this, $name)) {
             return $this->{$name} !== null;
         } else {
-            throw new Model\Exception("Property or method '{$name}' is not defined");  
+            return false;
         }
     }
 
@@ -75,10 +78,9 @@ class Model implements ArrayAccess
         if ($name[0] == '_') {
             throw new Model\Exception("Access to '{$name}' is prohibited");  
         }
+        $name = \Coast\str_camel($name);
         if (property_exists($this, $name)) {
             $this->{$name} = null;
-        } else {
-            throw new Model\Exception("Property or method '{$name}' is not defined");  
         }
     }
 
@@ -87,6 +89,7 @@ class Model implements ArrayAccess
         if ($name[0] == '_') {
             throw new Model\Exception("Access to '{$name}' is prohibited");  
         }
+        $name = \Coast\str_camel($name);
         if (isset($args[0])) {
             $this->__set($name, $args[0]);
             return $this;
