@@ -12,7 +12,6 @@ use Coast\File;
 use Coast\Url;
 use Intervention\Image\Image as InterventionImage;
 use Intervention\Image\ImageManager;
-use Coast\Image\Exception;
 
 class Image implements \Coast\App\Access, \Coast\App\Executable
 {
@@ -36,7 +35,7 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
     {
         foreach ($options as $name => $value) {
             if ($name[0] == '_') {
-                throw new Exception("Access to '{$name}' is prohibited");  
+                throw new \Coast\Exception("Access to '{$name}' is prohibited");  
             }
             $this->$name($value);
         }
@@ -123,7 +122,7 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
             : $file;
         $file = $file->toReal();
         if (!$file->isWithin($this->_baseDir)) {
-            throw new Exception("File '{$file}' is not within base directory '{$this->_baseDir}'");
+            throw new Image\Exception("File '{$file}' is not within base directory '{$this->_baseDir}'");
         } else if (!$file->isReadable()) {
             return $this->_urlResolver->file($file);
         }
@@ -131,7 +130,7 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
         $transforms = (array) $transforms;
         foreach ($transforms as $i => $name) {
             if (!isset($this->_transforms[$name])) {
-                throw new Exception("Transform '{$name}' is not defined");
+                throw new Image\Exception("Transform '{$name}' is not defined");
             }
             $transforms[$i] = (string) $name;
         }
@@ -163,9 +162,9 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
         $file = new File("{$this->_baseDir}/{$req->file}");
         $file = $file->toReal();
         if (!$file->isWithin($this->_baseDir)) {
-            throw new Exception("File '{$file}' is not within base directory '{$this->_baseDir}'");
+            throw new Image\Exception("File '{$file}' is not within base directory '{$this->_baseDir}'");
         } else if (!$file->isReadable()) {
-            throw new Exception("File '{$file}' is not readable");
+            throw new Image\Exception("File '{$file}' is not readable");
         }
 
         $transforms = $req->transforms;

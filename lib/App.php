@@ -223,7 +223,7 @@ class App implements Executable
     public function executable($executable)
     {
         if (!$executable instanceof \Closure && !$executable instanceof Executable) {
-            throw new Exception("Object is not a closure or instance of Coast\App\Executable");
+            throw new App\Exception("Object is not a closure or instance of Coast\App\Executable");
         }
         array_push($this->_executables, $executable instanceof \Closure
             ? $executable->bindTo($this)
@@ -244,7 +244,7 @@ class App implements Executable
             $req  = (new Request())->fromGlobals();
             $res  = (new Response($req));
         } else if (!isset($res)) {
-            throw new Exception('You must pass a Response object when passing a Request object');
+            throw new App\Exception('You must pass a Response object when passing a Request object');
         }
 
         if (isset($this->_path)) {
@@ -271,7 +271,7 @@ class App implements Executable
                 if (isset($this->_notFoundHandler)) {
                     $result = call_user_func($this->_notFoundHandler, $req, $res);
                 } else {
-                    throw new Exception('Nothing successfully handled the request');
+                    throw new App\Exception('Nothing successfully handled the request');
                 }
             }
         } catch (\Exception $e) {

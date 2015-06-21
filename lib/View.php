@@ -7,7 +7,6 @@
 namespace Coast;
 
 use Coast\View\Content;
-use Coast\View\Exception;
 
 class View implements \Coast\App\Access, \Coast\App\Executable
 {
@@ -23,7 +22,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
     {
         foreach ($options as $name => $value) {
             if ($name[0] == '_') {
-                throw new Exception("Access to '{$name}' is prohibited");  
+                throw new \Coast\Exception("Access to '{$name}' is prohibited");  
             }
             $this->$name($value);
         }
@@ -37,7 +36,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         }
         return isset($this->_dirs[$name])
             ? $this->_dirs[$name]
-            : null;;
+            : null;
     }
 
     public function dirs(array $dirs = null)
@@ -99,11 +98,11 @@ class View implements \Coast\App\Access, \Coast\App\Executable
             }
         }
         if (!isset($this->_dirs[$set])) {
-            throw new Exception("View set '{$set}' does not exist");
+            throw new View\Exception("View set '{$set}' does not exist");
         }
         $file = $this->_dirs[$set]->file($path);    
         if (!$file->exists()) {
-            throw new Exception("View file '{$set}:{$path}' does not exist");
+            throw new View\Exception("View file '{$set}:{$path}' does not exist");
         }
 
         array_unshift($this->_stack, [
@@ -155,7 +154,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
     public function child($name, array $params = array(), $set = null)
     {
         if (!count($this->_stack)) {
-            throw new Exception("Cannot call child() before render()");
+            throw new View\Exception("Cannot call child() before render()");
         }
 
         $params = array_merge($this->_stack[0]['params'], $params);
@@ -165,7 +164,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
     protected function parent($name, array $params = array(), $set = null)
     {
         if (!count($this->_stack)) {
-            throw new Exception("Cannot call parent() before render()");
+            throw new View\Exception("Cannot call parent() before render()");
         }
         
         $params = array_merge($this->_stack[0]['params'], $params);
@@ -175,7 +174,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
     protected function extend($name, array $params = array(), $set = null)
     {
         if (!count($this->_stack)) {
-            throw new Exception("Cannot call extend() before render()");
+            throw new View\Exception("Cannot call extend() before render()");
         }
         
         $params = array_merge($this->_stack[0]['params'], $params);

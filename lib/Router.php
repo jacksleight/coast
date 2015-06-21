@@ -6,8 +6,6 @@
 
 namespace Coast;
 
-use Coast\Router\Exception;
-
 class Router implements \Coast\App\Access, \Coast\App\Executable
 {
     const METHOD_GET    = \Coast\Request::METHOD_GET;
@@ -25,7 +23,7 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
     {
         foreach ($options as $name => $value) {
             if ($name[0] == '_') {
-                throw new Exception("Access to '{$name}' is prohibited");  
+                throw new \Coast\Exception("Access to '{$name}' is prohibited");  
             }
             $this->$name($value);
         }
@@ -187,7 +185,7 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
     public function reverse($name, array $params = array())
     {
         if (!isset($this->_routes[$name])) {
-            throw new Exception("Route '{$name}' does not exist");
+            throw new Router\Exception("Route '{$name}' does not exist");
         }
 
         $route = $this->_routes[$name];
@@ -204,7 +202,7 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
                 } else if ($match[3] == '?') {
                     $value = null;
                 } else {
-                    throw new Exception("Parameter '{$match[1]}' missing");
+                    throw new Router\Exception("Parameter '{$match[1]}' missing");
                 }
             } else {
                 $value = $part;
@@ -232,7 +230,7 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
         } else if (isset($this->_target)) {
             return $this->_target->route($req, $res);
         } else {
-            throw new Exception("There's nothing to route '{$route['name']}' to");
+            throw new Router\Exception("There's nothing to route '{$route['name']}' to");
         }        
     }
 }

@@ -6,8 +6,7 @@
 
 namespace Coast;
 
-use Exception,
-    ArrayAccess;
+use ArrayAccess;
 
 class Model implements ArrayAccess
 {
@@ -34,7 +33,7 @@ class Model implements ArrayAccess
     public function __set($name, $value)
     {
         if ($name[0] == '_') {
-            throw new Exception("Access to '{$name}' is prohibited");  
+            throw new Model\Exception("Access to '{$name}' is prohibited");  
         }
         if (method_exists($this, $name)) {
             $this->{$name}($value);
@@ -46,47 +45,47 @@ class Model implements ArrayAccess
     public function __get($name)
     {
         if ($name[0] == '_') {
-            throw new Exception("Access to '{$name}' is prohibited");  
+            throw new Model\Exception("Access to '{$name}' is prohibited");  
         }
         if (method_exists($this, $name)) {
             return $this->{$name}();
         } else if (property_exists($this, $name)) {
             return $this->{$name};
         } else {
-            throw new Exception("Property or method '{$name}' is not defined");  
+            throw new Model\Exception("Property or method '{$name}' is not defined");  
         }
     }
 
     public function __isset($name)
     {
         if ($name[0] == '_') {
-            throw new Exception("Access to '{$name}' is prohibited");  
+            throw new Model\Exception("Access to '{$name}' is prohibited");  
         }
         if (method_exists($this, $name)) {
             return $this->{$name}() !== null;
         } else if (property_exists($this, $name)) {
             return $this->{$name} !== null;
         } else {
-            throw new Exception("Property or method '{$name}' is not defined");  
+            throw new Model\Exception("Property or method '{$name}' is not defined");  
         }
     }
 
     public function __unset($name)
     {
         if ($name[0] == '_') {
-            throw new Exception("Access to '{$name}' is prohibited");  
+            throw new Model\Exception("Access to '{$name}' is prohibited");  
         }
         if (property_exists($this, $name)) {
             $this->{$name} = null;
         } else {
-            throw new Exception("Property or method '{$name}' is not defined");  
+            throw new Model\Exception("Property or method '{$name}' is not defined");  
         }
     }
 
     public function __call($name, array $args)
     {
         if ($name[0] == '_') {
-            throw new Exception("Access to '{$name}' is prohibited");  
+            throw new Model\Exception("Access to '{$name}' is prohibited");  
         }
         if (isset($args[0])) {
             $this->__set($name, $args[0]);
