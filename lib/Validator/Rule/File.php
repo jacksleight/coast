@@ -23,7 +23,7 @@ class File extends Rule
     protected $_readable = null;
     protected $_writable = null;
 
-    public function __construct($size = null, $types = null, $readable = true, $writable = false)
+    public function __construct($size = null, array $types = null, $readable = null, $writable = null)
     {
         $this->size($size);
         $this->types($types);
@@ -49,13 +49,13 @@ class File extends Rule
         return $this->_types;
     }
 
-    public function readable($readbale = null)
+    public function readable($readable = null)
     {
         if (func_num_args() > 0) {
-            $this->_readbale = $readbale;
+            $this->_readable = $readable;
             return $this;
         }
-        return $this->_readbale;
+        return $this->_readable;
     }
 
     public function writable($writable = null)
@@ -84,10 +84,10 @@ class File extends Rule
         if (isset($this->_types) && !in_array($value->extName(), $this->_types)) {
             $this->error(self::TYPE);
         }
-        if ($this->_readable && $value->isReadable()) {
+        if (isset($this->_readable) && $this->_readable == $value->isReadable()) {
             $this->error(self::READABLE);
         }
-        if ($this->_writable && $value->isWritable()) {
+        if (isset($this->_writable) && $this->_writable == $value->isWritable()) {
             $this->error(self::WRITABLE);
         }
     }

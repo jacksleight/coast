@@ -21,6 +21,9 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($validator([0]));
         $this->assertFalse($validator([]));
         $this->assertFalse($validator([0, 1, 2]));
+
+        $this->assertEquals($validator->min(), 1);
+        $this->assertEquals($validator->max(), 2);
     }
 
     public function testLength()
@@ -29,6 +32,9 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($validator('0'));
         $this->assertFalse($validator(''));
         $this->assertFalse($validator('012'));
+
+        $this->assertEquals($validator->min(), 1);
+        $this->assertEquals($validator->max(), 2);
     }
 
     public function testRange()
@@ -37,13 +43,94 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($validator(1));
         $this->assertFalse($validator(0));
         $this->assertFalse($validator(3));
+
+        $this->assertEquals($validator->min(), 1);
+        $this->assertEquals($validator->max(), 2);
+    }
+
+    public function testFile()
+    {
+        $validator = new Rule\File(1000, ['txt'], true, true);
+        $this->assertEquals($validator->size(), 1000);
+        $this->assertEquals($validator->types(), ['txt']);
+        $this->assertEquals($validator->readable(), true);
+        $this->assertEquals($validator->writable(), true);
+
+        $validator = new Rule\File();
+        $this->assertFalse($validator('invalid'));
+        $this->assertFalse($validator(new \Coast\File('invalid.txt')));
+
+        $validator = new Rule\File(1);
+        $this->assertFalse($validator(new \Coast\File(__FILE__)));
+
+        $validator = new Rule\File(null, ['txt']);
+        $this->assertFalse($validator(new \Coast\File(__FILE__)));
+
+        $validator = new Rule\File(null, null, true);
+        $this->assertFalse($validator(new \Coast\File(__FILE__)));
+
+        $validator = new Rule\File(null, null, null, true);
+        $this->assertFalse($validator(new \Coast\File(__FILE__)));
+    }
+
+    public function testUpload()
+    {
+        $validator = new Rule\Upload(1000, ['txt']);
+        $this->assertTrue($validator([
+            'name'     => 'test.txt',
+            'type'     => 'text/plain',
+            'tmp_name' => '/tmp/php/test',
+            'error'    => UPLOAD_ERR_OK,
+            'size'     => 100,
+        ]));
+        $this->assertFalse($validator([
+            'name'     => 'test.jpg',
+            'type'     => 'image/jpeg',
+            'tmp_name' => '/tmp/php/test',
+            'error'    => UPLOAD_ERR_OK,
+            'size'     => 100,
+        ]));
+        $this->assertFalse($validator([
+            'name'     => 'test.txt',
+            'type'     => 'text/plain',
+            'tmp_name' => '/tmp/php/test',
+            'error'    => UPLOAD_ERR_INI_SIZE,
+            'size'     => 100,
+        ]));
+        $this->assertFalse($validator([
+            'name'     => 'test.txt',
+            'type'     => 'text/plain',
+            'tmp_name' => '/tmp/php/test',
+            'error'    => UPLOAD_ERR_NO_FILE,
+            'size'     => 100,
+        ]));
+        $this->assertFalse($validator([
+            'name'     => 'test.txt',
+            'type'     => 'text/plain',
+            'tmp_name' => '/tmp/php/test',
+            'error'    => UPLOAD_ERR_OK,
+            'size'     => 1100,
+        ]));
+        $this->assertFalse($validator([
+            'name'     => 'test.txt',
+            'type'     => 'text/plain',
+            'tmp_name' => '/tmp/php/test',
+            'size'     => 100,
+        ]));
+        $this->assertFalse($validator('invalid'));
+
+        $this->assertEquals($validator->size(), 1000);
+        $this->assertEquals($validator->types(), ['txt']);
     }
 
     public function testDateTime()
     {
         $validator = new Rule\DateTime('Y-m-d');
         $this->assertTrue($validator('2015-01-01'));
+        $this->assertTrue($validator(new \DateTime('now')));
         $this->assertFalse($validator('2015-01-40'));
+
+        $this->assertEquals($validator->format(), 'Y-m-d');
     }
 
     public function testEmailAddress()
@@ -58,6 +145,8 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $validator = new Rule\Value(1);
         $this->assertTrue($validator(1));
         $this->assertFalse($validator(2));
+
+        $this->assertEquals($validator->value(), 1);
     }
 
     public function testFloat()
@@ -71,6 +160,13 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $validator = new Rule\Number();
         $this->assertTrue($validator(1));
+        $this->assertTrue($validator(1.5));
+        $this->assertFalse($validator('text'));
+    }
+
+    public function testDecimal()
+    {
+        $validator = new Rule\Decimal();
         $this->assertTrue($validator(1.5));
         $this->assertFalse($validator('text'));
     }
@@ -108,6 +204,11 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $validator = new Rule\Password(2, 2, 2, 2);
         $this->assertTrue($validator('aaBB00??'));
         $this->assertFalse($validator('aB0?'));
+
+        $this->assertEquals($validator->lower(), 2);
+        $this->assertEquals($validator->upper(), 2);
+        $this->assertEquals($validator->digit(), 2);
+        $this->assertEquals($validator->special(), 2);
     }
 
     public function testString()
@@ -122,6 +223,8 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $validator = new Rule\Regex('/[0-9]/');
         $this->assertTrue($validator('a0b'));
         $this->assertFalse($validator('ab'));
+
+        $this->assertEquals($validator->regex(), '/[0-9]/');
     }
 
     public function testFunc()
@@ -135,6 +238,8 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $validator = new Rule\Func('is_object');
         $this->assertTrue($validator(new \stdClass()));
         $this->assertFalse($validator('text'));
+
+        $this->assertEquals($validator->func(), 'is_object');
     }
 
     public function testSet()
@@ -156,6 +261,16 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $validator = new Rule\Values([0, 1, 2]);
         $this->assertTrue($validator(1));
         $this->assertFalse($validator(4));
+
+        $this->assertEquals($validator->values(), [0, 1, 2]);
+    }
+
+    public function testMap()
+    {
+        $validator = (new Validator())
+            ->array();
+        $rules = $validator->rules();
+        $this->assertEquals($rules['array'][0]->name(), 'array');
     }
 
     public function testErrors()
@@ -199,6 +314,15 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $validator = (new Validator())
             ->notSet();
         $this->assertTrue($validator(null));
+        $this->assertFalse($validator(1));
+    }
+
+    public function testIsValid()
+    {
+        $validator = (new Validator())
+            ->set();
+        $validator(null);
+        $this->assertFalse($validator->isValid());
     }
 
     public function testSteps()
@@ -209,5 +333,41 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
             ->steps($validator1->steps());
         $this->assertFalse($validator1(null));
         $this->assertFalse($validator2(null));
+    }
+
+    public function testRules()
+    {
+        $validator = (new Validator())
+            ->set();
+        $rule = $validator->rule('set');
+        $this->assertEquals($rule[0]->name(), 'set');
+        $rules = $validator->rules();
+        $this->assertEquals($rules['set'][0]->name(), 'set');
+    }
+
+    public function testClone()
+    {
+        $validator1 = (new Validator())
+            ->set(); 
+        $validator2 = clone $validator1;
+        $rules1 = $validator1->rule('set');
+        $rules2 = $validator2->rule('set');
+        $this->assertNotSame($rules1[0], $rules2[0]);
+    }
+
+    public function testName()
+    {
+        $validator = new Rule\Set();
+        $validator->name('test');
+        $this->assertEquals($validator->name(), 'test');
+    }
+
+    public function testParams()
+    {
+        $validator = new Rule\Count(1, 2);
+        $this->assertEquals($validator->params(), [
+            'min' => 1,
+            'max' => 2,
+        ]);
     }
 }

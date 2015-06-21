@@ -28,6 +28,10 @@ class UrlTest extends \PHPUnit_Framework_TestCase
         $value = 'host/';
         $url = new Url($value);
         $this->assertEquals($value, $url->toString());
+
+        $value = '?test=1';
+        $url = new Url($value);
+        $this->assertEquals($value, $url->toString());
     }
 
     public function testHttp()
