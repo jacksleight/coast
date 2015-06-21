@@ -43,6 +43,11 @@ class Response
         return $this->_body;
     }
 
+    public function json()
+    {
+        return json_decode($this->_body, true);
+    }
+
     public function isInformation()
     {
         return $this->_status >= 100 && $this->_status <= 199;
