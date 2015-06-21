@@ -9,6 +9,7 @@ namespace Coast;
 use Coast\Request,
     Coast\App\Exception,
     Coast\App\Executable,
+    Coast\App\Lazy,
     Coast\Response,
     Coast\Dir,
     Coast\File,
@@ -116,13 +117,25 @@ class App implements Executable
     }
 
     /**
-     * Require a file without leaking variables into the global scope.
+     * Load a file without leaking variables, include app object in vars.
      * @param  mixed   $file
+     * @param  array   $vars
      * @return mixed
      */
-    public function import(File $_file, array $_vars = array())
+    public function load(File $file, array $vars = array())
     {
-        return \Coast\import($_file, array_merge(['app' => $this], $_vars));
+        return \Coast\load($file, array_merge(['app' => $this], $vars));
+    }
+
+    /**
+     * Lazy load a file without leaking variables, include app object in vars.
+     * @param  mixed   $file
+     * @param  array   $vars
+     * @return mixed
+     */
+    public function lazy(File $file, array $vars = array())
+    {
+        return new Lazy($file, array_merge(['app' => $this], $vars));
     }
 
     /**
@@ -258,10 +271,12 @@ class App implements Executable
 
         $this->param('req', $req)
              ->param('res', $res);
-        $this->_preExecute();
+        $executables = $this->_executables;
+        array_unshift($executables, [$this, '_preExecute']);
+        array_push($executables, [$this, '_postExecute']);
         try {
             $result = null;
-            foreach($this->_executables as $executable) {
+            foreach($executables as $executable) {
                 $result = call_user_func($executable, $req, $res);
                 if (isset($result)) {
                     break;
@@ -281,7 +296,6 @@ class App implements Executable
                 throw $e;
             }
         }
-        $this->_postExecute();
         $this->param('req', null)
              ->param('res', null);
 
@@ -297,10 +311,10 @@ class App implements Executable
         }
     }
 
-    protected function _preExecute()
+    protected function _preExecute(Request $req, Response $res)
     {}
 
-    protected function _postExecute()
+    protected function _postExecute(Request $req, Response $res)
     {}
 
     /**
@@ -343,7 +357,12 @@ class App implements Executable
      */
     public function __get($name)
     {
-        return $this->param($name);
+        $value = $this->param($name);
+        if ($value instanceof Lazy) {
+            $value = $value->load();
+            $this->param($name, $value);
+        }
+        return $value;
     }
 
     /**

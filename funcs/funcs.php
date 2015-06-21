@@ -7,25 +7,26 @@
 namespace Coast;
 
 /**
- * Require a file without leaking variables into the global scope.
- * @param  mixed   $file
+ * Load a file without leaking variables, cache and reuse return value.
+ * @param  mixed   $_file
+ * @param  array   $_vars
  * @return mixed
  */
-function import($_file, array $_vars = array())
+function load($_file, array $_vars = array())
 {
-    global $_coastImport;
-    if (!isset($_coastImport)) {
-        $_coastImport = [];
+    global $_coastLoad;
+    if (!isset($_coastLoad)) {
+        $_coastLoad = [];
     }
     $_real = realpath($_file);
     if (!$_real) {
         throw new \Exception("File '{$_file}' could not be found");
     }
-    if (!array_key_exists($_real, $_coastImport)) {
+    if (!array_key_exists($_real, $_coastLoad)) {
         extract($_vars);
-        $_coastImport[$_real] = require $_real;
+        $_coastLoad[$_real] = require $_real;
     }
-    return $_coastImport[$_real];
+    return $_coastLoad[$_real];
 }
 
 /**
