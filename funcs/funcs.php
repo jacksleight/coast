@@ -303,15 +303,3 @@ function str_css_ratio_slope($smallWidth, $smallHeight, $largeWidth, $largeHeigh
         'height'      => ($smallHeight - $smallWidth * $slope) . 'px'
     ));
 }
-
-function str_html_attrs(array $attrs, $prefix = null)
-{
-    $prefix = isset($prefix)
-        ? "{$prefix}-"
-        : $prefix;
-    $items = [];
-    foreach ($attrs as $name => $value) {
-        $items[] = "{$prefix}{$name}" . (isset($value) ? "=\"{$value}\"" : null);
-    }
-    return implode(' ', $items);
-}
