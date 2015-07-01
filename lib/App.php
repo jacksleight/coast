@@ -9,7 +9,7 @@ namespace Coast;
 use Coast\Request,
     Coast\App\Exception,
     Coast\App\Executable,
-    Coast\App\Lazy,
+    Coast\Lazy,
     Coast\Response,
     Coast\Dir,
     Coast\File,
