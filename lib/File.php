@@ -9,6 +9,7 @@ namespace Coast;
 class File extends \Coast\File\Path
 {
     protected $_chars = [',', '"', '\\'];
+
     protected $_handle;
 
     public static function createTemp()
@@ -35,6 +36,14 @@ class File extends \Coast\File\Path
     {
         $this->_handle = fopen($this->_name, $mode);
         return $this;
+    }
+    
+    public function handle()
+    {
+        if (!$this->isOpen()) {
+            throw new \Exception("File '{$this}' is not open");
+        }
+        return $this->_handle;
     }
 
     public function close()
