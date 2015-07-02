@@ -8,6 +8,7 @@ namespace Coast;
 
 class Router implements \Coast\App\Access, \Coast\App\Executable
 {
+    const METHOD_ALL    = 'ALL';
     const METHOD_GET    = \Coast\Request::METHOD_GET;
     const METHOD_POST   = \Coast\Request::METHOD_POST;
     const METHOD_PUT    = \Coast\Request::METHOD_PUT;
@@ -38,18 +39,6 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
         return $this;
     }
 
-    public function has($name)
-    {
-        return isset($this->_routes[$name]);
-    }
-
-    public function route($name)
-    {
-        return isset($this->_routes[$name])
-            ? $this->_routes[$name]
-            : null;
-    }
-
     public function target(\Coast\Router\Routable $target = null)
     {
         if (func_num_args() > 0) {
@@ -59,103 +48,91 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
         return $this->_target;
     }
 
-    public function all($name, $path, $params = null, \Closure $target = null)
+    public function routes(array $routes = array())
     {
-        return $this->add($name, [
-            self::METHOD_GET,
-            self::METHOD_POST,
-            self::METHOD_PUT,
-            self::METHOD_DELETE,
-        ], $path, $params, $target);
-    }
-
-    public function get($name, $path, $params = null, \Closure $target = null)
-    {
-        return $this->add($name, [
-            self::METHOD_GET,
-        ], $path, $params, $target);
-    }
-
-    public function post($name, $path, $params = null, \Closure $target = null)
-    {
-        return $this->add($name, [
-            self::METHOD_POST,
-        ], $path, $params, $target);
-    }
-
-    public function put($name, $path, $params = null, \Closure $target = null)
-    {
-        return $this->add($name, [
-            self::METHOD_PUT,
-        ], $path, $params, $target);
-    }
-
-    public function delete($name, $path, $params = null, \Closure $target = null)
-    {
-        return $this->add($name, [
-            self::METHOD_DELETE,
-        ], $path, $params, $target);
-    }
-
-    public function add($name, $methods, $path, $params = null, \Closure $target = null)
-    {
-        if (!is_array($methods)) {
-            $methods = [$methods];
+        if (func_num_args() > 0) {
+            foreach ($routes as $name => $route) {
+                call_user_func_array([$this, 'route'], array_merge([$name], $route));
+            }
+            return $this;
         }
-        foreach ($methods as $i => $method) {
-            $methods[$i] = strtoupper($method);
-        }
-        if ($params instanceof \Closure) {
-            $target = $params;
-            $params = [];
-        } if (!isset($params)) {
-            $params = [];
-        }
-        if (isset($target)) {
-            $target = $target->bindTo($this);
-        }
+        return $this->_routes;
+    }
 
-        $parts = explode('/', ltrim($path, '/'));
-        $names = [];
-        $stack = [];
-        foreach ($parts as $i => $part) {
-            if (preg_match('/^\{([a-zA-Z0-9_-]+)(?::(.*))?\}(\?)?$/', $part, $match)) {
-                $match = \Coast\array_merge_smart(
-                    array('', '', '', ''),
-                    $match
-                );
-                $names[] = $match[1];    
-                $regex = strlen($match[2])
-                    ? "({$match[2]})"
-                    : "([a-zA-Z0-9_-]+)";
-                if ($match[3] == '?') {
-                    $regex = $i == 0 
-                        ? "(?:{$regex})?"
-                        : "(?:\/{$regex})?";
+    public function route($name, $methods = null, $path = null, $params = null, \Closure $target = null)
+    {
+        if (func_num_args() > 1) {
+            if (!is_array($methods)) {
+                $methods = array_map('trim', explode(',', $methods));
+            }
+            foreach ($methods as $i => $method) {
+                $method = strtoupper($method);
+                if ($method == self::METHOD_ALL) {
+                    $methods = [
+                        self::METHOD_GET,
+                        self::METHOD_POST,
+                        self::METHOD_PUT,
+                        self::METHOD_DELETE,
+                    ];
+                    break;
+                }
+                $methods[$i] = $method;
+            }
+            if ($params instanceof \Closure) {
+                $target = $params;
+                $params = [];
+            } if (!isset($params)) {
+                $params = [];
+            }
+            if (isset($target)) {
+                $target = $target->bindTo($this);
+            }
+
+            $parts = explode('/', ltrim($path, '/'));
+            $names = [];
+            $stack = [];
+            foreach ($parts as $i => $part) {
+                if (preg_match('/^\{([a-zA-Z0-9_-]+)(?::(.*))?\}(\?)?$/', $part, $match)) {
+                    $match = \Coast\array_merge_smart(
+                        array('', '', '', ''),
+                        $match
+                    );
+                    $names[] = $match[1];    
+                    $regex = strlen($match[2])
+                        ? "({$match[2]})"
+                        : "([a-zA-Z0-9_-]+)";
+                    if ($match[3] == '?') {
+                        $regex = $i == 0 
+                            ? "(?:{$regex})?"
+                            : "(?:\/{$regex})?";
+                    } else {
+                        $regex = $i == 0
+                            ? "{$regex}"
+                            : "\/{$regex}";
+                    }
                 } else {
                     $regex = $i == 0
-                        ? "{$regex}"
-                        : "\/{$regex}";
+                        ? preg_quote($part, '/')
+                        : "\/" . preg_quote($part, '/');
                 }
-            } else {
-                $regex = $i == 0
-                    ? preg_quote($part, '/')
-                    : "\/" . preg_quote($part, '/');
+                $stack[] = $regex;
             }
-            $stack[] = $regex;
-        }
-        $regex = '/^' . implode($stack) . '$/';
+            $regex = '/^' . implode($stack) . '$/';
 
-        $route = [
-            'methods' => $methods,
-            'path'    => $path,
-            'regex'   => $regex,
-            'names'   => $names,
-            'params'  => $params,
-            'target'  => $target,
-        ];
-        $this->_routes = [$name => $route] + $this->_routes;
-        return $this;
+            $route = [
+                'methods' => $methods,
+                'path'    => $path,
+                'regex'   => $regex,
+                'names'   => $names,
+                'params'  => $params,
+                'target'  => $target,
+            ];
+            $this->_routes = [$name => $route] + $this->_routes;
+            return $this;
+        }
+        return isset($this->_routes[$name])
+            ? $this->_routes[$name]
+            : null;
     }
 
     public function match($method, $path)
