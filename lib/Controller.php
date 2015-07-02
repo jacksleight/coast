@@ -61,7 +61,7 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
         return $this->_all;
     }
 
-    public function forward($action, $name = null, $set = null)
+    public function forward($action, $name = null, $group = null)
     {
         if (count($this->_history) > 0) {
             $item = $this->_history[count($this->_history) - 1];
@@ -69,49 +69,49 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
                 ? $name
                 : $item[0];
             $params = $item[2];
-            $set = isset($set)
-                ? $set
+            $group = isset($group)
+                ? $group
                 : $item[3];
         }
         $this->_stack = array();
-        $this->_queue($name, $action, $params, $set);
+        $this->_queue($name, $action, $params, $group);
     }
 
-    public function dispatch($name, $action, $params = array(), $set = null)
+    public function dispatch($name, $action, $params = array(), $group = null)
     {
-        if (!isset($set)) {
+        if (!isset($group)) {
             reset($this->_nspaces);
-            $set = key($this->_nspaces);
+            $group = key($this->_nspaces);
         }
 
         $this->_stack   = [];
         $this->_history = [];
-        $this->_queue($name, $action, $params, $set);
+        $this->_queue($name, $action, $params, $group);
 
         $result = null;
         while (count($this->_stack) > 0) {
             $item = array_shift($this->_stack);
             $this->_history[] = $item;
-            list($name, $action, $params, $set) = $item;
+            list($name, $action, $params, $group) = $item;
 
-            if (!isset($this->_nspaces[$set])) {
-                throw new Controller\Exception("Controller set '{$set}' does not exist");
+            if (!isset($this->_nspaces[$group])) {
+                throw new Controller\Exception("Controller group '{$group}' does not exist");
             }
-            $class = $this->_nspaces[$set] . '\\' . implode('\\', array_map('ucfirst', explode('_', $name)));
+            $class = $this->_nspaces[$group] . '\\' . implode('\\', array_map('ucfirst', explode('_', $name)));
             if (!isset($this->_actions[$class])) {
                 if (!class_exists($class)) {
-                    throw new Controller\Exception("Controller '{$set}:{$name}' does not exist");
+                    throw new Controller\Exception("Controller '{$group}:{$name}' does not exist");
                 }
                 $object = new $class($this);
                 if (!$object instanceof \Coast\Controller\Action) {
-                    throw new Controller\Exception("Controller '{$set}:{$name}' is not an instance of \Coast\Controller\Action");
+                    throw new Controller\Exception("Controller '{$group}:{$name}' is not an instance of \Coast\Controller\Action");
                 }
                 $this->_actions[$class] = $object;
             } else {
                 $object = $this->_actions[$class];
             }
             if (!method_exists($object, $action)) {
-                throw new Controller\Exception("Controller action '{$set}:{$name}:{$action}' does not exist");
+                throw new Controller\Exception("Controller action '{$group}:{$name}:{$action}' does not exist");
             }
 
             $result = call_user_func_array([$object, $action], $params);
@@ -123,7 +123,7 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
         return $result;
     }
 
-    protected function _queue($name, $action, $params, $set)
+    protected function _queue($name, $action, $params, $group)
     {
         $parts = explode('_', $name);
         $path  = [];
@@ -137,11 +137,11 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
 
         $stack = [];
         foreach ($names as $name) {
-            array_push($stack, [$name, 'preDispatch', $params, $set]);
+            array_push($stack, [$name, 'preDispatch', $params, $group]);
         }
-        array_push($stack, [$final, $action, $params, $set]);
+        array_push($stack, [$final, $action, $params, $group]);
         foreach (array_reverse($names) as $name) {
-            array_push($stack, [$name, 'postDispatch', $params, $set]);
+            array_push($stack, [$name, 'postDispatch', $params, $group]);
         }
         if (isset($this->_all)) {
             array_unshift($stack, [$this->_all[0], 'preDispatch', $params, $this->_all[1]]);
@@ -161,12 +161,12 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
         $parts      = array_map('\Coast\str_camel_upper', $parts);
         $controller = implode('\\', $parts);
         $action     = \Coast\str_camel_lower($req->action);
-        $set        = isset($req->set) ? $req->set : null;
+        $group      = isset($req->group) ? $req->group : null;
         return $this->dispatch(
             $controller,
             $action,
             [$req, $res],
-            $set
+            $group
         );
     }
 }
