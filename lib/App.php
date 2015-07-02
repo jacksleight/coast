@@ -28,13 +28,13 @@ class App implements Executable
      * @var Coast\Dir
      */
     protected $_baseDir;
-    
+
     /**
-     * Path.
-     * @var Coast\Path
+     * Subapp.
+     * @var boolean
      */
-    protected $_path;
-    
+    protected $_subapp = false;
+       
     /**
      * Environment variables.
      * @var array
@@ -96,6 +96,19 @@ class App implements Executable
     }
 
     /**
+     * Get/set subapp.
+     * @return boolean
+     */
+    public function subapp($subapp = null)
+    {
+        if (func_num_args() > 0) {
+            $this->_subapp = $subapp;
+            return $this;
+        }
+        return $this->_subapp;
+    }
+
+    /**
      * Get child directory.
      * @return Coast\Dir
      */
@@ -153,20 +166,6 @@ class App implements Executable
             ? $this->file($file)
             : $file;
         return new Lazy($file, array_merge(['app' => $this], $vars));
-    }
-
-    /**
-     * Get/set root path.
-     * @param  Coast\Path $name
-     * @return mixed
-     */
-    public function path(Path $path = null)
-    {
-        if (func_num_args() > 0) {
-            $this->_path = $path;
-            return $this;
-        }
-        return $this->_path;
     }
 
     /**
@@ -250,10 +249,15 @@ class App implements Executable
      * @param Closure|Coast\App\Executable $value
      * @return self
      */
-    public function executable($executable)
+    public function executable($executable, $subpath = null)
     {
         if (!$executable instanceof \Closure && !$executable instanceof Executable) {
             throw new App\Exception("Object is not a closure or instance of Coast\App\Executable");
+        }
+        if (isset($subpath)) {
+            $executable = new App\Subpath($executable, $subpath);
+        } else if ($executable instanceof App) {
+            $executable->subapp(true);
         }
         array_push($this->_executables, $executable instanceof \Closure
             ? $executable->bindTo($this)
@@ -277,15 +281,6 @@ class App implements Executable
             throw new App\Exception('You must pass a Response object when passing a Request object');
         }
 
-        if (isset($this->_path)) {
-            if (!preg_match('/^(' . preg_quote((string) $this->_path, '/') . ')(?:\/(.*))?$/', $req->path(), $path)) {
-                return null;
-            }
-            $base = $req->base();
-            $req->base("{$base}{$path[1]}/")
-                ->path(isset($path[2]) ? $path[2] : '');
-        }
-
         $this->param('req', $req)
              ->param('res', $res);
         $executables = $this->_executables;
@@ -299,7 +294,7 @@ class App implements Executable
                     break;
                 }
             }
-            if ((bool) $result !== true) {
+            if ($result === false || (!isset($result) && !$this->_subapp)) {
                 if (isset($this->_notFoundHandler)) {
                     $result = call_user_func($this->_notFoundHandler, $req, $res);
                 } else {
@@ -315,11 +310,6 @@ class App implements Executable
         }
         $this->param('req', null)
              ->param('res', null);
-
-        if (isset($this->_path)) {
-            $req->base($base)
-                ->path($path[0]);
-        }
         
         if ($auto) {
             $res->toGlobals();
