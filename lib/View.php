@@ -59,7 +59,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         return $this->_extName;
     }
                 
-    public function valid($name, $set = null)
+    public function isValid($name, $set = null)
     {
         if (!isset($set)) {
             reset($this->_dirs);
@@ -241,7 +241,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
     {        
         $path = $req->path();
         $path = '/' . (strlen($path) ? $path : 'index');
-        if (!$this->valid($path)) {
+        if (!$this->isValid($path)) {
             return false;
         }
         return $res->html($this->render($path, [

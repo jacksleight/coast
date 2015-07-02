@@ -30,10 +30,10 @@ class App implements Executable
     protected $_baseDir;
 
     /**
-     * Subapp.
+     * Is subapp.
      * @var boolean
      */
-    protected $_subapp = false;
+    protected $_isSubapp = false;
        
     /**
      * Environment variables.
@@ -96,16 +96,16 @@ class App implements Executable
     }
 
     /**
-     * Get/set subapp.
+     * Get/set is subapp.
      * @return boolean
      */
-    public function subapp($subapp = null)
+    public function isSubapp($isSubapp = null)
     {
         if (func_num_args() > 0) {
-            $this->_subapp = $subapp;
+            $this->_isSubapp = $isSubapp;
             return $this;
         }
-        return $this->_subapp;
+        return $this->_isSubapp;
     }
 
     /**
@@ -257,7 +257,7 @@ class App implements Executable
         if (isset($subpath)) {
             $executable = new App\Subpath($executable, $subpath);
         } else if ($executable instanceof App) {
-            $executable->subapp(true);
+            $executable->isSubapp(true);
         }
         array_push($this->_executables, $executable instanceof \Closure
             ? $executable->bindTo($this)
@@ -294,7 +294,7 @@ class App implements Executable
                     break;
                 }
             }
-            if ($result === false || (!isset($result) && !$this->_subapp)) {
+            if ($result === false || (!isset($result) && !$this->_isSubapp)) {
                 if (isset($this->_notFoundHandler)) {
                     $result = call_user_func($this->_notFoundHandler, $req, $res);
                 } else {
