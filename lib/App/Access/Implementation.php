@@ -21,16 +21,25 @@ trait Implementation
 
     public function __get($name)
     {
+        if (!isset($this->_app)) {
+            throw new \Exception("Property '" . __CLASS__ . "::\${$name}' does not exist and \$app has not been set");
+        }
         return $this->_app->__get($name);
     }
 
     public function __isset($name)
     {
+        if (!isset($this->_app)) {
+            throw new \Exception("Property '" . __CLASS__ . "::\${$name}' does not exist and \$app has not been set");
+        }
         return $this->_app->__isset($name);
     }
 
     public function __call($name, array $args)
     {
+        if (!isset($this->_app)) {
+            throw new \Exception("Method '" . __CLASS__ . "::{$name}()' does not exist and \$app has not been set");
+        }
         return $this->_app->__call($name, $args);
     }
 }
