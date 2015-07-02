@@ -16,6 +16,12 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
 
     use \Coast\App\Access\Implementation;
 
+    protected $_prefix;
+    
+    protected $_suffix;
+    
+    protected $_params = [];
+
     protected $_target;
 
     protected $_routes = [];
@@ -30,13 +36,31 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
         }
     }
 
-    public function app(\Coast\App $app = null)
+    public function prefix($prefix = null)
     {
-        $this->_app = $app;
-        if ($this->_target instanceof \Coast\App\Access) {
-            $this->_target->app($app);
+        if (func_num_args() > 0) {
+            $this->_prefix = $prefix;
+            return $this;
         }
-        return $this;
+        return $this->_prefix;
+    }
+
+    public function suffix($suffix = null)
+    {
+        if (func_num_args() > 0) {
+            $this->_suffix = $suffix;
+            return $this;
+        }
+        return $this->_suffix;
+    }
+
+    public function params(array $params = null)
+    {
+        if (func_num_args() > 0) {
+            $this->_params = $params;
+            return $this;
+        }
+        return $this->_params;
     }
 
     public function target(\Coast\Router\Routable $target = null)
@@ -88,6 +112,12 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
                 $target = $target->bindTo($this);
             }
 
+            if (isset($this->_prefix)) {
+                $path = "{$this->_prefix}/{$path}";
+            }
+            if (isset($this->_suffix)) {
+                $path = "{$path}/{$this->_suffix}";
+            }
             $parts = explode('/', ltrim($path, '/'));
             $names = [];
             $stack = [];
@@ -137,6 +167,7 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
 
     public function match($method, $path)
     {
+        $method = strtoupper($method);
         foreach ($this->_routes as $name => $route) {
             if (!in_array($method, $route['methods'])) {
                 continue;
@@ -165,9 +196,10 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
             throw new Router\Exception("Route '{$name}' does not exist");
         }
 
-        $route = $this->_routes[$name];
-        $parts = explode('/', $route['path']);
-        $path  = [];
+        $route  = $this->_routes[$name];
+        $params = $params + $route['params'] + $this->_params;
+        $parts  = explode('/', $route['path']);
+        $path   = [];
         foreach ($parts as $i => $part) {
             if (preg_match('/^\{([a-zA-Z0-9_-]+)(?::(.*))?\}(\?)?$/', $part, $match)) {
                 $match = \Coast\array_merge_smart(
