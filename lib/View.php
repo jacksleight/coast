@@ -19,9 +19,13 @@ class View implements \Coast\App\Access, \Coast\App\Executable
 
     protected $_extName = 'php';
 
-    protected $_stack = [];
+    protected $_contexts = [];
 
-    protected $_current;
+    protected $_active;
+
+    protected $_extends = [];
+
+    protected $_files = [];
 
     public function __construct(array $options = array())
     {
@@ -33,25 +37,26 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         }
     }
 
-    public function dir($name, \Coast\Dir $dir = null)
+    public function dir($group, Dir $dir = null)
     {
         if (func_num_args() > 0) {
-            if (!$name) {
-                $name = 'default';
+            if (!$group) {
+                $group = 'default';
             }
-            $this->_dirs[$name] = $dir;
+            $this->_dirs[$group] = $dir;
+            $this->_meta($group, $dir);
             return $this;
         }
-        return isset($this->_dirs[$name])
-            ? $this->_dirs[$name]
+        return isset($this->_dirs[$group])
+            ? $this->_dirs[$group]
             : null;
     }
 
     public function dirs(array $dirs = null)
     {
         if (func_num_args() > 0) {
-            foreach ($dirs as $name => $dir) {
-                $this->dir($name, $dir);
+            foreach ($dirs as $group => $dir) {
+                $this->dir($group, $dir);
             }
             return $this;
         }
@@ -67,15 +72,36 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         return $this->_extName;
     }
 
-    public function render($name, array $params = array(), $group = null, Content $previous = null)
+    protected function _meta($group, Dir $dir)
+    {
+        $meta = $dir->file('_.php');
+        if (!$meta->exists()) {
+            return;
+        }
+
+        $meta = include $meta->name();
+
+        if ($meta['extends']) {
+            foreach ($meta['extends'] as $source => $target) {
+                array_unshift($this->_extends, [
+                    $this->_dirs[$group]
+                        ->dir($source),
+                    $this->_dirs[isset($target[1]) ? $target[1] : $group]
+                        ->dir($target[0]),
+                ]);
+            }
+        }
+    }
+
+    public function script($path, $group = null)
     {  
-        $path = new \Coast\Path("{$name}.{$this->_extName}");
-        if (isset($this->_current)) {
+        $path = new \Coast\Path($path);
+        if (isset($this->_active)) {
             if (!isset($group)) {
                 $path = $path->isRelative()
-                    ? $path->toAbsolute($this->_current->sets[0]->path)
+                    ? $path->toAbsolute($this->_active->script->path)
                     : $path;
-                $group = $this->_current->sets[0]->group;
+                $group = $this->_active->script->group;
             } else if (!$path->isAbsolute()) {
                 $path = new \Coast\Path("/{$path}");
             }
@@ -90,140 +116,109 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         if (!isset($this->_dirs[$group])) {
             throw new View\Exception("View group '{$group}' does not exist");
         }
-
-        $sets = [(object) [
-            'name'  => $name,
-            'path'  => $path,
+        return (object) [
+            'key'   => "{$group}:{$path}",
             'group' => $group,
-        ]];
+            'path'  => $path,
+        ];
+    }
 
-        
-
-
-
-        do {
-            $set = &$sets[0];
-            $set->obj = $this->_dirs[$group]->path($path);
-            $set->obj = $set->obj->isDir()
-                ? $set->obj->toDir()
-                : $set->obj->toFile();
-
-
-            if ($set->obj instanceof Dir) {
-                $file = $set->obj->file('extends');
+    public function files($script)
+    {
+        if (!isset($this->_files[$script->key])) {
+            $files = [];
+            $file  = $this->_dirs[$script->group]
+                ->file("{$script->path}.{$this->_extName}");
+            if ($file->exists()) {
+                array_push($files, $file);
+            }
+            foreach ($this->_extends as $extend) {
+                if (!$file->isWithin($extend[0])) {
+                    continue;
+                }
+                $file = $extend[1]->file($file->toRelative($extend[0]));
                 if ($file->exists()) {
-
-
-                    $file->open('r');
-                    $extends = explode(',', $file->read());
-                    $file->close();
-
-                    $name  = $extends[0];
-                    $group = isset($extends[1])
-                        ? $extends[1]
-                        : null;
-
-
-                    $path = new \Coast\Path("{$name}.{$this->_extName}");
-                    if (!isset($group)) {
-                        $path = $path->isRelative()
-                            ? $path->toAbsolute($set->path)
-                            : $path;
-                        $group = $set->group;
-                    } else if (!$path->isAbsolute()) {
-                        $path = new \Coast\Path("/{$path}");
-                    }
-                    if (!isset($this->_dirs[$group])) {
-                        throw new View\Exception("View group '{$group}' does not exist");
-                    }
-
-                    array_unshift($sets, (object) [
-                        'name'  => $name,
-                        'path'  => $path,
-                        'group' => $group,
-                    ]);
-
+                    array_push($files, $file);
                 }
             }
- 
+            $this->_files[$script->key] = $files;
+        }
 
-            
+        return $this->_files[$script->key];
+    }
 
-
-
-            
-
-
-        } while (!isset($sets[0]->obj));
-
- 
-
-        // tidy up the above junky code
-        // figure out way to re-use path resolving
-        // add a part->parent feature
-
-
-
-
-        array_unshift($this->_stack, (object) [
-            'sets'     => array_reverse($sets),
+    public function render($path, array $params = array(), $group = null, Content $previous = null)
+    {  
+        $script = $this->script($path, $group);
+        array_unshift($this->_contexts, (object) ([
+            'script'   => $script,
             'params'   => $params,
-            'parent'   => null,
+            'outer'    => null,
             'block'    => null,
             'content'  => new Content(),
             'previous' => $previous,
-            'captures' => 0,
+            'buffers'  => 0,
+            'renders'  => [],
+        ]));
+        $this->_active = &$this->_contexts[0];
+
+        array_unshift($this->_active->renders, (object) [
+            'script' => $script,
+            'depth'  => 0,
         ]);
-        $this->_current = &$this->_stack[0];
+        $content = $this->_render();
+        array_shift($this->_active->renders);
 
-        $content = $this->part();
-
-        $this->_current->content->block($this->_current->block, $content);
-        $this->_current->block = null;
-        while ($this->_current->captures > 0) {
+        $this->_active->content->block(
+            $this->_active->block,
+            $content
+        );
+        $this->_active->block = null;
+        while ($this->_active->buffers > 0) {
             $this->end();
         }
 
-        $content = $this->_current->content;
-        if (isset($this->_current->parent)) {
-            list($name, $params, $group) = $this->_current->parent;
-            $content = $this->render($name, $params, $group, $content);           
+        $content = $this->_active->content;
+        if (isset($this->_active->outer)) {
+            list($path, $params, $group) = $this->_active->outer;
+            $content = $this->render($path, $params, $group, $content);           
         }
 
-        array_shift($this->_stack);
-        if (count($this->_stack)) {
-            $this->_current = &$this->_stack[0];
+        array_shift($this->_contexts);
+        if (count($this->_contexts)) {
+            $this->_active = &$this->_contexts[0];
         } else {
-            $this->_current = null;
+            $this->_active = null;
         }
 
         return $content;
     }
-       
-    public function part($part = 'index')
+                
+    protected function _render()
     {
-        foreach ($this->_current->sets as $set) {
-            $file = $set->obj instanceof Dir
-                ? $set->obj->file("{$part}.{$this->_extName}")
-                : $set->obj;
-            if ($file->exists()) {
-                break;
-            }
+        $render = &$this->_active->renders[0];
+        $script = $render->script;
+        $depth  = $render->depth;
+        $files  = $this->files($script);
+
+        if (!count($files)) {
+            throw new View\Exception("View '{$script->group}:{$script->path}' does not exist");
         }
-        if (!$file->exists()) {
-            throw new View\Exception("View '{$set->group}:{$set->name}" . (isset($part) ? ":{$part}" : null) . "' does not exist");
+        if (!isset($files[$depth])) {
+            throw new View\Exception("View '{$script->group}:{$script->path}' parent at depth '{$depth}' does not exist");
         }
-        return $this->run($file, $this->_current->params);
+
+        return $this->_run($files[$depth], $this->_active->params);
     }
         
-    public function run(File $__file, array $__params = array())
+    protected function _run(File $__file, array $__params = array())
     {
         $this->start();
         try {
             extract($__params);
             include (string) $__file;
         } catch (\Exception $e) {
-            while ($this->_current->captures > 0) {
+            while ($this->_active->buffers > 0) {
                 echo $this->end();
             }
             throw $e;
@@ -231,60 +226,86 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         return $this->end();        
     }
         
-    public function child($name, array $params = array(), $group = null)
+    public function partial($path)
     {
-        if (!isset($this->_current)) {
-            throw new View\Exception("Cannot call child() before render()");
-        }
+        array_unshift($this->_active->renders, (object) [
+            'script' => $this->script("{$this->_active->script->path}/{$path}"),
+            'depth'  => 0,
+        ]);
+        $content = $this->_render();
+        array_shift($this->_active->renders);
 
-        $params = array_merge($this->_current->params, $params);
-        return $this->render($name, $params, $group);      
+        return $content;
     }
 
-    protected function parent($name, array $params = array(), $group = null)
+    public function parent()
     {
-        if (!isset($this->_current)) {
-            throw new View\Exception("Cannot call parent() before render()");
+        $render = &$this->_active->renders[0];
+        $render->depth++;
+
+        return $this->_render();
+    }
+        
+    public function inner($path, array $params = array(), $group = null)
+    {
+        if (!isset($this->_active)) {
+            throw new View\Exception("Cannot call View::inner() outside of rendering context");
+        }
+
+        $params = array_merge(
+            $this->_active->params,
+            $params
+        );
+        return $this->render($path, $params, $group);      
+    }
+
+    public function outer($path, array $params = array(), $group = null)
+    {
+        if (!isset($this->_active)) {
+            throw new View\Exception("Cannot call View::outer() outside of rendering context");
         }
         
-        $params = array_merge($this->_current->params, $params);
-        $this->_current->parent = [$name, $params, $group, false];
+        $params = array_merge(
+            $this->_active->params,
+            $params
+        );
+        $this->_active->outer = [$path, $params, $group, false];
     }
 
     protected function block($name = null)
     {
         $content = $this->end();
         if (strlen($content) > 0 ) {
-            $this->_current->content->block($this->_current->block, $content);
+            $this->_active->content->block($this->_active->block, $content);
         }
+
         $name = isset($name)
             ? $name
-            : $this->_current->content->next();
-        $this->_current->block = $name;
-        $this->start();
+            : $this->_active->content->next();
 
-        return true;
+        $this->_active->block = $name;
+        $this->start();
     }
 
     protected function content($name = null)
     {
-        if (!isset($this->_current->previous)) {
+        if (!isset($this->_active->previous)) {
             return;
         }
         return isset($name)
-            ? $this->_current->previous->block($name)
-            : $this->_current->previous;
+            ? $this->_active->previous->block($name)
+            : $this->_active->previous;
     }
     
     protected function start()
     {
         ob_start();
-        $this->_current->captures++;
+        $this->_active->buffers++;
     }
     
     protected function end()
     {
-        $this->_current->captures--;
+        $this->_active->buffers--;
         return ob_get_clean();
     }
 
