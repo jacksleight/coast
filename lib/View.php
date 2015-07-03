@@ -326,15 +326,15 @@ class View implements \Coast\App\Access, \Coast\App\Executable
 
     public function execute(\Coast\Request $req, \Coast\Response $res)
     {        
-        $path = $req->path();
-        $path = '/' . (strlen($path) ? $path : 'index');
-        try {
-            return $res->html($this->render($path, [
-                'req' => $req,
-                'res' => $res,
-            ]));
-        } catch (View\Exception $e) {
+        $path  = $req->path();
+        $path  = '/' . (strlen($path) ? $path : 'index');
+        $files = $this->files($this->script($path));
+        if (!count($files)) {
             return false;
         }
+        return $res->html($this->render($path, [
+            'req' => $req,
+            'res' => $res,
+        ]));
     }
 } 
