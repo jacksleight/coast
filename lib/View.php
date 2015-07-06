@@ -19,6 +19,8 @@ class View implements \Coast\App\Access, \Coast\App\Executable
 
     protected $_extName = 'php';
 
+    protected $_partialSeparator = '_';
+
     protected $_contexts = [];
 
     protected $_active;
@@ -70,6 +72,15 @@ class View implements \Coast\App\Access, \Coast\App\Executable
             return $this;
         }
         return $this->_extName;
+    }
+
+    public function partialSeparator($partialSeparator = null)
+    {
+        if (func_num_args() > 0) {
+            $this->_partialSeparator = $partialSeparator;
+            return $this;
+        }
+        return $this->_partialSeparator;
     }
 
     protected function _meta($group, Dir $dir)
@@ -226,10 +237,10 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         return $this->end();        
     }
         
-    public function partial($path)
+    public function partial($name)
     {
         array_unshift($this->_active->renders, (object) [
-            'script' => $this->script("{$this->_active->script->path}/{$path}"),
+            'script' => $this->script("{$this->_active->script->path}{$this->_partialSeparator}{$name}"),
             'depth'  => 0,
         ]);
         $content = $this->_render();
