@@ -6,20 +6,22 @@
 
 namespace Coast;
 
-use Coast\Request,
-    Coast\App\Exception,
-    Coast\App\Executable,
-    Coast\Lazy,
-    Coast\Response,
-    Coast\Dir,
-    Coast\File,
-    Coast\Path;
+use Coast\App\Exception;
+use Coast\App\Executable;
+use Coast\Dir;
+use Coast\File;
+use Coast\Lazy;
+use Coast\Path;
+use Coast\Request;
+use Coast\Response;
 
 /**
  * Coast application object.
  */
 class App implements Executable
 {   
+    use Executable\Implementation;
+
     const MODE_CLI  = 'cli';
     const MODE_HTTP = 'http';
     
@@ -261,7 +263,7 @@ class App implements Executable
         }
         array_push($this->_executables, $executable instanceof \Closure
             ? $executable->bindTo($this)
-            : [$executable, 'execute']);
+            : $executable);
         return $this;
     }
 
@@ -283,13 +285,18 @@ class App implements Executable
 
         $this->param('req', $req)
              ->param('res', $res);
-        $executables = $this->_executables;
-        array_unshift($executables, [$this, '_preExecute']);
-        array_push($executables, [$this, '_postExecute']);
         try {
+            if (!$this->_isSubapp) {
+                $this->preExecute($req, $res);
+            }
+            foreach ($this->_executables as $executable) {
+                if ($executable instanceof Executable) {
+                    $executable->preExecute($req, $res);
+                }
+            }
             $result = null;
-            foreach($executables as $executable) {
-                $result = call_user_func($executable, $req, $res);
+            foreach ($this->_executables as $executable) {
+                $result = call_user_func($executable instanceof Executable ? [$executable, 'execute'] : $executable, $req, $res);
                 if (isset($result)) {
                     break;
                 }
@@ -299,6 +306,14 @@ class App implements Executable
                     $result = call_user_func($this->_notFoundHandler, $req, $res);
                 } else {
                     throw new App\Exception('Nothing successfully handled the request');
+                }
+            }
+            if (!$this->_isSubapp) {
+                $this->postExecute($req, $res);
+            }
+            foreach ($this->_executables as $executable) {
+                if ($executable instanceof Executable) {
+                    $executable->postExecute($req, $res);
                 }
             }
         } catch (\Exception $e) {
@@ -317,12 +332,6 @@ class App implements Executable
             return $result;
         }
     }
-
-    protected function _preExecute(Request $req, Response $res)
-    {}
-
-    protected function _postExecute(Request $req, Response $res)
-    {}
 
     /**
      * Set the not found handler

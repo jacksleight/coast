@@ -6,7 +6,14 @@
 
 namespace Coast\App;
 
+use Coast\Request;
+use Coast\Response;
+
 interface Executable
 {
-    public function execute(\Coast\Request $req, \Coast\Response $res);
+    public function execute(Request $req, Response $res);
+
+    public function preExecute(Request $req, Response $res);
+
+    public function postExecute(Request $req, Response $res);
 }
