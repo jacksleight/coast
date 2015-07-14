@@ -10,6 +10,7 @@ use Coast\App\Access;
 use Coast\App\Executable;
 use Coast\Request;
 use Coast\Response;
+use Coast\Url;
 
 class Csp implements Access, Executable
 {
@@ -17,6 +18,10 @@ class Csp implements Access, Executable
     use Executable\Implementation;
 
     protected $_nonce;
+
+    protected $_isReportOnly = false;
+
+    protected $_reportUrl;
 
     protected $_groups = [];
 
@@ -30,6 +35,24 @@ class Csp implements Access, Executable
             }
             $this->$name($value);
         }
+    }
+
+    public function reportUrl(Url $reportUrl = null)
+    {
+        if (func_num_args() > 0) {
+            $this->_reportUrl = $reportUrl;
+            return $this;
+        }
+        return $this->_reportUrl;
+    }
+
+    public function isReportOnly($isReportOnly = null)
+    {
+        if (func_num_args() > 0) {
+            $this->_isReportOnly = (bool) $isReportOnly;
+            return $this;
+        }
+        return $this->_isReportOnly;
     }
 
     public function group($name, $value = null)
@@ -72,18 +95,30 @@ class Csp implements Access, Executable
         return $this->_directives;
     }
 
-    public function source($directive, $value)
+    public function groupSource($group, $value)
+    {
+        $this->_groups[$group][] = $value;
+        return $this;
+    }
+
+    public function groupSources($group, array $values)
+    {
+        foreach ($values as $value) {
+            $this->groupSource($group, $value);
+        }
+        return $this;
+    }
+
+    public function directiveSource($directive, $value)
     {
         $this->_directives[$directive][] = $value;
         return $this;
     }
 
-    public function sources(array $sources)
+    public function directiveSources($directive, array $values)
     {
-        foreach ($sources as $directive => $values) {
-            foreach ($values as $value) {
-                $this->source($directive, $value);
-            }
+        foreach ($values as $value) {
+            $this->directiveSource($directive, $value);
         }
         return $this;
     }
@@ -101,6 +136,9 @@ class Csp implements Access, Executable
         $parts = [];
         foreach ($this->_directives as $name => $sources) {
             $parts[] = "{$name} {$this->_parseSources($sources)}";
+        }
+        if (isset($this->_reportUrl)) {
+            $parts[] = "report-uri {$this->_reportUrl}";
         }
         return implode('; ', $parts);
     }
@@ -131,7 +169,10 @@ class Csp implements Access, Executable
 
     public function postExecute(Request $req, Response $res)
     {
-        $res->header('Content-Security-Policy', $this->toString());
+        $header = $this->_isReportOnly
+            ? 'Content-Security-Policy-Report-Only'
+            : 'Content-Security-Policy';
+        $res->header($header, $this->toString());
     }
 
     public function __toString()
