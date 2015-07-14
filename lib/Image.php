@@ -16,6 +16,7 @@ use Intervention\Image\ImageManager;
 class Image implements \Coast\App\Access, \Coast\App\Executable
 {
     use \Coast\App\Access\Implementation;
+    use \Coast\App\Executable\Implementation;
 
     protected $_manager;
 

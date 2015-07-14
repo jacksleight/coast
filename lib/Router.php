@@ -15,6 +15,7 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
     const METHOD_DELETE = \Coast\Request::METHOD_DELETE;
 
     use \Coast\App\Access\Implementation;
+    use \Coast\App\Executable\Implementation;
 
     protected $_prefix;
     

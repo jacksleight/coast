@@ -13,6 +13,8 @@ use Coast\Request,
 
 class Subpath implements Executable
 {   
+    use Executable\Implementation;
+    
     protected $_executable;
 
     protected $_path;

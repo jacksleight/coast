@@ -14,6 +14,7 @@ use Coast\View\Content;
 class View implements \Coast\App\Access, \Coast\App\Executable
 {
     use \Coast\App\Access\Implementation;
+    use \Coast\App\Executable\Implementation;
 
     protected $_dirs = [];
 
