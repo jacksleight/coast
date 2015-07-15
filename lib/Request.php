@@ -23,7 +23,6 @@ class Request
     const PORT_HTTP     = 80;
     const PORT_HTTPS    = 443;
     
-    protected $_sessions    = [];
     protected $_params      = [];
     protected $_servers     = [];
     protected $_protocol;
@@ -77,12 +76,6 @@ class Request
         $this->body(file_get_contents('php://input'));
         $this->cookies($_COOKIE);
 
-        if (session_status() == PHP_SESSION_NONE) {
-            session_set_cookie_params(0, $this->base());
-            session_start();
-        }
-        $this->sessions($_SESSION);
-
         return $this;
     }
 
@@ -94,29 +87,6 @@ class Request
             }
         }
         return $params;
-    }
-
-    public function &session($name, $value = null)
-    {
-        if (func_num_args() > 1) {
-            $this->_sessions[$name] = $value;
-            return $this;
-        }
-        if (!isset($this->_sessions[$name])) {
-            $this->_sessions[$name] = new \stdClass;
-        }        
-        return $this->_sessions[$name];
-    }
-
-    public function &sessions(array $sessions = null)
-    {
-        if (func_num_args() > 0) {
-            foreach ($sessions as $name => $value) {
-                $this->session($name, $value);
-            }
-            return $this;
-        }
-        return $this->_sessions;
     }
 
     public function param($name, $value = null)

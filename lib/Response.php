@@ -7,6 +7,7 @@
 namespace Coast;
 
 use Coast\File;
+use Coast\Request;
 
 class Response
 {
@@ -17,12 +18,12 @@ class Response
     protected $_cookies = [];
     protected $_body    = null;
 
-    public function __construct(\Coast\Request $request = null)
+    public function __construct(Request $request = null)
     {
         $this->request($request);
     }
 
-    public function request(\Coast\Request $request = null)
+    public function request(Request $request = null)
     {
         if (func_num_args() > 0) {
             $this->_request = $request;
@@ -33,12 +34,6 @@ class Response
 
     public function toGlobals()
     {
-        if (session_status() == PHP_SESSION_ACTIVE) {
-            if (isset($this->_request)) {
-                $_SESSION = $this->_request->sessions();
-            }
-            session_write_close();
-        }
         http_response_code($this->_status);
         foreach ($this->_headers as $name => $value) {
             header("{$name}: {$value}");
