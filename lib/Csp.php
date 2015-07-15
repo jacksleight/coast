@@ -126,7 +126,7 @@ class Csp implements Access, Executable
     public function nonce()
     {
         if (!isset($this->_nonce)) {
-            $this->_nonce = base64_encode(openssl_random_pseudo_bytes(16));
+            $this->_nonce = \Coast\str_random();
         }
         return $this->_nonce;
     }
