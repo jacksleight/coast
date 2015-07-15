@@ -18,7 +18,7 @@ class UrlResolver implements \Coast\App\Access
 
     protected $_router;
 
-    protected $_cacheBuster;
+    protected $_cacheBust;
 
     public function __construct(array $options = array())
     {
@@ -87,13 +87,13 @@ class UrlResolver implements \Coast\App\Access
         return $this->_router;
     }
 
-    public function cacheBuster(\Closure $cacheBuster = null)
+    public function cacheBust(\Closure $cacheBust = null)
     {
         if (func_num_args() > 0) {
-            $this->_cacheBuster = $cacheBuster;
+            $this->_cacheBust = $cacheBust->bindTo($this);
             return $this;
         }
-        return $this->_cacheBuster;
+        return $this->_cacheBust;
     }
 
     public function string($string = null, $base = true)
@@ -180,9 +180,8 @@ class UrlResolver implements \Coast\App\Access
         }
         $url = (new \Coast\Url())->path($url);
 
-        if ($cacheBust && isset($this->_cacheBuster) && $path instanceof \Coast\File && $path->isReadable()) {
-            $callback = $this->_cacheBuster;
-            $callback($url, $path);
+        if ($cacheBust && isset($this->_cacheBust) && $path instanceof \Coast\File && $path->isReadable()) {
+            call_user_func($this->_cacheBust, $url, $path);
         }
 
         return $url;
