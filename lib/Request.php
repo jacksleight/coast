@@ -92,7 +92,11 @@ class Request
     public function param($name, $value = null)
     {
         if (func_num_args() > 1) {
-            $this->_params[$name] = $value;
+            if (isset($value)) {
+                $this->_params[$name] = $value;
+            } else {
+                unset($this->_params[$name]);
+            }
             return $this;
         }
         return isset($this->_params[$name])
