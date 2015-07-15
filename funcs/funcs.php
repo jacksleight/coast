@@ -303,3 +303,8 @@ function str_css_ratio_slope($smallWidth, $smallHeight, $largeWidth, $largeHeigh
         'height'      => ($smallHeight - $smallWidth * $slope) . 'px'
     ));
 }
+
+function str_random($bytes = 32, $algo = 'sha512')
+{
+    return rtrim(base64_encode(hash($algo, openssl_random_pseudo_bytes($bytes), true)), '=');
+}
