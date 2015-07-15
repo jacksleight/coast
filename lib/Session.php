@@ -6,8 +6,6 @@
 
 namespace Coast;
 
-use Coast\Csp;
-use Coast\App;
 use Coast\App\Access;
 use Coast\App\Executable;
 use Coast\Request;
