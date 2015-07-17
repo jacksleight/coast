@@ -13,17 +13,19 @@ All feedback, suggestions, bug reports and contributions are very welcome. Pleas
 
 ## Components
 
+All components are designed to be standalone as much as possible, but many implement App\Executable for use as middleware in  applications, these are marked with a ★.
+
 * **App, Request, Response**
 	* Simple Express inspired application logic
 	* HTTP request and response data handling
 * **Config**
 	* Load and merge config files into config object
-* **Controller**
+* **Controller** ★
 	* ...
-* **Csp**
+* **Csp** ★
 	* Content security policy header generation
 	* Generation of nonce values
-* **Csrf** 
+* **Csrf** ★
 	* Cross site request forgery protection
 * **Feed**
 	* ATOM feed generation
@@ -31,7 +33,7 @@ All feedback, suggestions, bug reports and contributions are very welcome. Pleas
 	* Data filtering
 * **Http**
 	* HTTP client (based on cURL)
-* **Image**
+* **Image** ★
 	* Image manipulation
 * **Lazy**
 	* ...
@@ -39,9 +41,9 @@ All feedback, suggestions, bug reports and contributions are very welcome. Pleas
 	* ...
 * **Path, Dir, File**
 	* Path, directory and file manipulation
-* **Router**
+* **Router** ★
 	* ...
-* **Session**
+* **Session** ★
 	* Session management and data wrapper
 * **Sitemap** 
 	* XML sitemap generation
@@ -51,7 +53,7 @@ All feedback, suggestions, bug reports and contributions are very welcome. Pleas
 	* Resolves strings, files, routes etc. into URLs
 * **Validator**
 	* Data validation
-* **View**
+* **View** ★
 	* Powerfull view component
 	* Child and parent (wrapper) views
 	* Extensible views
