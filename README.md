@@ -13,7 +13,7 @@ All feedback, suggestions, bug reports and contributions are very welcome. Pleas
 
 ## Components
 
-All components are designed to be standalone as much as possible, but many implement App\Executable for use as middleware in  applications, these are marked with a ★.
+All components are designed to be standalone as much as possible, and can be used independently, but many implement App\Executable for use as middleware in applications, these are marked with a ★.
 
 * **App, Request, Response**
 	* Simple Express inspired application logic
