@@ -9,7 +9,7 @@ Coast is a web application framework. The goal of Coast is to provide a simple, 
 
 All feedback, suggestions, bug reports and contributions are very welcome. Please feel free to get in touch by email (jacksleight at gmail dot com) or [@jacksleight](https://twitter.com/jacksleight) on Twitter.
 
-**The documentation and tests are still a work in progress (sorry). Until there's a stable release the API may change.**
+**The documentation, examples and tests are still a work in progress (sorry). Until there's a 1.0 release any new version may introduce backwards compatibility breaks.**
 
 ## Components
 
