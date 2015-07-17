@@ -15,9 +15,11 @@ All feedback, suggestions, bug reports and contributions are very welcome. Pleas
 
 All components are designed to be standalone as much as possible, and can be used independently, but many implement App\Executable for use as middleware in applications, these are marked with a ★.
 
-* **App, Request, Response**
+* **App, Request, Response** ★
 	* Simple Express inspired application logic
 	* HTTP request and response data handling
+	* Lazy loading of application dependencies
+	* Sub-applications
 * **Config**
 	* Load and merge config files into config object
 * **Controller** ★
