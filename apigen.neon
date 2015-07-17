@@ -4,4 +4,3 @@ destination: ../docs
 php: no
 deprecated: yes
 todo: yes
-report: build/logs/apigen.xml

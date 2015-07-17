@@ -12,10 +12,8 @@
     "php": ">=5.5.0",
     "jakeasmith/http_build_url": "0.1.*"
   },
-  "require-dev-disabled": {
-    "apigen/apigen": "2.8.*"
-  },
   "require-dev": {
+    "apigen/apigen": "4.1.*",
     "phpunit/phpunit": "3.7.*",
     "satooshi/php-coveralls": "0.6.*"
   },
