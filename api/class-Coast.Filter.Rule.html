@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>Class Coast\Filter\Rule | Coast API Documentation</title>
+
+	<link rel="stylesheet" href="resources/style.css?95ada9fb523b6ab4fd1c47bb375f713f2cc65542">
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+
+		<div id="groups">
+				<h3>Namespaces</h3>
+			<ul>
+				<li class="active">
+					<a href="namespace-Coast.html">
+						Coast<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.App.html">
+						App<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.App.Access.html">
+						Access					</a>
+
+						</li>
+				<li>
+					<a href="namespace-Coast.App.Executable.html">
+						Executable					</a>
+
+						</li>
+							</ul></li>
+				<li>
+					<a href="namespace-Coast.Controller.html">
+						Controller					</a>
+
+						</li>
+				<li>
+					<a href="namespace-Coast.Csrf.html">
+						Csrf					</a>
+
+						</li>
+				<li>
+					<a href="namespace-Coast.Dir.html">
+						Dir					</a>
+
+						</li>
+				<li>
+					<a href="namespace-Coast.File.html">
+						File					</a>
+
+						</li>
+				<li class="active">
+					<a href="namespace-Coast.Filter.html">
+						Filter<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.Filter.Rule.html">
+						Rule					</a>
+
+						</li>
+							</ul></li>
+				<li>
+					<a href="namespace-Coast.Http.html">
+						Http					</a>
+
+						</li>
+				<li>
+					<a href="namespace-Coast.Image.html">
+						Image					</a>
+
+						</li>
+				<li>
+					<a href="namespace-Coast.Model.html">
+						Model					</a>
+
+						</li>
+				<li>
+					<a href="namespace-Coast.Router.html">
+						Router					</a>
+
+						</li>
+				<li>
+					<a href="namespace-Coast.UrlResolver.html">
+						UrlResolver					</a>
+
+						</li>
+				<li>
+					<a href="namespace-Coast.Validator.html">
+						Validator<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.Validator.Rule.html">
+						Rule					</a>
+
+						</li>
+							</ul></li>
+				<li>
+					<a href="namespace-Coast.View.html">
+						View					</a>
+
+						</li>
+							</ul></li>
+			</ul>
+		</div>
+
+		<hr>
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li class="active"><a href="class-Coast.Filter.Rule.html">Rule</a></li>
+			</ul>
+
+
+
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="">
+		<input type="hidden" name="ie" value="UTF-8">
+		<input type="text" name="q" class="text" placeholder="Search">
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="namespace-Coast.Filter.html" title="Summary of Coast\Filter"><span>Namespace</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+				<li>
+					<a href="annotation-group-deprecated.html" title="List of elements with deprecated annotation">
+						<span>Deprecated</span>
+					</a>
+				</li>
+				<li>
+					<a href="annotation-group-todo.html" title="List of elements with todo annotation">
+						<span>Todo</span>
+					</a>
+				</li>
+		</ul>
+		<ul>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class Rule</h1>
+
+
+
+
+
+	<div>
+		<h4>Direct known subclasses</h4>
+			<a href="class-Coast.Filter.html">Coast\Filter</a>, 
+			<a href="class-Coast.Filter.Rule.CamelCase.html">Coast\Filter\Rule\CamelCase</a>, 
+			<a href="class-Coast.Filter.Rule.SanitizeUrl.html">Coast\Filter\Rule\SanitizeUrl</a>, 
+			<a href="class-Coast.Filter.Rule.Slugify.html">Coast\Filter\Rule\Slugify</a>, 
+			<a href="class-Coast.Filter.Rule.StripTags.html">Coast\Filter\Rule\StripTags</a>, 
+			<a href="class-Coast.Filter.Rule.TitleCase.html">Coast\Filter\Rule\TitleCase</a>, 
+			<a href="class-Coast.Filter.Rule.Trim.html">Coast\Filter\Rule\Trim</a>, 
+			<a href="class-Coast.Filter.Rule.UpperCase.html">Coast\Filter\Rule\UpperCase</a>, 
+			<a href="class-Coast.Filter.Rule.UpperCaseFirst.html">Coast\Filter\Rule\UpperCaseFirst</a>, 
+			<a href="class-Coast.Filter.Rule.CamelCaseSplit.html">Coast\Filter\Rule\CamelCaseSplit</a>, 
+			<a href="class-Coast.Filter.Rule.EncodeSpecialChars.html">Coast\Filter\Rule\EncodeSpecialChars</a>, 
+			<a href="class-Coast.Filter.Rule.LowerCase.html">Coast\Filter\Rule\LowerCase</a>, 
+			<a href="class-Coast.Filter.Rule.LowerCaseFirst.html">Coast\Filter\Rule\LowerCaseFirst</a>, 
+			<a href="class-Coast.Filter.Rule.Nullify.html">Coast\Filter\Rule\Nullify</a>, 
+			<a href="class-Coast.Filter.Rule.SanitizeEmailAddress.html">Coast\Filter\Rule\SanitizeEmailAddress</a>, 
+			<a href="class-Coast.Filter.Rule.SanitizeFloat.html">Coast\Filter\Rule\SanitizeFloat</a>, 
+			<a href="class-Coast.Filter.Rule.SanitizeInteger.html">Coast\Filter\Rule\SanitizeInteger</a>
+	</div>
+
+	<div>
+		<h4>Indirect known subclasses</h4>
+			<a href="class-Coast.Filter.Rule.SanitizeDecimal.html">Coast\Filter\Rule\SanitizeDecimal</a>, 
+			<a href="class-Coast.Filter.Rule.SanitizeNumber.html">Coast\Filter\Rule\SanitizeNumber</a>
+	</div>
+
+
+
+
+
+	<div class="info">
+		<b>Abstract</b><br>
+		
+		<b>Namespace:</b> <a href="namespace-Coast.html">Coast</a>\<a href="namespace-Coast.Filter.html">Filter</a><br>
+		
+
+			<b>Located at</b> <a href="source-class-Coast.Filter.Rule.html#9-52" title="Go to source code">Filter/Rule.php</a>
+		<br>
+	</div>
+
+
+
+	<table class="summary methods" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="__construct" id="___construct">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___construct">#</a>
+		<code><a href="source-class-Coast.Filter.Rule.html#13-14" title="Go to source code">__construct</a>( )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="name" id="_name">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_name">#</a>
+		<code><a href="source-class-Coast.Filter.Rule.html#16-27" title="Go to source code">name</a>( <span> <var>$name</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="params" id="_params">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_params">#</a>
+		<code><a href="source-class-Coast.Filter.Rule.html#29-39" title="Go to source code">params</a>( )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="_filter" id="__filter">
+
+		<td class="attributes"><code>
+			abstract protected 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#__filter">#</a>
+		<code><a href="source-class-Coast.Filter.Rule.html#41" title="Go to source code">_filter</a>( <span> <var>$value</var></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="filter" id="_filter">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_filter">#</a>
+		<code><a href="source-class-Coast.Filter.Rule.html#43-46" title="Go to source code">filter</a>( <span> <var>$value</var></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="__invoke" id="___invoke">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___invoke">#</a>
+		<code><a href="source-class-Coast.Filter.Rule.html#48-51" title="Go to source code">__invoke</a>( <span> <var>$value</var></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+
+
+
+
+
+	<table class="summary properties" id="properties">
+	<caption>Properties summary</caption>
+	<tr data-order="_name" id="$_name">
+		<td class="attributes"><code>
+			protected  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Coast.Filter.Rule.html#11" title="Go to source code"><var>$_name</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$_name" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	</table>
+
+
+
+
+
+
+</div>
+
+	<div id="footer">
+		Coast API Documentation API documentation generated by <a href="http://apigen.org">ApiGen</a>
+	</div>
+</div>
+</div>
+<script src="resources/combined.js"></script>
+<script src="elementlist.js"></script>
+</body>
+</html>

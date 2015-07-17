@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>Class Coast\Response | Coast API Documentation</title>
+
+	<link rel="stylesheet" href="resources/style.css?95ada9fb523b6ab4fd1c47bb375f713f2cc65542">
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+
+		<div id="groups">
+				<h3>Namespaces</h3>
+			<ul>
+				<li class="active">
+					<a href="namespace-Coast.html">
+						Coast<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.App.html">
+						App<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.App.Access.html">
+						Access					</a>
+
+						</li>
+				<li>
+					<a href="namespace-Coast.App.Executable.html">
+						Executable					</a>
+
+						</li>
+							</ul></li>
+				<li>
+					<a href="namespace-Coast.Controller.html">
+						Controller					</a>
+
+						</li>
+				<li>
+					<a href="namespace-Coast.Csrf.html">
+						Csrf					</a>
+
+						</li>
+				<li>
+					<a href="namespace-Coast.Dir.html">
+						Dir					</a>
+
+						</li>
+				<li>
+					<a href="namespace-Coast.File.html">
+						File					</a>
+
+						</li>
+				<li>
+					<a href="namespace-Coast.Filter.html">
+						Filter<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.Filter.Rule.html">
+						Rule					</a>
+
+						</li>
+							</ul></li>
+				<li>
+					<a href="namespace-Coast.Http.html">
+						Http					</a>
+
+						</li>
+				<li>
+					<a href="namespace-Coast.Image.html">
+						Image					</a>
+
+						</li>
+				<li>
+					<a href="namespace-Coast.Model.html">
+						Model					</a>
+
+						</li>
+				<li>
+					<a href="namespace-Coast.Router.html">
+						Router					</a>
+
+						</li>
+				<li>
+					<a href="namespace-Coast.UrlResolver.html">
+						UrlResolver					</a>
+
+						</li>
+				<li>
+					<a href="namespace-Coast.Validator.html">
+						Validator<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.Validator.Rule.html">
+						Rule					</a>
+
+						</li>
+							</ul></li>
+				<li>
+					<a href="namespace-Coast.View.html">
+						View					</a>
+
+						</li>
+							</ul></li>
+			</ul>
+		</div>
+
+		<hr>
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li><a href="class-Coast.App.html">App</a></li>
+				<li><a href="class-Coast.Coast.html">Coast</a></li>
+				<li><a href="class-Coast.Config.html">Config</a></li>
+				<li><a href="class-Coast.Controller.html">Controller</a></li>
+				<li><a href="class-Coast.Csp.html">Csp</a></li>
+				<li><a href="class-Coast.Csrf.html">Csrf</a></li>
+				<li><a href="class-Coast.Dir.html">Dir</a></li>
+				<li><a href="class-Coast.Feed.html">Feed</a></li>
+				<li><a href="class-Coast.File.html">File</a></li>
+				<li><a href="class-Coast.Filter.html">Filter</a></li>
+				<li><a href="class-Coast.Http.html">Http</a></li>
+				<li><a href="class-Coast.Image.html">Image</a></li>
+				<li><a href="class-Coast.Lazy.html">Lazy</a></li>
+				<li><a href="class-Coast.Model.html">Model</a></li>
+				<li><a href="class-Coast.Path.html">Path</a></li>
+				<li><a href="class-Coast.Request.html">Request</a></li>
+				<li class="active"><a href="class-Coast.Response.html">Response</a></li>
+				<li><a href="class-Coast.Router.html">Router</a></li>
+				<li><a href="class-Coast.Session.html">Session</a></li>
+				<li><a href="class-Coast.Sitemap.html">Sitemap</a></li>
+				<li><a href="class-Coast.Url.html">Url</a></li>
+				<li><a href="class-Coast.UrlResolver.html">UrlResolver</a></li>
+				<li><a href="class-Coast.Validator.html">Validator</a></li>
+				<li><a href="class-Coast.View.html">View</a></li>
+				<li><a href="class-Coast.Xml.html">Xml</a></li>
+			</ul>
+
+
+
+			<h3>Exceptions</h3>
+			<ul>
+				<li><a href="class-Coast.Exception.html">Exception</a></li>
+			</ul>
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="">
+		<input type="hidden" name="ie" value="UTF-8">
+		<input type="text" name="q" class="text" placeholder="Search">
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="namespace-Coast.html" title="Summary of Coast"><span>Namespace</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+				<li>
+					<a href="annotation-group-deprecated.html" title="List of elements with deprecated annotation">
+						<span>Deprecated</span>
+					</a>
+				</li>
+				<li>
+					<a href="annotation-group-todo.html" title="List of elements with todo annotation">
+						<span>Todo</span>
+					</a>
+				</li>
+		</ul>
+		<ul>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class Response</h1>
+
+
+
+
+
+
+
+
+
+
+
+	<div class="info">
+		
+		
+		<b>Namespace:</b> <a href="namespace-Coast.html">Coast</a><br>
+		
+
+			<b>Located at</b> <a href="source-class-Coast.Response.html#12-175" title="Go to source code">Response.php</a>
+		<br>
+	</div>
+
+
+
+	<table class="summary methods" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="__construct" id="___construct">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___construct">#</a>
+		<code><a href="source-class-Coast.Response.html#21-24" title="Go to source code">__construct</a>( <span><code><a href="class-Coast.Request.html">Coast\Request</a></code> <var>$request</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="request" id="_request">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_request">#</a>
+		<code><a href="source-class-Coast.Response.html#26-33" title="Go to source code">request</a>( <span><code><a href="class-Coast.Request.html">Coast\Request</a></code> <var>$request</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="toGlobals" id="_toGlobals">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_toGlobals">#</a>
+		<code><a href="source-class-Coast.Response.html#35-52" title="Go to source code">toGlobals</a>( )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="status" id="_status">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_status">#</a>
+		<code><a href="source-class-Coast.Response.html#54-61" title="Go to source code">status</a>( <span> <var>$status</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="header" id="_header">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_header">#</a>
+		<code><a href="source-class-Coast.Response.html#63-73" title="Go to source code">header</a>( <span> <var>$name</var></span>, <span> <var>$value</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="headers" id="_headers">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_headers">#</a>
+		<code><a href="source-class-Coast.Response.html#75-84" title="Go to source code">headers</a>( <span>array <var>$headers</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="type" id="_type">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_type">#</a>
+		<code><a href="source-class-Coast.Response.html#86-93" title="Go to source code">type</a>( <span> <var>$type</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="cookie" id="_cookie">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_cookie">#</a>
+		<code><a href="source-class-Coast.Response.html#95-107" title="Go to source code">cookie</a>( <span> <var>$name</var></span>, <span> <var>$value</var> = <span class="php-keyword1">null</span></span>, <span> <var>$age</var> = <span class="php-keyword1">null</span></span>, <span> <var>$path</var> = <span class="php-keyword1">null</span></span>, <span> <var>$domain</var> = <span class="php-keyword1">null</span></span>, <span> <var>$secure</var> = <span class="php-keyword1">false</span></span>, <span> <var>$http</var> = <span class="php-keyword1">false</span></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="body" id="_body">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_body">#</a>
+		<code><a href="source-class-Coast.Response.html#109-116" title="Go to source code">body</a>( <span> <var>$body</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="text" id="_text">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_text">#</a>
+		<code><a href="source-class-Coast.Response.html#118-123" title="Go to source code">text</a>( <span> <var>$text</var></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="html" id="_html">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_html">#</a>
+		<code><a href="source-class-Coast.Response.html#125-130" title="Go to source code">html</a>( <span> <var>$html</var></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="json" id="_json">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_json">#</a>
+		<code><a href="source-class-Coast.Response.html#132-137" title="Go to source code">json</a>( <span> <var>$json</var></span>, <span> <var>$options</var> = JSON_PRETTY_PRINT</span>, <span> <var>$depth</var> = <span class="php-num">512</span></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="xml" id="_xml">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_xml">#</a>
+		<code><a href="source-class-Coast.Response.html#139-151" title="Go to source code">xml</a>( <span> <var>$xml</var></span>, <span> <var>$type</var> = <span class="php-keyword1">null</span></span>, <span> <var>$options</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="file" id="_file">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_file">#</a>
+		<code><a href="source-class-Coast.Response.html#153-167" title="Go to source code">file</a>( <span><code><a href="class-Coast.File.html">Coast\File</a></code> <var>$file</var></span>, <span> <var>$type</var></span>, <span> <var>$download</var> = <span class="php-keyword1">false</span></span>, <span> <var>$name</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="redirect" id="_redirect">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_redirect">#</a>
+		<code><a href="source-class-Coast.Response.html#169-174" title="Go to source code">redirect</a>( <span> <var>$url</var></span>, <span> <var>$type</var> = <span class="php-num">301</span></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+
+
+
+
+
+	<table class="summary properties" id="properties">
+	<caption>Properties summary</caption>
+	<tr data-order="_req" id="$_req">
+		<td class="attributes"><code>
+			protected  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Coast.Response.html#14" title="Go to source code"><var>$_req</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$_req" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="_status" id="$_status">
+		<td class="attributes"><code>
+			protected  
+			integer
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Coast.Response.html#16" title="Go to source code"><var>$_status</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$_status" class="anchor">#</a>
+				<code><span class="php-num">200</span></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="_headers" id="$_headers">
+		<td class="attributes"><code>
+			protected  
+			array
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Coast.Response.html#17" title="Go to source code"><var>$_headers</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$_headers" class="anchor">#</a>
+				<code>[]</code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="_cookies" id="$_cookies">
+		<td class="attributes"><code>
+			protected  
+			array
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Coast.Response.html#18" title="Go to source code"><var>$_cookies</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$_cookies" class="anchor">#</a>
+				<code>[]</code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="_body" id="$_body">
+		<td class="attributes"><code>
+			protected  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Coast.Response.html#19" title="Go to source code"><var>$_body</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$_body" class="anchor">#</a>
+				<code><span class="php-keyword1">null</span></code>
+			</div>
+		</td>
+	</tr>
+	</table>
+
+
+
+
+
+
+</div>
+
+	<div id="footer">
+		Coast API Documentation API documentation generated by <a href="http://apigen.org">ApiGen</a>
+	</div>
+</div>
+</div>
+<script src="resources/combined.js"></script>
+<script src="elementlist.js"></script>
+</body>
+</html>
