@@ -5,19 +5,60 @@
 [![Coverage Status](http://img.shields.io/coveralls/jacksleight/coast/dev.svg?style=flat-square)](https://coveralls.io/r/jacksleight/coast)
 [![License](http://img.shields.io/packagist/l/jacksleight/coast.svg?style=flat-square)](https://packagist.org/packages/jacksleight/coast)
 
-Coast is a web application framework for PHP 5.5+. The goal of Coast is to provide a simple, lightweight and flexible framework for building high-performance, modern web apps. Some parts of the API were inspired by the Connect and Express node.js frameworks, others are my own (possibly ridiculous) ideas.
-
-* Easy handling of **request and response data**
-* View component for **view, partial and layout rendering**
-* Router component for **advanced path routing**
-* Controller component for **advanced request handling**
-* URL component for **easy URL generation** (static files, routes, query strings etc.)
-* Utility classes for working with **config files**, **URLs**, **Atom feeds**, **XML sitemaps** and the **file system**, plus a basic **HTTP client** library
+Coast is a web application framework. The goal of Coast is to provide a simple, lightweight and flexible framework for building high-performance, modern web apps. Some parts of the API were inspired by the Connect and Express node.js frameworks, others are my own (possibly ridiculous) ideas.
 
 All feedback, suggestions, bug reports and contributions are very welcome. Please feel free to get in touch by email (jacksleight at gmail dot com) or [@jacksleight](https://twitter.com/jacksleight) on Twitter.
 
 **The documentation and tests are still a work in progress (sorry). Until there's a stable release the API may change.**
 
+## Components
+
+* **App, Request, Response**
+	* Simple Express inspired application logic
+	* HTTP request and response data handling
+* **Config**
+	* Load and merge config files into config object
+* **Controller**
+	* ...
+* **Csp**
+	* Content security policy header generation
+	* Generation of nonce values
+* **Csrf** 
+	* Cross site request forgery protection
+* **Feed**
+	* ATOM feed generation
+* **Filter**
+	* Data filtering
+* **Http**
+	* HTTP client (based on cURL)
+* **Image**
+	* Image manipulation
+* **Lazy**
+	* ...
+* **Model**
+	* ...
+* **Path, Dir, File**
+	* Path, directory and file manipulation
+* **Router**
+	* ...
+* **Session**
+	* Session management and data wrapper
+* **Sitemap** 
+	* XML sitemap generation
+* **Url**
+	* URL manipulation
+* **UrlResolver**
+	* Resolves strings, files, routes etc. into URLs
+* **Validator**
+	* Data validation
+* **View**
+	* Powerfull view component
+	* Child and parent (wrapper) views
+	* Extensible views
+	* Output capture
+* **Xml**
+	* ...
+	
 ## Installation
 
 The easiest way to install Coast is through [Composer](https://getcomposer.org/doc/00-intro.md), by creating a file called `composer.json` containing:
@@ -73,8 +114,8 @@ And load it up in the browser at: [http://localhost:8000/](http://localhost:8000
 
 ## Documentation
 
-* [API Documentation](https://rawgit.com/jacksleight/coast/docs/index.html)  
-* [Examples](https://github.com/jacksleight/coast/tree/examples) (see the [test suite](tests/Coast) for further code exammples)
+* [API Documentation](https://rawgit.com/jacksleight/coast/docs/api/index.html)  
+* [Examples](https://github.com/jacksleight/coast/tree/examples) (see the [test suite](tests/Coast) for further code examples)
 
 ## Requirements
 
@@ -86,16 +127,6 @@ And load it up in the browser at: [http://localhost:8000/](http://localhost:8000
 * Examples (in progress)
 * API documentation (in progress)
 * Tests (in progress)
-
-## Roadmap
-
-All of the items below are in progress, in fact they already exist as mostly working components of the library that became Coast, I've just not had a chance to update them yet.
-
-* Internationalisation component
-* Base entity class with validation
-* Image component with automatic image resizing
-* oEmbed component for including embedable content
-* HTML tidy component
 
 ## Licence
 
