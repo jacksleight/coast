@@ -22,7 +22,7 @@ class Lazy implements Executable, ArrayAccess
 
 	protected $_vars;
 
-    protected $_content;
+    protected $_value;
 
     public function __construct($source, $vars = array())
     {
@@ -33,91 +33,91 @@ class Lazy implements Executable, ArrayAccess
     	$this->_vars   = $vars;
     }
 
-    public function load()
+    public function init()
     {
-        if (isset($this->_content)) {
+        if (isset($this->_value)) {
             return $this;
         } else if ($this->_source instanceof File) {
-            $this->_content = \Coast\load($this->_source, $this->_vars);
+            $this->_value = \Coast\load($this->_source, $this->_vars);
         } else if ($this->_source instanceof Closure) {
-            $this->_content = call_user_func($this->_source, $this->_vars);
+            $this->_value = call_user_func($this->_source, $this->_vars);
         }
         return $this;
     }
 
-    public function content()
+    public function value()
     {
-        $this->load();
-        return $this->_content;
+        $this->init();
+        return $this->_value;
     }
 
     public function execute(Request $req, Response $res)
     {
-        $this->load();
-        if (!$this->_content instanceof \Closure && !$this->_content instanceof Executable) {
+        $this->init();
+        if (!$this->_value instanceof Closure && !$this->_value instanceof Executable) {
             throw new App\Exception("Object is not a closure or instance of Coast\App\Executable");
         }
-        return $this->_content->execute($req, $res);
+        return $this->_value->execute($req, $res);
     }
 
     public function __invoke()
     {
-        $this->load();
+        $this->init();
         $args = func_get_args();
-        return call_user_func_array($this->_content, $args);
+        return call_user_func_array($this->_value, $args);
     }
 
     public function __call($method, $args)
     {
-        $this->load();
-        return call_user_func_array([$this->_content, $method], $args);
+        $this->init();
+        return call_user_func_array([$this->_value, $method], $args);
     }
 
     public function __set($name, $value)
     {
-        $this->load();
-        $this->_content->{$name} = $value;
+        $this->init();
+        $this->_value->{$name} = $value;
     }
 
     public function __isset($name)
     {
-        $this->load();
-        return isset($this->_content->{$name});
+        $this->init();
+        return isset($this->_value->{$name});
     }
 
     public function __get($name)
     {
-        $this->load();
-        return $this->_content->{$name};
+        $this->init();
+        return $this->_value->{$name};
     }
 
     public function __unset($name)
     {
-        $this->load();
-        unset($this->_content->{$name});
+        $this->init();
+        unset($this->_value->{$name});
     }
 
     public function offsetSet($offset, $value)
     {
-        $this->load();
-        $this->_content[$offset] = $value;
+        $this->init();
+        $this->_value[$offset] = $value;
     }
 
     public function offsetExists($offset)
     {
-        $this->load();
-        return isset($this->_content[$offset]);
+        $this->init();
+        return isset($this->_value[$offset]);
     }
 
     public function offsetGet($offset)
     {
-        $this->load();
-        return $this->_content[$offset];
+        $this->init();
+        return $this->_value[$offset];
     }
 
     public function offsetUnset($offset)
     {
-        $this->load();
-        unset($this->_content[$offset]);
+        $this->init();
+        unset($this->_value[$offset]);
     }
 }

@@ -14,6 +14,7 @@ use Coast\Lazy;
 use Coast\Path;
 use Coast\Request;
 use Coast\Response;
+use Closure;
 
 /**
  * Coast application object.
@@ -253,7 +254,7 @@ class App implements Executable
      */
     public function executable($executable, $subpath = null)
     {
-        if (!$executable instanceof \Closure && !$executable instanceof Executable) {
+        if (!$executable instanceof Closure && !$executable instanceof Executable) {
             throw new App\Exception("Object is not a closure or instance of Coast\App\Executable");
         }
         if (isset($subpath)) {
@@ -261,7 +262,7 @@ class App implements Executable
         } else if ($executable instanceof App) {
             $executable->isSubapp(true);
         }
-        array_push($this->_executables, $executable instanceof \Closure
+        array_push($this->_executables, $executable instanceof Closure
             ? $executable->bindTo($this)
             : $executable);
         return $this;
@@ -296,6 +297,7 @@ class App implements Executable
             }
             $result = null;
             foreach ($this->_executables as $executable) {
+                $executable = $this->_lazyInit($executable);
                 $result = call_user_func($executable instanceof Executable ? [$executable, 'execute'] : $executable, $req, $res);
                 if (isset($result)) {
                     break;
@@ -338,7 +340,7 @@ class App implements Executable
      * @param  Closure $notFoundHandler
      * @return self
      */
-    public function notFoundHandler(\Closure $notFoundHandler)
+    public function notFoundHandler(Closure $notFoundHandler)
     {
         $this->_notFoundHandler = $notFoundHandler->bindTo($this);
         return $this;
@@ -349,10 +351,29 @@ class App implements Executable
      * @param  Closure $errorHandler
      * @return self
      */
-    public function errorHandler(\Closure $errorHandler)
+    public function errorHandler(Closure $errorHandler)
     {
         $this->_errorHandler = $errorHandler->bindTo($this);
         return $this;
+    }
+
+    protected function _lazyInit($lazy)
+    {
+        if (!$lazy instanceof Lazy) {
+            return $lazy;
+        }
+        $value = $lazy->value();
+        foreach ($this->_params as $key => $param) {
+            if ($lazy === $param) {
+                $this->_params[$key] = $value;
+            }
+        }
+        foreach ($this->_executables as $key => $executable) {
+            if ($lazy === $executable) {
+                $this->_executables[$key] = $value;
+            }
+        }
+        return $value;
     }
 
     /**
@@ -373,7 +394,7 @@ class App implements Executable
      */
     public function __get($name)
     {
-        $value = $this->param($name);
+        $value = $this->_lazyInit($this->param($name));
         return $value;
     }
 
@@ -404,7 +425,7 @@ class App implements Executable
      */
     public function __call($name, array $args)
     {
-        $value = $this->param($name);
+        $value = $this->_lazyInit($this->param($name));
         if (!is_callable($value)) {
             throw new \Coast\App\Exception("Param '{$name}' is not callable");
         }
