@@ -13,7 +13,7 @@ All feedback, suggestions, bug reports and contributions are very welcome. Pleas
 
 ## Components
 
-All components are designed to be standalone as much as possible, and can be used independently, but many implement App\Executable for use as middleware in applications, these are marked with a ★.
+All components are designed to be as standalone as possible and can generally be used independently. Many implement `App\Executable` for use as middleware in applications, these are marked with a ★.
 
 * **App, Request, Response** ★
 	* Simple Express inspired application logic
@@ -37,8 +37,8 @@ All components are designed to be standalone as much as possible, and can be use
 	* HTTP client (based on cURL)
 * **Image** ★
 	* Image manipulation
-* **Lazy**
-	* ...
+* **Lazy** ★
+	* Lazy load files/closures on demand
 * **Model**
 	* ...
 * **Path, Dir, File**
