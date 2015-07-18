@@ -9,6 +9,8 @@ namespace Coast;
 use Coast\File;
 use Coast\App;
 use Coast\App\Executable;
+use Coast\Request;
+use Coast\Response;
 use Closure;
 use ArrayAccess;
 
