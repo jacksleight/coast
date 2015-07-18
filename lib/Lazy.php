@@ -8,11 +8,15 @@ namespace Coast;
 
 use Coast\File;
 use Closure;
+use ArrayAccess;
 
-class Lazy
+class Lazy implements ArrayAccess
 {
 	protected $_source;
+
 	protected $_vars;
+
+    protected $_content;
 
     public function __construct($source, $vars = array())
     {
@@ -25,10 +29,80 @@ class Lazy
 
     public function load()
     {
-        if ($this->_source instanceof File) {
-            return \Coast\load($this->_source, $this->_vars);
+        if (isset($this->_content)) {
+            return $this;
+        } else if ($this->_source instanceof File) {
+            $this->_content = \Coast\load($this->_source, $this->_vars);
         } else if ($this->_source instanceof Closure) {
-            return call_user_func($this->_source, $this->_vars);
+            $this->_content = call_user_func($this->_source, $this->_vars);
         }
+        return $this;
+    }
+
+    public function content()
+    {
+        $this->load();
+        return $this->_content;
+    }
+
+    public function __invoke()
+    {
+        $this->load();
+        $args = func_get_args();
+        return call_user_func_array($this->_content, $args);
+    }
+
+    public function __call($method, $args)
+    {
+        $this->load();
+        return call_user_func_array([$this->_content, $method], $args);
+    }
+
+    public function __set($name, $value)
+    {
+        $this->load();
+        $this->_content->{$name} = $value;
+    }
+
+    public function __isset($name)
+    {
+        $this->load();
+        return isset($this->_content->{$name});
+    }
+
+    public function __get($name)
+    {
+        $this->load();
+        return $this->_content->{$name};
+    }
+
+    public function __unset($name)
+    {
+        $this->load();
+        unset($this->_content->{$name});
+    }
+
+    public function offsetSet($offset, $value)
+    {
+        $this->load();
+        $this->_content[$offset] = $value;
+    }
+
+    public function offsetExists($offset)
+    {
+        $this->load();
+        return isset($this->_content[$offset]);
+    }
+
+    public function offsetGet($offset)
+    {
+        $this->load();
+        return $this->_content[$offset];
+    }
+
+    public function offsetUnset($offset)
+    {
+        $this->load();
+        unset($this->_content[$offset]);
     }
 }
