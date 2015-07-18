@@ -80,6 +80,28 @@ class Csrf implements Executable, Access
         return $this;
     }
 
+    public function isValid($token, $throw = false)
+    {
+        $data = $this->_session->data('__Coast\Csrf');
+        if (!isset($data->token)) {
+            if ($throw) {
+                throw new Csrf\Exception('CSRF token not generated');
+            }
+            return false;
+        } else if ($token === null) {
+            if ($throw) {
+                throw new Csrf\Exception('CSRF token not provided');
+            }
+            return false;
+        } else if ($token !== $data->token) {
+            if ($throw) {
+                throw new Csrf\Exception('CSRF token invalid');                
+            }
+            return false;
+        }
+        return true;
+    }
+
     public function input()
     {
         return "<input type=\"hidden\" name=\"{$this->_name}\" value=\"{$this->token()}\">";
@@ -90,16 +112,7 @@ class Csrf implements Executable, Access
         if (!in_array($req->method(), $this->_methods)) {
             return;
         }
-
-        $data = $this->_session->data('__Coast\Csrf');
-        if (!isset($data->token)) {
-            throw new Csrf\Exception('CSRF token not generated');
-        } else if ($req->param($this->_name) === null) {
-            throw new Csrf\Exception('CSRF token not provided');
-        } else if ($req->param($this->_name) !== $data->token) {
-            throw new Csrf\Exception('CSRF token invalid');                
-        }
-
+        $this->isValid($req->param($this->_name), true);
         $req->param($this->_name, null);
     }
 }
