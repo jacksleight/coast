@@ -7,11 +7,15 @@
 namespace Coast;
 
 use Coast\File;
+use Coast\App;
+use Coast\App\Executable;
 use Closure;
 use ArrayAccess;
 
-class Lazy implements ArrayAccess
+class Lazy implements Executable, ArrayAccess
 {
+    use Executable\Implementation;
+
 	protected $_source;
 
 	protected $_vars;
@@ -43,6 +47,15 @@ class Lazy implements ArrayAccess
     {
         $this->load();
         return $this->_content;
+    }
+
+    public function execute(Request $req, Response $res)
+    {
+        $this->load();
+        if (!$this->_content instanceof \Closure && !$this->_content instanceof Executable) {
+            throw new App\Exception("Object is not a closure or instance of Coast\App\Executable");
+        }
+        return $this->_content->execute($req, $res);
     }
 
     public function __invoke()

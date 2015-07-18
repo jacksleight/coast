@@ -159,15 +159,15 @@ class App implements Executable
      * @param  array   $vars
      * @return mixed
      */
-    public function lazy($file, array $vars = array())
+    public function lazy($source, array $vars = array())
     {
-        $file = !$file instanceof File
-            ? new File("{$file}")
-            : $file;
-        $file = $file->isRelative()
-            ? $this->file($file)
-            : $file;
-        return new Lazy($file, array_merge(['app' => $this], $vars));
+        if (is_string($source)) {
+            $source = new File("{$source}");
+            $source = $source->isRelative()
+                ? $this->source($source)
+                : $source;
+        }
+        return new Lazy($source, array_merge(['app' => $this], $vars));
     }
 
     /**
@@ -374,10 +374,6 @@ class App implements Executable
     public function __get($name)
     {
         $value = $this->param($name);
-        if ($value instanceof Lazy) {
-            $value = $value->load();
-            $this->param($name, $value);
-        }
         return $value;
     }
 
@@ -409,10 +405,6 @@ class App implements Executable
     public function __call($name, array $args)
     {
         $value = $this->param($name);
-        if ($value instanceof Lazy) {
-            $value = $value->load();
-            $this->param($name, $value);
-        }
         if (!is_callable($value)) {
             throw new \Coast\App\Exception("Param '{$name}' is not callable");
         }
