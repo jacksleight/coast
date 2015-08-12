@@ -221,7 +221,7 @@ function str_camel_upper($string)
 
 function str_camel_split($string, $space = ' ')
 {
-    $string = \preg_replace(array('/(?<=[^A-Z])([A-Z])/', '/(?<=[^0-9])([0-9])/'), ' $0', $string);
+    $string = \preg_replace(array('/(?<=[^A-Z])([A-Z])/', '/(?<=[^0-9])([0-9])/'), $space . '$0', $string);
     return $string;
 }
 
