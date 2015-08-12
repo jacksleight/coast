@@ -165,7 +165,7 @@ class App implements Executable
         if (is_string($source)) {
             $source = new File("{$source}");
             $source = $source->isRelative()
-                ? $this->source($source)
+                ? $this->file($source)
                 : $source;
         }
         return new Lazy($source, array_merge(['app' => $this], $vars));
