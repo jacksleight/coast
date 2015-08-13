@@ -19,8 +19,6 @@ class Csrf implements Executable, Access
 
     protected $_name = 'csrf';
 
-    protected $_session = null;
-
     protected $_methods = [
         Request::METHOD_PUT,
         Request::METHOD_POST,
@@ -46,15 +44,6 @@ class Csrf implements Executable, Access
         return $this->_name;
     }
 
-    public function session(Session $session = null)
-    {
-        if (func_num_args() > 0) {
-            $this->_session = $session;
-            return $this;
-        }
-        return $this->_session;
-    }
-
     public function methods(array $methods = null)
     {
         if (func_num_args() > 0) {
@@ -66,24 +55,21 @@ class Csrf implements Executable, Access
 
     public function token()
     {
-        $data = $this->_session->data('__Coast\Csrf');
-        if (!isset($data->token)) {
-            $data->token = \Coast\str_random();
+        if (!isset($_SESSION['__Coast\Csrf']['token'])) {
+            $_SESSION['__Coast\Csrf']['token'] = \Coast\str_random();
         }
-        return $data->token;
+        return $_SESSION['__Coast\Csrf']['token'];
     }
 
     public function regenerate()
     {
-        $data = $this->_session->data('__Coast\Csrf');
-        $data->token = \Coast\str_random();
+        $_SESSION['__Coast\Csrf']['token'] = \Coast\str_random();
         return $this;
     }
 
     public function isValid($token, $throw = false)
     {
-        $data = $this->_session->data('__Coast\Csrf');
-        if (!isset($data->token)) {
+        if (!isset($_SESSION['__Coast\Csrf']['token'])) {
             if ($throw) {
                 throw new Csrf\Exception('CSRF token not generated');
             }
@@ -93,7 +79,7 @@ class Csrf implements Executable, Access
                 throw new Csrf\Exception('CSRF token not provided');
             }
             return false;
-        } else if ($token !== $data->token) {
+        } else if ($token !== $_SESSION['__Coast\Csrf']['token']) {
             if ($throw) {
                 throw new Csrf\Exception('CSRF token invalid');                
             }

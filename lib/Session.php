@@ -142,22 +142,20 @@ class Session implements Executable, Access
     {
         session_start();
 
-        $data = $this->data('__Coast\Session');
-
         if (isset($this->_fingerprint)) {
             $fingerprint = call_user_func($this->_fingerprint, $this->_request);
-            if (isset($data->fingerprint) && $data->fingerprint !== $fingerprint) {
+            if (isset($_SESSION['__Coast\Session']['fingerprint']) && $_SESSION['__Coast\Session']['fingerprint'] !== $fingerprint) {
                 $this->reset();
             } else {
-                $data->fingerprint = $fingerprint;
+                $_SESSION['__Coast\Session']['fingerprint'] = $fingerprint;
             }
         }
 
         if (isset($this->_expires)) {
-            if (isset($data->expires) && $data->expires < time()) {
+            if (isset($_SESSION['__Coast\Session']->expires) && $_SESSION['__Coast\Session']->expires < time()) {
                 $this->reset();
             } else {
-                $data->expires = time() + $this->_expires;
+                $_SESSION['__Coast\Session']->expires = time() + $this->_expires;
             }
         }
 
