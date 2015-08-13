@@ -50,10 +50,10 @@ class AppTest extends \PHPUnit_Framework_TestCase
         $app->add(true);
     }
 
-    public function testNotFoundHandler()
+    public function testFailureHandler()
     {
         $app = new App(__DIR__);
-        $app->notFoundHandler(function(Request $req, Response $res) {
+        $app->failureHandler(function(Request $req, Response $res) {
             return $res->text('NOT FOUND');
         });
         $app->execute($req = new Request(), $res = new Response($req));

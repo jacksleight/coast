@@ -60,7 +60,7 @@ class App implements Executable
      * Handler for requests that are not handled by middleware.
      * @var Closure
      */
-    protected $_notFoundHandler;
+    protected $_failureHandler;
 
     /**
      * Handler for errors thrown in middleware.
@@ -304,8 +304,8 @@ class App implements Executable
                 }
             }
             if ($result === false || (!isset($result) && !$this->_isSubapp)) {
-                if (isset($this->_notFoundHandler)) {
-                    $result = call_user_func($this->_notFoundHandler, $req, $res);
+                if (isset($this->_failureHandler)) {
+                    $result = call_user_func($this->_failureHandler, $req, $res);
                 } else {
                     throw new App\Exception('Nothing successfully handled the request');
                 }
@@ -336,13 +336,13 @@ class App implements Executable
     }
 
     /**
-     * Set the not found handler
-     * @param  Closure $notFoundHandler
+     * Set the failure handler
+     * @param  Closure $failureHandler
      * @return self
      */
-    public function notFoundHandler(Closure $notFoundHandler)
+    public function failureHandler(Closure $failureHandler)
     {
-        $this->_notFoundHandler = $notFoundHandler->bindTo($this);
+        $this->_failureHandler = $failureHandler->bindTo($this);
         return $this;
     }
 
