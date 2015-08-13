@@ -23,7 +23,7 @@ $app->executable(function(Request $req, Response $res) {
     ->executable(function(Request $req, Response $res) {
         return $res->text('Second middleware.');    
     })
-    ->notFoundHandler(function(Request $req, Response $res) {
+    ->failureHandler(function(Request $req, Response $res) {
         $res->status(404)
             ->text("Not Found");
     })
