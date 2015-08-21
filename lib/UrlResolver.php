@@ -104,6 +104,20 @@ class UrlResolver implements \Coast\App\Access
             : $path);
     }
 
+    public function data($string = null, $mimeType = null, $base64 = false)
+    {
+        if ($string instanceof File) {
+            $string = $string->read();
+        }
+        $url = "data:{$mimeType}";
+        if ($base64) {
+            $string = base64_encode($string);
+            $url .= ";base64";
+        }
+        $url .= ",{$string}";
+        return new \Coast\Url($url);
+    }
+
     public function route(array $params = array(), $name = null, $reset = false, $base = true)
     {
         if (!isset($this->_router)) {
