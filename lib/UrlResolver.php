@@ -231,4 +231,12 @@ class UrlResolver implements \Coast\App\Access
 
         return \Coast\array_filter_null_recursive($params);
     }
+
+    public function fragment($string)
+    {
+        $url = new \Coast\Url();
+        $url->fragment($string);
+        
+        return $url;
+    }
 }
