@@ -59,7 +59,7 @@ class File extends \Coast\File\Path
     public function read($length = null)
     {
         if (!$this->isOpen()) {
-            throw new \Exception("File '{$this}' is not open");
+            return file_get_contents($this->_name);
         }
         if (!isset($length)) {
             $this->rewind();
@@ -72,7 +72,8 @@ class File extends \Coast\File\Path
     public function write($string, $length = null)
     {
         if (!$this->isOpen()) {
-            throw new \Exception("File '{$this}' is not open");
+            file_put_contents($this->_name, $string);
+            return $this;
         }
         isset($length)
             ? fwrite($this->_handle, $string, $length)
