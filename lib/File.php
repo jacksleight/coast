@@ -31,6 +31,23 @@ class File extends \Coast\File\Path
         $this->_chars = [$delimiter, $enclosure, $escape];
         return $this;
     }
+
+    public function readAll()
+    {
+        if ($this->isOpen()) {
+            throw new \Exception("File '{$this}' is open");
+        }
+        return file_get_contents($this->_name);
+    }
+
+    public function writeAll($string)
+    {
+        if ($this->isOpen()) {
+            throw new \Exception("File '{$this}' is open");
+        }
+        file_put_contents($this->_name, $string);
+        return $this;
+    }
     
     public function open($mode = 'r')
     {
@@ -53,17 +70,6 @@ class File extends \Coast\File\Path
         }
         fclose($this->_handle);
         $this->_handle = null;
-        return $this;
-    }
-
-    public function readAll()
-    {
-        return file_get_contents($this->_name);
-    }
-
-    public function writeAll($string)
-    {
-        file_put_contents($this->_name, $string);
         return $this;
     }
 
