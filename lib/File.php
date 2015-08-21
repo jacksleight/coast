@@ -56,10 +56,21 @@ class File extends \Coast\File\Path
         return $this;
     }
 
+    public function readAll()
+    {
+        return file_get_contents($this->_name);
+    }
+
+    public function writeAll($string)
+    {
+        file_put_contents($this->_name, $string);
+        return $this;
+    }
+
     public function read($length = null)
     {
         if (!$this->isOpen()) {
-            return file_get_contents($this->_name);
+            throw new \Exception("File '{$this}' is not open");
         }
         if (!isset($length)) {
             $this->rewind();
@@ -72,8 +83,7 @@ class File extends \Coast\File\Path
     public function write($string, $length = null)
     {
         if (!$this->isOpen()) {
-            file_put_contents($this->_name, $string);
-            return $this;
+            throw new \Exception("File '{$this}' is not open");
         }
         isset($length)
             ? fwrite($this->_handle, $string, $length)

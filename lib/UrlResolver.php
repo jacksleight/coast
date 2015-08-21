@@ -107,7 +107,7 @@ class UrlResolver implements \Coast\App\Access
     public function data($string = null, $mimeType = null, $base64 = false)
     {
         if ($string instanceof File) {
-            $string = $string->read();
+            $string = $string->readAll();
         }
         $url = "data:{$mimeType}";
         if ($base64) {
