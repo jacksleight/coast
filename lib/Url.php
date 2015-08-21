@@ -59,7 +59,7 @@ class Url
         }
 
         $string = http_build_url($this->toArray());
-        $string = preg_replace('/^(mailto|tel):\/{3}/', '$1:', $string);
+        $string = preg_replace('/^(mailto|tel|data):\/{3}/', '$1:', $string);
         if (!isset($this->_scheme) &&
             !isset($this->_user) &&
             !isset($this->_pass) &&
