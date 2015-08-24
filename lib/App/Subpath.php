@@ -30,6 +30,9 @@ class Subpath implements Executable
     public function executable(Executable $executable = null)
     {
         if (func_num_args() > 0) {
+            if (!$executable instanceof Closure && !$executable instanceof Executable) {
+                throw new App\Exception("Object is not a closure or instance of Coast\App\Executable");
+            }
             $this->_executable = $executable;
             return $this;
         }
@@ -46,7 +49,7 @@ class Subpath implements Executable
         return $this->_path;
     }
 
-    public function execute(Request $req = null, Response $res = null)
+    public function execute(Request $req, Response $res)
     {
         if (!preg_match($this->_regex, $req->path(), $path)) {
             return;
@@ -55,11 +58,33 @@ class Subpath implements Executable
         $req->base("{$base}{$path[1]}/")
             ->path(isset($path[2]) ? $path[2] : '');
 
-        $result = $this->_executable->execute($req, $res);
-
+        $result = call_user_func($this->_executable instanceof Executable
+            ? [$this->_executable, 'execute']
+            : $this->_executable, $req, $res);
+                
         $req->base($base)
             ->path($path[0]);
  
         return $result;
+    }
+
+    public function preExecute(Request $req, Response $res)
+    {
+        if (!preg_match($this->_regex, $req->path(), $path)) {
+            return;
+        }
+        if ($this->_executable instanceof Executable) {
+            $this->_executable->preExecute($req, $res);
+        }
+    }
+
+    public function postExecute(Request $req, Response $res)
+    {
+        if (!preg_match($this->_regex, $req->path(), $path)) {
+            return;
+        }
+        if ($this->_executable instanceof Executable) {
+            $this->_executable->postExecute($req, $res);
+        }
     }
 }
