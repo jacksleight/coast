@@ -297,8 +297,9 @@ class App implements Executable
             }
             $result = null;
             foreach ($this->_executables as $executable) {
-                $executable = $this->_lazyInit($executable);
-                $result = call_user_func($executable instanceof Executable ? [$executable, 'execute'] : $executable, $req, $res);
+                $result = call_user_func($executable instanceof Executable
+                    ? [$executable, 'execute']
+                    : $executable, $req, $res);
                 if (isset($result)) {
                     break;
                 }
@@ -357,25 +358,6 @@ class App implements Executable
         return $this;
     }
 
-    protected function _lazyInit($lazy)
-    {
-        if (!$lazy instanceof Lazy) {
-            return $lazy;
-        }
-        $value = $lazy->value();
-        foreach ($this->_params as $key => $param) {
-            if ($lazy === $param) {
-                $this->_params[$key] = $value;
-            }
-        }
-        foreach ($this->_executables as $key => $executable) {
-            if ($lazy === $executable) {
-                $this->_executables[$key] = $value;
-            }
-        }
-        return $value;
-    }
-
     /**
      * Set a parameter.
      * @param string $name
@@ -394,7 +376,7 @@ class App implements Executable
      */
     public function __get($name)
     {
-        $value = $this->_lazyInit($this->param($name));
+        $value = $this->param($name);
         return $value;
     }
 
@@ -425,7 +407,7 @@ class App implements Executable
      */
     public function __call($name, array $args)
     {
-        $value = $this->_lazyInit($this->param($name));
+        $value = $this->param($name);
         if (!is_callable($value)) {
             throw new \Coast\App\Exception("Param '{$name}' is not callable");
         }
