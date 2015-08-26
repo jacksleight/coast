@@ -192,6 +192,7 @@ class UrlResolver implements \Coast\App\Access
                 $url = $this->_baseUrl . $url;
             }
         }
+        $url = implode('/', array_map('rawurlencode', explode('/', $url)));
         $url = (new \Coast\Url())->path($url);
 
         if ($cacheBust && isset($this->_cacheBust) && $path instanceof \Coast\File && $path->isReadable()) {
