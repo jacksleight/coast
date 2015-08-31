@@ -165,6 +165,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         array_unshift($this->_contexts, (object) ([
             'script'   => $script,
             'params'   => $params,
+            'vars'     => [],
             'outer'    => null,
             'block'    => null,
             'content'  => new Content(),
@@ -214,6 +215,9 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         $files  = $this->files($script);
 
         if (!count($files)) {
+            if (count($this->_active->renders) > 1) {
+                return;
+            }
             throw new View\Exception("View '{$script->group}:{$script->path}' does not exist");
         }
         if (!isset($files[$depth])) {
@@ -236,6 +240,14 @@ class View implements \Coast\App\Access, \Coast\App\Executable
             throw $e;
         }
         return $this->end();        
+    }
+        
+    public function params(array $params)
+    {
+        $this->_active->params = array_merge(
+            $this->_active->params,
+            $params
+        );
     }
         
     public function partial($name)
