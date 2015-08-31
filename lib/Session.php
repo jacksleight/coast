@@ -152,10 +152,10 @@ class Session implements Executable, Access
         }
 
         if (isset($this->_expires)) {
-            if (isset($_SESSION['__Coast\Session']->expires) && $_SESSION['__Coast\Session']->expires < time()) {
+            if (isset($_SESSION['__Coast\Session']['expires']) && $_SESSION['__Coast\Session']['expires'] < time()) {
                 $this->reset();
             } else {
-                $_SESSION['__Coast\Session']->expires = time() + $this->_expires;
+                $_SESSION['__Coast\Session']['expires'] = time() + $this->_expires;
             }
         }
 
