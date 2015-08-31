@@ -60,6 +60,22 @@ class Lazy implements Executable, ArrayAccess
         return $this->_value->execute($req, $res);
     }
 
+    public function preExecute(Request $req = null, Response $res = null)
+    {
+        $this->init();
+        if ($this->_value instanceof Executable) {
+            $this->_value->preExecute($req, $res);
+        }
+    }
+
+    public function postExecute(Request $req = null, Response $res = null)
+    {
+        $this->init();
+        if ($this->_value instanceof Executable) {
+            $this->_value->postExecute($req, $res);
+        }
+    }
+
     public function __invoke()
     {
         $this->init();
