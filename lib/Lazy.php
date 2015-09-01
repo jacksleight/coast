@@ -24,6 +24,12 @@ class Lazy implements Executable, ArrayAccess
 
     protected $_value;
 
+    /**
+     * Is subapp.
+     * @var boolean
+     */
+    protected $_isSubapp = false;
+
     public function __construct($source, $vars = array())
     {
         if (!$source instanceof File && !$source instanceof Closure) {
@@ -31,6 +37,24 @@ class Lazy implements Executable, ArrayAccess
         }
     	$this->_source = $source;
     	$this->_vars   = $vars;
+    }
+
+    /**
+     * Get/set is subapp.
+     * @return boolean
+     */
+    public function isSubapp($isSubapp = null)
+    {
+        if (func_num_args() > 0) {
+            $this->_isSubapp = $isSubapp;
+            return $this;
+        }
+        return $this->_isSubapp;
+    }
+
+    public function isInit()
+    {
+        return isset($this->_value);
     }
 
     public function init()
@@ -41,6 +65,9 @@ class Lazy implements Executable, ArrayAccess
             $this->_value = \Coast\load($this->_source, $this->_vars);
         } else if ($this->_source instanceof Closure) {
             $this->_value = call_user_func($this->_source, $this->_vars);
+        }
+        if ($this->_value instanceof App) {
+            $this->_value->isSubapp($this->isSubapp());
         }
         return $this;
     }
@@ -58,22 +85,6 @@ class Lazy implements Executable, ArrayAccess
             throw new App\Exception("Object is not a closure or instance of Coast\App\Executable");
         }
         return $this->_value->execute($req, $res);
-    }
-
-    public function preExecute(Request $req = null, Response $res = null)
-    {
-        $this->init();
-        if ($this->_value instanceof Executable) {
-            $this->_value->preExecute($req, $res);
-        }
-    }
-
-    public function postExecute(Request $req = null, Response $res = null)
-    {
-        $this->init();
-        if ($this->_value instanceof Executable) {
-            $this->_value->postExecute($req, $res);
-        }
     }
 
     public function __invoke()

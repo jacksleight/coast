@@ -259,7 +259,7 @@ class App implements Executable
         }
         if (isset($subpath)) {
             $executable = new App\Subpath($executable, $subpath);
-        } else if ($executable instanceof App) {
+        } else if ($executable instanceof App || $executable instanceof Lazy) {
             $executable->isSubapp(true);
         }
         array_push($this->_executables, $executable instanceof Closure
@@ -287,11 +287,9 @@ class App implements Executable
         $this->param('req', $req)
              ->param('res', $res);
         try {
-            if (!$this->_isSubapp) {
-                $this->preExecute($req, $res);
-            }
+            $this->preExecute($req, $res);
             foreach ($this->_executables as $executable) {
-                if ($executable instanceof Executable) {
+                if ($executable instanceof Executable && !$executable instanceof App) {
                     $executable->preExecute($req, $res);
                 }
             }
@@ -311,14 +309,12 @@ class App implements Executable
                     throw new App\Exception('Nothing successfully handled the request');
                 }
             }
-            if (!$this->_isSubapp) {
-                $this->postExecute($req, $res);
-            }
             foreach ($this->_executables as $executable) {
-                if ($executable instanceof Executable) {
+                if ($executable instanceof Executable && !$executable instanceof App) {
                     $executable->postExecute($req, $res);
                 }
             }
+            $this->postExecute($req, $res);
         } catch (\Exception $e) {
             if (isset($this->_errorHandler)) {
                 $result = call_user_func($this->_errorHandler, $req, $res, $e);
