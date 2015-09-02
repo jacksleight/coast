@@ -26,7 +26,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
 
     protected $_active;
 
-    protected $_extends = [];
+    protected $_extensions = [];
 
     protected $_files = [];
 
@@ -66,6 +66,28 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         return $this->_dirs;
     }
 
+    public function extension($group, $source, $target)
+    {
+        array_unshift($this->_extensions, [
+            $this->_dirs[$group]
+                ->dir($source),
+            $this->_dirs[isset($target[1]) ? $target[1] : $group]
+                ->dir($target[0]),
+        ]);
+        return $this;
+    }
+
+    public function extensions($group = null, array $extensions = null)
+    {
+        if (func_num_args() > 0) {
+            foreach ($extensions as $source => $target) {
+                $this->extension($group, $source, $target);
+            }
+            return $this;
+        }
+        return $this->_extensions;
+    }
+
     public function extName($extName = null)
     {
         if (func_num_args() > 0) {
@@ -92,16 +114,8 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         }
 
         $meta = include $meta->name();
-
-        if ($meta['extends']) {
-            foreach ($meta['extends'] as $source => $target) {
-                array_unshift($this->_extends, [
-                    $this->_dirs[$group]
-                        ->dir($source),
-                    $this->_dirs[isset($target[1]) ? $target[1] : $group]
-                        ->dir($target[0]),
-                ]);
-            }
+        if (isset($meta['extensions'])) {
+            $this->extensions($group, $meta['extensions']);
         }
     }
 
@@ -144,11 +158,11 @@ class View implements \Coast\App\Access, \Coast\App\Executable
             if ($file->exists()) {
                 array_push($files, $file);
             }
-            foreach ($this->_extends as $extend) {
-                if (!$file->isWithin($extend[0])) {
+            foreach ($this->_extensions as $extension) {
+                if (!$file->isWithin($extension[0])) {
                     continue;
                 }
-                $file = $extend[1]->file($file->toRelative($extend[0]));
+                $file = $extension[1]->file($file->toRelative($extension[0]));
                 if ($file->exists()) {
                     array_push($files, $file);
                 }
