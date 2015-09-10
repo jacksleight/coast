@@ -6,6 +6,8 @@
 
 namespace Coast;
 
+use Coast\Url;
+
 class Http
 {
     const METHOD_HEAD   = 'HEAD';
@@ -22,32 +24,32 @@ class Http
         $this->_timeout = $timeout;
     }
 
-    public function head(\Coast\Url $url, $data = null)
+    public function head(Url $url, $data = null)
     {
         return $this->request(self::METHOD_HEAD, $url, $data);
     }
 
-    public function get(\Coast\Url $url, $data = null)
+    public function get(Url $url, $data = null)
     {
         return $this->request(self::METHOD_GET, $url, $data);
     }
 
-    public function post(\Coast\Url $url, $data = null)
+    public function post(Url $url, $data = null)
     {
         return $this->request(self::METHOD_POST, $url, $data);
     }
 
-    public function put(\Coast\Url $url, $data = null)
+    public function put(Url $url, $data = null)
     {
         return $this->request(self::METHOD_PUT, $url, $data);
     }
 
-    public function delete(\Coast\Url $url, $data = null)
+    public function delete(Url $url, $data = null)
     {
         return $this->request(self::METHOD_DELETE, $url, $data);
     }
     
-    public function request($method, \Coast\Url $url, $data = null)
+    public function request($method, Url $url, $data = null)
     {
         if (!$url->isHttp()) {
             throw new \Exception("URL scheme is not HTTP or HTTPS");
@@ -76,6 +78,7 @@ class Http
         
         $response = curl_exec($ch);
         
+        $url    = new Url(curl_getinfo($ch, CURLINFO_EFFECTIVE_URL));
         $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $size   = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
         $head   = substr($response, 0, $size);
@@ -105,6 +108,6 @@ class Http
         }
         
         curl_close($ch);
-        return new \Coast\Http\Response($status, $headers, $body);
+        return new \Coast\Http\Response($url, $status, $headers, $body);
     }
 }

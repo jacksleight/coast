@@ -6,19 +6,31 @@
 
 namespace Coast\Http;
 
+use Coast\Url;
+
 class Response
 {
+    protected $_url;
+    
     protected $_status;
+
     protected $_headers = [];
+
     protected $_body;
 
-    public function __construct($status, array $headers, $body)
+    public function __construct(Url $url, $status, array $headers, $body)
     {
+        $this->_url    = $url;
         $this->_status = $status;
         $this->_body   = $body;
         foreach ($headers as $name => $value) {
             $this->_headers[strtolower($name)] = $value;
         }
+    }
+
+    public function url()
+    {
+        return $this->_url;
     }
 
     public function status()
