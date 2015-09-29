@@ -302,7 +302,7 @@ class App implements Executable
                     break;
                 }
             }
-            if ($result === false || (!isset($result) && !$this->_isSubapp)) {
+            if (!$result && !$this->_isSubapp) {
                 if (isset($this->_failureHandler)) {
                     $result = call_user_func($this->_failureHandler, $req, $res);
                 } else {

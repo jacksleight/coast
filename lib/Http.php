@@ -17,6 +17,7 @@ class Http
     const METHOD_DELETE = 'DELETE';
     
     protected $_timeout;
+    
     protected $_cookies;
     
     public function __construct($timeout = null)
