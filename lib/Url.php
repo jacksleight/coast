@@ -6,6 +6,10 @@
 
 namespace Coast;
 
+use Coast\Http;
+use DOMDocument;
+use DOMXPath;
+
 class Url
 {
     const PART_SCHEME   = 0;
@@ -229,5 +233,40 @@ class Url
             return $this;
         }
         return $this->_fragment;
+    }
+
+    public function toCanonical()
+    {
+        $url = clone $this;
+        if (!$url->isHttp()) {
+            return $url;
+        }
+        $http = new Http(5);
+        $res = $http->get($url);
+        if (!$res->isSuccess()) {
+            return $url;
+        }
+        $url = $res->url();
+        if (!preg_match('/^text\/html/i', $res->header('content-type'))) {
+            return $url;
+        }
+        $doc = new DOMDocument();
+        $result = $doc->loadHTML($res->body());
+        if (!$result) {
+            return $url;
+        }
+        $types = [
+            ['//link[@rel="canonical"]',   'href'],
+            ['//meta[@property="og:url"]', 'content'],
+        ];
+        $xpath = new DOMXPath($doc);
+        foreach ($types as $type) {
+            $els = $xpath->query($type[0]);
+            if ($els->length) {
+                $url = new Url($els->item(0)->getAttribute($type[1]));
+                break;
+            }
+        }    
+        return $url;
     }
 }
