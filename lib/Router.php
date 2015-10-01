@@ -27,6 +27,8 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
 
     protected $_routes = [];
 
+    protected $_aliases = [];
+
     public function __construct(array $options = array())
     {
         foreach ($options as $name => $value) {
@@ -161,9 +163,38 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
             $this->_routes = [$name => $route] + $this->_routes;
             return $this;
         }
+        if (isset($this->_aliases[$name])) {
+            $name = $this->_aliases[$name];
+        }
         return isset($this->_routes[$name])
             ? $this->_routes[$name]
             : null;
+    }
+
+    public function alias($name, $value = null)
+    {
+        if (func_num_args() > 1) {
+            if (isset($value)) {
+                $this->_aliases[$name] = $value;
+            } else {
+                unset($this->_aliases[$name]);
+            }
+            return $this;
+        }
+        return isset($this->_aliases[$name])
+            ? $this->_aliases[$name]
+            : null;
+    }
+
+    public function aliases(array $aliases = null)
+    {
+        if (func_num_args() > 0) {
+            foreach ($aliases as $name => $value) {
+                $this->alias($name, $value);
+            }
+            return $this;
+        }
+        return $this->_aliases;
     }
 
     public function match($method, $path)
@@ -194,6 +225,9 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
 
     public function reverse($name, array $params = array())
     {
+        if (isset($this->_aliases[$name])) {
+            $name = $this->_aliases[$name];
+        }
         if (!isset($this->_routes[$name])) {
             throw new Router\Exception("Route '{$name}' does not exist");
         }
