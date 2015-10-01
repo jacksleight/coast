@@ -121,7 +121,7 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
             if (isset($this->_suffix)) {
                 $path = "{$path}/{$this->_suffix}";
             }
-            $parts = explode('/', trim($path, '/'));
+            $parts = explode('/', ltrim($path, '/'));
             $names = [];
             $stack = [];
             foreach ($parts as $i => $part) {
@@ -200,7 +200,6 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
     public function match($method, $path)
     {
         $method = strtoupper($method);
-        $path   = trim($path, '/');
         foreach ($this->_routes as $name => $route) {
             if (!in_array($method, $route['methods'])) {
                 continue;
