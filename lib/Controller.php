@@ -8,8 +8,6 @@ namespace Coast;
 
 class Controller implements \Coast\App\Access, \Coast\Router\Routable
 {
-    const STOP = '__Coast\Controller::STOP';
-
     use \Coast\App\Access\Implementation;
     
     protected $_nspaces = [];
@@ -75,8 +73,13 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
                 ? $group
                 : $item[3];
         }
-        $this->_stack = array();
+        $this->_stack = [];
         $this->_queue($name, $action, $params, $group);
+    }
+
+    public function stop()
+    {
+        $this->_stack = [];
     }
 
     public function dispatch($name, $action, $params = array(), $group = null)
@@ -119,9 +122,6 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
             $result = call_user_func_array([$object, $action], $params);
             if (isset($result)) {
                 $this->_stack = [];
-                if ($result == self::STOP) {
-                    $result = null;
-                }
             }
         }
 
