@@ -251,7 +251,9 @@ class Url
             return $url;
         }
         $doc = new DOMDocument();
+        libxml_use_internal_errors(true);
         $result = $doc->loadHTML($res->body());
+        libxml_use_internal_errors(false);
         if (!$result) {
             return $url;
         }
