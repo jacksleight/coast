@@ -1,6 +1,10 @@
 # Coast Changelog
 
-### 0.4.1
+### 0.1.0
+
+* Initial release
+
+### 0.2.0
 
 * [to do]
 
@@ -8,14 +12,10 @@
 
 * [to do]
 
-### 0.3.0
+### 0.4.1
 
 * [to do]
 
-### 0.2.0
+### 0.5.0
 
 * [to do]
-
-### 0.1.0
-
-* Initial release
