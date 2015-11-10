@@ -185,6 +185,7 @@ class UrlResolver implements \Coast\App\Access
         $path = $path->toReal();
 
         $url = $path->toRelative($this->_baseDir);
+        $url = implode('/', array_map('rawurlencode', explode('/', $url)));
         if ($base) {
             if ($cdn && isset($this->_cdnUrl)) {
                 $url = $this->_cdnUrl . $url;
@@ -192,8 +193,7 @@ class UrlResolver implements \Coast\App\Access
                 $url = $this->_baseUrl . $url;
             }
         }
-        $url = implode('/', array_map('rawurlencode', explode('/', $url)));
-        $url = (new \Coast\Url())->path($url);
+        $url = new \Coast\Url($url);
 
         if ($cacheBust && isset($this->_cacheBust) && $path instanceof \Coast\File && $path->isReadable()) {
             call_user_func($this->_cacheBust, $url, $path);
