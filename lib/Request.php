@@ -72,7 +72,10 @@ class Request
         $this->path(implode('/', $path));
 
         $this->queryParams($this->_clean($_GET));
-        $this->bodyParams(array_merge($this->_clean($_POST), $_FILES));
+        $this->bodyParams(\Coast\array_merge_smart(
+            $this->_clean($_POST),
+            $this->_restructure($_FILES)
+        ));
         $this->body(file_get_contents('php://input'));
         $this->cookies($_COOKIE);
 
@@ -87,6 +90,35 @@ class Request
             }
         }
         return $params;
+    }
+
+    protected function _restructure(array $params)
+    {
+        $output = [];
+        foreach ($params as $name => $array) {
+            foreach ($array as $field => $value) {
+                $pointer = &$output[$name];
+                if (!is_array($value)) {
+                    $pointer[$field] = $value;
+                    continue;
+                }
+                $stack = [&$pointer];
+                $iterator = new \RecursiveIteratorIterator(
+                    new \RecursiveArrayIterator($value),
+                    \RecursiveIteratorIterator::SELF_FIRST
+                );
+                foreach ($iterator as $key => $value) {
+                    array_splice($stack, $iterator->getDepth() + 1);
+                    $pointer = &$stack[count($stack) - 1];
+                    $pointer = &$pointer[$key];
+                    $stack[] = &$pointer;
+                    if (!$iterator->hasChildren()) {
+                        $pointer[$field] = $value;                                
+                    }
+                }
+            }
+        }
+        return $output;
     }
 
     public function param($name, $value = null)
