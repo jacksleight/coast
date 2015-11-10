@@ -263,7 +263,7 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
     {
         $route = $this->match($req->method(), $req->path());
         if (!$route) {
-            return false;
+            return;
         }
         $req->params(array_merge([
             'route' => $route,

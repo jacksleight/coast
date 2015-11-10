@@ -368,7 +368,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         $path  = '/' . (strlen($path) ? $path : 'index');
         $files = $this->files($this->script($path));
         if (!count($files)) {
-            return false;
+            return;
         }
         return $res->html($this->render($path, [
             'req' => $req,
