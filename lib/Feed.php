@@ -32,10 +32,10 @@ class Feed
         $entry->addChild('link')->addAttribute('href', $link);
         $entry->addChild('updated', $updated->format(\DateTime::W3C));
         if (isset($summary)) {
-            $entry->addChild('summary')->addCData($summary);
+            $entry->addChild('summary')->addCData($summary)->addAttribute('type', 'html');
         }
         if (isset($content)) {
-            $entry->addChild('content')->addCData($content);
+            $entry->addChild('content')->addCData($content)->addAttribute('type', 'html');
         }
     }
 
