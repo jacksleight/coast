@@ -8,27 +8,27 @@ namespace Coast\Validator\Rule;
 
 use Coast\Validator\Rule;
 
-class Values extends Rule
+class Equals extends Rule
 {
-	protected $_values = [];
+	protected $_value = [];
 
-	public function __construct(array $values)
+	public function __construct($value)
 	{
-		$this->values($values);
+		$this->value($value);
 	}
 
-    public function values($values = null)
+    public function value($value = null)
     {
         if (func_num_args() > 0) {
-            $this->_values = $values;
+            $this->_value = $value;
             return $this;
         }
-        return $this->_values;
+        return $this->_value;
     }
 
 	protected function _validate($value)
 	{
-		if (!in_array($value, $this->_values)) {
+		if ($value != $this->_value) {
 			$this->error();
 		}
 	}
