@@ -3,6 +3,7 @@ namespace Coast\Test;
 
 use Coast\Validator,
     Coast\Validator\Rule;
+use DateTime;
 
 class ValidatorTest extends \PHPUnit_Framework_TestCase
 {
@@ -127,7 +128,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $validator = new Rule\DateTime('Y-m-d');
         $this->assertTrue($validator('2015-01-01'));
-        $this->assertTrue($validator(new \DateTime('now')));
+        $this->assertTrue($validator(new DateTime('now')));
         $this->assertFalse($validator('2015-01-40'));
 
         $this->assertEquals($validator->format(), 'Y-m-d');
@@ -140,13 +141,41 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($validator('test.example.com'));
     }
 
-    public function testValue()
+    public function testEquals()
     {
-        $validator = new Rule\Value(1);
+        $validator = new Rule\Equals(1);
         $this->assertTrue($validator(1));
         $this->assertFalse($validator(2));
 
         $this->assertEquals($validator->value(), 1);
+    }
+
+    public function testMin()
+    {
+        $validator = new Rule\Min(10);
+        $this->assertTrue($validator(11));
+        $this->assertTrue($validator(10));
+        $this->assertFalse($validator(9));
+
+        $this->assertEquals($validator->value(), 10);
+
+        $validator = new Rule\Min(new DateTime('today'));
+        $this->assertTrue($validator(new DateTime('tomorrow')));
+        $this->assertFalse($validator(new DateTime('yesterday')));
+    }
+
+    public function testMax()
+    {
+        $validator = new Rule\Max(10);
+        $this->assertTrue($validator(0));
+        $this->assertTrue($validator(10));
+        $this->assertFalse($validator(11));
+
+        $this->assertEquals($validator->value(), 10);
+
+        $validator = new Rule\Max(new DateTime('today'));
+        $this->assertTrue($validator(new DateTime('yesterday')));
+        $this->assertFalse($validator(new DateTime('tomorrow')));
     }
 
     public function testFloat()
@@ -256,9 +285,9 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($validator('example.com'));
     }
 
-    public function testValues()
+    public function testIn()
     {
-        $validator = new Rule\Values([0, 1, 2]);
+        $validator = new Rule\In([0, 1, 2]);
         $this->assertTrue($validator(1));
         $this->assertFalse($validator(4));
 
