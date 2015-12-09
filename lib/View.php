@@ -192,6 +192,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         array_unshift($this->_active->renders, (object) [
             'script' => $script,
             'depth'  => 0,
+            'params' => [],
         ]);
         $content = $this->_render();
         array_shift($this->_active->renders);
@@ -226,6 +227,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         $render = &$this->_active->renders[0];
         $script = $render->script;
         $depth  = $render->depth;
+        $params = $render->params;
         $files  = $this->files($script);
 
         if (!count($files)) {
@@ -238,7 +240,10 @@ class View implements \Coast\App\Access, \Coast\App\Executable
             throw new View\Exception("View '{$script->group}:{$script->path}' parent at depth '{$depth}' does not exist");
         }
 
-        return $this->_run($files[$depth], $this->_active->params);
+        return $this->_run($files[$depth], array_merge(
+            $this->_active->params,
+            $params
+        ));
     }
         
     protected function _run(File $__file, array $__params = array())
@@ -264,11 +269,12 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         );
     }
         
-    public function partial($name)
+    public function partial($name, $params = array())
     {
         array_unshift($this->_active->renders, (object) [
             'script' => $this->script("{$this->_active->script->path}{$this->_partialSeparator}{$name}"),
             'depth'  => 0,
+            'params' => $params,
         ]);
         $content = $this->_render();
         array_shift($this->_active->renders);
