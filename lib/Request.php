@@ -355,6 +355,21 @@ class Request
         return new $class($this->_body, $options, false, $namespace, $prefix);
     }
 
+    public function type()
+    {
+        return current(explode(';', $this->header('Content-Type')));
+    }
+
+    public function isJson()
+    {
+        return (bool) preg_match('/^application\/json$/i', $this->type());
+    }
+
+    public function isXml()
+    {
+        return (bool) preg_match('/^application\/([-\w]+\+)?xml$/i', $this->type());
+    }
+
     public function cookie($name, $value = null)
     {
         if (func_num_args() > 1) {

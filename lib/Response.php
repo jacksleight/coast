@@ -89,7 +89,7 @@ class Response
             $this->header('Content-Type', $type);
             return $this;
         }
-        return $this->header('Content-Type');
+        return current(explode(';', $this->header('Content-Type')));
     }
 
     public function cookie($name, $value = null, $age = null, $path = null, $domain = null, $secure = false, $http = false)
