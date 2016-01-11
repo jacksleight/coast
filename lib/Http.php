@@ -7,55 +7,49 @@
 namespace Coast;
 
 use Coast\Url;
+use Coast\File;
+use Coast\Http\Request;
+use Coast\Http\Response;
 
 class Http
 {
-    const METHOD_HEAD   = 'HEAD';
-    const METHOD_GET    = 'GET';
-    const METHOD_POST   = 'POST';
-    const METHOD_PUT    = 'PUT';
-    const METHOD_DELETE = 'DELETE';
-    
     protected $_timeout;
-    
     protected $_cookies;
     
-    public function __construct($timeout = null)
+    public function __construct(array $options = array())
     {
-        $this->_timeout = $timeout;
+        foreach ($options as $name => $value) {
+            if ($name[0] == '_') {
+                throw new \Coast\Exception("Access to '{$name}' is prohibited");  
+            }
+            $this->$name($value);
+        }
     }
 
-    public function head(Url $url, $data = null)
+    public function timeout($timeout = null)
     {
-        return $this->request(self::METHOD_HEAD, $url, $data);
-    }
-
-    public function get(Url $url, $data = null)
-    {
-        return $this->request(self::METHOD_GET, $url, $data);
-    }
-
-    public function post(Url $url, $data = null)
-    {
-        return $this->request(self::METHOD_POST, $url, $data);
-    }
-
-    public function put(Url $url, $data = null)
-    {
-        return $this->request(self::METHOD_PUT, $url, $data);
-    }
-
-    public function delete(Url $url, $data = null)
-    {
-        return $this->request(self::METHOD_DELETE, $url, $data);
+        if (func_num_args() > 0) {
+            $this->_timeout = $timeout;
+            return $this;
+        }
+        return $this->_timeout;
     }
     
-    public function request($method, Url $url, $data = null)
+    public function execute(Request $request)
     {
-        if (!$url->isHttp()) {
-            throw new \Exception("URL scheme is not HTTP or HTTPS");
+        $method  = $request->method();
+        $url     = $request->url();
+        $body    = $request->body();
+        $headers = $request->headers();
+        $auth    = $request->auth();
+
+        if (!isset($method)) {
+            throw new Http\Exception("No method set");
         }
-        
+        if (!isset($url)) {
+            throw new Http\Exception("No URL set");
+        }
+
         $ch = curl_init((string) $url);
         curl_setopt($ch, CURLOPT_HEADER, true);
         if (!ini_get('open_basedir')) {
@@ -68,22 +62,44 @@ class Http
         if (isset($this->_cookies)) {
             curl_setopt($ch, CURLOPT_COOKIE, $this->_cookies);
         }
-        if ($method == self::METHOD_HEAD) {
+        if (isset($headers)) {
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array_map(function($value, $name) {
+                return "{$name}: {$value}";
+            }, $headers, array_keys($headers)));
+        }
+        if (isset($auth)) {
+            curl_setopt($ch, CURLOPT_HTTPAUTH, $auth['type']);
+            curl_setopt($ch, CURLOPT_USERPWD, "{$auth['username']}:{$auth['password']}");
+        }
+        if ($method == Request::METHOD_HEAD) {
             curl_setopt($ch, CURLOPT_NOBODY, true);
-        } elseif ($method == self::METHOD_POST) {
+        } elseif ($method == Request::METHOD_POST) {
+            if (is_array($body)) {
+                foreach ($body as $name => $value) {
+                    if ($value instanceof File) {
+                        $value = [$value];
+                    }
+                    if (is_array($value) && $value[0] instanceof File) {
+                        $value = $value + [null, null, null];
+                        $value = new \CURLFile($value[0], $value[1], $value[2]);
+                    }
+                    $body[$name] = $value;
+                }
+            }
             curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $data instanceof \Coast\File
-                ? '@' . (string) $data
-                : $data);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
         }
         
         $response = curl_exec($ch);
+        if ($response === false) {
+            throw new Http\Exception(curl_error($ch));
+        }
         
         $url    = new Url(curl_getinfo($ch, CURLINFO_EFFECTIVE_URL));
         $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $size   = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
         $head   = substr($response, 0, $size);
-        $body   = $method != self::METHOD_HEAD
+        $body   = $method != Request::METHOD_HEAD
             ? substr($response, $size)
             : null;
         
@@ -109,6 +125,12 @@ class Http
         }
         
         curl_close($ch);
-        return new \Coast\Http\Response($url, $status, $headers, $body);
+        return new Response([
+            'request' => $request,
+            'url'     => $url,
+            'status'  => $status,
+            'headers' => $headers,
+            'body'    => $body,
+        ]);
     }
 }
