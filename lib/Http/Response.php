@@ -96,7 +96,11 @@ class Response
 
     public function json($assoc = false, $depth = 512, $options = 0)
     {
-        return json_decode($this->_body, $assoc, $depth, $options);
+        $body = $this->_body;
+        if ($this->isJavascript() && preg_match('/^\w+\(([^\)]*)\)$/', $body, $match)) {
+            $body = $match[1];
+        }
+        return json_decode($body, $assoc, $depth, $options);
     }
 
     public function xml($class = '\Coast\Xml', $options = 0, $namespace = '', $prefix = false)
@@ -107,6 +111,11 @@ class Response
     public function isJson()
     {
         return (bool) preg_match('/^application\/json$/i', $this->type());
+    }
+
+    public function isJavascript()
+    {
+        return (bool) preg_match('/^application\/javascript$/i', $this->type());
     }
 
     public function isXml()
