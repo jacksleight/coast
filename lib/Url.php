@@ -7,8 +7,6 @@
 namespace Coast;
 
 use Coast\Http;
-use Coast\Http\Request;
-use Coast\Http\Response;
 use DOMDocument;
 use DOMXPath;
 
@@ -271,7 +269,7 @@ class Url
         $http = new Http([
             'timeout' => 5,
         ]);
-        $req = new Request([
+        $req = new Http\Request([
             'url' => $url,
         ]);
         $res = $http->execute($req);
