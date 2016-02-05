@@ -7,6 +7,8 @@
 namespace Coast;
 
 use Coast\Http;
+use Coast\Http\Request;
+use Coast\Http\Response;
 use DOMDocument;
 use DOMXPath;
 
@@ -235,14 +237,44 @@ class Url
         return $this->_fragment;
     }
 
+    /**
+     * Is URL absolute.
+     * @return bool
+     */
+    public function isAbsolute()
+    {
+        return isset($this->_scheme);
+    }
+
+    /**
+     * Is URL relative.
+     * @return bool
+     */
+    public function isRelative()
+    {
+        return !$this->isAbsolute();
+    }
+
+    public function toAbsolute(Url $base)
+    {
+        $url = new Url(http_build_url($base->toString(), $this->toArray(), HTTP_URL_JOIN_PATH));
+        $url->path($url->path()->toReal());
+        return $url;
+    }
+
     public function toCanonical()
     {
         $url = clone $this;
         if (!$url->isHttp()) {
             return $url;
         }
-        $http = new Http(5);
-        $res = $http->get($url);
+        $http = new Http([
+            'timeout' => 5,
+        ]);
+        $req = new Request([
+            'url' => $url,
+        ]);
+        $res = $http->execute($req);
         if (!$res->isSuccess()) {
             return $url;
         }
@@ -265,7 +297,11 @@ class Url
         foreach ($types as $type) {
             $els = $xpath->query($type[0]);
             if ($els->length) {
-                $url = new Url($els->item(0)->getAttribute($type[1]));
+                $temp = new Url($els->item(0)->getAttribute($type[1]));
+                if ($temp->isRelative()) {
+                    $temp = $temp->toAbsolute($url);
+                }
+                $url = $temp;
                 break;
             }
         }    
