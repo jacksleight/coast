@@ -113,6 +113,8 @@ class UrlResolver implements \Coast\App\Access
         if ($base64) {
             $string = base64_encode($string);
             $url .= ";base64";
+        } else {
+            $string = rawurlencode($string);
         }
         $url .= ",{$string}";
         return new \Coast\Url($url);
