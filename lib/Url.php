@@ -65,6 +65,9 @@ class Url
         $string = http_build_url($this->toArray());
         $string = preg_replace('/^(mailto|tel|data):\/{3}/', '$1:', $string);
         if (!isset($this->_scheme) &&
+            isset($this->_host)) {
+            $string = '//' . $string;
+        } else if (!isset($this->_scheme) &&
             !isset($this->_user) &&
             !isset($this->_pass) &&
             !isset($this->_host) &&
@@ -264,12 +267,43 @@ class Url
         $switch  = false;
         $temp    = [];
         foreach ($base as $name => $value) {
-            if (!$switch && isset($current[$name])) {
-                $switch = true;
+            if (isset($current[$name])) {
+                if (!$switch) {
+                    $switch = true;
+                }
             }
             if ($switch) {
                 $value = $name == 'path' && $current[$name]->isRelative()
                     ? $current[$name]->toAbsolute($base[$name])
+                    : $current[$name];
+            }
+            $temp[$name] = $value;
+        }
+        $url = new Url($temp);
+        return $url;
+    }
+
+    public function toRelative(Url $base)
+    {
+        if (!$this->isAbsolute() || !$base->isAbsolute()) {
+            throw new \Exception("URL '{$this}' is not absolute or base URL '{$base}' is not absolute");
+        }
+
+        $current = $this->toArray();
+        $base    = $base->toArray();
+        $switch  = false;
+        $temp    = [];
+        foreach ($base as $name => $value) {
+            if ($current[$name] != $value) {
+                if (!$switch) {
+                    $switch = true;
+                }
+            } else {
+                $value = null;
+            }
+            if ($switch) {
+                $value = $name == 'path' && !array_filter($temp, function($a) { return isset($a); })
+                    ? $current[$name]->toRelative($base[$name])
                     : $current[$name];
             }
             $temp[$name] = $value;
