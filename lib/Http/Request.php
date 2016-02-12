@@ -53,8 +53,8 @@ class Request
     public function url(Url $url = null)
     {
         if (func_num_args() > 0) {
-            if (!$url->isHttp()) {
-                throw new \Exception("URL scheme is not HTTP or HTTPS");
+            if (!$url->isHttp() || !$url->isAbsolute()) {
+                throw new \Exception("URL must be HTTP and absolute");
             }
             $this->_url = $url;
             return $this;
