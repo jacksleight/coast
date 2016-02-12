@@ -255,8 +255,26 @@ class Url
 
     public function toAbsolute(Url $base)
     {
-        $url = new Url(http_build_url($base->toString(), $this->toArray(), HTTP_URL_JOIN_PATH));
-        $url->path($url->path()->toReal());
+        if (!$this->isRelative() || !$base->isAbsolute()) {
+            throw new \Exception("URL '{$this}' is not relative or base URL '{$base}' is not absolute");
+        }
+
+        $current = $this->toArray();
+        $base    = $base->toArray();
+        $switch  = false;
+        $temp    = [];
+        foreach ($base as $name => $value) {
+            if (!$switch && isset($current[$name])) {
+                $switch = true;
+            }
+            if ($switch) {
+                $value = $name == 'path' && $current[$name]->isRelative()
+                    ? $current[$name]->toAbsolute($base[$name])
+                    : $current[$name];
+            }
+            $temp[$name] = $value;
+        }
+        $url = new Url($temp);
         return $url;
     }
 
