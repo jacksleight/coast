@@ -16,20 +16,23 @@ class Validator extends Rule
 
     protected $_rules = [];
 
-    public function step($step)
+    public function step($step, $index = null)
     {
-        $this->_steps[] = $step;
+        $index = !isset($index)
+            ? count($this->_steps)
+            : $index;
+        array_splice($this->_steps, $index, 0, [$step]);
         if ($step instanceof Rule) {
             $this->_rules[$step->name()][] = $step;
         }
         return $this;
     }
 
-    public function steps(array $steps = null)
+    public function steps(array $steps = null, $index = null)
     {
         if (func_num_args() > 0) {
-            foreach ($steps as $step) {
-                $this->_steps[] = $step;
+            foreach ($steps as $i => $step) {
+                $this->step($step, isset($index) ? $index + $i : $index);
             }
             return $this;
         }
@@ -80,7 +83,7 @@ class Validator extends Rule
         foreach ($this->_steps as $step) {
             if ($step == self::STEP_BREAK && $result === false) {
                 break;
-            } else if ($step instanceof Rule) {
+            } else if (is_callable($step)) {
                 $result = $step($value);
                 if (!$result) {
                     $this->_errors = array_merge($this->_errors, $step->errors());
