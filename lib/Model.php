@@ -7,27 +7,217 @@
 namespace Coast;
 
 use ArrayAccess;
+use Coast\Model;
+use Coast\Model\Metadata;
 
 class Model implements ArrayAccess
 {
-    public function toArray()
+    protected static $_metadataStatic = [];
+   
+    protected $_metadata;
+
+    protected static function _metadataStatic()
     {
-        $array = array();
-        foreach (array_keys(get_object_vars($this)) as $name) {
+        $class    = get_called_class();
+        $metadata = new Metadata($class);
+        $names    = array_keys(get_class_vars($class));
+        foreach ($names as $name) {
             if ($name[0] == '_') {
                 continue;
             }
-            $array[$name] = $this->__get($name);
+            $metadata->property($name, []);
+        }
+        return static::$_metadataStatic[$class] = $metadata;
+    }
+
+    protected function _metadata()
+    {
+        $class = get_called_class();
+        if (!isset(static::$_metadataStatic[$class])) {
+            static::_metadataStatic();
+        }
+        return $this->_metadata = clone static::$_metadataStatic[$class];
+    }
+
+    public static function metadataStatic(Metadata $metadata = null)
+    {
+        $class = get_called_class();
+        if (func_num_args() > 0) {
+            static::$_metadataStatic[$class] = $metadata;
+            return $this;
+        }
+        if (!isset(static::$_metadataStatic[$class])) {
+            static::_metadataStatic();
+        }
+        return static::$_metadataStatic[$class];
+    }
+
+    public function metadata(Metadata $metadata = null)
+    {
+        if (func_num_args() > 0) {
+            $this->_metadata = $metadata;
+            return $this;
+        }
+        if (!isset($this->_metadata)) {
+            $this->_metadata();
+        }
+        return $this->_metadata;
+    }
+
+    public function toArray($deep = true, array &$exclude = array())
+    {
+        array_push($exclude, $this);
+        $array = [];
+        foreach ($this->metadata->properties() as $name => $metadata) {
+            if (!$deep) {
+                $array[$name] = $this->__get($name);
+                continue;
+            }
+            $isOne  = in_array($metadata['type'], ['one', 'oneToOne', 'manyToOne']);
+            $isMany = in_array($metadata['type'], ['many', 'oneToMany', 'manyToMany']);
+            $value  = $this->__get($name);
+            if (($isOne || $isMany) && in_array($value, $exclude, true)) {
+                continue;
+            }
+            if ($isMany) {
+                $array[$name] = [];
+                foreach ($value as $key => $item) {
+                    $array[$name][$key] = $item->toArray($deep, $exclude);
+                }
+            } else if ($isOne) {
+                if (!isset($value)) {
+                    $array[$name] = null;
+                    continue;
+                }
+                $array[$name] = $value->toArray($deep, $exclude);
+            } else {
+                $array[$name] = $value;
+            }            
         }
         return $array;
     }
 
-    public function fromArray(array $array)
+    public function fromArray(array $array, $deep = true)
     {
-        foreach ($array as $name => $value) {
-            $this->__set($name, $value);
+        foreach ($this->metadata->properties() as $name => $metadata) {
+            if (!array_key_exists($name, $array)) {
+                continue;
+            }
+            if (!$deep) {
+                $this->__set($name, $array[$name]);
+                continue;
+            }
+            $isOne  = in_array($metadata['type'], ['one', 'oneToOne', 'manyToOne']);
+            $isMany = in_array($metadata['type'], ['many', 'oneToMany', 'manyToMany']);
+            $value  = $this->__get($name);
+            if ($isMany) {
+                foreach ($array[$name] as $key => $item) {
+                    if (!isset($value[$key])) {
+                        $class = $metadata['class'];
+                        $value[$key] = new $class();
+                    }
+                }
+                foreach ($value as $key => $item) {
+                    if (!isset($array[$name][$key])) {
+                        unset($value[$key]);
+                        continue;
+                    }
+                    $item->fromArray($array[$name][$key], $deep);
+                }
+            } else if ($isOne) {
+                if (!isset($value)) {
+                    $class = $metadata['class'];
+                    $this->__set($name, $value = new $class());
+                }
+                if (!isset($array[$name])) {
+                    $this->__unset($name);
+                    continue;
+                }
+                $value->fromArray($array[$name], $deep);
+            } else {
+                $this->__set($name, $array[$name]);
+            }
         }
         return $this;
+    }
+
+    public function isValid($deep = true, array &$exclude = array())
+    {
+        array_push($exclude, $this);
+        $isValid = true;
+        foreach ($this->metadata->properties() as $name => $metadata) {
+            $value = $this->__get($name);
+            if (!$metadata['validator']->validate($value)) {
+                $isValid = false;
+            }
+            if (!$deep) {
+                continue;
+            }
+            $isOne  = in_array($metadata['type'], ['one', 'oneToOne', 'manyToOne']);
+            $isMany = in_array($metadata['type'], ['many', 'oneToMany', 'manyToMany']);
+            if (($isOne || $isMany) && in_array($value, $exclude, true)) {
+                continue;
+            }
+            if ($isMany) {
+                foreach ($value as $key => $item) {
+                    if (!$item->isValid($deep, $exclude)) {
+                        $isValid = false;
+                    }
+                }
+            } else if ($isOne) {
+                if (!isset($value)) {
+                    continue;
+                }
+                if (!$value->isValid($deep, $exclude)) {
+                    $isValid = false;
+                }          
+            }
+        }
+        return $isValid;
+    }
+
+    public function errors($deep = true, array &$exclude = array())
+    {
+        array_push($exclude, $this);
+        $errors = [];
+        foreach ($this->metadata->properties() as $name => $metadata) {
+            if (!$metadata['validator']->isValid()) {
+                $errors[$name] = $metadata['validator']->errors();
+            }
+            if (!$deep) {
+                continue;
+            }
+            $isOne  = in_array($metadata['type'], ['one', 'oneToOne', 'manyToOne']);
+            $isMany = in_array($metadata['type'], ['many', 'oneToMany', 'manyToMany']);
+            $value  = $this->__get($name);
+            if (($isOne || $isMany) && in_array($value, $exclude, true)) {
+                continue;
+            }
+            if ($isMany) {
+                $errors[$name] = [];
+                foreach ($value as $key => $item) {
+                    $errors[$name][$key] = $item->errors($deep, $exclude);
+                }
+            } else if ($isOne) {
+                if (!isset($value)) {
+                    continue;
+                }
+                $errors[$name] = $value->errors($deep, $exclude);
+            }
+        }
+        return $errors;
+    }
+    
+    protected function _set($name, $value)
+    {
+        $metadata = $this->metadata->property($name);
+        $value = $metadata['filter']->filter($value);
+        return $this->{$name} = $value;
+    }
+    
+    protected function _get($name)
+    {
+        return $this->{$name};
     }
 
     public function __set($name, $value)
@@ -35,11 +225,12 @@ class Model implements ArrayAccess
         if ($name[0] == '_') {
             throw new Model\Exception("Access to '{$name}' is prohibited");  
         }
-        $name = \Coast\str_camel($name);
         if (method_exists($this, $name)) {
             $this->{$name}($value);
         } else if (property_exists($this, $name)) {
-            $this->{$name} = $value;
+            $this->_set($name, $value);
+        } else {
+            throw new Model\Exception("Property or method '{$name}' is not defined");  
         }
     }
 
@@ -48,13 +239,12 @@ class Model implements ArrayAccess
         if ($name[0] == '_') {
             throw new Model\Exception("Access to '{$name}' is prohibited");  
         }
-        $name = \Coast\str_camel($name);
         if (method_exists($this, $name)) {
             return $this->{$name}();
         } else if (property_exists($this, $name)) {
-            return $this->{$name};
+            return $this->_get($name);
         } else {
-            return null;
+            throw new Model\Exception("Property or method '{$name}' is not defined");  
         }
     }
 
@@ -63,13 +253,12 @@ class Model implements ArrayAccess
         if ($name[0] == '_') {
             throw new Model\Exception("Access to '{$name}' is prohibited");  
         }
-        $name = \Coast\str_camel($name);
         if (method_exists($this, $name)) {
             return $this->{$name}() !== null;
         } else if (property_exists($this, $name)) {
-            return $this->{$name} !== null;
+            return $this->_get($name) !== null;
         } else {
-            return false;
+            throw new Model\Exception("Property or method '{$name}' is not defined");  
         }
     }
 
@@ -78,9 +267,10 @@ class Model implements ArrayAccess
         if ($name[0] == '_') {
             throw new Model\Exception("Access to '{$name}' is prohibited");  
         }
-        $name = \Coast\str_camel($name);
         if (property_exists($this, $name)) {
-            $this->{$name} = null;
+            $this->_set($name, null);
+        } else {
+            throw new Model\Exception("Property or method '{$name}' is not defined");  
         }
     }
 
@@ -89,7 +279,6 @@ class Model implements ArrayAccess
         if ($name[0] == '_') {
             throw new Model\Exception("Access to '{$name}' is prohibited");  
         }
-        $name = \Coast\str_camel($name);
         if (isset($args[0])) {
             $this->__set($name, $args[0]);
             return $this;
