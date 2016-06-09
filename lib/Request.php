@@ -293,8 +293,12 @@ class Request
     public function queryParam($name, $value = null)
     {
         if (func_num_args() > 1) {
-            $this->_queryParams[$name] = $value;
-            $this->param($name, $value);
+            if (isset($value)) {
+                $this->_queryParams[$name] = $value;
+                $this->param($name, $value);
+            } else {
+                unset($this->_queryParams[$name]);
+            }
             return $this;
         }
         return isset($this->_queryParams[$name])
@@ -316,8 +320,12 @@ class Request
     public function bodyParam($name, $value = null)
     {
         if (func_num_args() > 1) {
-            $this->_bodyParams[$name] = $value;
-            $this->param($name, $value);
+            if (isset($value)) {
+                $this->_bodyParams[$name] = $value;
+                $this->param($name, $value);
+            } else {
+                unset($this->_bodyParams[$name]);
+            }
             return $this;
         }
         return isset($this->_bodyParams[$name])
