@@ -16,7 +16,7 @@ class Model implements ArrayAccess
    
     protected $_metadata;
 
-    protected static function _metadataStatic()
+    protected static function _metadataStaticBuild()
     {
         $class    = get_called_class();
         $metadata = new Metadata($class);
@@ -32,7 +32,7 @@ class Model implements ArrayAccess
         return static::$_metadataStatic[$class] = $metadata;
     }
 
-    protected static function _metadataStaticModifier()
+    protected static function _metadataStaticModify()
     {
         $class = get_called_class();
         return static::$_metadataStatic[$class];
@@ -46,15 +46,20 @@ class Model implements ArrayAccess
             return $this;
         }
         if (!isset(static::$_metadataStatic[$class])) {
-            static::_metadataStatic();
-            static::_metadataStaticModifier();
+            static::_metadataStaticBuild();
+            static::_metadataStaticModify();
         }
         return static::$_metadataStatic[$class];
     }
 
-    protected function _metadata()
+    protected function _metadataBuild()
     {
         return $this->_metadata = clone static::metadataStatic();
+    }
+
+    protected function _metadataModify()
+    {
+        return $this->_metadata;
     }
 
     public function metadata(Metadata $metadata = null)
@@ -64,7 +69,8 @@ class Model implements ArrayAccess
             return $this;
         }
         if (!isset($this->_metadata)) {
-            $this->_metadata();
+            $this->_metadataBuild();
+            $this->_metadataModify();
         }
         return $this->_metadata;
     }
