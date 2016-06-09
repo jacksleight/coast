@@ -31,10 +31,14 @@ class DateTime extends Rule
 		if ($value instanceof \DateTime) {
 			return;
 		}
-		$date	= \DateTime::createFromFormat($this->_format, $value);
-		$errors	= \DateTime::getLastErrors();         
-    	if ($errors['warning_count'] || $errors['error_count']) {
-    		$this->error();
-    	}
+        if (!is_scalar($value)) {
+            $this->error();
+        } else {
+            $date	= \DateTime::createFromFormat($this->_format, (string) $value);
+    		$errors	= \DateTime::getLastErrors();         
+        	if ($errors['warning_count'] || $errors['error_count']) {
+        		$this->error();
+        	}
+        }
 	}
 }
