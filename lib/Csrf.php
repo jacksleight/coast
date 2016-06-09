@@ -100,5 +100,7 @@ class Csrf implements Executable, Access
         }
         $this->isValid($req->param($this->_name), true);
         $req->param($this->_name, null);
+        $req->queryParam($this->_name, null);
+        $req->bodyParam($this->_name, null);
     }
 }
