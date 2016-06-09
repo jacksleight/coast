@@ -81,7 +81,7 @@ class Validator extends Rule
     {
         $result = null;
         foreach ($this->_steps as $step) {
-            if ($step == self::STEP_BREAK && $result === false) {
+            if (($step == self::STEP_BREAK && $result === false) || ($step == self::STEP_BREAK && $result === null && !isset($value))) {
                 break;
             } else if (is_callable($step)) {
                 $result = $step($value);
