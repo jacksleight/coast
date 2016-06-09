@@ -13,19 +13,24 @@ use Coast\Validator;
 
 class Metadata 
 {
-    protected $_class;
+    protected $_name;
 
     protected $_properties = [];
 
-    public function __construct($class)
+    public function __construct($name)
     {
-        $this->_class = $class;
+        $this->_name = $name;
+    }
+
+    public function name()
+    {
+        return $this->_name;
     }
 
     public function property($name, array $value = null)
     {
-        if (!property_exists($this->_class, $name)) {
-            throw new Exception("Property '{$name}' is not defined in class '{$this->_class}'");  
+        if (!property_exists($this->_name, $name)) {
+            throw new Exception("Property '{$name}' is not defined in class '{$this->_name}'");  
         }
         if (func_num_args() > 1) {
             if (!isset($this->_properties[$name])) {

@@ -25,18 +25,17 @@ class Model implements ArrayAccess
             if ($name[0] == '_') {
                 continue;
             }
-            $metadata->property($name, []);
+            $metadata->property($name, [
+                'name' => $name,
+            ]);
         }
         return static::$_metadataStatic[$class] = $metadata;
     }
 
-    protected function _metadata()
+    protected static function _metadataStaticModifier()
     {
         $class = get_called_class();
-        if (!isset(static::$_metadataStatic[$class])) {
-            static::_metadataStatic();
-        }
-        return $this->_metadata = clone static::$_metadataStatic[$class];
+        return static::$_metadataStatic[$class];
     }
 
     public static function metadataStatic(Metadata $metadata = null)
@@ -48,8 +47,14 @@ class Model implements ArrayAccess
         }
         if (!isset(static::$_metadataStatic[$class])) {
             static::_metadataStatic();
+            static::_metadataStaticModifier();
         }
         return static::$_metadataStatic[$class];
+    }
+
+    protected function _metadata()
+    {
+        return $this->_metadata = clone static::metadataStatic();
     }
 
     public function metadata(Metadata $metadata = null)
