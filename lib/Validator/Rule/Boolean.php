@@ -12,7 +12,9 @@ class Boolean extends Rule
 {
 	protected function _validate($value)
 	{
-		if (!in_array($value, [true, false, 0, 1, '0', '1'], true)) {
+        $true  = [true, 'true', 1, '1'];
+        $false = [false, 'false', 0, '0'];
+		if (!in_array($value, $true, true) && !in_array($value, $false, true)) {
 		 	$this->error();
 		}
 	}
