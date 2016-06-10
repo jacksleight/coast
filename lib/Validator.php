@@ -77,16 +77,16 @@ class Validator extends Rule
         return $this->step($step);
     }
 
-    public function _validate($value)
+    public function _validate($value, $context = null)
     {
         $result = null;
         foreach ($this->_steps as $step) {
             if (($step == self::STEP_BREAK && $result === false) || ($step == self::STEP_BREAK && $result === null && !isset($value))) {
                 break;
-            } else if (is_callable($step)) {
-                $result = $step($value);
+            } else if ($step instanceof Rule) {
+                $result = $step($value, $context);
                 if (!$result) {
-                    $this->_errors = array_merge($this->_errors, $step->errors());
+                    $this->errors($step->errors());
                 }
             }    
         }

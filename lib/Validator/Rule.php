@@ -42,10 +42,10 @@ abstract class Rule
 
 	abstract protected function _validate($value);
 
-	public function validate($value)
+	public function validate($value, $context = null)
 	{
 		$this->_errors = [];
-		$this->_validate($value);
+		$this->_validate($value, $context);
 		return !count($this->_errors);
 	}
 
@@ -54,19 +54,28 @@ abstract class Rule
 		return !count($this->_errors);
 	}
 
-	public function __invoke($value)
+	public function __invoke($value, $context = null)
 	{
-		return $this->validate($value);
+		return $this->validate($value, $context);
 	}
 
-	public function error($name = null)
+	public function error($error = null)
 	{
-		$this->_errors[] = [$this->name(), $name, $this->params()];
+		if (!is_array($error)) {
+			$error = [$this->name(), $error, $this->params()];
+		}
+		$this->_errors[] = $error;
 		return $this;
 	}
 
-	public function errors()
+	public function errors(array $errors = null)
 	{
+		if (func_num_args() > 0) {
+			foreach ($errors as $error) {
+				$this->error($error);
+				return $this;
+			}
+		}
 		return $this->_errors;
 	}
 }
