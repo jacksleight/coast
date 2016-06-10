@@ -6,6 +6,10 @@
 
 namespace Coast;
 
+define(__NAMESPACE__ . '\MYSQL_DATETIME', 'Y-m-d H:i:s');
+define(__NAMESPACE__ . '\MYSQL_DATE', 'Y-m-d');
+define(__NAMESPACE__ . '\MYSQL_TIME', 'H:i:s');
+
 /**
  * Load a file without leaking variables, cache and reuse return value.
  * @param  mixed   $_file
