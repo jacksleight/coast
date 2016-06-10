@@ -8,10 +8,10 @@ namespace Coast\Filter\Rule;
 
 use Coast\Filter\Rule;
 
-class SanitizeInteger extends Rule
+class Float extends Rule
 {
     protected function _filter($value)
     {
-        return filter_var($value, FILTER_SANITIZE_NUMBER_INT);
+        return (float) filter_var($value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
     }
 }

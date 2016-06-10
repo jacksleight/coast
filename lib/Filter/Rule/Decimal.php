@@ -6,5 +6,5 @@
 
 namespace Coast\Filter\Rule;
 
-class SanitizeDecimal extends SanitizeFloat
+class Decimal extends Float
 {}
