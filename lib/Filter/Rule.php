@@ -26,18 +26,6 @@ abstract class Rule
 		return lcfirst(array_pop($parts));
     }
 
-	public function params()
-	{
-		$params = [];
-		foreach (get_object_vars($this) as $key => $value) {
-			if (in_array($key, ['_name', '_errors'])) {
-				continue;
-			}
-			$params[ltrim($key, '_')] = $value;
-		}
-		return $params;
-	}
-
 	abstract protected function _filter($value);
 
 	public function filter($value)
