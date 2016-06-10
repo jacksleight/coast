@@ -46,18 +46,6 @@ class FilterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($filter('test'), 'TEST');
     }
 
-    public function testLowerCaseFirst()
-    {
-        $filter = new Rule\LowerCaseFirst();
-        $this->assertEquals($filter('TEST'), 'tEST');
-    }
-
-    public function testUpperCaseFirst()
-    {
-        $filter = new Rule\UpperCaseFirst();
-        $this->assertEquals($filter('test'), 'Test');
-    }
-
     public function testSanitizeDecimal()
     {
         $filter = new Rule\SanitizeDecimal();
