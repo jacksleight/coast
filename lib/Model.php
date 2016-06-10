@@ -158,7 +158,7 @@ class Model implements ArrayAccess
         $isValid = true;
         foreach ($this->metadata->properties() as $name => $metadata) {
             $value = $this->__get($name);
-            if (!$metadata['validator']->validate($value)) {
+            if (!$metadata['validator']->validate($value, $this)) {
                 $isValid = false;
             }
             if (!$deep) {
