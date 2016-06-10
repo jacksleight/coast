@@ -187,7 +187,7 @@ class Model implements ArrayAccess
         return $isValid;
     }
 
-    public function errors($deep = true, array &$exclude = array())
+    public function debug($deep = true, array &$exclude = array())
     {
         array_push($exclude, $this);
         $errors = [];
@@ -207,13 +207,13 @@ class Model implements ArrayAccess
             if ($isMany) {
                 $errors[$name] = [];
                 foreach ($value as $key => $item) {
-                    $errors[$name][$key] = $item->errors($deep, $exclude);
+                    $errors[$name][$key] = $item->debug($deep, $exclude);
                 }
             } else if ($isOne) {
                 if (!isset($value)) {
                     continue;
                 }
-                $errors[$name] = $value->errors($deep, $exclude);
+                $errors[$name] = $value->debug($deep, $exclude);
             }
         }
         return $errors;
