@@ -68,7 +68,7 @@ class Filter extends Rule
 		foreach ($this->_steps as $step) {
 			if ($step == self::STEP_BREAK && $value === null) {
                 break;
-            } else if (is_callable($step)) {
+            } else if ($step instanceof Rule) {
                 $value = $step($value);
             }
 		}
