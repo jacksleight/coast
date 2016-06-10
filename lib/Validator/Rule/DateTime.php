@@ -33,12 +33,12 @@ class DateTime extends Rule
 		}
         if (!is_scalar($value)) {
             $this->error();
-        } else {
-            $date	= \DateTime::createFromFormat($this->_format, (string) $value);
-    		$errors	= \DateTime::getLastErrors();         
-        	if ($errors['warning_count'] || $errors['error_count']) {
-        		$this->error();
-        	}
+            return;
         }
+        $date	= \DateTime::createFromFormat($this->_format, (string) $value);
+		$errors	= \DateTime::getLastErrors();         
+    	if ($errors['warning_count'] || $errors['error_count']) {
+    		$this->error();
+    	}
 	}
 }
