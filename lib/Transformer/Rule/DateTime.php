@@ -12,9 +12,12 @@ class DateTime extends Rule
 {
     protected $_format;
 
-    public function __construct($format)
+    protected $_timezone;
+
+    public function __construct($format = null, $timezone = null)
     {
         $this->format($format);
+        $this->timezone($timezone);
     }
 
     public function format($format = null)
@@ -26,6 +29,15 @@ class DateTime extends Rule
         return $this->_format;
     }
 
+    public function timezone($timezone = null)
+    {
+        if (func_num_args() > 0) {
+            $this->_timezone = $timezone;
+            return $this;
+        }
+        return $this->_timezone;
+    }
+
     protected function _transform($value)
     {
         if ($value instanceof \DateTime) {
@@ -34,11 +46,23 @@ class DateTime extends Rule
         if (!is_scalar($value)) {
             return $value;
         }
-        $date   = \DateTime::createFromFormat($this->_format, (string) $value);
-        $errors = \DateTime::getLastErrors();         
-        if ($errors['warning_count'] || $errors['error_count']) {
-            return $value;
+        $defaultTimezone = new \DateTimezone(date_default_timezone_get());
+        $timezone = isset($this->_timezone)
+            ? new \DateTimezone($this->_timezone)
+            : $defaultTimezone;
+        if (isset($this->_format)) {
+            $date = \DateTime::createFromFormat($this->_format, $value, $timezone);
+            if ($date === false) {
+                return $value;
+            }
+        } else {
+            try {
+                $date = new \DateTime($value, $timezone);
+            } catch (\Exception $e) {
+                return $value;
+            }
         }
+        $date->setTimezone($defaultTimezone);
         return $date;
     }
 }

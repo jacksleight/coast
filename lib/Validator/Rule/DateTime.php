@@ -12,7 +12,7 @@ class DateTime extends Rule
 {
 	protected $_format;
 
-	public function __construct($format)
+	public function __construct($format = null)
 	{
 		$this->format($format);
 	}
@@ -35,10 +35,17 @@ class DateTime extends Rule
             $this->error();
             return;
         }
-        $date	= \DateTime::createFromFormat($this->_format, (string) $value);
-		$errors	= \DateTime::getLastErrors();         
-    	if ($errors['warning_count'] || $errors['error_count']) {
-    		$this->error();
-    	}
+        if (isset($this->_format)) {
+            $date = \DateTime::createFromFormat($this->_format, $value);
+    		if ($date === false) {
+        		$this->error();
+        	}
+        } else {
+            try {
+                $date = new \DateTime($value);
+            } catch (\Exception $e) {
+                $this->error();
+            }
+        }
 	}
 }
