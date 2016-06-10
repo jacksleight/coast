@@ -223,6 +223,7 @@ class Model implements ArrayAccess
     {
         $metadata = $this->metadata->property($name);
         $value = $metadata['filter']->filter($value);
+        $value = $metadata['transformer']->transform($value);
         return $this->{$name} = $value;
     }
     

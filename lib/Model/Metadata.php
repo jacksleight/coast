@@ -10,6 +10,7 @@ use Exception;
 use Coast;
 use Coast\Filter;
 use Coast\Validator;
+use Coast\Transformer;
 
 class Metadata 
 {
@@ -35,11 +36,12 @@ class Metadata
         if (func_num_args() > 1) {
             if (!isset($this->_properties[$name])) {
                 $this->_properties[$name] = [
-                    'name'      => $name,
-                    'type'      => null,
-                    'class'     => null,
-                    'filter'    => new Filter(),
-                    'validator' => new Validator(),
+                    'name'        => $name,
+                    'type'        => null,
+                    'class'       => null,
+                    'filter'      => new Filter(),
+                    'validator'   => new Validator(),
+                    'transformer' => new Transformer(),
                 ];
             }
             $value = Coast\array_merge_smart($this->_properties[$name], $value);
