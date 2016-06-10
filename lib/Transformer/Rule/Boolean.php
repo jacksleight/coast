@@ -10,17 +10,44 @@ use Coast\Transformer\Rule;
 
 class Boolean extends Rule
 {
+    protected $_true = [true, 'true', 1, '1'];
+
+    protected $_false = [false, 'false', 0, '0'];
+
+    public function __construct(array $true = null, array $false = null)
+    {
+        if (isset($true)) {
+            $this->true($true);
+        }
+        if (isset($false)) {
+            $this->false($false);
+        }
+    }
+
+    public function true(array $true = null)
+    {
+        if (func_num_args() > 0) {
+            $this->_true = $true;
+            return $this;
+        }
+        return $this->_true;
+    }
+
+    public function false(array $false = null)
+    {
+        if (func_num_args() > 0) {
+            $this->_false = $false;
+            return $this;
+        }
+        return $this->_false;
+    }
+
     protected function _transform($value)
     {
-        if (is_bool($value)) {
-            return $value;
-        }
-        $true  = [true, 'true', 1, '1'];
-        $false = [false, 'false', 0, '0'];
-        if (in_array($value, $true, true)) {
+        if (in_array($value, $this->_true, true)) {
             return true;
         }
-        if (in_array($value, $false, true)) {
+        if (in_array($value, $this->_false, true)) {
             return false;
         }
         return $value;

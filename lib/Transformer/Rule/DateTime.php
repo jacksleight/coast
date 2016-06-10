@@ -43,9 +43,6 @@ class DateTime extends Rule
         if ($value instanceof \DateTime) {
             return $value;
         }
-        if (!is_scalar($value)) {
-            return $value;
-        }
         $defaultTimezone = new \DateTimezone(date_default_timezone_get());
         $timezone = isset($this->_timezone)
             ? new \DateTimezone($this->_timezone)

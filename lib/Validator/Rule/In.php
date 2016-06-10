@@ -17,7 +17,7 @@ class In extends Rule
 		$this->values($values);
 	}
 
-    public function values($values = null)
+    public function values(array $values = null)
     {
         if (func_num_args() > 0) {
             $this->_values = $values;

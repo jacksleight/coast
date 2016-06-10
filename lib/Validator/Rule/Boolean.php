@@ -1,7 +1,7 @@
 <?php
-/* 
- * Copyright 2008-2013 Jack Sleight <http://jacksleight.com/>
- * Any redistribution or reproduction of part or all of the contents in any form is prohibited.
+/*
+ * Copyright 2016 Jack Sleight <http://jacksleight.com/>
+ * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
  */
 
 namespace Coast\Validator\Rule;
@@ -10,11 +10,41 @@ use Coast\Validator\Rule;
 
 class Boolean extends Rule
 {
+    protected $_true = [true, 'true', 1, '1'];
+
+    protected $_false = [false, 'false', 0, '0'];
+
+    public function __construct(array $true = null, array $false = null)
+    {
+        if (isset($true)) {
+            $this->true($true);
+        }
+        if (isset($false)) {
+            $this->false($false);
+        }
+    }
+
+    public function true(array $true = null)
+    {
+        if (func_num_args() > 0) {
+            $this->_true = $true;
+            return $this;
+        }
+        return $this->_true;
+    }
+
+    public function false(array $false = null)
+    {
+        if (func_num_args() > 0) {
+            $this->_false = $false;
+            return $this;
+        }
+        return $this->_false;
+    }
+
 	protected function _validate($value)
 	{
-        $true  = [true, 'true', 1, '1'];
-        $false = [false, 'false', 0, '0'];
-		if (!in_array($value, $true, true) && !in_array($value, $false, true)) {
+		if (!in_array($value, $this->true, true) && !in_array($value, $this->false, true)) {
 		 	$this->error();
 		}
 	}
