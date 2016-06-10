@@ -15,6 +15,7 @@ class Custom extends Rule
 	public function __construct(callable $func, $name = null)
 	{
         $this->func($func);
+        $this->name($name);
 	}
 
     public function func($func = null)
