@@ -7,14 +7,13 @@
 namespace Coast;
 
 use ArrayAccess;
-use Iterator;
+use SeekableIterator;
 use Countable;
+use Serializable;
 
-class Collection implements ArrayAccess, Iterator, Countable
+class Collection implements ArrayAccess, SeekableIterator, Countable, Serializable
 {
     protected $_array = [];
-
-    protected $_position = 0;
 
     public function toArray()
     {
@@ -73,31 +72,51 @@ class Collection implements ArrayAccess, Iterator, Countable
 
     public function rewind() 
     {
-        $this->_position = 0;
+        reset($this->_array);
     }
 
     public function current() 
     {
-        return $this->__get($this->_position);
+        return current($this->_array);
     }
 
     public function key() 
     {
-        return $this->_position;
+        return key($this->_array);
     }
 
     public function next() 
     {
-        ++$this->_position;
+        next($this->_array);
     }
 
     public function valid() 
     {
-        return $this->__isset($this->_position);
-    }   
+        return key($this->_array) !== null;
+    } 
+
+    public function seek($position) 
+    {
+        do {
+            if ($position === key($this->_array)) {
+                return true;
+            }
+        } while (next($this->_array));
+        return false;
+    }
 
     public function count() 
     { 
         return count($this->_array); 
-    } 
+    }
+
+    public function serialize()
+    {
+        return serialize($this->_array);
+    }
+
+    public function unserialize($array)
+    {
+        $this->_array = unserialize($array);
+    }
 }
