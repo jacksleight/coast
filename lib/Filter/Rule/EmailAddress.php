@@ -8,7 +8,7 @@ namespace Coast\Filter\Rule;
 
 use Coast\Filter\Rule;
 
-class SanitizeEmailAddress extends Rule
+class EmailAddress extends Rule
 {
     protected function _filter($value)
     {

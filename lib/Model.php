@@ -85,21 +85,26 @@ class Model implements ArrayAccess
         $output = [];
         foreach ($this->metadata->properties() as $name => $metadata) {
             $value = $this->__get($name);
-            if ($deep) {
-                if (in_array($metadata['type'], [self::TYPE_ONE, self::TYPE_MANY]) && in_array($value, $exclude, true)) {
-                    continue;
+            if (!$deep) {
+                $output[$name] = $func($name, $value, $metadata);
+                continue;
+            }
+            if (in_array($metadata['type'], [
+                self::TYPE_ONE,
+                self::TYPE_MANY,
+            ]) && in_array($value, $exclude, true)) {
+                continue;
+            }
+            if ($metadata['type'] == self::TYPE_ONE) {
+                if (isset($value)) {
+                    $value = $value->traverse($func, $deep, $exclude);
                 }
-                if ($metadata['type'] == self::TYPE_ONE) {
-                    if (isset($value)) {
-                        $value = $value->traverse($func, $deep, $exclude);
-                    }
-                } else if ($metadata['type'] == self::TYPE_MANY) {
-                    $items = [];
-                    foreach ($value as $key => $item) {
-                        $items[$key] = $item->traverse($func, $deep, $exclude);
-                    }
-                    $value = $items;
+            } else if ($metadata['type'] == self::TYPE_MANY) {
+                $items = [];
+                foreach ($value as $key => $item) {
+                    $items[$key] = $item->traverse($func, $deep, $exclude);
                 }
+                $value = $items;
             }
             $output[$name] = $func($name, $value, $metadata);
         }
@@ -116,41 +121,45 @@ class Model implements ArrayAccess
             $current  = $this->__get($name);
             $metadata = $this->metadata->property($name);
             if ($metadata['type'] == self::TYPE_ONE) {
-                if (isset($value)) {
-                    if (!isset($current) && isset($metadata['create'])) {
-                        $class = $metadata['create'];
-                        $this->__set($name, $current = new $class());
-                    }
-                    if (isset($current)) {
-                        $current->fromArray($value, $deep);
-                    }
-                } else {
+                if (!isset($value)) {
                     $this->__unset($name);
+                    continue;
+                }
+                if (!isset($current) && isset($metadata['create'])) {
+                    $class = $metadata['create'];
+                    $this->__set($name, $current = new $class());
+                }
+                if (isset($current)) {
+                    $current->fromArray($value, $deep);
                 }
             } else if ($metadata['type'] == self::TYPE_MANY) {
-                if (isset($value)) {
-                    foreach ($value as $key => $item) {
-                        if (isset($item)) {
-                            if (!isset($current[$key]) && isset($metadata['create'])) {
-                                $class = $metadata['create'];
-                                $current[$key] = new $class();
-                            }
-                            if (isset($current[$key])) {
-                                $current[$key]->fromArray($item, $deep);
-                            }
-                        } else {
-                            unset($current[$key]);
-                        }
-                    }
-                    foreach (array_keys($current->toArray()) as $key) {
-                        if (!isset($value[$key])) {
-                            unset($current[$key]);
-                        }
-                    }
-                } else {
+                if (!isset($value)) {
                     foreach ($current as $key => $item) {
                         unset($current[$key]);
                     }
+                    continue;
+                }
+                foreach ($value as $key => $item) {
+                    if (!isset($item)) {
+                        unset($current[$key]);
+                        continue;
+                    }
+                    if (!isset($current[$key]) && isset($metadata['create'])) {
+                        $class = $metadata['create'];
+                        $current[$key] = new $class();
+                    }
+                    if (isset($current[$key])) {
+                        $current[$key]->fromArray($item, $deep);
+                    }
+                }
+                $keys = [];
+                foreach ($current as $key => $item) {
+                    if (!isset($value[$key])) {
+                        $keys[] = $key;
+                    }
+                }
+                foreach ($keys as $key) {
+                    unset($current[$key]);
                 }
             } else {
                 $this->__set($name, $array[$name]);

@@ -9,11 +9,14 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 {
     public function testBoolean()
     {
-        $validator = new Rule\Boolean();
+        $validator = new Rule\Boolean([true, 1], ['0', 'false']);
         $this->assertTrue($validator(true));
         $this->assertTrue($validator(1));
         $this->assertTrue($validator('0'));
         $this->assertFalse($validator('text'));
+
+        $this->assertEquals($validator->true(), [true, 1]);
+        $this->assertEquals($validator->false(), ['0', 'false']);
     }
 
     public function testCount()
@@ -127,11 +130,15 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     public function testDateTime()
     {
         $validator = new Rule\DateTime('Y-m-d');
-        $this->assertTrue($validator('2015-01-01'));
         $this->assertTrue($validator(new DateTime('now')));
-        $this->assertFalse($validator('2015-01-40'));
+        $this->assertTrue($validator('2015-01-01'));
+        $this->assertFalse($validator('2015-01-'));
 
         $this->assertEquals($validator->format(), 'Y-m-d');
+
+        $validator = new Rule\DateTime();
+        $this->assertTrue($validator('now'));
+        $this->assertFalse($validator('test'));
     }
 
     public function testEmailAddress()
@@ -300,6 +307,22 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
             ->array();
         $rules = $validator->rules();
         $this->assertEquals($rules['array'][0]->name(), 'array');
+    }
+
+    public function testCustom()
+    {
+        $func = function($value, $rule) {
+            if ($value != 1) {
+                $rule->error(null, [
+                    'test' => 1,
+                ]);
+            };
+        };
+        $validator = new Rule\Custom($func);
+        $this->assertTrue($validator(1));
+        $this->assertFalse($validator(2));
+
+        $this->assertEquals($validator->func(), $func);
     }
 
     public function testErrors()

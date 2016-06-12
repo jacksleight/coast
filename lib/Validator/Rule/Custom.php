@@ -30,7 +30,7 @@ class Custom extends Rule
     protected function _validate($value, $context = null)
     {
         $func = $this->_func;
-        $func($value, $context, $this);
+        $func($value, $this, $context);
     }
 
     public function error($error = null, array $params = array())

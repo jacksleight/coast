@@ -44,7 +44,7 @@ class Boolean extends Rule
 
 	protected function _validate($value)
 	{
-		if (!in_array($value, $this->true, true) && !in_array($value, $this->false, true)) {
+		if (!in_array($value, $this->_true, true) && !in_array($value, $this->_false, true)) {
 		 	$this->error();
 		}
 	}

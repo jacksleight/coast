@@ -11,7 +11,7 @@ use Coast\Transformer\Rule;
 
 class Null extends Rule
 {
-    protected function _filter($value)
+    protected function _transform($value)
     {
         if (!is_string($value)) {
             return $value;

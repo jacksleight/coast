@@ -6,12 +6,6 @@ use Coast\Filter,
 
 class FilterTest extends \PHPUnit_Framework_TestCase
 {
-    public function testNullify()
-    {
-        $filter = new Rule\Nullify();
-        $this->assertEquals($filter(''), null);
-    }
-
     public function testCamelCase()
     {
         $filter = new Rule\CamelCase();
@@ -46,39 +40,39 @@ class FilterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($filter('test'), 'TEST');
     }
 
-    public function testSanitizeDecimal()
+    public function testDecimal()
     {
-        $filter = new Rule\SanitizeDecimal();
+        $filter = new Rule\Decimal();
         $this->assertEquals($filter('1.5t'), '1.5');
     }
 
-    public function testSanitizeEmailAddress()
+    public function testEmailAddress()
     {
-        $filter = new Rule\SanitizeEmailAddress();
+        $filter = new Rule\EmailAddress();
         $this->assertEquals($filter('test@ example.com'), 'test@example.com');
     }
 
-    public function testSanitizeFloat()
+    public function testInteger()
     {
-        $filter = new Rule\SanitizeFloat();
-        $this->assertEquals($filter('1.5t'), '1.5');
-    }
-
-    public function testSanitizeInteger()
-    {
-        $filter = new Rule\SanitizeInteger();
+        $filter = new Rule\Integer();
         $this->assertEquals($filter('1.t'), '1');
     }
 
-    public function testSanitizeNumber()
+    public function testFloat()
     {
-        $filter = new Rule\SanitizeNumber();
+        $filter = new Rule\Float();
         $this->assertEquals($filter('1.5t'), '1.5');
     }
 
-    public function testSanitizeUrl()
+    public function testNumber()
     {
-        $filter = new Rule\SanitizeUrl();
+        $filter = new Rule\Number();
+        $this->assertEquals($filter('1.5t'), '1.5');
+    }
+
+    public function testUrl()
+    {
+        $filter = new Rule\Url();
         $this->assertEquals($filter('http://example .com/'), 'http://example.com/');
     }
 
@@ -113,13 +107,24 @@ class FilterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($filter->mode(), Rule\Trim::MODE_BOTH);
     }
 
+    public function testCustom()
+    {
+        $func = function($value) {
+            return strtoupper($value);
+        };
+        $filter = new Rule\Custom($func);
+        $this->assertEquals($filter('test'), 'TEST');
+
+        $this->assertEquals($filter->func(), $func);
+    }
+
     public function testBreak()
     {
         $filter = (new Filter())
-            ->nullify()
+            ->trim()
             ->break()
-            ->trim();
-        $this->assertSame($filter(''), null);
+            ->upperCase();
+        $this->assertSame($filter(' '), '');
     }
 
     public function testSteps()
@@ -157,13 +162,5 @@ class FilterTest extends \PHPUnit_Framework_TestCase
         $filter = new Rule\Trim();
         $filter->name('test');
         $this->assertEquals($filter->name(), 'test');
-    }
-
-    public function testParams()
-    {
-        $filter = new Rule\CamelCase();
-        $this->assertEquals($filter->params(), [
-            'mode' => Rule\CamelCase::MODE_LOWER,
-        ]);
     }
 }
