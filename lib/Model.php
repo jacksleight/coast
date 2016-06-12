@@ -139,12 +139,16 @@ class Model implements ArrayAccess
                         unset($current[$key]);
                     }
                     foreach ($value as $key => $item) {
-                        if (!isset($current[$key]) && isset($metadata['create'])) {
-                            $class = $metadata['create'];
-                            $current[$key] = new $class();
-                        }
-                        if (isset($current[$key])) {
-                            $current[$key]->fromArray($item, $deep);
+                        if (isset($item)) {
+                            if (!isset($current[$key]) && isset($metadata['create'])) {
+                                $class = $metadata['create'];
+                                $current[$key] = new $class();
+                            }
+                            if (isset($current[$key])) {
+                                $current[$key]->fromArray($item, $deep);
+                            }
+                        } else {
+                            unset($current[$key]);
                         }
                     }
                 } else {
