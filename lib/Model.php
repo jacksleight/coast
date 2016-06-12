@@ -129,15 +129,6 @@ class Model implements ArrayAccess
                 }
             } else if ($metadata['type'] == self::TYPE_MANY) {
                 if (isset($value)) {
-                    $keys = [];
-                    foreach ($current as $key => $item) {
-                        if (!isset($value[$key])) {
-                            $keys[] = $key;
-                        }
-                    }
-                    foreach ($keys as $key) {
-                        unset($current[$key]);
-                    }
                     foreach ($value as $key => $item) {
                         if (isset($item)) {
                             if (!isset($current[$key]) && isset($metadata['create'])) {
@@ -148,6 +139,11 @@ class Model implements ArrayAccess
                                 $current[$key]->fromArray($item, $deep);
                             }
                         } else {
+                            unset($current[$key]);
+                        }
+                    }
+                    foreach (array_keys($current->toArray()) as $key) {
+                        if (!isset($value[$key])) {
                             unset($current[$key]);
                         }
                     }
