@@ -131,7 +131,7 @@ class Model implements ArrayAccess
                 if (isset($value)) {
                     $keys = [];
                     foreach ($current as $key => $item) {
-                        if (!array_key_exists($key, $value)) {
+                        if (!isset($value[$key])) {
                             $keys[] = $key;
                         }
                     }
