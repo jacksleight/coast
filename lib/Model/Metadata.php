@@ -38,10 +38,10 @@ class Metadata
                 $this->_properties[$name] = [
                     'name'        => $name,
                     'type'        => null,
-                    'class'       => null,
+                    'create'      => null,
                     'filter'      => new Filter(),
-                    'validator'   => new Validator(),
                     'transformer' => new Transformer(),
+                    'validator'   => new Validator(),
                 ];
             }
             $value = Coast\array_merge_smart($this->_properties[$name], $value);
@@ -52,6 +52,14 @@ class Metadata
             if (isset($value['filterAfter'])) {
                 $value['filter']->steps($value['filterAfter']->steps());
                 unset($value['filterAfter']);
+            }
+            if (isset($value['transformerBefore'])) {
+                $value['transformer']->steps($value['transformerBefore']->steps(), 0);
+                unset($value['transformerBefore']);
+            }
+            if (isset($value['transformerAfter'])) {
+                $value['transformer']->steps($value['transformerAfter']->steps());
+                unset($value['transformerAfter']);
             }
             if (isset($value['validatorBefore'])) {
                 $value['validator']->steps($value['validatorBefore']->steps(), 0);

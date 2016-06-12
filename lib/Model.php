@@ -7,11 +7,15 @@
 namespace Coast;
 
 use ArrayAccess;
+use Closure;
 use Coast\Model;
 use Coast\Model\Metadata;
 
 class Model implements ArrayAccess
 {
+    const TYPE_ONE  = 'one';
+    const TYPE_MANY = 'many';
+
     protected static $_metadataStatic = [];
    
     protected $_metadata;
@@ -75,76 +79,79 @@ class Model implements ArrayAccess
         return $this->_metadata;
     }
 
-    public function toArray($deep = true, array &$exclude = array())
+    public function traverse(Closure $func, $deep = true, array &$exclude = array())
     {
         array_push($exclude, $this);
-        $array = [];
+        $output = [];
         foreach ($this->metadata->properties() as $name => $metadata) {
-            if (!$deep) {
-                $array[$name] = $this->__get($name);
-                continue;
-            }
-            $isOne  = in_array($metadata['type'], ['one', 'oneToOne', 'manyToOne']);
-            $isMany = in_array($metadata['type'], ['many', 'oneToMany', 'manyToMany']);
-            $value  = $this->__get($name);
-            if (($isOne || $isMany) && in_array($value, $exclude, true)) {
-                continue;
-            }
-            if ($isMany) {
-                $array[$name] = [];
-                foreach ($value as $key => $item) {
-                    $array[$name][$key] = $item->toArray($deep, $exclude);
-                }
-            } else if ($isOne) {
-                if (!isset($value)) {
-                    $array[$name] = null;
+            $value = $this->__get($name);
+            if ($deep) {
+                if (in_array($metadata['type'], [self::TYPE_ONE, self::TYPE_MANY]) && in_array($value, $exclude, true)) {
                     continue;
                 }
-                $array[$name] = $value->toArray($deep, $exclude);
-            } else {
-                $array[$name] = $value;
-            }            
+                if ($metadata['type'] == self::TYPE_ONE) {
+                    if (isset($value)) {
+                        $value = $value->traverse($func, $deep, $exclude);
+                    }
+                } else if ($metadata['type'] == self::TYPE_MANY) {
+                    $items = [];
+                    foreach ($value as $key => $item) {
+                        $items[$key] = $item->traverse($func, $deep, $exclude);
+                    }
+                    $value = $items;
+                }
+            }
+            $output[$name] = $func($name, $value, $metadata);
         }
-        return $array;
+        return $output;
     }
 
     public function fromArray(array $array, $deep = true)
     {
-        foreach ($this->metadata->properties() as $name => $metadata) {
-            if (!array_key_exists($name, $array)) {
-                continue;
-            }
+        foreach ($array as $name => $value) {
             if (!$deep) {
                 $this->__set($name, $array[$name]);
                 continue;
             }
-            $isOne  = in_array($metadata['type'], ['one', 'oneToOne', 'manyToOne']);
-            $isMany = in_array($metadata['type'], ['many', 'oneToMany', 'manyToMany']);
-            $value  = $this->__get($name);
-            if ($isMany) {
-                foreach ($array[$name] as $key => $item) {
-                    if (!isset($value[$key])) {
-                        $class = $metadata['class'];
-                        $value[$key] = new $class();
+            $current  = $this->__get($name);
+            $metadata = $this->metadata->property($name);
+            if ($metadata['type'] == self::TYPE_ONE) {
+                if (isset($value)) {
+                    if (!isset($current) && isset($metadata['create'])) {
+                        $class = $metadata['create'];
+                        $this->__set($name, $current = new $class());
                     }
-                }
-                foreach ($value as $key => $item) {
-                    if (!isset($array[$name][$key])) {
-                        unset($value[$key]);
-                        continue;
+                    if (isset($current)) {
+                        $current->fromArray($value, $deep);
                     }
-                    $item->fromArray($array[$name][$key], $deep);
-                }
-            } else if ($isOne) {
-                if (!isset($value)) {
-                    $class = $metadata['class'];
-                    $this->__set($name, $value = new $class());
-                }
-                if (!isset($array[$name])) {
+                } else {
                     $this->__unset($name);
-                    continue;
                 }
-                $value->fromArray($array[$name], $deep);
+            } else if ($metadata['type'] == self::TYPE_MANY) {
+                if (isset($value)) {
+                    $keys = [];
+                    foreach ($current as $key => $item) {
+                        if (!array_key_exists($key, $value)) {
+                            $keys[] = $key;
+                        }
+                    }
+                    foreach ($keys as $key) {
+                        unset($current[$key]);
+                    }
+                    foreach ($value as $key => $item) {
+                        if (!isset($current[$key]) && isset($metadata['create'])) {
+                            $class = $metadata['create'];
+                            $current[$key] = new $class();
+                        }
+                        if (isset($current[$key])) {
+                            $current[$key]->fromArray($item, $deep);
+                        }
+                    }
+                } else {
+                    foreach ($current as $key => $item) {
+                        unset($current[$key]);
+                    }
+                }
             } else {
                 $this->__set($name, $array[$name]);
             }
@@ -152,84 +159,60 @@ class Model implements ArrayAccess
         return $this;
     }
 
-    public function isValid($deep = true, array &$exclude = array())
+    public function toArray($deep = true)
     {
-        array_push($exclude, $this);
+        return $this->traverse(function($name, $value, $metadata = null) {
+            return $value;
+        }, $deep);
+    }
+
+    public function isValid($deep = true)
+    {
         $isValid = true;
-        foreach ($this->metadata->properties() as $name => $metadata) {
-            $value = $this->__get($name);
-            if (!$metadata['validator']->validate($value, $this)) {
+        $this->traverse(function($name, $value, $metadata) use (&$isValid) {
+            if (!$metadata['validator']($this->__get($name), $this)) {
                 $isValid = false;
             }
-            if (!$deep) {
-                continue;
-            }
-            $isOne  = in_array($metadata['type'], ['one', 'oneToOne', 'manyToOne']);
-            $isMany = in_array($metadata['type'], ['many', 'oneToMany', 'manyToMany']);
-            if (($isOne || $isMany) && in_array($value, $exclude, true)) {
-                continue;
-            }
-            if ($isMany) {
-                foreach ($value as $key => $item) {
-                    if (!$item->isValid($deep, $exclude)) {
-                        $isValid = false;
-                    }
-                }
-            } else if ($isOne) {
-                if (!isset($value)) {
-                    continue;
-                }
-                if (!$value->isValid($deep, $exclude)) {
-                    $isValid = false;
-                }          
-            }
-        }
+        }, $deep);
         return $isValid;
     }
 
-    public function debug($deep = true, array &$exclude = array())
+    public function debug($deep = true)
     {
-        array_push($exclude, $this);
-        $errors = [];
-        foreach ($this->metadata->properties() as $name => $metadata) {
-            if (!$metadata['validator']->isValid()) {
-                $errors[$name] = $metadata['validator']->errors();
-            }
-            if (!$deep) {
-                continue;
-            }
-            $isOne  = in_array($metadata['type'], ['one', 'oneToOne', 'manyToOne']);
-            $isMany = in_array($metadata['type'], ['many', 'oneToMany', 'manyToMany']);
-            $value  = $this->__get($name);
-            if (($isOne || $isMany) && in_array($value, $exclude, true)) {
-                continue;
-            }
-            if ($isMany) {
-                $errors[$name] = [];
-                foreach ($value as $key => $item) {
-                    $errors[$name][$key] = $item->debug($deep, $exclude);
-                }
-            } else if ($isOne) {
-                if (!isset($value)) {
-                    continue;
-                }
-                $errors[$name] = $value->debug($deep, $exclude);
-            }
-        }
-        return $errors;
+        return $this->traverse(function($name, $value, $metadata) {
+            return [
+                'value'  => $value,
+                'errors' => $metadata['validator']->errors(),
+            ];
+        }, $deep);
     }
     
-    protected function _set($name, $value)
+    protected function _parse($name, $value)
     {
         $metadata = $this->metadata->property($name);
         $value = $metadata['filter']->filter($value);
         $value = $metadata['transformer']->transform($value);
-        return $this->{$name} = $value;
+        return $value;
+    }
+    
+    protected function _set($name, $value)
+    {
+        $this->{$name} = $this->_parse($name, $value);
     }
     
     protected function _get($name)
     {
         return $this->{$name};
+    }
+    
+    protected function _isset($name)
+    {
+        return isset($this->{$name});
+    }
+    
+    protected function _unset($name)
+    {
+        $this->{$name} = null;
     }
 
     public function __set($name, $value)
@@ -268,7 +251,7 @@ class Model implements ArrayAccess
         if (method_exists($this, $name)) {
             return $this->{$name}() !== null;
         } else if (property_exists($this, $name)) {
-            return $this->_get($name) !== null;
+            return $this->_isset($name);
         } else {
             throw new Model\Exception("Property or method '{$name}' is not defined");  
         }
@@ -280,7 +263,7 @@ class Model implements ArrayAccess
             throw new Model\Exception("Access to '{$name}' is prohibited");  
         }
         if (property_exists($this, $name)) {
-            $this->_set($name, null);
+            $this->_unset($name);
         } else {
             throw new Model\Exception("Property or method '{$name}' is not defined");  
         }
