@@ -121,10 +121,9 @@ class FilterTest extends \PHPUnit_Framework_TestCase
     public function testBreak()
     {
         $filter = (new Filter())
-            ->trim()
             ->break()
             ->upperCase();
-        $this->assertSame($filter(' '), '');
+        $this->assertSame($filter(null), null);
     }
 
     public function testSteps()

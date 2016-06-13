@@ -8,8 +8,7 @@ namespace Coast;
 
 use Coast\Url;
 use Coast\File;
-use Coast\Http\Request;
-use Coast\Http\Response;
+use Coast\Http;
 
 class Http
 {
@@ -35,7 +34,7 @@ class Http
         return $this->_timeout;
     }
     
-    public function execute(Request $request)
+    public function execute(Http\Request $request)
     {
         $method  = $request->method();
         $url     = $request->url();
@@ -71,9 +70,9 @@ class Http
             curl_setopt($ch, CURLOPT_HTTPAUTH, $auth['type']);
             curl_setopt($ch, CURLOPT_USERPWD, "{$auth['username']}:{$auth['password']}");
         }
-        if ($method == Request::METHOD_HEAD) {
+        if ($method == Http\Request::METHOD_HEAD) {
             curl_setopt($ch, CURLOPT_NOBODY, true);
-        } elseif ($method == Request::METHOD_POST) {
+        } elseif ($method == Http\Request::METHOD_POST) {
             if (is_array($body)) {
                 foreach ($body as $name => $value) {
                     if ($value instanceof File) {
@@ -99,7 +98,7 @@ class Http
         $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $size   = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
         $head   = substr($response, 0, $size);
-        $body   = $method != Request::METHOD_HEAD
+        $body   = $method != Http\Request::METHOD_HEAD
             ? substr($response, $size)
             : null;
         
@@ -125,7 +124,7 @@ class Http
         }
         
         curl_close($ch);
-        return new Response([
+        return new Http\Response([
             'request' => $request,
             'url'     => $url,
             'status'  => $status,

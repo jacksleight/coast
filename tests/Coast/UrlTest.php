@@ -25,7 +25,7 @@ class UrlTest extends \PHPUnit_Framework_TestCase
         $url = new Url($value);
         $this->assertEquals($value, $url->toString());
 
-        $value = 'host/';
+        $value = '//host/';
         $url = new Url($value);
         $this->assertEquals($value, $url->toString());
 
@@ -60,4 +60,25 @@ class UrlTest extends \PHPUnit_Framework_TestCase
         $url->queryParams($params);
         $this->assertEquals($params, $url->queryParams());
     } 
+
+    public function testAbsolute()
+    {
+        $url1 = new Url('http://host/example/one');
+        $url2 = new Url('../two');
+        $this->assertTrue($url2->toAbsolute($url1)->toString() == 'http://host/two');
+
+        $this->setExpectedException('Exception');
+        $url1->toAbsolute($url1);
+    }
+
+    public function testRelative()
+    {
+        $url1 = new Url('http://host/example/one');
+        $url2 = new Url('http://host/host/two');
+        $this->assertTrue($url1->toRelative($url2)->toString() == '../example/one');
+
+        $url3 = new Url('../two');
+        $this->setExpectedException('Exception');
+        $url3->toRelative($url3);
+    }
 }
