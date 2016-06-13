@@ -4,7 +4,7 @@ namespace Coast\Test;
 use Coast\App, 
     Coast\Request,
     Coast\Response,
-    Coast\UrlResolver,
+    Coast\Resolver,
     Coast\Url;
 
 class AppTest extends \PHPUnit_Framework_TestCase
@@ -97,7 +97,7 @@ class AppTest extends \PHPUnit_Framework_TestCase
     public function testAccess()
     {
         $app = new App(__DIR__);
-        $app->param('url', new UrlResolver([
+        $app->param('url', new Resolver([
             'baseUrl' => new Url('/'),
         ]));
         $this->assertEquals('/test', $app->url('test')->toString());

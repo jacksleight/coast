@@ -26,9 +26,9 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
 
     protected $_outputDir;
 
-    protected $_urlResolver;
+    protected $_resolver;
 
-    protected $_outputUrlResolver;
+    protected $_outputResolver;
 
     protected $_transforms = [];
 
@@ -73,22 +73,22 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
         return $this->_outputDir;
     }
 
-    public function urlResolver(\Coast\UrlResolver $urlResolver = null)
+    public function resolver(\Coast\Resolver $resolver = null)
     {
-        if (isset($urlResolver)) {
-            $this->_urlResolver = $urlResolver;
+        if (isset($resolver)) {
+            $this->_resolver = $resolver;
             return $this;
         }
-        return $this->_urlResolver;
+        return $this->_resolver;
     }
 
-    public function outputUrlResolver(\Coast\UrlResolver $outputUrlResolver = null)
+    public function outputResolver(\Coast\Resolver $outputResolver = null)
     {
-        if (isset($outputUrlResolver)) {
-            $this->_outputUrlResolver = $outputUrlResolver;
+        if (isset($outputResolver)) {
+            $this->_outputResolver = $outputResolver;
             return $this;
         }
-        return $this->_outputUrlResolver;
+        return $this->_outputResolver;
     }
 
     public function transform($name, $value = null)
@@ -130,7 +130,7 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
         if (!$file->isWithin($this->_baseDir)) {
             throw new Image\Exception("File '{$file}' is not within base directory '{$this->_baseDir}'");
         } else if (!$file->isReadable()) {
-            return $this->_urlResolver->file($file);
+            return $this->_resolver->file($file);
         }
 
         $transforms = (array) $transforms;
@@ -148,10 +148,10 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
         $output = $this->_generateOutput($file, $transforms, $params);
 
         return $output->exists()
-            ? (isset($this->_outputUrlResolver)
-                ? $this->_outputUrlResolver->file($output) 
-                : $this->_urlResolver->file($output))
-            : $this->_urlResolver->string('image')->queryParams([
+            ? (isset($this->_outputResolver)
+                ? $this->_outputResolver->file($output) 
+                : $this->_resolver->file($output))
+            : $this->_resolver->string('image')->queryParams([
                 'file'          => $path->name(),
                 'transforms'    => $transforms,
                 'params'        => $params,
@@ -183,9 +183,9 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
         }
         $image->save($output->name(), isset($image->quality) ? $image->quality : 90);
 
-        return $res->redirect(isset($this->_outputUrlResolver)
-            ? $this->_outputUrlResolver->file($output)
-            : $this->_urlResolver->file($output));
+        return $res->redirect(isset($this->_outputResolver)
+            ? $this->_outputResolver->file($output)
+            : $this->_resolver->file($output));
     }
 
     public function run($name, InterventionImage $image, array $params = array())

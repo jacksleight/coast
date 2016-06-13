@@ -6,7 +6,7 @@
 
 namespace Coast;
 
-class UrlResolver implements \Coast\App\Access
+class Resolver implements \Coast\App\Access
 {
     use \Coast\App\Access\Implementation;
 
@@ -123,7 +123,7 @@ class UrlResolver implements \Coast\App\Access
     public function route(array $params = array(), $name = null, $reset = false, $base = true)
     {
         if (!isset($this->_router)) {
-            throw new UrlResolver\Exception("Router has not been set");
+            throw new Resolver\Exception("Router has not been set");
         }
 
         $route = isset($this->req)
@@ -131,7 +131,7 @@ class UrlResolver implements \Coast\App\Access
             : null;
         if (!isset($name)) {
             if (!isset($route)) {
-                throw new UrlResolver\Exception("Route not specified and no previous route is avaliable");
+                throw new Resolver\Exception("Route not specified and no previous route is avaliable");
             }
             $name = $route['name'];
         }
@@ -174,7 +174,7 @@ class UrlResolver implements \Coast\App\Access
     public function path($path, $base = true, $cdn = true, $cacheBust = true)
     {
         if (!isset($this->_baseDir)) {
-            throw new UrlResolver\Exception("Base directory has not been set");
+            throw new Resolver\Exception("Base directory has not been set");
         }
 
         $path = !$path instanceof \Coast\Path

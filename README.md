@@ -51,7 +51,7 @@ All components are designed to be as standalone as possible and can generally be
 	* XML sitemap generation
 * **Url**
 	* URL manipulation
-* **UrlResolver**
+* **Resolver**
 	* Resolves strings, files, routes etc. into URLs
 * **Validator**
 	* Data validation
