@@ -31,7 +31,7 @@ class Metadata
     public function property($name, array $value = null)
     {
         if (!property_exists($this->_name, $name)) {
-            throw new Exception("Property '{$name}' is not defined in class '{$this->_name}'");  
+            return null;
         }
         if (func_num_args() > 1) {
             if (!isset($this->_properties[$name])) {
@@ -91,6 +91,9 @@ class Metadata
         foreach ($this->_properties as $name => $value) {
             if (isset($value['filter'])) {
                 $value['filter'] = clone $value['filter'];
+            }
+            if (isset($value['transformer'])) {
+                $value['transformer'] = clone $value['transformer'];
             }
             if (isset($value['validator'])) {
                 $value['validator'] = clone $value['validator'];

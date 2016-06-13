@@ -114,12 +114,15 @@ class Model implements ArrayAccess
     public function fromArray(array $array, $deep = true)
     {
         foreach ($array as $name => $value) {
-            if (!$deep) {
-                $this->__set($name, $array[$name]);
+            $metadata = $this->metadata->property($name);
+            if (!isset($metadata)) {
                 continue;
             }
-            $current  = $this->__get($name);
-            $metadata = $this->metadata->property($name);
+            if (!$deep) {
+                $this->__set($name, $value);
+                continue;
+            }
+            $current = $this->__get($name);
             if ($metadata['type'] == self::TYPE_ONE) {
                 if (!isset($value)) {
                     $this->__unset($name);
@@ -162,7 +165,7 @@ class Model implements ArrayAccess
                     unset($current[$key]);
                 }
             } else {
-                $this->__set($name, $array[$name]);
+                $this->__set($name, $value);
             }
         }
         return $this;
