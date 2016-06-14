@@ -62,7 +62,8 @@ class Validator extends Rule
                 $name = $match[1];
             }
             $map = [
-                'array' => 'arr',
+                'array'  => 'arr',
+                'object' => 'obj',
             ];
             if (isset($map[$name])) {
                 $name = $map[$name];

@@ -28,9 +28,10 @@ class DateTime extends Rule
 
 	protected function _validate($value)
 	{
-		if ($value instanceof \DateTime) {
-			return;
-		}
+        if (!is_scalar($value)) {
+            $this->error();
+            return;
+        }
         if (isset($this->_format)) {
             $date = \DateTime::createFromFormat($this->_format, $value);
     		if ($date === false) {

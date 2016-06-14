@@ -40,7 +40,7 @@ class DateTime extends Rule
 
     protected function _transform($value)
     {
-        if ($value instanceof \DateTime) {
+        if (!is_scalar($value)) {
             return $value;
         }
         $defaultTimezone = new \DateTimezone(date_default_timezone_get());
