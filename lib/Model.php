@@ -122,8 +122,8 @@ class Model implements ArrayAccess
                 $this->__set($name, $value);
                 continue;
             }
-            $current = $this->__get($name);
             if ($metadata['type'] == self::TYPE_ONE) {
+                $current = $this->__get($name);
                 if (!isset($value)) {
                     $this->__unset($name);
                     continue;
@@ -136,6 +136,7 @@ class Model implements ArrayAccess
                     $current->fromArray($value, $deep);
                 }
             } else if ($metadata['type'] == self::TYPE_MANY) {
+                $current = $this->__get($name);
                 if (!isset($value)) {
                     foreach ($current as $key => $item) {
                         unset($current[$key]);
@@ -198,18 +199,13 @@ class Model implements ArrayAccess
             ];
         }, $deep);
     }
-    
-    protected function _parse($name, $value)
+        
+    protected function _set($name, $value)
     {
         $metadata = $this->metadata->property($name);
         $value = $metadata['filter']->filter($value);
         $value = $metadata['transformer']->transform($value);
-        return $value;
-    }
-    
-    protected function _set($name, $value)
-    {
-        $this->{$name} = $this->_parse($name, $value);
+        $this->{$name} = $value;
     }
     
     protected function _get($name)
