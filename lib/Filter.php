@@ -65,8 +65,11 @@ class Filter extends Rule
 
 	public function _filter($value)
 	{
+        if (!is_scalar($value)) {
+            return $value;
+        }
 		foreach ($this->_steps as $step) {
-			if ($step == self::STEP_BREAK && $value === null) {
+			if ($step == self::STEP_BREAK && !strlen($value)) {
                 break;
             } else if ($step instanceof Rule) {
                 $value = $step($value);

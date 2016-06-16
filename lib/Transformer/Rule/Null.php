@@ -13,11 +13,12 @@ class Null extends Rule
 {
     protected function _transform($value)
     {
-        if (!is_string($value)) {
+        if (!is_scalar($value)) {
             return $value;
         }
-        return strlen($value)
-        	? $value
-        	: null;
+        if (!strlen($value)) {
+            $value = null;
+        }
+        return $value;
     }
 }
