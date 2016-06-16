@@ -18,6 +18,8 @@ class Metadata
 
     protected $_properties = [];
 
+    protected $_extras = [];
+
     public function __construct($name)
     {
         $this->_name = $name;
@@ -100,5 +102,51 @@ class Metadata
             }
             $this->_properties[$name] = $value;
         }
+    }
+
+    public function extra($name, $value = null)
+    {
+        if (func_num_args() > 1) {
+            if (isset($value)) {
+                $this->_extras[$name] = $value;
+            } else {
+                unset($this->_extras[$name]);
+            }
+            return $this;
+        }
+        return isset($this->_extras[$name])
+            ? $this->_extras[$name]
+            : null;
+    }
+
+    public function extras(array $extras = null)
+    {
+        if (func_num_args() > 0) {
+            foreach ($extras as $name => $value) {
+                $this->extra($name, $value);
+            }
+            return $this;
+        }
+        return $this->_extras;
+    }
+
+    public function __set($name, $value)
+    {
+        return $this->extra($name, $value);
+    }
+
+    public function __get($name)
+    {
+        return $this->extra($name);
+    }
+
+    public function __isset($name)
+    {
+        return $this->extra($name) !== null;
+    }
+
+    public function __unset($name)
+    {
+        return $this->extra($name, null);
     }
 }
