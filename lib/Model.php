@@ -81,6 +81,7 @@ class Model implements ArrayAccess
 
     public function traverse(Closure $func, $deep = true, array &$exclude = array())
     {
+        $func = $func->bindTo($this);
         array_push($exclude, $this);
         $output = [];
         foreach ($this->metadata->properties() as $name => $metadata) {
