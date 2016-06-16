@@ -14,25 +14,25 @@ use Coast\Transformer;
 
 class Metadata 
 {
-    protected $_name;
+    protected $_className;
 
     protected $_properties = [];
 
     protected $_extras = [];
 
-    public function __construct($name)
+    public function __construct($className)
     {
-        $this->_name = $name;
+        $this->_className = $className;
     }
 
-    public function name()
+    public function className()
     {
-        return $this->_name;
+        return $this->_className;
     }
 
     public function property($name, array $value = null)
     {
-        if (!property_exists($this->_name, $name)) {
+        if (!property_exists($this->_className, $name)) {
             return null;
         }
         if (func_num_args() > 1) {

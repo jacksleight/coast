@@ -130,7 +130,6 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     public function testDateTime()
     {
         $validator = new Rule\DateTime('Y-m-d');
-        $this->assertTrue($validator(new DateTime('now')));
         $this->assertTrue($validator('2015-01-01'));
         $this->assertFalse($validator('2015-01-'));
 
@@ -226,6 +225,22 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $validator = new Rule\Arr();
         $this->assertTrue($validator([]));
         $this->assertFalse($validator('text'));
+    }
+
+    public function testObject()
+    {
+        $obj1 = new \DateTime();
+        $obj2 = new \DateTimezone('UTC');
+
+        $validator = new Rule\Obj();
+        $this->assertTrue($validator($obj1));
+        $this->assertFalse($validator('text'));
+
+        $validator = new Rule\Obj('DateTime');
+        $this->assertTrue($validator($obj1));
+        $this->assertFalse($validator($obj2));
+
+        $this->assertEquals($validator->className(), 'DateTime');
     }
 
     public function testIpAddress()
