@@ -7,8 +7,9 @@
 namespace Coast;
 
 use Coast\Validator\Rule;
+use Iterator;
 
-class Validator extends Rule
+class Validator extends Rule implements Iterator
 {
     const STEP_BREAK = 'break';
 
@@ -28,7 +29,7 @@ class Validator extends Rule
         return $this;
     }
 
-    public function steps(array $steps = null, $index = null)
+    public function steps($steps = null, $index = null)
     {
         if (func_num_args() > 0) {
             foreach ($steps as $i => $step) {
@@ -105,4 +106,29 @@ class Validator extends Rule
             $this->step($step);
         }
     }
+
+    public function rewind() 
+    {
+        reset($this->_steps);
+    }
+
+    public function current() 
+    {
+        return current($this->_steps);
+    }
+
+    public function key() 
+    {
+        return key($this->_steps);
+    }
+
+    public function next() 
+    {
+        next($this->_steps);
+    }
+
+    public function valid() 
+    {
+        return key($this->_steps) !== null;
+    } 
 }
