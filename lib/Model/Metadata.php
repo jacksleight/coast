@@ -46,32 +46,20 @@ class Metadata
                     'validator'   => new Validator(),
                 ];
             }
-            $value += $this->_properties[$name];
-            if (isset($value['filterBefore'])) {
-                $value['filter']->steps($value['filterBefore']->steps(), 0);
-                unset($value['filterBefore']);
+            $current = $this->_properties[$name];
+            if (isset($value['filter']) && is_array($value['filter'])) {
+                call_user_func_array([$current['filter'], 'steps'], $value['filter']);
+                unset($value['filter']);
             }
-            if (isset($value['filterAfter'])) {
-                $value['filter']->steps($value['filterAfter']->steps());
-                unset($value['filterAfter']);
+            if (isset($value['transformer']) && is_array($value['transformer'])) {
+                call_user_func_array([$current['transformer'], 'steps'], $value['transformer']);
+                unset($value['transformer']);
             }
-            if (isset($value['transformerBefore'])) {
-                $value['transformer']->steps($value['transformerBefore']->steps(), 0);
-                unset($value['transformerBefore']);
+            if (isset($value['validator']) && is_array($value['validator'])) {
+                call_user_func_array([$current['validator'], 'steps'], $value['validator']);
+                unset($value['validator']);
             }
-            if (isset($value['transformerAfter'])) {
-                $value['transformer']->steps($value['transformerAfter']->steps());
-                unset($value['transformerAfter']);
-            }
-            if (isset($value['validatorBefore'])) {
-                $value['validator']->steps($value['validatorBefore']->steps(), 0);
-                unset($value['validatorBefore']);
-            }
-            if (isset($value['validatorAfter'])) {
-                $value['validator']->steps($value['validatorAfter']->steps());
-                unset($value['validatorAfter']);
-            }
-            $this->_properties[$name] = $value;
+            $this->_properties[$name] = $value + $current;
             return $this;
         }
         return $this->_properties[$name];
