@@ -46,7 +46,7 @@ class Metadata
                     'validator'   => new Validator(),
                 ];
             }
-            $value = Coast\array_merge_smart($this->_properties[$name], $value);
+            $value += $this->_properties[$name];
             if (isset($value['filterBefore'])) {
                 $value['filter']->steps($value['filterBefore']->steps(), 0);
                 unset($value['filterBefore']);
@@ -80,10 +80,14 @@ class Metadata
     public function properties(array $properties = null)
     {
         if (func_num_args() > 0) {
-            foreach ($properties as $name => $value) {
-                $this->property($name, $value);
+            if (Coast\is_array_assoc($properties)) {
+                foreach ($properties as $name => $value) {
+                    $this->property($name, $value);
+                }
+                return $this;
+            } else {
+                return array_intersect_key($this->_properties, array_flip($properties));
             }
-            return $this;
         }
         return $this->_properties;
     }
