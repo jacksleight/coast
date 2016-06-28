@@ -79,31 +79,34 @@ class Model implements ArrayAccess
         return $this->_metadata;
     }
 
-    public function traverse(Closure $func, $deep = true, array &$exclude = array())
+    public function traverse(Closure $func, $isTraverse = null, array &$history = array())
     {
         $func = $func->bindTo($this);
-        array_push($exclude, $this);
+        array_push($history, $this);
         $output = [];
         foreach ($this->metadata->properties() as $name => $metadata) {
             $value = $this->__get($name);
-            if (!$deep) {
+            $isDeep = isset($isTraverse)
+                ? $isTraverse
+                : $metadata['isTraverse'];
+            if (!$isDeep) {
                 $output[$name] = $func($name, $value, $metadata);
                 continue;
             }
             if (in_array($metadata['type'], [
                 self::TYPE_ONE,
                 self::TYPE_MANY,
-            ]) && in_array($value, $exclude, true)) {
+            ]) && in_array($value, $history, true)) {
                 continue;
             }
             if ($metadata['type'] == self::TYPE_ONE) {
                 if (isset($value)) {
-                    $value = $value->traverse($func, $deep, $exclude);
+                    $value = $value->traverse($func, $isTraverse, $history);
                 }
             } else if ($metadata['type'] == self::TYPE_MANY) {
                 $items = [];
                 foreach ($value as $key => $item) {
-                    $items[$key] = $item->traverse($func, $deep, $exclude);
+                    $items[$key] = $item->traverse($func, $isTraverse, $history);
                 }
                 $value = $items;
             }
@@ -112,14 +115,17 @@ class Model implements ArrayAccess
         return $output;
     }
 
-    public function fromArray(array $array, $deep = true)
+    public function fromArray(array $array, $isTraverse = null)
     {
         foreach ($array as $name => $value) {
             $metadata = $this->metadata->property($name);
             if (!isset($metadata)) {
                 continue;
             }
-            if (!$deep) {
+            $isDeep = isset($isTraverse)
+                ? $isTraverse
+                : $metadata['isTraverse'];
+            if (!$isDeep) {
                 $this->__set($name, $value);
                 continue;
             }
@@ -129,12 +135,12 @@ class Model implements ArrayAccess
                     $this->__unset($name);
                     continue;
                 }
-                if (!isset($current) && isset($metadata['create'])) {
-                    $class = $metadata['create'];
+                if (!isset($current) && $metadata['isCreate']) {
+                    $class = $metadata['className'];
                     $this->__set($name, $current = new $class());
                 }
                 if (isset($current)) {
-                    $current->fromArray($value, $deep);
+                    $current->fromArray($value, $isTraverse);
                 }
             } else if ($metadata['type'] == self::TYPE_MANY) {
                 $current = $this->__get($name);
@@ -149,12 +155,12 @@ class Model implements ArrayAccess
                         unset($current[$key]);
                         continue;
                     }
-                    if (!isset($current[$key]) && isset($metadata['create'])) {
-                        $class = $metadata['create'];
+                    if (!isset($current[$key]) && $metadata['isCreate']) {
+                        $class = $metadata['className'];
                         $current[$key] = new $class();
                     }
                     if (isset($current[$key])) {
-                        $current[$key]->fromArray($item, $deep);
+                        $current[$key]->fromArray($item, $isTraverse);
                     }
                 }
                 $keys = [];
@@ -173,39 +179,39 @@ class Model implements ArrayAccess
         return $this;
     }
 
-    public function toArray($deep = true)
+    public function toArray($isTraverse = null)
     {
         return $this->traverse(function($name, $value, $metadata = null) {
             return $value;
-        }, $deep);
+        }, $isTraverse);
     }
 
-    public function isValid($deep = true)
+    public function isValid($isTraverse = null)
     {
         $isValid = true;
         $this->traverse(function($name, $value, $metadata) use (&$isValid) {
             if (!$metadata['validator']($this->__get($name), $this)) {
                 $isValid = false;
             }
-        }, $deep);
+        }, $isTraverse);
         return $isValid;
     }
 
-    public function debug($deep = true)
+    public function debug($isTraverse = null)
     {
         return $this->traverse(function($name, $value, $metadata) {
             return [
                 'value'  => $value,
                 'errors' => $metadata['validator']->errors(),
             ];
-        }, $deep);
+        }, $isTraverse);
     }
         
     protected function _set($name, $value)
     {
         $metadata = $this->metadata->property($name);
         $value = $metadata['filter']->filter($value);
-        $value = $metadata['transformer']->transform($value);
+        $value = $metadata['transformer']->transform($value, $this);
         $this->{$name} = $value;
     }
     

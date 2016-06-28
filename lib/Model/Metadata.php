@@ -40,10 +40,12 @@ class Metadata
                 $this->_properties[$name] = [
                     'name'        => $name,
                     'type'        => null,
-                    'create'      => null,
                     'filter'      => new Filter(),
                     'transformer' => new Transformer(),
                     'validator'   => new Validator(),
+                    'className'   => null,
+                    'isTraverse'  => false,
+                    'isCreate'    => false,
                 ];
             }
             $current = $this->_properties[$name];
