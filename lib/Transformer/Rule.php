@@ -28,13 +28,13 @@ abstract class Rule
 
 	abstract protected function _transform($value);
 
-	public function transform($value)
+	public function transform($value, $context = null)
 	{
-		return $this->_transform($value);
+		return $this->_transform($value, $context);
 	}
 
-	public function __invoke($value)
+	public function __invoke($value, $context = null)
 	{
-		return $this->transform($value);
+		return $this->transform($value, $context);
 	}
 }

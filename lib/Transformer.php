@@ -64,13 +64,13 @@ class Transformer extends Rule implements Iterator
 		return $this->step($step);
 	}
 
-	public function _transform($value)
+	public function _transform($value, $context = null)
 	{
 		foreach ($this->_steps as $step) {
 			if ($step == self::STEP_BREAK && $value === null) {
                 break;
             } else if ($step instanceof Rule) {
-                $value = $step($value);
+                $value = $step($value, $context);
             }
 		}
 		return $value;

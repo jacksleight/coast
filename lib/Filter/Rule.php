@@ -28,13 +28,13 @@ abstract class Rule
 
 	abstract protected function _filter($value);
 
-	public function filter($value)
+	public function filter($value, $context = null)
 	{
-		return $this->_filter($value);
+		return $this->_filter($value, $context);
 	}
 
-	public function __invoke($value)
+	public function __invoke($value, $context = null)
 	{
-		return $this->filter($value);
+		return $this->filter($value, $context);
 	}
 }

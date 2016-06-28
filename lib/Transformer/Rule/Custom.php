@@ -27,9 +27,9 @@ class Custom extends Rule
         return $this->_func;
     }
 
-    protected function _transform($value)
+    protected function _transform($value, $context = null)
     {
         $func = $this->_func;
-        return $func($value, $this);
+        return $func($value, $this, $context);
     }
 }

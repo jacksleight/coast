@@ -64,7 +64,7 @@ class Filter extends Rule implements Iterator
 		return $this->step($step);
 	}
 
-	public function _filter($value)
+	public function _filter($value, $context = null)
 	{
         if (!is_scalar($value)) {
             return $value;
@@ -73,7 +73,7 @@ class Filter extends Rule implements Iterator
 			if ($step == self::STEP_BREAK && !strlen($value)) {
                 break;
             } else if ($step instanceof Rule) {
-                $value = $step($value);
+                $value = $step($value, $context);
             }
 		}
 		return $value;
