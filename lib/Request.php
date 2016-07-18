@@ -33,6 +33,7 @@ class Request
     protected $_port;
     protected $_base;
     protected $_path;
+    protected $_pathParams  = [];
     protected $_queryParams = [];
     protected $_bodyParams  = [];
     protected $_body        = [];
@@ -71,6 +72,7 @@ class Request
         $this->base(implode('/', $base) . '/');
         $this->path(implode('/', $path));
 
+        $this->pathParams($path);
         $this->queryParams($this->_clean($_GET));
         $this->bodyParams(\Coast\array_merge_smart(
             $this->_clean($_POST),
@@ -131,9 +133,18 @@ class Request
             }
             return $this;
         }
-        return isset($this->_params[$name])
-            ? $this->_params[$name]
-            : null;
+        $sources = [
+            '_params',
+            '_bodyParams',
+            '_queryParams',
+            '_pathParams',
+        ];
+        foreach ($sources as $source) {
+            if (isset($this->{$source}[$name])) {
+                return $this->{$source}[$name];
+            }
+        }
+        return null;
     }
 
     public function params(array $params = null)
@@ -290,12 +301,37 @@ class Request
         return $this->_path;
     }
 
+    public function pathParam($name, $value = null)
+    {
+        if (func_num_args() > 1) {
+            if (isset($value)) {
+                $this->_pathParams[$name] = $value;
+            } else {
+                unset($this->_pathParams[$name]);
+            }
+            return $this;
+        }
+        return isset($this->_pathParams[$name])
+            ? $this->_pathParams[$name]
+            : null;
+    }
+
+    public function pathParams(array $pathParams = null)
+    {
+        if (func_num_args() > 0) {
+            foreach ($pathParams as $name => $value) {
+                $this->pathParam($name, $value);
+            }
+            return $this;
+        }
+        return $this->_pathParams;
+    }
+
     public function queryParam($name, $value = null)
     {
         if (func_num_args() > 1) {
             if (isset($value)) {
                 $this->_queryParams[$name] = $value;
-                $this->param($name, $value);
             } else {
                 unset($this->_queryParams[$name]);
             }
@@ -322,7 +358,6 @@ class Request
         if (func_num_args() > 1) {
             if (isset($value)) {
                 $this->_bodyParams[$name] = $value;
-                $this->param($name, $value);
             } else {
                 unset($this->_bodyParams[$name]);
             }
