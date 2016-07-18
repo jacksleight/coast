@@ -160,13 +160,13 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
         }
     }
 
-    public function route(\Coast\Request $req, \Coast\Response $res)
+    public function route(\Coast\Request $req, \Coast\Response $res, array $route)
     {        
-        $parts      = explode('_', $req->controller);
+        $parts      = explode('_', $route['params']['controller']);
         $parts      = array_map('\Coast\str_camel_upper', $parts);
         $controller = implode('\\', $parts);
-        $action     = \Coast\str_camel_lower($req->action);
-        $group      = isset($req->group) ? $req->group : null;
+        $action     = \Coast\str_camel_lower($route['params']['action']);
+        $group      = isset($route['params']['group']) ? $route['params']['group'] : null;
         return $this->dispatch(
             $controller,
             $action,

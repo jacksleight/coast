@@ -286,14 +286,14 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
         if (!$route) {
             return;
         }
-        $req->params(array_merge([
-            'route' => $route,
-        ], $route['params']));
+        
+        $req->param('route', $route);
+        $req->pathParams($route['params']);
         
         if (isset($route['target'])) {
             return $route['target']($req, $res, $this->app);
         } else if (isset($this->_target)) {
-            return $this->_target->route($req, $res);
+            return $this->_target->route($req, $res, $route);
         } else {
             throw new Router\Exception("There's nothing to route '{$route['name']}' to");
         }        
