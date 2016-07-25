@@ -7,6 +7,7 @@
 namespace Coast;
 
 use ArrayAccess;
+use Iterable;
 use Closure;
 use Coast\Model;
 use Coast\Model\Metadata;
@@ -144,6 +145,9 @@ class Model implements ArrayAccess
                 }
             } else if ($metadata['type'] == self::TYPE_MANY) {
                 $current = $this->__get($name);
+                if (!is_array($current) && (!$current instanceof Iterable && !$current instanceof ArrayAccess)) {
+                    throw new Model\Exception("Value of MANY property '" . get_class($this) . "->{$name}' must be an array or object that implements Iterable and ArrayAccess");
+                }
                 if (!isset($value)) {
                     foreach ($current as $key => $item) {
                         unset($current[$key]);
@@ -172,6 +176,7 @@ class Model implements ArrayAccess
                 foreach ($keys as $key) {
                     unset($current[$key]);
                 }
+                $this->__set($name, $current);
             } else {
                 $this->__set($name, $value);
             }
