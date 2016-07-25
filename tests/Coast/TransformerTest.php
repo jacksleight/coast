@@ -9,7 +9,7 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
 {
     public function testNull()
     {
-        $transformer = new Rule\Null();
+        $transformer = new Rule\Nul();
         $this->assertEquals($transformer(''), null);
         $this->assertEquals($transformer('test'), 'test');
         $this->assertEquals($transformer(1), 1);
@@ -96,7 +96,7 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
 
     public function testName()
     {
-        $transformer = new Rule\Null();
+        $transformer = new Rule\Nul();
         $transformer->name('test');
         $this->assertEquals($transformer->name(), 'test');
     }
