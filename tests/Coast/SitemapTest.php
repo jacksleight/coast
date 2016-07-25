@@ -11,20 +11,20 @@ class SitemapTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->_sitemap = new Sitemap();
-        $this->_sitemap->add(
-            new \Coast\Url('http://coastphp.com/'),
-            new \DateTime('2014-01-01'),
-            Sitemap::CHANGEFREQ_ALWAYS,
-            1
-        );
+        $this->_sitemap->urls[] = (new Sitemap\Url())->fromArray([
+            'url'             => new \Coast\Url('http://coastphp.com/'),
+            'modifyDate'      => new \DateTime('2014-01-01'),
+            'changeFrequency' => Sitemap\Url::CHANGEFREQUENCY_ALWAYS,
+            'priority'        => 0.5
+        ]);
         $this->_output = '<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>http://coastphp.com/</loc><lastmod>2014-01-01T00:00:00+00:00</lastmod><changefreq>always</changefreq><priority>1.0</priority></url></urlset>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>http://coastphp.com/</loc><lastmod>2014-01-01T00:00:00+00:00</lastmod><changefreq>always</changefreq><priority>0.5</priority></url></urlset>
 ';
     }
 
     public function testString()
     {
-        $this->assertEquals($this->_output, $this->_sitemap->toXml()->toString());        
+        $this->assertEquals($this->_output, $this->_sitemap->toXml()->toString());
         $this->assertEquals($this->_output, (string) $this->_sitemap->toXml());        
     }
 

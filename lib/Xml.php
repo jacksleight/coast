@@ -10,6 +10,13 @@ use SimpleXMLElement;
 
 class Xml extends SimpleXMLElement
 {
+    public function appendChild($child)
+    {
+        $node = dom_import_simplexml($this);
+        $node->appendChild($node->ownerDocument->importNode(dom_import_simplexml($child), true));
+        return $this;
+    }
+
     public function addCData($value)
     {
         $node = dom_import_simplexml($this);
