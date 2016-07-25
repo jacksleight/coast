@@ -6,5 +6,5 @@
 
 namespace Coast\Filter\Rule;
 
-class Decimal extends Float
+class Decimal extends Flt
 {}

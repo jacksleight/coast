@@ -8,5 +8,5 @@ namespace Coast\Filter\Rule;
 
 use Coast\Filter\Rule;
 
-class Number extends Rule\Float
+class Number extends Rule\Flt
 {}
