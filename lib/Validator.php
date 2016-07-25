@@ -60,6 +60,8 @@ class Validator extends Rule
             }
             $map = [
                 'array' => 'arr',
+                'float' => 'flt',
+                'string' => 'str',
             ];
             if (isset($map[$name])) {
                 $name = $map[$name];

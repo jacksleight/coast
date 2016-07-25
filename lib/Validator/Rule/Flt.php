@@ -8,7 +8,7 @@ namespace Coast\Validator\Rule;
 
 use Coast\Validator\Rule;
 
-class Float extends Rule
+class Flt extends Rule
 {
 	protected function _validate($value)
 	{

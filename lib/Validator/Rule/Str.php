@@ -8,7 +8,7 @@ namespace Coast\Validator\Rule;
 
 use Coast\Validator\Rule;
 
-class String extends Rule
+class Str extends Rule
 {
 	protected function _validate($value)
 	{
