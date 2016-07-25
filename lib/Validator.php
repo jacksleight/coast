@@ -65,6 +65,8 @@ class Validator extends Rule implements Iterator
             $map = [
                 'array'  => 'arr',
                 'object' => 'obj',
+                'float'  => 'flt',
+                'string' => 'str',
             ];
             if (isset($map[$name])) {
                 $name = $map[$name];

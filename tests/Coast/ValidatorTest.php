@@ -186,7 +186,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 
     public function testFloat()
     {
-        $validator = new Rule\Float();
+        $validator = new Rule\Flt();
         $this->assertTrue($validator(1.5));
         $this->assertFalse($validator('text'));
     }
@@ -264,7 +264,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 
     public function testString()
     {
-        $validator = new Rule\String();
+        $validator = new Rule\Str();
         $this->assertTrue($validator('text'));
         $this->assertFalse($validator([]));
     }
