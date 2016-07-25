@@ -14,6 +14,9 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
     const METHOD_PUT    = \Coast\Request::METHOD_PUT;
     const METHOD_DELETE = \Coast\Request::METHOD_DELETE;
 
+    const TYPE_STATIC = 'static';
+    const TYPE_REGEX  = 'regex';
+
     use \Coast\App\Access\Implementation;
     use \Coast\App\Executable\Implementation;
 
@@ -121,46 +124,54 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
             if (isset($this->_suffix)) {
                 $path = "{$path}/{$this->_suffix}";
             }
-            $parts = explode('/', ltrim($path, '/'));
-            $names = [];
-            $stack = [];
-            foreach ($parts as $i => $part) {
-                if (preg_match('/^\{([a-zA-Z0-9_-]+)(?::(.*))?\}(\?)?$/', $part, $match)) {
-                    $match = \Coast\array_merge_smart(
-                        array('', '', '', ''),
-                        $match
-                    );
-                    $names[] = $match[1];    
-                    $regex = strlen($match[2])
-                        ? "({$match[2]})"
-                        : "([a-zA-Z0-9_-]+)";
-                    if ($match[3] == '?') {
-                        $regex = $i == 0 
-                            ? "(?:{$regex})?"
-                            : "(?:\/{$regex})?";
+            if (strpos($path, '{') !== false) {
+                $parts = explode('/', ltrim($path, '/'));
+                $names = [];
+                $stack = [];
+                foreach ($parts as $i => $part) {
+                    if (preg_match('/^\{([a-zA-Z0-9_-]+)(?::(.*))?\}(\?)?$/', $part, $match)) {
+                        $match = \Coast\array_merge_smart(
+                            array('', '', '', ''),
+                            $match
+                        );
+                        $names[] = $match[1];    
+                        $regex = strlen($match[2])
+                            ? "({$match[2]})"
+                            : "([a-zA-Z0-9_-]+)";
+                        if ($match[3] == '?') {
+                            $regex = $i == 0 
+                                ? "(?:{$regex})?"
+                                : "(?:\/{$regex})?";
+                        } else {
+                            $regex = $i == 0
+                                ? "{$regex}"
+                                : "\/{$regex}";
+                        }
                     } else {
                         $regex = $i == 0
-                            ? "{$regex}"
-                            : "\/{$regex}";
+                            ? preg_quote($part, '/')
+                            : "\/" . preg_quote($part, '/');
                     }
-                } else {
-                    $regex = $i == 0
-                        ? preg_quote($part, '/')
-                        : "\/" . preg_quote($part, '/');
+                    $stack[] = $regex;
                 }
-                $stack[] = $regex;
+                $type  = self::TYPE_REGEX;
+                $value = '/^' . implode($stack) . '$/';
+            } else {
+                $names = [];
+                $type  = self::TYPE_STATIC;
+                $value = $path;
             }
-            $regex = '/^' . implode($stack) . '$/';
 
             $route = [
                 'methods' => $methods,
                 'path'    => $path,
-                'regex'   => $regex,
+                'type'    => $type,
+                'value'   => $value,
                 'names'   => $names,
                 'params'  => $params,
                 'target'  => $target,
             ];
-            $this->_routes = [$name => $route] + $this->_routes;
+            $this->_routes[$name] = $route;
             return $this;
         }
         if (isset($this->_aliases[$name])) {
@@ -200,14 +211,24 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
     public function match($method, $path)
     {
         $method = strtoupper($method);
-        foreach ($this->_routes as $name => $route) {
+        end($this->_routes);
+        do {
+            $name  = key($this->_routes);
+            $route = current($this->_routes);
             if (!in_array($method, $route['methods'])) {
                 continue;
             }
-            if (!preg_match($route['regex'], $path, $match)) {
-                continue;
+            if ($route['type'] == self::TYPE_STATIC) {
+                if ($path != $route['value']) {
+                    continue;
+                }
+                $match = [];
+            } else if ($route['type'] == self::TYPE_REGEX) {
+                if (!preg_match($route['value'], $path, $match)) {
+                    continue;
+                }
+                array_shift($match);
             }
-            array_shift($match);    
             $params = array_merge(
                 $route['params'],
                 count($match) > 0
@@ -218,7 +239,7 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
                 'name'   => $name,
                 'params' => $params,
             ]);
-        }        
+        } while (prev($this->_routes));       
         return false;
     }
 
