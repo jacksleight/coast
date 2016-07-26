@@ -8,5 +8,5 @@ namespace Coast\Validator\Rule;
 
 use Coast\Validator\Rule;
 
-class Number extends Float
+class Number extends Flt
 {}

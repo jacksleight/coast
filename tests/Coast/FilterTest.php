@@ -60,7 +60,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 
     public function testFloat()
     {
-        $filter = new Rule\Float();
+        $filter = new Rule\Flt();
         $this->assertEquals($filter('1.5t'), '1.5');
     }
 

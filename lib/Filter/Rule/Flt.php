@@ -8,7 +8,7 @@ namespace Coast\Filter\Rule;
 
 use Coast\Filter\Rule;
 
-class Float extends Rule
+class Flt extends Rule
 {
     protected function _filter($value)
     {

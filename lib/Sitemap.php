@@ -7,42 +7,38 @@
 namespace Coast;
 
 use Coast\Xml;
+use Coast\Model;
+use Coast\Collection;
 
-class Sitemap
+class Sitemap extends Model
 {
-    const CHANGEFREQ_ALWAYS  = 'always';
-    const CHANGEFREQ_HOURLY  = 'hourly';
-    const CHANGEFREQ_DAILY   = 'daily';
-    const CHANGEFREQ_WEEKLY  = 'weekly';
-    const CHANGEFREQ_MONTHLY = 'monthly';
-    const CHANGEFREQ_YEARLY  = 'yearly';
-    const CHANGEFREQ_NEVER   = 'never';
+    protected $urls;
 
-    protected $_xml;
+    protected static function _metadataStaticBuild()
+    {
+        return parent::_metadataStaticBuild()
+            ->properties([
+                'urls' => [
+                    'type'       => Model::TYPE_MANY,
+                    'isCreate'   => true,
+                    'isTraverse' => true,
+                    'className'  => 'Coast\Sitemap\Url',
+                ],
+            ]);
+    }
 
     public function __construct()
     {
-        $this->_xml = new Xml('<?xml version="1.0" encoding="UTF-8"?><urlset/>');
-        $this->_xml->addAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
-    }
-
-    public function add(\Coast\Url $loc, \DateTime $lastmod = null, $changefreq = null, $priority = null)
-    {
-        $url = $this->_xml->addChild('url');
-        $loc = $url->addChild('loc', (string) $loc);
-        if (isset($lastmod)) {
-            $url->addChild('lastmod', $lastmod->format(\DateTime::W3C));
-        }
-        if (isset($changefreq)) {
-            $url->addChild('changefreq', $changefreq);
-        }
-        if (isset($priority)) {
-            $url->addChild('priority', number_format($priority, 1, '.', null));
-        }
+        $this->urls = new Collection();
     }
 
     public function toXml()
     {
-        return $this->_xml;
+        $xml = new Xml('<?xml version="1.0" encoding="UTF-8"?><urlset/>');
+        $xml->addAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
+        foreach ($this->urls as $url) {
+            $xml->appendChild($url->toXml());
+        }
+        return $xml;
     }
 }

@@ -57,6 +57,12 @@ class Filter extends Rule implements Iterator
         if ($name == self::STEP_BREAK) {
             $step = $name;
         } else {
+            $map = [
+                'float'  => 'flt',
+            ];
+            if (isset($map[$name])) {
+                $name = $map[$name];
+            }
             $class  = get_class() . '\\Rule\\' . ucfirst($name);
             $reflec = new \ReflectionClass($class);
             $step   = $reflec->newInstanceArgs($args);
