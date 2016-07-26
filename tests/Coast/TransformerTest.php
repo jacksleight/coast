@@ -78,10 +78,10 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
     {
         $transformer = (new Transformer())
             ->null();
-        $rule = $transformer->rule('null');
-        $this->assertEquals($rule[0]->name(), 'null');
+        $rule = $transformer->rule('nul');
+        $this->assertEquals($rule[0]->name(), 'nul');
         $rules = $transformer->rules();
-        $this->assertEquals($rules['null'][0]->name(), 'null');
+        $this->assertEquals($rules['nul'][0]->name(), 'nul');
     }
 
     public function testClone()
@@ -89,8 +89,8 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         $transformer1 = (new Transformer())
             ->null(); 
         $transformer2 = clone $transformer1;
-        $rules1 = $transformer1->rule('null');
-        $rules2 = $transformer2->rule('null');
+        $rules1 = $transformer1->rule('nul');
+        $rules2 = $transformer2->rule('nul');
         $this->assertNotSame($rules1[0], $rules2[0]);
     }
 
