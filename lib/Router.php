@@ -253,7 +253,7 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
         }
 
         $route  = $this->_routes[$name];
-        $params = $params + $this->_params;
+        $params = $params + $route['params'] + $this->_params;
         $parts  = explode('/', $route['path']);
         $path   = [];
         foreach ($parts as $i => $part) {
