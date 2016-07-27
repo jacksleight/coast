@@ -312,3 +312,13 @@ function str_random($bytes = 32, $algo = 'sha512')
 {
     return rtrim(base64_encode(hash($algo, openssl_random_pseudo_bytes($bytes), true)), '=');
 }
+
+function number_ordinal($number, $exclude = false) {
+    $ends = ['th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th'];
+    $ordinal = (($number % 100) >= 11) && (($number % 100) <= 13)
+        ? 'th'
+        : $ends[$number % 10];
+    return $exclude
+        ? $ordinal
+        : $number . $ordinal;
+}
