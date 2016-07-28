@@ -21,7 +21,7 @@ class Model implements ArrayAccess
    
     protected $_metadataSource;
 
-    protected $_metadataInstance;
+    protected $_metadata;
 
     protected static function _metadataStaticBuild()
     {
@@ -66,29 +66,29 @@ class Model implements ArrayAccess
 
     protected function _metadataModify()
     {
-        return $this->_metadataInstance = clone $this->_metadataSource;
+        return $this->_metadata = clone $this->_metadataSource;
     }
 
     public function metadata(Metadata $metadata = null)
     {
         if (func_num_args() > 0) {
-            $this->_metadataSource   = $metadata;
-            $this->_metadataInstance = null;
+            $this->_metadataSource = $metadata;
+            $this->_metadata       = null;
             return $this;
         }
         if (!isset($this->_metadataSource)) {
             $this->_metadataBuild();
         }
-        if (!isset($this->_metadataInstance)) {
+        if (!isset($this->_metadata)) {
             $this->_metadataModify();
         }
-        return $this->_metadataInstance;
+        return $this->_metadata;
     }
 
     public function metadataReset($isTraverse = null)
     {
         $this->traverseModels(function() {
-            $this->_metadataInstance = null;
+            $this->_metadata = null;
         }, $isTraverse);
         return $this;
     }
