@@ -19,7 +19,9 @@ class Model implements ArrayAccess
 
     protected static $_metadataStatic = [];
    
-    protected $_metadata;
+    protected $_metadataSource;
+
+    protected $_metadataInstance;
 
     protected static function _metadataStaticBuild()
     {
@@ -59,31 +61,42 @@ class Model implements ArrayAccess
 
     protected function _metadataBuild()
     {
-        return $this->_metadata = clone static::metadataStatic();
+        return $this->_metadataSource = clone static::metadataStatic();
     }
 
     protected function _metadataModify()
     {
-        return $this->_metadata;
+        return $this->_metadataInstance = clone $this->_metadataSource;
     }
 
     public function metadata(Metadata $metadata = null)
     {
         if (func_num_args() > 0) {
-            $this->_metadata = $metadata;
+            $this->_metadataSource   = $metadata;
+            $this->_metadataInstance = null;
             return $this;
         }
-        if (!isset($this->_metadata)) {
+        if (!isset($this->_metadataSource)) {
             $this->_metadataBuild();
+        }
+        if (!isset($this->_metadataInstance)) {
             $this->_metadataModify();
         }
-        return $this->_metadata;
+        return $this->_metadataInstance;
+    }
+
+    public function metadataReset($isTraverse = null)
+    {
+        $this->traverseModels(function() {
+            $this->_metadataInstance = null;
+        }, $isTraverse);
+        return $this;
     }
 
     public function traverse(Closure $func, $isTraverse = null, array &$history = array())
     {
-        $func = $func->bindTo($this);
         array_push($history, $this);
+        $func = $func->bindTo($this);
         $output = [];
         foreach ($this->metadata->properties() as $name => $metadata) {
             $value = $this->__get($name);
@@ -114,6 +127,40 @@ class Model implements ArrayAccess
             $output[$name] = $func($name, $value, $metadata);
         }
         return $output;
+    }
+
+    public function traverseModels(Closure $func, $isTraverse = null, array &$history = array())
+    {
+        array_push($history, $this);
+        $func = $func->bindTo($this);
+        foreach ($this->metadata->properties() as $name => $metadata) {
+            if (!in_array($metadata['type'], [
+                self::TYPE_ONE,
+                self::TYPE_MANY,
+            ])) {
+                continue;
+            }
+            $value = $this->__get($name);
+            $isDeep = isset($isTraverse)
+                ? $isTraverse
+                : $metadata['isTraverse'];
+            if (!$isDeep) {
+                continue;
+            }
+            if (in_array($value, $history, true)) {
+                continue;
+            }
+            if ($metadata['type'] == self::TYPE_ONE) {
+                if (isset($value)) {
+                    $value->traverseModels($func, $isTraverse, $history);
+                }
+            } else if ($metadata['type'] == self::TYPE_MANY) {
+                foreach ($value as $item) {
+                    $item->traverseModels($func, $isTraverse, $history);
+                }
+            }
+        }
+        $func();
     }
 
     public function fromArray(array $array, $isTraverse = null)
