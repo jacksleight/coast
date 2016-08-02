@@ -12,20 +12,7 @@ class Acl
     const ALLOW = true;
     const DENY  = false;
 
-    protected $_delimiter = '/';
-
     protected $_roles = [];
-
-    protected $_cache = null;
-
-    public function delimiter($delimiter = null)
-    {
-        if (func_num_args() > 0) {
-            $this->_delimiter = $delimiter;
-            return $this;
-        }
-        return $this->_delimiter;
-    }
 
     public function role($name, array $value = null)
     {
@@ -35,10 +22,9 @@ class Acl
                 'rules'  => [],
             ];
             if (isset($value['extend']) && !isset($this->_roles[$value['extend']])) {
-                throw new Exception("Role '{$role}' does not exist");
+                throw new Exception("Role '{$value['extend']}' does not exist");
             }
             $this->_roles[$name] = $value;
-            $this->_cache = null;
             return $this;
         }
         return isset($this->_roles[$name])
@@ -49,100 +35,84 @@ class Acl
     public function roles(array $roles = null)
     {
         if (func_num_args() > 0) {
-            foreach ($roles as $resource => $type) {
-                $this->role($resource, $type);
+            foreach ($roles as $name => $value) {
+                $this->role($name, $value);
             }
             return $this;
         }
         return $this->_roles;
     }
 
-    public function rule($role, $resource, $type = null)
+    public function rule($role, $resource, $operations, $action)
     {
         if (!isset($this->_roles[$role])) {
             throw new Exception("Role '{$role}' does not exist");
         }
 
-        $resource = trim($resource, $this->_delimiter) . $this->_delimiter;
-        if (func_num_args() > 2) {
-            if ($type instanceof Closure) {
-                $type = $type->bindTo($this);
-            }
-            $this->_roles[$role]['rules'][$resource] = $type;
-            $this->_cache = null;
-            return $this;
+        if (!is_array($operations)) {
+            $operations = array_map('trim', explode(',', $operations));
         }
-        return isset($this->_roles[$role]['rules'][$resource])
-            ? $this->_roles[$role]['rules'][$resource]
-            : null;
+        if ($action instanceof Closure) {
+            $action = $action->bindTo($this);
+        }
+        $this->_roles[$role]['rules'][] = [
+            $resource,
+            $operations,
+            $action,
+        ];
+        return $this;
     }
 
     public function rules($role, array $rules = null)
     {
         if (func_num_args() > 1) {
-            foreach ($rules as $name => $value) {
-                $this->rule($role, $name, $value);
+            foreach ($rules as $rule) {
+                call_user_func_array([$this, 'rule'], array_merge([$role], $rule));
             }
             return $this;
         }
         return $this->_roles[$role]['rules'];
     }
 
-    public function allow($role, $resource)
-    {
-        $this->rule($role, $resource, self::ALLOW);
-        return $this;
-    }
-
-    public function deny($role, $resource)
-    {
-        $this->rule($role, $resource, self::DENY);
-        return $this;
-    }
-
-    public function func($role, $resource, Closure $func)
-    {
-        $this->rule($role, $resource, $func);
-        return $this;
-    }
-
-    public function isAllowed($role, $lookup, array $params = array())
+    public function isAllowed($role, $resource, $operation, array $params = array())
     {
         if (!isset($this->_roles[$role])) {
             throw new Exception("Role '{$role}' does not exist");
         }
 
-        if (!isset($this->_cache)) {
-            $this->_cache = [];
-            foreach ($this->_roles as $name => $value) {
-                $rules = $value['rules'];
-                while (isset($value['extend'])) {
-                    $value = $this->_roles[$value['extend']];
-                    $rules += $value['rules'];
-                }
-                ksort($rules);
-                $this->_cache[$name] = $rules;
-            }
+        $role  = $this->_roles[$role];
+
+        $value = $role;
+        $rules = $value['rules'];
+        while (isset($value['extend'])) {
+            $value = $this->_roles[$value['extend']];
+            $rules = array_merge($value['rules'], $rules);
         }
 
-        $lookup = trim($lookup, $this->_delimiter) . $this->_delimiter;
         $result = self::NONE;
-        foreach ($this->_cache[$role] as $resource => $type) {
-            if ($resource === $this->_delimiter || strpos($lookup, $resource) === 0) {
-                $result = $type instanceof Closure
-                    ? $type($role, $params)
-                    : $type;
-                if ($result === self::DENY) {
-                    break;
-                }
+        end($rules);
+        do {
+            $rule = current($rules);
+            if ($resource != $rule[0]) {
+                continue;
             }
-        }
+            if ($rule[1] !== ['*'] && !in_array($operation, $rule[1])) {
+                continue;
+            }
+            $action = $rule[2];
+            $result = $action instanceof Closure
+                ? call_user_func_array($action, array_merge([$role], $params))
+                : $action;
+            if ($result !== self::NONE) {
+                break;
+            }
+        } while (prev($rules));
 
         return $result;
     }
 
-    public function __invoke($role, $lookup, array $params = array())
+    public function __invoke($role, $resource, $operation, array $params = array())
     {
-        return $this->isAllowed($role, $lookup, $params);
+        return $this->isAllowed($role, $resource, $operation, $params);
     }
 }
