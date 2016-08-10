@@ -234,7 +234,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
             if (count($this->_active->renders) > 1) {
                 return;
             }
-            throw new View\Exception("View '{$script->group}:{$script->path}' does not exist");
+            throw new View\Failure("View '{$script->group}:{$script->path}' does not exist");
         }
         if (!isset($files[$depth])) {
             throw new View\Exception("View '{$script->group}:{$script->path}' parent at depth '{$depth}' does not exist");
@@ -372,13 +372,14 @@ class View implements \Coast\App\Access, \Coast\App\Executable
     {        
         $path  = $req->path();
         $path  = '/' . (strlen($path) ? $path : 'index');
-        $files = $this->files($this->script($path));
-        if (!count($files)) {
+
+        try {
+            return $res->html($this->render($path, [
+                'req' => $req,
+                'res' => $res,
+            ]));
+        } catch (View\Failure $e) {
             return;
         }
-        return $res->html($this->render($path, [
-            'req' => $req,
-            'res' => $res,
-        ]));
     }
 } 

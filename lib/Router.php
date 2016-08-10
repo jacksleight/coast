@@ -240,7 +240,8 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
                 'params' => $params,
             ]);
         } while (prev($this->_routes));
-        return false;
+
+        throw new Router\Failure("Not route matched method '{$method}' and path '{$path}'");
     }
 
     public function reverse($name, array $params = array())
@@ -291,8 +292,9 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
 
     public function execute(\Coast\Request $req, \Coast\Response $res)
     {
-        $route = $this->match($req->method(), $req->path());
-        if (!$route) {
+        try {
+            $route = $this->match($req->method(), $req->path());            
+        } catch (Router\Failure $e) {
             return;
         }
         

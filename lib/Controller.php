@@ -105,7 +105,7 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
             $class = $this->_nspaces[$group] . '\\' . implode('\\', array_map('ucfirst', explode('_', $name)));
             if (!isset($this->_actions[$class])) {
                 if (!class_exists($class)) {
-                    throw new Controller\Exception("Controller '{$group}:{$name}' does not exist");
+                    throw new Controller\Failure("Controller '{$group}:{$name}' does not exist");
                 }
                 $object = new $class($this);
                 if (!$object instanceof \Coast\Controller\Action) {
@@ -116,7 +116,7 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
                 $object = $this->_actions[$class];
             }
             if (!method_exists($object, $action)) {
-                throw new Controller\Exception("Controller action '{$group}:{$name}:{$action}' does not exist");
+                throw new Controller\Failure("Controller action '{$group}:{$name}:{$action}' does not exist");
             }
 
             $result = call_user_func_array([$object, $action], $params);
@@ -167,11 +167,16 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
         $controller = implode('\\', $parts);
         $action     = \Coast\str_camel_lower($route['params']['action']);
         $group      = isset($route['params']['group']) ? $route['params']['group'] : null;
-        return $this->dispatch(
-            $controller,
-            $action,
-            [$req, $res],
-            $group
-        );
+        
+        try {
+            return $this->dispatch(
+                $controller,
+                $action,
+                [$req, $res],
+                $group
+            );
+        } catch (Controller\Failure $e) {
+            return;
+        }
     }
 }
