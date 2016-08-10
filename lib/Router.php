@@ -137,7 +137,7 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
                         $names[] = $match[1];    
                         $regex = strlen($match[2])
                             ? "({$match[2]})"
-                            : "([a-zA-Z0-9_-]+)";
+                            : "([^\/]+)";
                         if ($match[3] == '?') {
                             $regex = $i == 0 
                                 ? "(?:{$regex})?"
