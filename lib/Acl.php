@@ -120,7 +120,7 @@ class Acl
             $action = $action instanceof Closure
                 ? call_user_func_array($action, array_merge([$role], $params))
                 : $action;
-            if ($result !== self::NONE) {
+            if ($action !== self::NONE) {
                 break;
             }
         } while (prev($rules));
