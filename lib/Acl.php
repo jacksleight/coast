@@ -6,6 +6,8 @@
 
 namespace Coast;
 
+use Closure;
+
 class Acl
 { 
     const NONE  = null;
@@ -74,7 +76,22 @@ class Acl
         return $this->_roles[$role]['rules'];
     }
 
-    public function isAllowed($role, $resource, $operation, array $params = array())
+    public function allow($role, $resource, $operations)
+    {
+        return $this->rule($role, $resource, $operations, $action, self::ALLOW);
+    }
+
+    public function deny($role, $resource, $operations)
+    {
+        return $this->rule($role, $resource, $operations, $action, self::DENY);
+    }
+
+    public function func($role, $resource, $operations, Closure $func)
+    {
+        return $this->rule($role, $resource, $operations, $action, $func);
+    }
+
+    public function check($role, $resource, $operation, array $params = array())
     {
         if (!isset($this->_roles[$role])) {
             throw new Exception("Role '{$role}' does not exist");
@@ -89,7 +106,7 @@ class Acl
             $rules = array_merge($value['rules'], $rules);
         }
 
-        $result = self::NONE;
+        $action = self::NONE;
         end($rules);
         do {
             $rule = current($rules);
@@ -100,7 +117,7 @@ class Acl
                 continue;
             }
             $action = $rule[2];
-            $result = $action instanceof Closure
+            $action = $action instanceof Closure
                 ? call_user_func_array($action, array_merge([$role], $params))
                 : $action;
             if ($result !== self::NONE) {
@@ -108,11 +125,26 @@ class Acl
             }
         } while (prev($rules));
 
-        return $result;
+        return $action;
+    }
+
+    public function isAllow($role, $resource, $operation, array $params = array())
+    {
+        return $this->check($role, $resource, $operation, $params) === self::ALLOW;
+    }
+
+    public function isDeny($role, $resource, $operation, array $params = array())
+    {
+        return $this->check($role, $resource, $operation, $params) === self::DENY;
+    }
+
+    public function isNone($role, $resource, $operation, array $params = array())
+    {
+        return $this->check($role, $resource, $operation, $params) === self::NONE;
     }
 
     public function __invoke($role, $resource, $operation, array $params = array())
     {
-        return $this->isAllowed($role, $resource, $operation, $params);
+        return $this->check($role, $resource, $operation, $params);
     }
 }
