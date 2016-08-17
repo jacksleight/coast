@@ -230,20 +230,25 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         $params = $render->params;
         $files  = $this->files($script);
 
-        if (!count($files)) {
-            if (count($this->_active->renders) > 1) {
-                return;
+        try {
+            if (!count($files)) {
+                if (count($this->_active->renders) > 1) {
+                    return;
+                }
+                throw new View\Failure("View '{$script->group}:{$script->path}' does not exist");
             }
-            throw new View\Failure("View '{$script->group}:{$script->path}' does not exist");
+            if (!isset($files[$depth])) {
+                throw new View\Exception("View '{$script->group}:{$script->path}' parent at depth '{$depth}' does not exist");
+            }
+            return $this->_run($files[$depth], array_merge(
+                $this->_active->params,
+                $params
+            ));
+        } catch (\Exception $e) {
+            $this->_contexts = [];
+            $this->_active   = null;
+            throw $e;
         }
-        if (!isset($files[$depth])) {
-            throw new View\Exception("View '{$script->group}:{$script->path}' parent at depth '{$depth}' does not exist");
-        }
-
-        return $this->_run($files[$depth], array_merge(
-            $this->_active->params,
-            $params
-        ));
     }
         
     protected function _run(File $__file, array $__params = array())
