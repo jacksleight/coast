@@ -258,8 +258,10 @@ class View implements \Coast\App\Access, \Coast\App\Executable
             extract($__params);
             include (string) $__file;
         } catch (\Exception $e) {
-            while ($this->_active->buffers > 0) {
-                echo $this->end();
+            if (isset($this->_active)) {
+                while ($this->_active->buffers > 0) {
+                    echo $this->end();
+                }
             }
             throw $e;
         }
