@@ -137,7 +137,7 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
                         $names[] = $match[1];    
                         $regex = strlen($match[2])
                             ? "({$match[2]})"
-                            : "([a-zA-Z0-9_-]+)";
+                            : "([^\/]+)";
                         if ($match[3] == '?') {
                             $regex = $i == 0 
                                 ? "(?:{$regex})?"
@@ -239,8 +239,9 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
                 'name'   => $name,
                 'params' => $params,
             ]);
-        } while (prev($this->_routes));       
-        return false;
+        } while (prev($this->_routes));
+
+        throw new Router\Failure("Not route matched method '{$method}' and path '{$path}'");
     }
 
     public function reverse($name, array $params = array())
@@ -252,10 +253,11 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
             throw new Router\Exception("Route '{$name}' does not exist");
         }
 
-        $route  = $this->_routes[$name];
-        $params = $params + $route['params'] + $this->_params;
-        $parts  = explode('/', $route['path']);
-        $path   = [];
+        $route    = $this->_routes[$name];
+        $defaults = $route['params'] + $this->_params;
+        $parts    = explode('/', $route['path']);
+        $path     = [];
+        $trim     = [];
         foreach ($parts as $i => $part) {
             if (preg_match('/^\{([a-zA-Z0-9_-]+)(?::(.*))?\}(\?)?$/', $part, $match)) {
                 $match = \Coast\array_merge_smart(
@@ -263,27 +265,36 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
                     $match
                 );
                 if (isset($params[$match[1]])) {
-                    $value = $params[$match[1]];
-                } else if ($match[3] == '?') {
-                    $value = null;
+                    $value  = $params[$match[1]];
+                } else if (isset($defaults[$match[1]])) {
+                    $value  = $defaults[$match[1]];
+                    $trim[] = $i;
                 } else {
-                    throw new Router\Exception("Parameter '{$match[1]}' missing");
+                    $value  = null;
+                    $trim[] = $i;
                 }
             } else {
                 $value = $part;
             }
             $path[$i] = $value;
         }
-        while (count($path) > 0 && !isset($path[count($path) - 1])) {
-            array_pop($path);
+
+        for ($i = count($path) - 1; $i >= 0; $i--) { 
+            if (in_array($i, $trim)) {
+                unset($path[$i]);
+            } else {
+                break;
+            }
         }
+
         return implode('/', $path);
     }
 
     public function execute(\Coast\Request $req, \Coast\Response $res)
     {
-        $route = $this->match($req->method(), $req->path());
-        if (!$route) {
+        try {
+            $route = $this->match($req->method(), $req->path());            
+        } catch (Router\Failure $e) {
             return;
         }
         

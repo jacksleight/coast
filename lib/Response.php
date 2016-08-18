@@ -150,19 +150,31 @@ class Response
             ->body((string) $xml);
     }
 
-    public function file(File $file, $type, $download = false, $name = null)
+    public function file($data, $type, $attachment = false, $name = null)
     {  
-        if ($name === true) {
-            $name = $file->baseName();
+        if ($data instanceof File) {
+            if ($name === true) {
+                $name = $data->baseName();
+            }
+            $length = $data->size();
+        } else {
+            $data = (string) $data;
+            $length = mb_strlen($data, 'UTF-8');
         }
-        $this->_body = $file;
+        $this->_body = $data;
         $this
             ->type($type)
             ->header('Cache-Control', "public")
-            ->header('Content-Length', $file->size());
-        if ($download) {
-            $this->header('Content-Disposition', "attachment" . (isset($name) ? "; filename={$name}" : null));
+            ->header('Content-Length', $length);
+        if ($attachment) {
+            $this->attachment($name);
         }
+        return $this;
+    }
+
+    public function attachment($name = null)
+    {  
+        $this->header('Content-Disposition', "attachment" . (isset($name) ? "; filename={$name}" : null));
         return $this;
     }
 

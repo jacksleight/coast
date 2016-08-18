@@ -230,20 +230,25 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         $params = $render->params;
         $files  = $this->files($script);
 
-        if (!count($files)) {
-            if (count($this->_active->renders) > 1) {
-                return;
+        try {
+            if (!count($files)) {
+                if (count($this->_active->renders) > 1) {
+                    return;
+                }
+                throw new View\Failure("View '{$script->group}:{$script->path}' does not exist");
             }
-            throw new View\Exception("View '{$script->group}:{$script->path}' does not exist");
+            if (!isset($files[$depth])) {
+                throw new View\Exception("View '{$script->group}:{$script->path}' parent at depth '{$depth}' does not exist");
+            }
+            return $this->_run($files[$depth], array_merge(
+                $this->_active->params,
+                $params
+            ));
+        } catch (\Exception $e) {
+            $this->_contexts = [];
+            $this->_active   = null;
+            throw $e;
         }
-        if (!isset($files[$depth])) {
-            throw new View\Exception("View '{$script->group}:{$script->path}' parent at depth '{$depth}' does not exist");
-        }
-
-        return $this->_run($files[$depth], array_merge(
-            $this->_active->params,
-            $params
-        ));
     }
         
     protected function _run(File $__file, array $__params = array())
@@ -253,8 +258,10 @@ class View implements \Coast\App\Access, \Coast\App\Executable
             extract($__params);
             include (string) $__file;
         } catch (\Exception $e) {
-            while ($this->_active->buffers > 0) {
-                echo $this->end();
+            if (isset($this->_active)) {
+                while ($this->_active->buffers > 0) {
+                    echo $this->end();
+                }
             }
             throw $e;
         }
@@ -372,13 +379,14 @@ class View implements \Coast\App\Access, \Coast\App\Executable
     {        
         $path  = $req->path();
         $path  = '/' . (strlen($path) ? $path : 'index');
-        $files = $this->files($this->script($path));
-        if (!count($files)) {
+
+        try {
+            return $res->html($this->render($path, [
+                'req' => $req,
+                'res' => $res,
+            ]));
+        } catch (View\Failure $e) {
             return;
         }
-        return $res->html($this->render($path, [
-            'req' => $req,
-            'res' => $res,
-        ]));
     }
 } 
