@@ -103,6 +103,15 @@ class Model implements ArrayAccess
             $isDeep = isset($isTraverse)
                 ? $isTraverse
                 : $metadata['isTraverse'];
+            if (is_object($value)) {
+                for ($i = 0; $i < 3; $i++) { 
+                    $method = str_repeat('_', $i) . 'isInitialized';
+                    if (method_exists($value, $method) && !$value->$method()) {
+                        $isDeep = false;
+                        break;
+                    }
+                }
+            }
             if (!$isDeep) {
                 $output[$name] = $func($name, $value, $metadata);
                 continue;
@@ -144,6 +153,15 @@ class Model implements ArrayAccess
             $isDeep = isset($isTraverse)
                 ? $isTraverse
                 : $metadata['isTraverse'];
+            if (is_object($value)) {
+                for ($i = 0; $i < 3; $i++) { 
+                    $method = str_repeat('_', $i) . 'isInitialized';
+                    if (method_exists($value, $method) && !$value->$method()) {
+                        $isDeep = false;
+                        break;
+                    }
+                }
+            }
             if (!$isDeep) {
                 continue;
             }
@@ -173,6 +191,15 @@ class Model implements ArrayAccess
             $isDeep = isset($isTraverse)
                 ? $isTraverse
                 : $metadata['isTraverse'];
+            if (is_object($value)) {
+                for ($i = 0; $i < 3; $i++) { 
+                    $method = str_repeat('_', $i) . 'isInitialized';
+                    if (method_exists($value, $method) && !$value->$method()) {
+                        $isDeep = false;
+                        break;
+                    }
+                }
+            }
             if (!$isDeep) {
                 $this->__set($name, $value);
                 continue;
