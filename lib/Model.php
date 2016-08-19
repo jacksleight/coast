@@ -23,6 +23,20 @@ class Model implements ArrayAccess
 
     protected $_metadata;
 
+    protected static $_initMethods = [
+        'isInitialized',
+        '_isInitialized',
+        '__isInitialized',
+    ];
+
+    public static function initMethods($initMethods = null)
+    {
+        if (func_num_args() > 0) {
+            self::$_initMethods = $initMethods;
+        }
+        return self::$_initMethods;
+    }
+
     protected static function _metadataStaticBuild()
     {
         $class    = get_called_class();
@@ -104,8 +118,7 @@ class Model implements ArrayAccess
                 ? $isTraverse
                 : $metadata['isTraverse'];
             if (is_object($value)) {
-                for ($i = 0; $i < 3; $i++) { 
-                    $method = str_repeat('_', $i) . 'isInitialized';
+                foreach (self::$_initMethods as $method) {
                     if (method_exists($value, $method) && !$value->$method()) {
                         $isDeep = false;
                         break;
@@ -154,8 +167,7 @@ class Model implements ArrayAccess
                 ? $isTraverse
                 : $metadata['isTraverse'];
             if (is_object($value)) {
-                for ($i = 0; $i < 3; $i++) { 
-                    $method = str_repeat('_', $i) . 'isInitialized';
+                foreach (self::$_initMethods as $method) {
                     if (method_exists($value, $method) && !$value->$method()) {
                         $isDeep = false;
                         break;
@@ -191,15 +203,6 @@ class Model implements ArrayAccess
             $isDeep = isset($isTraverse)
                 ? $isTraverse
                 : $metadata['isTraverse'];
-            if (is_object($value)) {
-                for ($i = 0; $i < 3; $i++) { 
-                    $method = str_repeat('_', $i) . 'isInitialized';
-                    if (method_exists($value, $method) && !$value->$method()) {
-                        $isDeep = false;
-                        break;
-                    }
-                }
-            }
             if (!$isDeep) {
                 $this->__set($name, $value);
                 continue;
