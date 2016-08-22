@@ -8,11 +8,35 @@ namespace Coast\View;
 
 class Content
 {
+    protected $_params = [];
+
     protected $_blocks = [];
 
     public function __construct(array $blocks = array())
     {
         $this->_blocks = $blocks;
+    }
+
+    public function param($name, $value = null)
+    {
+        if (func_num_args() > 1) {
+            $this->_params[$name] = $value;
+            return $this;
+        }
+        return isset($this->_params[$name])
+            ? $this->_params[$name]
+            : null;
+    }
+
+    public function params(array $querys = null)
+    {
+        if (func_num_args() > 0) {
+            foreach ($querys as $name => $value) {
+                $this->param($name, $value);
+            }
+            return $this;
+        }
+        return $this->_params;
     }
 
     public function block($name, $value = null)

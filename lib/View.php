@@ -276,6 +276,11 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         );
     }
         
+    public function export(array $export)
+    {
+        $this->_active->content->params($export);
+    }
+        
     public function partial($name, $params = array())
     {
         array_unshift($this->_active->renders, (object) [
