@@ -76,7 +76,8 @@ class Url extends Model
     public function toXml()
     {
         $xml = new Xml('<?xml version="1.0" encoding="UTF-8"?><url/>');
-        $loc = $xml->addChild('loc', $this->url->toString());
+        
+        $xml->addChild('loc', $this->url->toString());
         if (isset($this->modifyDate)) {
             $xml->addChild('lastmod', $this->modifyDate->format(DateTime::W3C));
         }
@@ -86,6 +87,7 @@ class Url extends Model
         if (isset($this->priority)) {
             $xml->addChild('priority', $this->priority);
         }
+
         return $xml;
     }
 }

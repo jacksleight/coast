@@ -19,10 +19,10 @@ class Sitemap extends Model
         return parent::_metadataStaticBuild()
             ->properties([
                 'urls' => [
-                    'type'       => Model::TYPE_MANY,
-                    'isCreate'   => true,
-                    'isTraverse' => true,
-                    'className'  => 'Coast\Sitemap\Url',
+                    'type'        => Model::TYPE_MANY,
+                    'isConstruct' => true,
+                    'isTraverse'  => true,
+                    'construct'   => 'Coast\Sitemap\Url',
                 ],
             ]);
     }
@@ -36,9 +36,11 @@ class Sitemap extends Model
     {
         $xml = new Xml('<?xml version="1.0" encoding="UTF-8"?><urlset/>');
         $xml->addAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
+        
         foreach ($this->urls as $url) {
             $xml->appendChild($url->toXml());
         }
+        
         return $xml;
     }
 }
