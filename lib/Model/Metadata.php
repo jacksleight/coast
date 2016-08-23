@@ -43,9 +43,9 @@ class Metadata
                     'filter'      => new Filter(),
                     'transformer' => new Transformer(),
                     'validator'   => new Validator(),
-                    'className'   => null,
+                    'construct'   => null,
                     'isTraverse'  => false,
-                    'isCreate'    => false,
+                    'isConstruct' => false,
                 ];
             }
             $current = $this->_properties[$name];

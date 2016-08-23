@@ -221,9 +221,8 @@ class Model implements ArrayAccess
                     $this->__unset($name);
                     continue;
                 }
-                if (!isset($current) && $metadata['isCreate']) {
-                    $class = $metadata['className'];
-                    $this->__set($name, $current = new $class());
+                if (!isset($current) && $metadata['isConstruct']) {
+                    $this->__set($name, $current = $this->_construct($metadata['construct']));
                 }
                 if (isset($current)) {
                     $current->fromArray($value, $isTraverse);
@@ -244,9 +243,8 @@ class Model implements ArrayAccess
                         unset($current[$key]);
                         continue;
                     }
-                    if (!isset($current[$key]) && $metadata['isCreate']) {
-                        $class = $metadata['className'];
-                        $current[$key] = new $class();
+                    if (!isset($current[$key]) && $metadata['isConstruct']) {
+                        $current[$key] = $this->_construct($metadata['construct']);
                     }
                     if (isset($current[$key])) {
                         $current[$key]->fromArray($item, $isTraverse);
@@ -295,6 +293,14 @@ class Model implements ArrayAccess
                 'errors' => $metadata['validator']->errors(),
             ];
         }, $isTraverse);
+    }
+    
+    protected function _construct($construct)
+    {
+        $construct = (array) $construct;
+        $className = array_shift($construct);
+        $reflection = new \ReflectionClass($className);
+        return $reflection->newInstanceArgs($construct);
     }
         
     protected function _set($name, $value)
