@@ -203,6 +203,14 @@ class Model implements ArrayAccess
             $isDeep = isset($isTraverse)
                 ? $isTraverse
                 : $metadata['isTraverse'];
+            if (is_object($value)) {
+                foreach (self::$_initMethods as $method) {
+                    if (method_exists($value, $method) && !$value->$method()) {
+                        $isDeep = false;
+                        break;
+                    }
+                }
+            }
             if (!$isDeep) {
                 $this->__set($name, $value);
                 continue;
