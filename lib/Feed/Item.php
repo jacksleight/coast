@@ -4,13 +4,15 @@
  * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
  */
 
-namespace Coast;
+namespace Coast\Feed;
 
+use DateTime;
 use Coast\Xml;
 use Coast\Model;
-use Coast\Collection;
+use Coast\Validator;
+use Coast\Transformer;
 
-class Feed extends Model
+class Item extends Model
 {
     protected $id;
 
@@ -22,7 +24,9 @@ class Feed extends Model
 
     protected $author;
 
-    protected $items;
+    protected $summary;
+
+    protected $body;
 
     protected static function _metadataStaticBuild()
     {
@@ -46,25 +50,25 @@ class Feed extends Model
                     'isTraverse'  => true,
                     'construct'   => ['Coast\Feed\Person', 'author'],
                 ],
-                'items' => [
-                    'type'        => Model::TYPE_MANY,
+                'summary' => [
+                    'type'        => Model::TYPE_ONE,
                     'isConstruct' => true,
                     'isTraverse'  => true,
-                    'construct'   => 'Coast\Feed\Item',
+                    'construct'   => ['Coast\Feed\Content', 'summary'],
+                ],
+                'body' => [
+                    'type'        => Model::TYPE_ONE,
+                    'isConstruct' => true,
+                    'isTraverse'  => true,
+                    'construct'   => ['Coast\Feed\Content', 'body'],
                 ],
             ]);
     }
 
-    public function __construct()
-    {
-        $this->items = new Collection();
-    }
-
     public function toXml()
     {
-        $xml = new Xml('<?xml version="1.0" encoding="UTF-8"?><feed/>');
-        $xml->addAttribute('xmlns', 'http://www.w3.org/2005/Atom');
-
+        $xml = new Xml('<?xml version="1.0" encoding="UTF-8"?><item/>');
+        
         $xml->addChild('id', $this->id);
         $xml->addChild('title')->addCData($this->title);
         $xml->addChild('link')->addAttribute('href', $this->url->toString());
@@ -72,11 +76,13 @@ class Feed extends Model
         if (isset($this->author)) {
             $xml->appendChild($this->author->toXml());
         }
-        
-        foreach ($this->items as $item) {
-            $xml->appendChild($item->toXml());
+        if (isset($this->summary)) {
+            $xml->appendChild($this->summary->toXml());
         }
-        
+        if (isset($this->body)) {
+            $xml->appendChild($this->body->toXml());
+        }
+
         return $xml;
     }
 }
