@@ -276,9 +276,9 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         );
     }
         
-    public function export(array $export)
+    public function pass(array $params)
     {
-        $this->_active->content->params($export);
+        $this->_active->content->params($params);
     }
         
     public function partial($name, $params = array())
