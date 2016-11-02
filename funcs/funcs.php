@@ -259,6 +259,17 @@ function str_trim_smart($value, $limit, $overflow = null)
     return $value;
 }
 
+function str_trim_words($value, $limit, $overflow = null)
+{
+    $value = strip_tags($value);
+    if (str_word_count($value, 0) > $limit) {
+        $words = str_word_count($value, 2);
+        $pos   = array_keys($words);
+        $value = mb_substr($value, 0, $pos[$limit] - 1, 'utf8') . $overflow;
+    }
+    return $value;
+}
+
 function str_to_bytes($value)
 {
     if (is_numeric($value)) {
