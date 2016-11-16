@@ -9,6 +9,7 @@ namespace Coast;
 use ArrayAccess;
 use Iterable;
 use Closure;
+use Coast;
 use Coast\Model;
 use Coast\Model\Metadata;
 
@@ -198,6 +199,7 @@ class Model implements ArrayAccess
         foreach ($array as $name => $value) {
             $metadata = $this->metadata->property($name);
             if (!isset($metadata)) {
+                $this->__setUnknown($name, $value);
                 continue;
             }
             $isDeep = isset($isTraverse)
@@ -336,7 +338,18 @@ class Model implements ArrayAccess
         } else if (property_exists($this, $name)) {
             $this->_set($name, $value);
         } else {
-            throw new Model\Exception("Property or method '{$name}' is not defined");  
+            throw new Model\Exception\NotDefined("Property or method '{$name}' is not defined");  
+        }
+    }
+
+    public function __setUnknown($name, $value)
+    {
+        try {
+            $this->__set($name, $value);
+        } catch (Model\Exception\NotDefined $e) {
+            try {
+                $this->__set(Coast\str_camel($name), $value);
+            } catch (Model\Exception\NotDefined $e) {}
         }
     }
 
@@ -350,7 +363,7 @@ class Model implements ArrayAccess
         } else if (property_exists($this, $name)) {
             return $this->_get($name);
         } else {
-            throw new Model\Exception("Property or method '{$name}' is not defined");  
+            throw new Model\Exception\NotDefined("Property or method '{$name}' is not defined");  
         }
     }
 
@@ -364,7 +377,7 @@ class Model implements ArrayAccess
         } else if (property_exists($this, $name)) {
             return $this->_isset($name);
         } else {
-            throw new Model\Exception("Property or method '{$name}' is not defined");  
+            throw new Model\Exception\NotDefined("Property or method '{$name}' is not defined");  
         }
     }
 
@@ -376,7 +389,7 @@ class Model implements ArrayAccess
         if (property_exists($this, $name)) {
             $this->_unset($name);
         } else {
-            throw new Model\Exception("Property or method '{$name}' is not defined");  
+            throw new Model\Exception\NotDefined("Property or method '{$name}' is not defined");  
         }
     }
 
