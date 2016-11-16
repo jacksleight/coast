@@ -7,6 +7,8 @@
 namespace Coast\Validator\Rule;
 
 use Coast\Validator\Rule;
+use Coast\Http;
+use Coast\Url;
 
 class Recaptcha extends Rule
 {
@@ -42,18 +44,20 @@ class Recaptcha extends Rule
 
 	protected function _validate($value)
 	{
-		$http = new \Coast\Http();
-		$res = $http->get((new \Coast\Url('https://www.google.com/recaptcha/api/siteverify'))
-		 	->queryParams([
-		 		'secret'   => $this->_secretKey,
-		 		'response' => $value,
-		 		'remoteip' => $this->_remoteIp,
-		 	]));
+        $http = new Http();
+        $req = new Http\Request([
+            'url' => (new Url('https://www.google.com/recaptcha/api/siteverify'))->queryParams([
+                'secret'   => $this->_secretKey,
+                'response' => $value,
+                'remoteip' => $this->_remoteIp,
+            ]),
+        ]);
+        $res = $http->execute($req);
 		if (!$res->isSuccess()) {
 			$this->error(self::CONNECT);
 		}
 		$data = $res->json(); 
-		if (!isset($data['success']) || $data['success'] == false) {
+		if (!isset($data->success) || $data->success == false) {
 			$this->error(self::INVALID);
 		}	
 	}
