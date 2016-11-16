@@ -377,17 +377,17 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         return ob_get_clean();
     }
 
-    protected function escape($string)
+    public function escape($string)
     {
         return htmlspecialchars($string, ENT_COMPAT, 'UTF-8');
     }
 
-    protected function encode($string)
+    public function encode($string)
     {
         return mb_convert_encoding($string, 'UTF-8');
     }
 
-    protected function strip($string)
+    public function strip($string)
     {
         return strip_tags($string);
     }
