@@ -146,6 +146,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
             'key'   => "{$group}:{$path}",
             'group' => $group,
             'path'  => $path,
+            'file'  => null,
         ];
     }
 
@@ -153,8 +154,9 @@ class View implements \Coast\App\Access, \Coast\App\Executable
     {
         if (!isset($this->_files[$script->key])) {
             $files = [];
-            $file  = $this->_dirs[$script->group]
-                ->file("{$script->path}.{$this->_extName}");
+            $file = isset($script->file)
+                ? $script->file
+                : $this->_dirs[$script->group]->file("{$script->path}.{$this->_extName}");
             if ($file->exists()) {
                 array_push($files, $file);
             }
@@ -175,7 +177,17 @@ class View implements \Coast\App\Access, \Coast\App\Executable
 
     public function render($path, array $params = array(), $group = null, Content $previous = null)
     {  
-        $script = $this->script($path, $group);
+        if ($path instanceof File) {
+            $script = (object) [
+                'key'   => $path->name(),
+                'group' => 'default',
+                'path'  => new Path('/'),
+                'file'  => $path,
+            ];
+        } else {
+            $script = $this->script($path, $group);
+        }
+        
         array_unshift($this->_contexts, (object) ([
             'script'   => $script,
             'params'   => $params,
