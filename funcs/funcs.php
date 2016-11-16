@@ -38,7 +38,7 @@ function load($_file, array $_vars = array())
  * @param  array   $array
  * @return boolean
  */
-function is_array_assoc(array $array)
+function is_array_assoc($array)
 {
     if (is_array($array)) {
         \krsort($array, SORT_STRING);
