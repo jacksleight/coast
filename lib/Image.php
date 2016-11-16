@@ -135,10 +135,10 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
         return $this->_actions;
     }
 
-    public function url($file, $actions, array $params = array())
+    public function url($file, $actions = array('default'), array $params = array())
     {
         if (\Coast\is_array_assoc($actions)) {
-            $params = $actions;
+            $params  = $actions;
             $actions = ['default'];
         }
 
@@ -151,7 +151,7 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
         $file = $file->toReal();
         if (!$file->isWithin($this->_baseDir)) {
             throw new Image\Exception("File '{$file}' is not within base directory '{$this->_baseDir}'");
-        } else if (!$file->isReadable()) {
+        } else if (!$file->isReadable() || !in_array($file->extName(), ['jpg', 'jpeg', 'png', 'gif'])) {
             return $this->_resolver->file($file);
         }
 
@@ -175,10 +175,10 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
             ]);
     }
 
-    public function process($file, $actions, array $params = array())
+    public function process($file, $actions = array('default'), array $params = array())
     {
         if (\Coast\is_array_assoc($actions)) {
-            $params = $actions;
+            $params  = $actions;
             $actions = ['default'];
         }
 
@@ -191,8 +191,8 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
         $file = $file->toReal();
         if (!$file->isWithin($this->_baseDir)) {
             throw new Image\Exception("File '{$file}' is not within base directory '{$this->_baseDir}'");
-        } else if (!$file->isReadable()) {
-            throw new Image\Exception("File '{$file}' is not readable");
+        } else if (!$file->isReadable() || !in_array($file->extName(), ['jpg', 'jpeg', 'png', 'gif'])) {
+            throw new Image\Exception("File '{$file}' is not readable or not in a supported format");
         }
 
         if (!is_array($actions)) {
@@ -232,7 +232,7 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
             : $res->redirect($this->_resolver->file($output));
     }
 
-    public function __invoke($file, $actions, array $params = array())
+    public function __invoke($file, $actions = array('default'), array $params = array())
     {
         return $this->url($file, $actions, $params);
     }
