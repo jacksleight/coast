@@ -56,14 +56,14 @@ class Csrf implements Executable, Access
     public function token()
     {
         if (!isset($_SESSION['__Coast\Csrf']['token'])) {
-            $_SESSION['__Coast\Csrf']['token'] = \Coast\str_random();
+            $_SESSION['__Coast\Csrf']['token'] = \Coast\pseudo_random();
         }
         return $_SESSION['__Coast\Csrf']['token'];
     }
 
     public function regenerate()
     {
-        $_SESSION['__Coast\Csrf']['token'] = \Coast\str_random();
+        $_SESSION['__Coast\Csrf']['token'] = \Coast\pseudo_random();
         return $this;
     }
 

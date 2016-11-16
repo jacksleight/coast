@@ -245,39 +245,39 @@ function str_uchr($code)
     return \html_entity_decode('&'. (\is_numeric($code) ? '#' . $code : $code) .';', ENT_NOQUOTES, 'utf-8');
 }
 
-function str_trim_smart($value, $limit, $overflow = null)
+function str_trim_smart($string, $limit, $overflow = null)
 {
-    $pos = strlen($value) > $limit
-        ? strpos($value, ' ', $limit)
+    $pos = strlen($string) > $limit
+        ? strpos($string, ' ', $limit)
         : false;
     if ($pos !== false) {
-        $value = \substr($value, 0, $pos);
+        $string = \substr($string, 0, $pos);
         if (isset($overflow)) {
-            $value = \rtrim($value, ' .,!?') . $overflow;
+            $string = \rtrim($string, ' .,!?') . $overflow;
         }
     }
-    return $value;
+    return $string;
 }
 
-function str_trim_words($value, $limit, $overflow = null)
+function str_trim_words($string, $limit, $overflow = null)
 {
-    $value = strip_tags($value);
-    if (str_word_count($value, 0) > $limit) {
-        $words = str_word_count($value, 2);
+    $string = strip_tags($string);
+    if (str_word_count($string, 0) > $limit) {
+        $words = str_word_count($string, 2);
         $pos   = array_keys($words);
-        $value = mb_substr($value, 0, $pos[$limit] - 1, 'utf8') . $overflow;
+        $string = mb_substr($string, 0, $pos[$limit] - 1, 'utf8') . $overflow;
     }
-    return $value;
+    return $string;
 }
 
-function str_to_bytes($value)
+function str_to_bytes($string)
 {
-    if (is_numeric($value)) {
-       return $value;
+    if (is_numeric($string)) {
+       return $string;
     }
-    $value  = trim($value);  
-    $size   = substr($value, 0, -1);  
-    $suffix = substr($value, -1);  
+    $string = trim($string);  
+    $size   = substr($string, 0, -1);  
+    $suffix = substr($string, -1);  
     switch(strtoupper($suffix)) {
         case 'P':
             $size *= 1024;
@@ -294,7 +294,7 @@ function str_to_bytes($value)
     return $size;
 }
 
-function str_css($properties)
+function css($properties)
 {
     $lines = array();
     foreach ($properties as $name => $value) {
@@ -303,23 +303,23 @@ function str_css($properties)
     return implode(' ', $lines);
 }
 
-function str_css_ratio($width, $height)
+function css_ratio($width, $height)
 {
-    return \Coast\str_css(array(
+    return \Coast\css(array(
         'padding-top' => (($height / $width) * 100) . "%",
     ));
 }
 
-function str_css_ratio_slope($smallWidth, $smallHeight, $largeWidth, $largeHeight)
+function css_ratio_slope($smallWidth, $smallHeight, $largeWidth, $largeHeight)
 {
     $slope = ($largeHeight - $smallHeight) / ($largeWidth - $smallWidth);
-    return \Coast\str_css(array(
+    return \Coast\css(array(
         'padding-top' => ($slope * 100) . "%",
         'height'      => ($smallHeight - $smallWidth * $slope) . 'px'
     ));
 }
 
-function str_random($bytes = 32, $algo = 'sha512')
+function pseudo_random($bytes = 32, $algo = 'sha512')
 {
     return rtrim(base64_encode(hash($algo, openssl_random_pseudo_bytes($bytes), true)), '=');
 }
