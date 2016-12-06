@@ -225,7 +225,7 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
             return;
         }
 
-        $output = $this->process($req->file, $req->actions, $req->params);
+        $output = $this->process($req->file, $req->actions, isset($req->params) ? $req->params : []);
 
         return isset($this->_outputResolver)
             ? $res->redirect($this->_outputResolver->file($output))
