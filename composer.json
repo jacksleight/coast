@@ -19,9 +19,14 @@
   },
   "autoload": {
     "psr-4": {
-      "Coast\\": "lib/"
+      "Coast\\": "library/"
     },
-    "files": ["funcs/funcs.php"]
+    "files": [
+      "functions/array.php",
+      "functions/general.php",
+      "functions/math.php",
+      "functions/string.php"
+    ]
   },
   "suggest": {
     "jacksleight/coast-doctrine": "for integration with Doctrine ORM",
