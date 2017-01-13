@@ -118,6 +118,7 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
                 $target = $target->bindTo($this);
             }
 
+            $path = ltrim($path, '/');
             if (isset($this->_prefix)) {
                 $path = "{$this->_prefix}/{$path}";
             }
@@ -125,7 +126,7 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
                 $path = "{$path}/{$this->_suffix}";
             }
             if (strpos($path, '{') !== false) {
-                $parts = explode('/', ltrim($path, '/'));
+                $parts = explode('/', $path);
                 $names = [];
                 $stack = [];
                 foreach ($parts as $i => $part) {
