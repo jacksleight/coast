@@ -16,9 +16,9 @@ class Item extends Model
 {
     protected $id;
 
-    protected $title;
-
     protected $url;
+
+    protected $title;
 
     protected $updateDate;
 
@@ -35,11 +35,11 @@ class Item extends Model
                 'id' => [
                     'type' => 'string',
                 ],
-                'title' => [
-                    'type' => 'string',
-                ],
                 'url' => [
                     'type' => 'url',
+                ],
+                'title' => [
+                    'type' => 'string',
                 ],
                 'updateDate' => [
                     'type' => 'datetime',
@@ -67,7 +67,7 @@ class Item extends Model
 
     public function toXml()
     {
-        $xml = new Xml('<?xml version="1.0" encoding="UTF-8"?><item/>');
+        $xml = new Xml('<?xml version="1.0" encoding="UTF-8"?><entry/>');
         
         $xml->addChild('id', $this->id);
         $xml->addChild('title')->addCData($this->title);

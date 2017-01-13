@@ -14,9 +14,11 @@ class Feed extends Model
 {
     protected $id;
 
-    protected $title;
-
     protected $url;
+
+    protected $urlFeed;
+
+    protected $title;
 
     protected $updateDate;
 
@@ -31,11 +33,14 @@ class Feed extends Model
                 'id' => [
                     'type' => 'string',
                 ],
-                'title' => [
-                    'type' => 'string',
-                ],
                 'url' => [
                     'type' => 'url',
+                ],
+                'urlFeed' => [
+                    'type' => 'url',
+                ],
+                'title' => [
+                    'type' => 'string',
                 ],
                 'updateDate' => [
                     'type' => 'datetime',
@@ -66,8 +71,11 @@ class Feed extends Model
         $xml->addAttribute('xmlns', 'http://www.w3.org/2005/Atom');
 
         $xml->addChild('id', $this->id);
-        $xml->addChild('title')->addCData($this->title);
         $xml->addChild('link')->addAttribute('href', $this->url->toString());
+        $urlFeed = $xml->addChild('link');
+        $urlFeed->addAttribute('rel', 'self');
+        $urlFeed->addAttribute('href', $this->urlFeed->toString());
+        $xml->addChild('title')->addCData($this->title);
         $xml->addChild('updated', $this->updateDate->format(\DateTime::W3C));
         if (isset($this->author)) {
             $xml->appendChild($this->author->toXml());
