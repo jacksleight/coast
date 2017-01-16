@@ -202,9 +202,10 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         $this->_active = &$this->_contexts[0];
 
         array_unshift($this->_active->renders, (object) [
-            'script' => $script,
-            'depth'  => 0,
-            'params' => [],
+            'script'    => $script,
+            'depth'     => 0,
+            'params'    => [],
+            'isPartial' => false,
         ]);
         $content = $this->_render();
         array_shift($this->_active->renders);
@@ -244,10 +245,13 @@ class View implements \Coast\App\Access, \Coast\App\Executable
 
         try {
             if (!count($files)) {
-                if (count($this->_active->renders) > 1) {
+                if (!count($this->_active->renders)) {
+                    throw new View\Failure("View '{$script->group}:{$script->path}' does not exist");
+                } else if (!$render->isPartial) {
+                    throw new View\Exception("View '{$script->group}:{$script->path}' does not exist");
+                } else {
                     return;
                 }
-                throw new View\Failure("View '{$script->group}:{$script->path}' does not exist");
             }
             if (!isset($files[$depth])) {
                 throw new View\Exception("View '{$script->group}:{$script->path}' parent at depth '{$depth}' does not exist");
@@ -296,9 +300,10 @@ class View implements \Coast\App\Access, \Coast\App\Executable
     public function partial($name, $params = array())
     {
         array_unshift($this->_active->renders, (object) [
-            'script' => $this->script("{$this->_active->script->path}{$this->_partialSeparator}{$name}"),
-            'depth'  => 0,
-            'params' => $params,
+            'script'    => $this->script("{$this->_active->script->path}{$this->_partialSeparator}{$name}"),
+            'depth'     => 0,
+            'params'    => $params,
+            'isPartial' => true,
         ]);
         $content = $this->_render();
         array_shift($this->_active->renders);
