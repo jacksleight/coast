@@ -198,7 +198,11 @@ class Url
     public function queryParam($name, $value = null)
     {
         if (func_num_args() > 1) {
-            $this->_queryParams[$name] = $value;
+            if (isset($value)) {
+                $this->_queryParams[$name] = $value;
+            } else {
+                unset($this->_queryParams[$name]);
+            }
             return $this;
         }
         return isset($this->_queryParams[$name])
@@ -209,8 +213,12 @@ class Url
     public function queryParams(array $querys = null)
     {
         if (func_num_args() > 0) {
-            foreach ($querys as $name => $value) {
-                $this->queryParam($name, $value);
+            if (isset($querys)) {
+                foreach ($querys as $name => $value) {
+                    $this->queryParam($name, $value);
+                }
+            } else {
+                $this->_queryParams = [];
             }
             return $this;
         }
@@ -220,8 +228,12 @@ class Url
     public function query($query = null)
     {
         if (func_num_args() > 0) {
-            parse_str($query, $params);
-            $this->queryParams($params);
+            if (isset($query)) {
+                parse_str($query, $params);
+                $this->queryParams($params);
+            } else {
+                $this->_queryParams = [];
+            }
             return $this;
         }
         return count($this->_queryParams)

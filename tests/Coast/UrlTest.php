@@ -47,18 +47,36 @@ class UrlTest extends \PHPUnit_Framework_TestCase
     {
         $url = new Url();
         $url->queryParam('test', 'OK');
-        $this->assertEquals('OK', $url->queryParam('test'));
+        $this->assertEquals(['test' => 'OK'], $url->queryParams());
+
+        $url->queryParam('test', null);
+        $this->assertEquals([], $url->queryParams());
     }
 
     public function testQueryParams()
     {
         $url = new Url();
-        $params = [
+        $url->queryParams([
             'test1' => 'OK',
             'test2' => 'OK',
-        ];
-        $url->queryParams($params);
-        $this->assertEquals($params, $url->queryParams());
+        ]);
+        $this->assertEquals([
+            'test1' => 'OK',
+            'test2' => 'OK',
+        ], $url->queryParams());
+
+        $url->queryParams(null);
+        $this->assertEquals([], $url->queryParams());
+    } 
+
+    public function testQuery()
+    {
+        $url = new Url();
+        $url->query('test1=OK&test2=OK');
+        $this->assertEquals('test1=OK&test2=OK', $url->query());
+
+        $url->query(null);
+        $this->assertEquals(null, $url->query());
     } 
 
     public function testAbsolute()
