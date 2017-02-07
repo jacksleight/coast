@@ -126,4 +126,36 @@ class PathTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('Exception');
         $path->toReal();
     }
+
+    public function testChild()
+    {
+        $path = new Path('/one/two/three');
+
+        $this->assertEquals('/one/two/three/four', $path->child('four')->name());
+    }
+
+    public function testParent()
+    {
+        $path = new Path('/one/two/three');
+
+        $this->assertEquals('/one/two', $path->parent()->name());
+    }
+
+    public function testDir()
+    {
+        $path = new Path('/one/two/three');
+        $dir  = $path->toDir();
+
+        $this->assertInstanceOf('Coast\Dir', $dir);
+        $this->assertEquals('/one/two/three', $dir->name());
+    }
+
+    public function testFile()
+    {
+        $path = new Path('/one/two/three');
+        $file = $path->toFile();
+
+        $this->assertInstanceOf('Coast\File', $file);
+        $this->assertEquals('/one/two/three', $file->name());
+    }
 }

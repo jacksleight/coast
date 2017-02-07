@@ -6,6 +6,9 @@
 
 namespace Coast;
 
+use Coast\Dir;
+use Coast\File;
+
 class Dir extends \Coast\File\Path implements \IteratorAggregate
 {
     public function __construct($path, $create = false)
@@ -88,13 +91,13 @@ class Dir extends \Coast\File\Path implements \IteratorAggregate
     public function file($path)
     {
         $path = ltrim($path, '/');
-        return new \Coast\File("{$this->_name}/{$path}");
+        return new File("{$this->_name}/{$path}");
     }
 
     public function dir($path, $create = false)
     {
         $path = ltrim($path, '/');
-        return new \Coast\Dir(strlen($path) ? "{$this->_name}/{$path}" : $this->_name, $create);
+        return new Dir(strlen($path) ? "{$this->_name}/{$path}" : $this->_name, $create);
     }
 
     public function getIterator()

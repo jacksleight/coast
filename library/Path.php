@@ -247,10 +247,17 @@ class Path
         return !$this->isAbsolute();
     }
 
-    public function path($path)
+    public function child($path)
     {
-        $path = ltrim($path, '/');
-        return new Path("{$this->_name}/{$path}");
+        $path  = ltrim($path, '/');
+        $class = get_class($this);
+        return new $class("{$this->_name}/{$path}");
+    }
+
+    public function parent()
+    {
+        $class = get_class($this);
+        return new $class($this->dirName());
     }
 
     public function toDir()
@@ -261,77 +268,5 @@ class Path
     public function toFile()
     {
         return new File($this->_name);
-    }
-
-    /**
-     * @todo isReal?
-     */
-    public function exists()
-    {
-        return file_exists($this->_name);
-    }
-
-    public function isDir()
-    {
-        return is_dir($this->_name);
-    }
-
-    public function isFile()
-    {
-        return is_file($this->_name);
-    }
-
-    public function isReadable()
-    {
-        return is_readable($this->_name);
-    }
-
-    public function isWritable()
-    {
-        return is_writable($this->_name);
-    }
-
-    public function permissions()
-    {
-        return substr(sprintf('%o', fileperms($this->_name)), -4);
-    }
-
-    public function move(\Coast\Dir $dir, $baseName = null)
-    {
-        $name = "{$dir}/" . (isset($baseName)
-            ? $this->_parseBaseName($baseName)
-            : $this->baseName());
-        rename($this->_name, $name);
-        $this->_name = $name;
-        return $this;
-    }
-
-    public function rename($baseName, \Coast\Dir $dir = null)
-    {
-        $name = (isset($dir)
-            ? $dir
-            : $this->dir()) . "/{$this->_parseBaseName($baseName)}";
-        rename($this->_name, $name);
-        $this->_name = $name;
-        return $this;
-    }
-
-    protected function _parseBaseName($baseName)
-    {
-        if (is_array($baseName)) {
-            $baseName = array_intersect_key($baseName, [
-                'baseName' => null,
-                'fileName' => null,
-                'extName'  => null,
-                'prefix'   => null,
-                'suffix'   => null,
-            ]);
-            $path = new \Coast\Path($this->baseName());
-            foreach ($baseName as $method => $value) {
-                $path->$method($value);
-            }
-            $baseName = $path->baseName();
-        }
-        return $baseName;
     }
 }

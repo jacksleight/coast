@@ -6,6 +6,9 @@
 
 namespace Coast;
 
+use DateTime;
+use Coast\Dir;
+
 class File extends \Coast\File\Path
 {
     protected $_chars = [',', '"', '\\'];
@@ -168,6 +171,27 @@ class File extends \Coast\File\Path
         return ftell($this->_handle);
     }
 
+    public function flush()
+    {
+        if (!$this->isOpen()) {
+            throw new \Exception("File '{$this}' is not open");
+        }
+        return fflush($this->_handle);
+    }
+
+    public function lock($operation = LOCK_EX)
+    {
+        if (!$this->isOpen()) {
+            throw new \Exception("File '{$this}' is not open");
+        }
+        return flock($this->_handle, $operation);
+    }
+
+    public function unlock()
+    {
+        return $this->lock(LOCK_UN);
+    }
+
     public function output()
     {
         if ($this->isOpen()) {
@@ -200,7 +224,7 @@ class File extends \Coast\File\Path
             ? $this->_parseBaseName($baseName)
             : $this->baseName());
         copy($this->_name, $name);
-        return new \Coast\File($name);
+        return File($name);
     }
 
     public function remove()
@@ -218,7 +242,7 @@ class File extends \Coast\File\Path
         return parent::permissions();
     }
 
-    public function touch(\DateTime $modify = null, \DateTime $access = null)
+    public function touch(DateTime $modify = null, \DateTime $access = null)
     {
         touch($this->_name, $modify->getTimestamp(), $access->getTimestamp());
         return $this;
@@ -241,21 +265,21 @@ class File extends \Coast\File\Path
 
     public function dir($create = false)
     {
-        return new \Coast\Dir($this->dirName(), $create);
+        return new Dir($this->dirName(), $create);
     }
 
     public function accessTime()
     {
-        return (new \DateTime())->setTimestamp(fileatime($this->_name));
+        return (new DateTime())->setTimestamp(fileatime($this->_name));
     }
 
     public function changeTime()
     {
-        return (new \DateTime())->setTimestamp(filectime($this->_name));
+        return (new DateTime())->setTimestamp(filectime($this->_name));
     }
 
     public function modifyTime()
     {
-        return (new \DateTime())->setTimestamp(filemtime($this->_name));
+        return (new DateTime())->setTimestamp(filemtime($this->_name));
     }
 }
