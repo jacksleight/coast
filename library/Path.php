@@ -92,6 +92,12 @@ class Path
         return pathinfo($this->_name, PATHINFO_FILENAME);
     }
 
+    public function fileNameDot()
+    {
+        $baseName = pathinfo($this->_name, PATHINFO_BASENAME);
+        return substr($baseName, 0, strpos($baseName, '.'));
+    }
+
     /**
      * Get/set the extension name.
      * @return string
@@ -104,6 +110,12 @@ class Path
             return $this;
         }
         return pathinfo($this->_name, PATHINFO_EXTENSION);
+    }
+
+    public function extNameDot()
+    {
+        $baseName = pathinfo($this->_name, PATHINFO_BASENAME);
+        return substr($baseName, strpos($baseName, '.') + 1);
     }
 
     /**

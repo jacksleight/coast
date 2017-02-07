@@ -38,6 +38,11 @@ class PathTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('base', $path->fileName());
         $path->fileName('image');
         $this->assertEquals('/dir/image.ext', $path->name());
+
+        $path = new Path('/dir/base.sub.ext');
+
+        $this->assertEquals('base.sub', $path->fileName());
+        $this->assertEquals('base', $path->fileNameDot());
     }
 
     public function testExtName()
@@ -47,6 +52,11 @@ class PathTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('ext', $path->extName());
         $path->extName('jpg');
         $this->assertEquals('/dir/base.jpg', $path->name());
+
+        $path = new Path('/dir/base.sub.ext');
+
+        $this->assertEquals('ext', $path->extName());
+        $this->assertEquals('sub.ext', $path->extNameDot());
     }
 
     public function testPrefix()
