@@ -15,6 +15,8 @@ All feedback, suggestions, bug reports and contributions are very welcome. Pleas
 
 All components are designed to be as standalone as possible and can generally be used independently. Many implement `App\Executable` for use as middleware in applications, these are marked with a ★.
 
+* **Acl** ★
+	* Access control list
 * **App, Request, Response** ★
 	* Simple Express inspired application logic
 	* HTTP request and response data handling
@@ -23,7 +25,7 @@ All components are designed to be as standalone as possible and can generally be
 * **Config**
 	* Load and merge config files into config object
 * **Controller** ★
-	* ...
+	* Request controller
 * **Csp** ★
 	* Content security policy header generation
 	* Generation of nonce values
@@ -37,22 +39,26 @@ All components are designed to be as standalone as possible and can generally be
 	* HTTP client (based on cURL)
 * **Image** ★
 	* Image manipulation
+	* Requires [intervention/image](https://github.com/Intervention/image)
 * **Lazy** ★
 	* Lazy load files/closures on demand
-* **Model**
-	* ...
+* **Model, Collection**
+	* Base entity and entity collection classs
+	* Works with Filter, Transformer, Validator
 * **Path, Dir, File**
 	* Path, directory and file manipulation
+* **Resolver**
+	* Resolves strings, files, routes etc. into URLs
 * **Router** ★
-	* ...
+	* Path and method routing
 * **Session** ★
 	* Session management and data wrapper
 * **Sitemap** 
 	* XML sitemap generation
+* **Transformer**
+	* Data transformation
 * **Url**
 	* URL manipulation
-* **Resolver**
-	* Resolves strings, files, routes etc. into URLs
 * **Validator**
 	* Data validation
 * **View** ★
@@ -61,7 +67,7 @@ All components are designed to be as standalone as possible and can generally be
 	* Extensible views
 	* Output capture
 * **Xml**
-	* ...
+	* SimpleXML extensions
 	
 ## Installation
 
@@ -87,9 +93,9 @@ Create a new file called `app.php` containing:
 
 ```php
 <?php
-use Coast\App,
-    Coast\Request, 
-    Coast\Response;
+use Coast\App;
+use Coast\Request;
+use Coast\Response;
 
 require __DIR__ . '/vendor/autoload.php';
 
@@ -136,7 +142,7 @@ And load it up in the browser at: [http://localhost:8000/](http://localhost:8000
 
 The MIT License
 
-Copyright (c) 2014 Jack Sleight <http://jacksleight.com/>
+Copyright 2017 Jack Sleight <http://jacksleight.com/>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
