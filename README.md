@@ -15,7 +15,7 @@ All feedback, suggestions, bug reports and contributions are very welcome. Pleas
 
 All components are designed to be as standalone as possible and can generally be used independently. Many implement `App\Executable` for use as middleware in applications, these are marked with a ★.
 
-* **Acl** ★
+* **Acl**
 	* Access control list
 * **App, Request, Response** ★
 	* Simple Express inspired application logic
