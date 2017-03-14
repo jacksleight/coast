@@ -14,6 +14,9 @@ use Coast\Dir;
  */
 class Path
 {
+    const PART_FIRST = 'first';
+    const PART_LAST  = 'last';
+
     /**
      * Full path name.
      * @var string
@@ -116,6 +119,22 @@ class Path
     {
         $baseName = pathinfo($this->_name, PATHINFO_BASENAME);
         return substr($baseName, strpos($baseName, '.') + 1);
+    }
+
+    public function parts()
+    {
+        return explode('/', $this->_name);
+    }
+
+    public function part($i, $reverse = false)
+    {
+        $parts = $this->parts();
+        if ($reverse) {
+            $parts = array_reverse($parts);
+        }
+        return isset($parts[$i])
+            ? $parts[$i]
+            : null;
     }
 
     /**
