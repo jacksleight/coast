@@ -151,7 +151,7 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
         $file = $file->toReal();
         if (!$file->isWithin($this->_baseDir)) {
             throw new Image\Exception("File '{$file}' is not within base directory '{$this->_baseDir}'");
-        } else if (!$file->isReadable() || !in_array($file->extName(), ['jpg', 'jpeg', 'png', 'gif'])) {
+        } else if (!$file->isReadable() || !in_array(strtolower($file->extName()), ['jpg', 'jpeg', 'png', 'gif'])) {
             return $this->_resolver->file($file);
         }
 
@@ -191,7 +191,7 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
         $file = $file->toReal();
         if (!$file->isWithin($this->_baseDir)) {
             throw new Image\Exception("File '{$file}' is not within base directory '{$this->_baseDir}'");
-        } else if (!$file->isReadable() || !in_array($file->extName(), ['jpg', 'jpeg', 'png', 'gif'])) {
+        } else if (!$file->isReadable() || !in_array(strtolower($file->extName()), ['jpg', 'jpeg', 'png', 'gif'])) {
             throw new Image\Exception("File '{$file}' is not readable or not in a supported format");
         }
 
