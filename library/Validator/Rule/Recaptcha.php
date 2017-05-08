@@ -15,41 +15,50 @@ class Recaptcha extends Rule
 	const CONNECT = 'connect';
 	const INVALID = 'invalid';
 
-	protected $_secretKey = null;
-	protected $_remoteIp = null;
+    protected $_config;
 
-	public function __construct($secretKey, $remoteIp = null)
-	{
-		$this->secretKey($secretKey);
-		$this->remoteIp($remoteIp);
-	}
+    protected static $_configStatic;
 
-    public function secretKey($secretKey = null)
+    public static function configStatic(array $config = null)
     {
         if (func_num_args() > 0) {
-            $this->_secretKey = $secretKey;
-            return $this;
+            self::$_configStatic = $config;
         }
-        return $this->_secretKey;
+        return self::$_configStatic;
     }
 
-    public function remoteIp($remoteIp = null)
+	public function __construct(array $config = null)
+	{
+        if (isset($config)) {
+            $this->config($config);
+        }
+	}
+
+    public function config(array $config = null)
     {
         if (func_num_args() > 0) {
-            $this->_remoteIp = $remoteIp;
+            $this->_config = $config;
             return $this;
         }
-        return $this->_remoteIp;
+        return $this->_config;
     }
 
 	protected function _validate($value)
 	{
+        $config = isset($this->_config)
+            ? $this->_config
+            : self::$_configStatic;
+            
         $http = new Http();
         $req = new Http\Request([
             'url' => (new Url('https://www.google.com/recaptcha/api/siteverify'))->queryParams([
-                'secret'   => $this->_secretKey,
+                'secret'   => isset($config['secretKey'])
+                    ? $config['secretKey']
+                    : null,
                 'response' => $value,
-                'remoteip' => $this->_remoteIp,
+                'remoteip' => isset($config['remoteIp'])
+                    ? $config['remoteIp']
+                    : null,
             ]),
         ]);
         $res = $http->execute($req);
