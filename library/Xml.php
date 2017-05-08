@@ -7,6 +7,7 @@
 namespace Coast;
 
 use SimpleXMLElement;
+use Coast\File;
 
 class Xml extends SimpleXMLElement
 {
@@ -40,7 +41,7 @@ class Xml extends SimpleXMLElement
         return $this->toString();
     }
 
-    public function writeFile(\Coast\File $file)
+    public function writeFile(File $file)
     {
         return $this->asXML((string) $file);
     }
