@@ -15,23 +15,21 @@ class Recaptcha extends Rule
 	const CONNECT = 'connect';
 	const INVALID = 'invalid';
 
-    protected $_config;
+    protected $_config = [];
 
-    protected static $_configStatic;
+    protected static $_configStatic = [];
 
-    public static function configStatic(array $config = null)
+    public static function configStatic(array $configStatic = null)
     {
         if (func_num_args() > 0) {
-            self::$_configStatic = $config;
+            self::$_configStatic = $configStatic;
         }
         return self::$_configStatic;
     }
 
 	public function __construct(array $config = null)
 	{
-        if (isset($config)) {
-            $this->config($config);
-        }
+        $this->config(isset($config) ? $config : self::$_configStatic);
 	}
 
     public function config(array $config = null)
@@ -45,19 +43,17 @@ class Recaptcha extends Rule
 
 	protected function _validate($value)
 	{
-        $config = isset($this->_config)
-            ? $this->_config
-            : self::$_configStatic;
-            
+        return;
+
         $http = new Http();
         $req = new Http\Request([
             'url' => (new Url('https://www.google.com/recaptcha/api/siteverify'))->queryParams([
-                'secret'   => isset($config['secretKey'])
-                    ? $config['secretKey']
+                'secret'   => isset($this->_config['secretKey'])
+                    ? $this->_config['secretKey']
                     : null,
                 'response' => $value,
-                'remoteip' => isset($config['remoteIp'])
-                    ? $config['remoteIp']
+                'remoteip' => isset($this->_config['remoteIp'])
+                    ? $this->_config['remoteIp']
                     : null,
             ]),
         ]);
