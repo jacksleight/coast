@@ -236,7 +236,8 @@ class Url
             }
             return $this;
         }
-        $queryParams = array_map(function($v) { return (string) $v; }, $this->_queryParams);
+        $queryParams = $this->_queryParams;
+        array_walk_recursive($queryParams, function(&$v) { $v = (string) $v; });
         return count($queryParams)
             ? http_build_query($queryParams, '', '&', PHP_QUERY_RFC3986)
             : null;
