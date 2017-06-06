@@ -8,5 +8,5 @@ namespace Coast;
 
 class Coast
 {
-    const VERSION = '0.6.3';
+    const VERSION = '0.6.4';
 }
