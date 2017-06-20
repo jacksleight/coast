@@ -6,6 +6,8 @@
 
 namespace Coast;
 
+use Coast\Url;
+
 define(__NAMESPACE__ . '\DATETIME', 'Y-m-d H:i:s');
 define(__NAMESPACE__ . '\DATE', 'Y-m-d');
 define(__NAMESPACE__ . '\TIME', 'H:i:s');
@@ -37,6 +39,9 @@ function css($properties)
 {
     $lines = array();
     foreach ($properties as $name => $value) {
+        if ($value instanceof Url) {
+            $value = "url('{$value}')";
+        }
         $lines[] = "{$name}: {$value};";
     }
     return implode(' ', $lines);
