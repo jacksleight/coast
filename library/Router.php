@@ -280,7 +280,7 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
             $path[$i] = $value;
         }
 
-        for ($i = count($path) - 1; $i >= 0; $i--) { 
+        for ($i = count($path) - 1; $i >= 0; $i--) {
             if (in_array($i, $trim)) {
                 unset($path[$i]);
             } else {
@@ -294,20 +294,20 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
     public function execute(\Coast\Request $req, \Coast\Response $res)
     {
         try {
-            $route = $this->match($req->method(), $req->path());            
+            $route = $this->match($req->method(), $req->path());
         } catch (Router\Failure $e) {
             return;
         }
-        
+
         $req->param('route', $route);
         $req->pathParams($route['params']);
-        
+
         if (isset($route['target'])) {
-            return $route['target']($req, $res, $this->app);
+            return $route['target']($req, $res, $route);
         } else if (isset($this->_target)) {
             return $this->_target->route($req, $res, $route);
         } else {
             throw new Router\Exception("There's nothing to route '{$route['name']}' to");
-        }        
+        }
     }
 }

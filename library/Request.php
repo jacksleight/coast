@@ -115,7 +115,7 @@ class Request
                     $pointer = &$pointer[$key];
                     $stack[] = &$pointer;
                     if (!$iterator->hasChildren()) {
-                        $pointer[$field] = $value;                                
+                        $pointer[$field] = $value;
                     }
                 }
             }
@@ -437,7 +437,7 @@ class Request
 
     public function url()
     {
-        $default = 
+        $default =
             ($this->scheme() == self::SCHEME_HTTP  && $this->port() == self::PORT_HTTP) ||
             ($this->scheme() == self::SCHEME_HTTPS && $this->port() == self::PORT_HTTPS);
         return new \Coast\Url([
