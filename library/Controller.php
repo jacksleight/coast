@@ -6,6 +6,8 @@
 
 namespace Coast;
 
+use Coast;
+
 class Controller implements \Coast\App\Access, \Coast\Router\Routable
 {
     use \Coast\App\Access\Implementation;
@@ -111,9 +113,6 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
             ]);
         }
 
-        $controller = implode('\\', array_map('\Coast\str_camel_upper', explode('_', $controller)));
-        $action     = \Coast\str_camel_lower($action);
-
         $this->_history = [];
         $this->_stack   = [];
         $this->_queue($controller, $action, $params, $group);
@@ -127,7 +126,7 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
             if (!isset($this->_nspaces[$group])) {
                 throw new Controller\Exception("Controller group '{$group}' does not exist");
             }
-            $class = $this->_nspaces[$group] . '\\' . implode('\\', array_map('ucfirst', explode('_', $controller)));
+            $class = $this->_nspaces[$group] . '\\' . implode('\\', array_map('Coast\str_camel_upper', explode('/', $controller)));
             if (!isset($this->_actions[$class])) {
                 if (!class_exists($class)) {
                     throw new Controller\Failure("Controller '{$group}:{$controller}' does not exist");
@@ -140,11 +139,12 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
             } else {
                 $object = $this->_actions[$class];
             }
-            if (!method_exists($object, $action)) {
+            $method = str_camel_lower($action);
+            if (!method_exists($object, $method)) {
                 throw new Controller\Failure("Controller action '{$group}:{$controller}:{$action}' does not exist");
             }
 
-            $result = call_user_func_array([$object, $action], $params);
+            $result = call_user_func_array([$object, $method], $params);
             if (isset($result)) {
                 $this->_stack = [];
             }
@@ -179,15 +179,13 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
         }
 
         foreach ($stack as $item) {
-            if (!in_array($item, $this->_history)) {
-                $this->_stack[] = $item;
-            }
+            $this->_stack[] = $item;
         }
     }
 
     public function route(\Coast\Request $req, \Coast\Response $res, array $route)
     {
-        $controller = $route['params']['controller'];
+        $controller = str_replace('_', '/', $route['params']['controller']);
         $action     = $route['params']['action'];
         $group      = isset($route['params']['group'])
             ? $route['params']['group']
