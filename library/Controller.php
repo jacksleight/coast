@@ -86,9 +86,6 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
             ]);
         }
 
-        $controller = implode('\\', array_map('\Coast\str_camel_upper', explode('_', $controller)));
-        $action     = \Coast\str_camel_lower($action);
-
         $this->_stack = [];
         $this->_queue($controller, $action, $params, $group);
     }
