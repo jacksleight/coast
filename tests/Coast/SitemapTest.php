@@ -13,7 +13,7 @@ class SitemapTest extends \PHPUnit_Framework_TestCase
         $this->_sitemap = new Sitemap();
         $this->_sitemap->urls[] = (new Sitemap\Url())->fromArray([
             'url'             => new \Coast\Url('http://coastphp.com/'),
-            'modifyDate'      => new \DateTime('2014-01-01'),
+            'updateDate'      => new \DateTime('2014-01-01'),
             'changeFrequency' => Sitemap\Url::CHANGEFREQUENCY_ALWAYS,
             'priority'        => 0.5
         ]);
@@ -25,7 +25,7 @@ class SitemapTest extends \PHPUnit_Framework_TestCase
     public function testString()
     {
         $this->assertEquals($this->_output, $this->_sitemap->toXml()->toString());
-        $this->assertEquals($this->_output, (string) $this->_sitemap->toXml());        
+        $this->assertEquals($this->_output, (string) $this->_sitemap->toXml());
     }
 
     public function testFile()

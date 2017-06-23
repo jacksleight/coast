@@ -24,7 +24,7 @@ class Url extends Model
 
     protected $url;
 
-    protected $modifyDate;
+    protected $updateDate;
 
     protected $changeFrequency;
 
@@ -43,7 +43,7 @@ class Url extends Model
                         ->break()
                         ->object('Coast\Url'),
                 ],
-                'modifyDate' => [
+                'updateDate' => [
                     'transformer' => (new Transformer())
                         ->break()
                         ->dateTime(),
@@ -76,10 +76,10 @@ class Url extends Model
     public function toXml()
     {
         $xml = new Xml('<?xml version="1.0" encoding="UTF-8"?><url/>');
-        
+
         $xml->addChild('loc', $this->url->toString());
-        if (isset($this->modifyDate)) {
-            $xml->addChild('lastmod', $this->modifyDate->format(DateTime::W3C));
+        if (isset($this->updateDate)) {
+            $xml->addChild('lastmod', $this->updateDate->format(DateTime::W3C));
         }
         if (isset($this->changeFrequency)) {
             $xml->addChild('changefreq', $this->changeFrequency);
