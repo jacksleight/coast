@@ -22,7 +22,7 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
 
     protected $_prefix = null;
 
-    protected $_driver = 'gd';
+    protected $_driver;
 
     protected $_baseDir;
 
@@ -38,9 +38,12 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
 
     public function __construct(array $options = array())
     {
+        $this->_driver = extension_loaded('imagick')
+            ? 'imagick'
+            : 'gd';
         foreach ($options as $name => $value) {
             if ($name[0] == '_') {
-                throw new \Coast\Exception("Access to '{$name}' is prohibited");  
+                throw new \Coast\Exception("Access to '{$name}' is prohibited");
             }
             $this->$name($value);
         }
