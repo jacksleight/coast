@@ -147,6 +147,31 @@ class Resolver implements \Coast\App\Access
             : $path);
     }
 
+    public function routeData(array $params = array(), $name = null, $reset = false)
+    {
+        if (!isset($this->_router)) {
+            throw new Resolver\Exception("Router has not been set");
+        }
+
+        $route = isset($this->req)
+            ? $this->req->param('route')
+            : null;
+        if (!isset($name)) {
+            if (!isset($route)) {
+                throw new Resolver\Exception("Route not specified and no previous route is avaliable");
+            }
+            $name = $route['name'];
+        }
+        if (!$reset && isset($route)) {
+            $params = array_merge(
+                $route['params'],
+                $params
+            );
+        }
+        $data = $this->_router->reverseData($name, $params);
+        return $data;
+    }
+
     public function url($url)
     {
         $url = !$url instanceof \Coast\Url

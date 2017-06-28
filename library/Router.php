@@ -291,6 +291,24 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
         return implode('/', $path);
     }
 
+    public function reverseData($name, array $params = array())
+    {
+        if (isset($this->_aliases[$name])) {
+            $name = $this->_aliases[$name];
+        }
+        if (!isset($this->_routes[$name])) {
+            throw new Router\Exception("Route '{$name}' does not exist");
+        }
+
+        $route    = $this->_routes[$name];
+        $defaults = $route['params'] + $this->_params;
+
+        return [
+            'name'   => $name,
+            'params' => $params + $defaults,
+        ];
+    }
+
     public function execute(\Coast\Request $req, \Coast\Response $res)
     {
         try {
