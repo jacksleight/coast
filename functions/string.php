@@ -6,8 +6,14 @@
 
 namespace Coast;
 
-function str_slugify($string, $space = '-')
+function str_slugify($string, $space = '-', $ascii = true, $lower = true)
 {
+    if ($ascii) {
+        $string = iconv('utf-8', 'ascii//translit//ignore', $string);
+    }
+    if ($lower) {
+        $string = mb_strtolower($string);
+    }
     $string = \preg_replace('/(^[^a-z0-9]+|[^a-z0-9]+$)/i', '', $string);
     $string = \preg_replace('/\'+/i', '', $string);
     $string = \preg_replace('/[^a-z0-9]+/i', $space, $string);
