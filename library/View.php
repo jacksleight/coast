@@ -248,7 +248,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
                 if (!count($this->_active->renders)) {
                     throw new View\Failure("View '{$script->group}:{$script->path}' does not exist");
                 } else if (!$render->isPartial) {
-                    throw new View\Exception("View '{$script->group}:{$script->path}' does not exist");
+                    throw new View\Failure("View '{$script->group}:{$script->path}' does not exist");
                 } else {
                     return;
                 }
@@ -311,10 +311,10 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         return $content;
     }
 
-    public function parent($depth = 1)
+    public function parent()
     {
         $render = &$this->_active->renders[0];
-        $render->depth += $depth;
+        $render->depth++;
 
         return $this->_render();
     }
