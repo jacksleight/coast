@@ -155,7 +155,9 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
         if (!$file->isWithin($this->_baseDir)) {
             throw new Image\Exception("File '{$file}' is not within base directory '{$this->_baseDir}'");
         } else if (!$file->isReadable() || !in_array(strtolower($file->extName()), ['jpg', 'jpeg', 'png', 'gif'])) {
-            return $this->_resolver->file($file);
+            return isset($this->_outputResolver)
+                ? $this->_outputResolver->file($file)
+                : $this->_resolver->file($file);
         }
 
         if (!is_array($actions)) {
