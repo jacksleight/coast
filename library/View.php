@@ -311,10 +311,10 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         return $content;
     }
 
-    public function parent()
+    public function parent($depth = 1)
     {
         $render = &$this->_active->renders[0];
-        $render->depth++;
+        $render->depth += $depth;
 
         return $this->_render();
     }
