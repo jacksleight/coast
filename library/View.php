@@ -246,15 +246,15 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         try {
             if (!count($files)) {
                 if (!count($this->_active->renders)) {
-                    throw new View\Failure("View '{$script->group}:{$script->path}' does not exist");
+                    throw new View\Failure("View script '{$script->group}::{$script->path}' does not exist");
                 } else if (!$render->isPartial) {
-                    throw new View\Failure("View '{$script->group}:{$script->path}' does not exist");
+                    throw new View\Failure("View script '{$script->group}::{$script->path}' does not exist");
                 } else {
                     return;
                 }
             }
             if (!isset($files[$depth])) {
-                throw new View\Exception("View '{$script->group}:{$script->path}' parent at depth '{$depth}' does not exist");
+                throw new View\Exception("View script '{$script->group}::{$script->path}' parent at depth '{$depth}' does not exist");
             }
             return $this->_run($files[$depth], array_merge(
                 $this->_active->params,
