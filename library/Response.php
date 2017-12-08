@@ -12,11 +12,12 @@ use Coast\Request;
 class Response
 {
     protected $_req;
-    
+
     protected $_status  = 200;
     protected $_headers = [];
     protected $_cookies = [];
     protected $_body    = null;
+    protected $_params  = [];
 
     public function __construct(Request $request = null)
     {
@@ -137,7 +138,7 @@ class Response
     }
 
     public function xml($xml, $type = null, $options = null)
-    {  
+    {
         if ($xml instanceof \SimpleXMLElement) {
             $xml = $xml->asXML();
         } else if ($xml instanceof \DOMDocument) {
@@ -151,7 +152,7 @@ class Response
     }
 
     public function file($data, $type, $attachment = false, $name = null)
-    {  
+    {
         if ($data instanceof File) {
             if ($name === true) {
                 $name = $data->baseName();
@@ -173,7 +174,7 @@ class Response
     }
 
     public function attachment($name = null)
-    {  
+    {
         $this->header('Content-Disposition', "attachment" . (isset($name) ? "; filename={$name}" : null));
         return $this;
     }
@@ -183,5 +184,72 @@ class Response
         return $this
             ->status($type)
             ->header('Location', $url);
+    }
+
+    public function param($name, $value = null)
+    {
+        if (func_num_args() > 1) {
+            if (isset($value)) {
+                $this->_params[$name] = $value;
+            } else {
+                unset($this->_params[$name]);
+            }
+            return $this;
+        }
+        return isset($this->_params[$name])
+            ? $this->_params[$name]
+            : null;
+    }
+
+    public function params(array $params = null)
+    {
+        if (func_num_args() > 0) {
+            foreach ($params as $name => $value) {
+                $this->param($name, $value);
+            }
+            return $this;
+        }
+        return $this->_params;
+    }
+
+    /**
+     * Set a parameter.
+     * @param string $name
+     * @param mixed $value
+     * @return self
+     */
+    public function __set($name, $value)
+    {
+        return $this->param($name, $value);
+    }
+
+    /**
+     * Get a parameter.
+     * @param  string $name
+     * @return mixed
+     */
+    public function __get($name)
+    {
+        return $this->param($name);
+    }
+
+    /**
+     * Check if a parameter exists.
+     * @param  string  $name
+     * @return boolean
+     */
+    public function __isset($name)
+    {
+        return $this->param($name) !== null;
+    }
+
+    /**
+     * Unset a parameter.
+     * @param  string  $name
+     * @return boolean
+     */
+    public function __unset($name)
+    {
+        return $this->param($name, null);
     }
 }
