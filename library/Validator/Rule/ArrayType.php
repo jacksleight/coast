@@ -8,11 +8,13 @@ namespace Coast\Validator\Rule;
 
 use Coast\Validator\Rule;
 
-class Str extends Rule
+class ArrayType extends Rule
 {
+	protected $_name = 'array';
+
 	protected function _validate($value)
 	{
-		if ($value !== null && !is_scalar($value) && !is_callable([$value, '__toString'])) {
+		if (!is_array($value)) {
 		 	$this->error();
 		}
 	}

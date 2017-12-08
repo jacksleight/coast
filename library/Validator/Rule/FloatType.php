@@ -8,5 +8,12 @@ namespace Coast\Validator\Rule;
 
 use Coast\Validator\Rule;
 
-class Number extends Flt
-{}
+class FloatType extends Rule
+{
+	protected function _validate($value)
+	{
+		if (!is_numeric($value)) {
+		 	$this->error();
+		}
+	}
+}

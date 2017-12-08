@@ -6,16 +6,5 @@
 
 namespace Coast\Validator\Rule;
 
-use Coast\Validator\Rule;
-
-class Arr extends Rule
-{
-	protected $_name = 'array';
-
-	protected function _validate($value)
-	{
-		if (!is_array($value)) {
-		 	$this->error();
-		}
-	}
-}
+class DecimalType extends FloatType
+{}

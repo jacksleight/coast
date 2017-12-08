@@ -168,4 +168,17 @@ class PathTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Coast\File', $file);
         $this->assertEquals('/one/two/three', $file->name());
     }
+
+    public function testParts()
+    {
+        $path = new Path('/dir/base.ext');
+        $this->assertEquals(['', 'dir', 'base.ext'], $path->parts());
+    }
+
+    public function testPart()
+    {
+        $path = new Path('/dir/base.ext');
+        $this->assertEquals('base.ext', $path->part(2));
+        $this->assertEquals('base.ext', $path->part(0, true));
+    }
 }

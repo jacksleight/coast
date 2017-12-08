@@ -8,11 +8,11 @@ namespace Coast\Validator\Rule;
 
 use Coast\Validator\Rule;
 
-class Flt extends Rule
+class IntegerType extends Rule
 {
 	protected function _validate($value)
 	{
-		if (!is_numeric($value)) {
+		if (strval(intval($value)) !== (string) $value) {
 		 	$this->error();
 		}
 	}

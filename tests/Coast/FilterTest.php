@@ -42,7 +42,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 
     public function testDecimal()
     {
-        $filter = new Rule\Decimal();
+        $filter = new Rule\DecimalType();
         $this->assertEquals($filter('1.5t'), '1.5');
     }
 
@@ -54,19 +54,19 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 
     public function testInteger()
     {
-        $filter = new Rule\Integer();
+        $filter = new Rule\IntegerType();
         $this->assertEquals($filter('1.t'), '1');
     }
 
     public function testFloat()
     {
-        $filter = new Rule\Flt();
+        $filter = new Rule\FloatType();
         $this->assertEquals($filter('1.5t'), '1.5');
     }
 
     public function testNumber()
     {
-        $filter = new Rule\Number();
+        $filter = new Rule\NumberType();
         $this->assertEquals($filter('1.5t'), '1.5');
     }
 
@@ -149,7 +149,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
     public function testClone()
     {
         $filter1 = (new Filter())
-            ->trim(); 
+            ->trim();
         $filter2 = clone $filter1;
         $rules1 = $filter1->rule('trim');
         $rules2 = $filter2->rule('trim');

@@ -58,7 +58,9 @@ class Transformer extends Rule implements Iterator
             $step = $name;
         } else {
             $map = [
-                'null' => 'nul',
+                'boolean' => 'booleanType',
+                'integer' => 'integerType',
+                'null'    => 'nullType',
             ];
             if (isset($map[$name])) {
                 $name = $map[$name];
@@ -66,7 +68,7 @@ class Transformer extends Rule implements Iterator
             $class  = get_class() . '\\Rule\\' . ucfirst($name);
             $reflec = new \ReflectionClass($class);
             $step   = $reflec->newInstanceArgs($args);
-        }        
+        }
 		return $this->step($step);
 	}
 

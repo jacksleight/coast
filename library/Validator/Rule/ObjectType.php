@@ -8,7 +8,7 @@ namespace Coast\Validator\Rule;
 
 use Coast\Validator\Rule;
 
-class Obj extends Rule
+class ObjectType extends Rule
 {
 	protected $_name = 'object';
 

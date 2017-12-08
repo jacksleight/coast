@@ -8,13 +8,10 @@ namespace Coast\Filter\Rule;
 
 use Coast\Filter\Rule;
 
-class Integer extends Rule
+class FloatType extends Rule
 {
     protected function _filter($value)
     {
-        $value = filter_var($value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-        return strlen($value)
-            ? (string) (int) $value
-            : $value;
+        return filter_var($value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
     }
 }

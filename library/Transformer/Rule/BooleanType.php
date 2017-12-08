@@ -4,11 +4,11 @@
  * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
  */
 
-namespace Coast\Validator\Rule;
+namespace Coast\Transformer\Rule;
 
-use Coast\Validator\Rule;
+use Coast\Transformer\Rule;
 
-class Boolean extends Rule
+class BooleanType extends Rule
 {
     protected $_true = [true, 'true', 1, '1'];
 
@@ -42,10 +42,14 @@ class Boolean extends Rule
         return $this->_false;
     }
 
-	protected function _validate($value)
-	{
-		if (!in_array($value, $this->_true, true) && !in_array($value, $this->_false, true)) {
-		 	$this->error();
-		}
-	}
+    protected function _transform($value)
+    {
+        if (in_array($value, $this->_true, true)) {
+            $value = true;
+        }
+        if (in_array($value, $this->_false, true)) {
+            $value = false;
+        }
+        return $value;
+    }
 }

@@ -9,7 +9,7 @@ namespace Coast\Transformer\Rule;
 use Coast;
 use Coast\Transformer\Rule;
 
-class Nul extends Rule
+class NullType extends Rule
 {
     protected function _transform($value)
     {

@@ -9,7 +9,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 {
     public function testBoolean()
     {
-        $validator = new Rule\Boolean([true, 1], ['0', 'false']);
+        $validator = new Rule\BooleanType([true, 1], ['0', 'false']);
         $this->assertTrue($validator(true));
         $this->assertTrue($validator(1));
         $this->assertTrue($validator('0'));
@@ -112,6 +112,27 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
             'name'     => 'test.txt',
             'type'     => 'text/plain',
             'tmp_name' => '/tmp/php/test',
+            'error'    => UPLOAD_ERR_NO_TMP_DIR,
+            'size'     => 100,
+        ]));
+        $this->assertFalse($validator([
+            'name'     => 'test.txt',
+            'type'     => 'text/plain',
+            'tmp_name' => '/tmp/php/test',
+            'error'    => UPLOAD_ERR_CANT_WRITE,
+            'size'     => 100,
+        ]));
+        $this->assertFalse($validator([
+            'name'     => 'test.txt',
+            'type'     => 'text/plain',
+            'tmp_name' => '/tmp/php/test',
+            'error'    => UPLOAD_ERR_EXTENSION,
+            'size'     => 100,
+        ]));
+        $this->assertFalse($validator([
+            'name'     => 'test.txt',
+            'type'     => 'text/plain',
+            'tmp_name' => '/tmp/php/test',
             'error'    => UPLOAD_ERR_OK,
             'size'     => 1100,
         ]));
@@ -132,6 +153,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $validator = new Rule\DateTime('Y-m-d');
         $this->assertTrue($validator('2015-01-01'));
         $this->assertFalse($validator('2015-01-'));
+        $this->assertFalse($validator([]));
 
         $this->assertEquals($validator->format(), 'Y-m-d');
 
@@ -186,14 +208,14 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 
     public function testFloat()
     {
-        $validator = new Rule\Flt();
+        $validator = new Rule\FloatType();
         $this->assertTrue($validator(1.5));
         $this->assertFalse($validator('text'));
     }
 
     public function testNumber()
     {
-        $validator = new Rule\Number();
+        $validator = new Rule\NumberType();
         $this->assertTrue($validator(1));
         $this->assertTrue($validator(1.5));
         $this->assertFalse($validator('text'));
@@ -201,7 +223,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 
     public function testDecimal()
     {
-        $validator = new Rule\Decimal();
+        $validator = new Rule\DecimalType();
         $this->assertTrue($validator(1.5));
         $this->assertFalse($validator('text'));
     }
@@ -215,14 +237,14 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 
     public function testInteger()
     {
-        $validator = new Rule\Integer();
+        $validator = new Rule\IntegerType();
         $this->assertTrue($validator(1));
         $this->assertFalse($validator('text'));
     }
 
     public function testArr()
     {
-        $validator = new Rule\Arr();
+        $validator = new Rule\ArrayType();
         $this->assertTrue($validator([]));
         $this->assertFalse($validator('text'));
     }
@@ -232,11 +254,11 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $obj1 = new \DateTime();
         $obj2 = new \DateTimezone('UTC');
 
-        $validator = new Rule\Obj();
+        $validator = new Rule\ObjectType();
         $this->assertTrue($validator($obj1));
         $this->assertFalse($validator('text'));
 
-        $validator = new Rule\Obj('DateTime');
+        $validator = new Rule\ObjectType('DateTime');
         $this->assertTrue($validator($obj1));
         $this->assertFalse($validator($obj2));
 
@@ -264,7 +286,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 
     public function testString()
     {
-        $validator = new Rule\Str();
+        $validator = new Rule\StringType();
         $this->assertTrue($validator('text'));
         $this->assertFalse($validator([]));
     }

@@ -58,7 +58,10 @@ class Filter extends Rule implements Iterator
             $step = $name;
         } else {
             $map = [
-                'float'  => 'flt',
+                'float'   => 'floatType',
+                'number'  => 'numberType',
+                'decimal' => 'decimalType',
+                'integer' => 'integerType',
             ];
             if (isset($map[$name])) {
                 $name = $map[$name];

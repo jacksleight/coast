@@ -63,10 +63,14 @@ class Validator extends Rule implements Iterator
                 $name = $match[1];
             }
             $map = [
-                'array'  => 'arr',
-                'object' => 'obj',
-                'float'  => 'flt',
-                'string' => 'str',
+                'array'   => 'arrayType',
+                'boolean' => 'booleanType',
+                'decimal' => 'decimalType',
+                'float'   => 'floatType',
+                'integer' => 'integerType',
+                'number'  => 'numberType',
+                'object'  => 'objectType',
+                'string'  => 'stringType',
             ];
             if (isset($map[$name])) {
                 $name = $map[$name];

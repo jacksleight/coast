@@ -8,12 +8,5 @@ namespace Coast\Validator\Rule;
 
 use Coast\Validator\Rule;
 
-class Integer extends Rule
-{
-	protected function _validate($value)
-	{
-		if (strval(intval($value)) !== (string) $value) {
-		 	$this->error();
-		}
-	}
-}
+class NumberType extends FloatType
+{}
