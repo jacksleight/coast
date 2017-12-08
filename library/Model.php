@@ -15,11 +15,13 @@ use Coast\Model\Metadata;
 
 class Model implements ArrayAccess
 {
+    const TRAVERSE_SKIP = '__Coast\Model::TRAVERSE_SKIP__';
+
     const TYPE_ONE  = 'one';
     const TYPE_MANY = 'many';
 
     protected static $_metadataStatic = [];
-   
+
     protected $_metadataSource;
 
     protected $_metadata;
@@ -127,7 +129,10 @@ class Model implements ArrayAccess
                 }
             }
             if (!$isDeep) {
-                $output[$name] = $func($name, $value, $metadata);
+                $value = $func($name, $value, $metadata);
+                if ($value != self::TRAVERSE_SKIP) {
+                    $output[$name] = $value;
+                }
                 continue;
             }
             if (in_array($metadata['type'], [
@@ -147,7 +152,10 @@ class Model implements ArrayAccess
                 }
                 $value = $items;
             }
-            $output[$name] = $func($name, $value, $metadata);
+            $value = $func($name, $value, $metadata);
+            if ($value != self::TRAVERSE_SKIP) {
+                $output[$name] = $value;
+            }
         }
         return $output;
     }
@@ -296,7 +304,7 @@ class Model implements ArrayAccess
             ];
         }, $isTraverse);
     }
-    
+
     protected function _construct($construct)
     {
         $construct = (array) $construct;
@@ -304,7 +312,7 @@ class Model implements ArrayAccess
         $reflection = new \ReflectionClass($className);
         return $reflection->newInstanceArgs($construct);
     }
-        
+
     protected function _set($name, $value)
     {
         $metadata = $this->metadata->property($name);
@@ -312,17 +320,17 @@ class Model implements ArrayAccess
         $value = $metadata['transformer']->transform($value, $this);
         $this->{$name} = $value;
     }
-    
+
     protected function _get($name)
     {
         return $this->{$name};
     }
-    
+
     protected function _isset($name)
     {
         return isset($this->{$name});
     }
-    
+
     protected function _unset($name)
     {
         $this->{$name} = null;
@@ -331,14 +339,14 @@ class Model implements ArrayAccess
     public function __set($name, $value)
     {
         if ($name[0] == '_') {
-            throw new Model\Exception("Access to '{$name}' is prohibited");  
+            throw new Model\Exception("Access to '{$name}' is prohibited");
         }
         if (method_exists($this, $name)) {
             $this->{$name}($value);
         } else if (property_exists($this, $name)) {
             $this->_set($name, $value);
         } else {
-            throw new Model\Exception\NotDefined("Property or method '{$name}' is not defined");  
+            throw new Model\Exception\NotDefined("Property or method '{$name}' is not defined");
         }
     }
 
@@ -356,47 +364,47 @@ class Model implements ArrayAccess
     public function __get($name)
     {
         if ($name[0] == '_') {
-            throw new Model\Exception("Access to '{$name}' is prohibited");  
+            throw new Model\Exception("Access to '{$name}' is prohibited");
         }
         if (method_exists($this, $name)) {
             return $this->{$name}();
         } else if (property_exists($this, $name)) {
             return $this->_get($name);
         } else {
-            throw new Model\Exception\NotDefined("Property or method '{$name}' is not defined");  
+            throw new Model\Exception\NotDefined("Property or method '{$name}' is not defined");
         }
     }
 
     public function __isset($name)
     {
         if ($name[0] == '_') {
-            throw new Model\Exception("Access to '{$name}' is prohibited");  
+            throw new Model\Exception("Access to '{$name}' is prohibited");
         }
         if (method_exists($this, $name)) {
             return $this->{$name}() !== null;
         } else if (property_exists($this, $name)) {
             return $this->_isset($name);
         } else {
-            throw new Model\Exception\NotDefined("Property or method '{$name}' is not defined");  
+            throw new Model\Exception\NotDefined("Property or method '{$name}' is not defined");
         }
     }
 
     public function __unset($name)
     {
         if ($name[0] == '_') {
-            throw new Model\Exception("Access to '{$name}' is prohibited");  
+            throw new Model\Exception("Access to '{$name}' is prohibited");
         }
         if (property_exists($this, $name)) {
             $this->_unset($name);
         } else {
-            throw new Model\Exception\NotDefined("Property or method '{$name}' is not defined");  
+            throw new Model\Exception\NotDefined("Property or method '{$name}' is not defined");
         }
     }
 
     public function __call($name, array $args)
     {
         if ($name[0] == '_') {
-            throw new Model\Exception("Access to '{$name}' is prohibited");  
+            throw new Model\Exception("Access to '{$name}' is prohibited");
         }
         if (isset($args[0])) {
             $this->__set($name, $args[0]);
