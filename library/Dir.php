@@ -11,6 +11,15 @@ use Coast\File;
 
 class Dir extends \Coast\File\Path implements \IteratorAggregate
 {
+    public static function createTemp()
+    {
+        $path = str_replace(DIRECTORY_SEPARATOR, '/', rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'php' . uniqid());
+        if (!$path) {
+            throw new \Exception('Could not create tempoary directory');
+        }
+        return new \Coast\Dir($path, true);
+    }
+
     public function __construct($path, $create = false)
     {
         parent::__construct($path);
