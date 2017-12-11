@@ -130,7 +130,7 @@ class Model implements ArrayAccess
             }
             if (!$isDeep) {
                 $value = $func($name, $value, $metadata);
-                if ($value != self::TRAVERSE_SKIP) {
+                if ($value !== self::TRAVERSE_SKIP) {
                     $output[$name] = $value;
                 }
                 continue;
@@ -153,7 +153,7 @@ class Model implements ArrayAccess
                 $value = $items;
             }
             $value = $func($name, $value, $metadata);
-            if ($value != self::TRAVERSE_SKIP) {
+            if ($value !== self::TRAVERSE_SKIP) {
                 $output[$name] = $value;
             }
         }
