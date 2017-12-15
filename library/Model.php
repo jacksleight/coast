@@ -9,6 +9,8 @@ namespace Coast;
 use ArrayAccess;
 use Iterable;
 use Closure;
+use ReflectionProperty;
+use ReflectionClass;
 use Coast;
 use Coast\Model;
 use Coast\Model\Metadata;
@@ -44,7 +46,11 @@ class Model implements ArrayAccess
     {
         $class    = get_called_class();
         $metadata = new Metadata($class);
-        $names    = array_keys(get_class_vars($class));
+        $reflect  = new ReflectionClass($class);
+        $names    = array_map(function($v) { return $v->getName(); }, array_diff(
+            $reflect->getProperties(),
+            $reflect->getProperties(ReflectionProperty::IS_STATIC)
+        ));
         foreach ($names as $name) {
             if ($name[0] == '_') {
                 continue;
