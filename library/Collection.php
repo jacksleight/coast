@@ -10,8 +10,9 @@ use ArrayAccess;
 use SeekableIterator;
 use Countable;
 use Serializable;
+use JsonSerializable;
 
-class Collection implements ArrayAccess, SeekableIterator, Countable, Serializable
+class Collection implements ArrayAccess, SeekableIterator, Countable, Serializable, JsonSerializable
 {
     protected $_array = [];
 
@@ -118,5 +119,10 @@ class Collection implements ArrayAccess, SeekableIterator, Countable, Serializab
     public function unserialize($array)
     {
         $this->_array = unserialize($array);
+    }
+
+    public function jsonSerialize()
+    {
+        return $this->_array;
     }
 }

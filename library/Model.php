@@ -7,15 +7,16 @@
 namespace Coast;
 
 use ArrayAccess;
-use Iterable;
 use Closure;
-use ReflectionProperty;
-use ReflectionClass;
 use Coast;
 use Coast\Model;
 use Coast\Model\Metadata;
+use Iterable;
+use JsonSerializable;
+use ReflectionClass;
+use ReflectionProperty;
 
-class Model implements ArrayAccess
+class Model implements ArrayAccess, JsonSerializable
 {
     const TRAVERSE_SKIP = '__Coast\Model::TRAVERSE_SKIP__';
 
@@ -437,5 +438,10 @@ class Model implements ArrayAccess
     public function offsetGet($offset)
     {
         return $this->__get($offset);
+    }
+
+    public function jsonSerialize()
+    {
+        return $this->toArray(false);
     }
 }
