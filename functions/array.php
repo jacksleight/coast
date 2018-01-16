@@ -146,3 +146,12 @@ function array_object_smart(array $array)
         ? (object) $array
         : $array;
 }
+
+function array_iterate($array, $key = null)
+{
+    $output = [];
+    foreach ($array as $i => $value) {
+        $output[isset($key) ? $value[$key] : $i] = $value;
+    }
+    return $output;
+}
