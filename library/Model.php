@@ -242,12 +242,20 @@ class Model implements ArrayAccess, JsonSerializable
                     $this->__set($name, $current = $this->_construct($metadata['construct']));
                 }
                 if (isset($current)) {
+                    if ($metadata['isImmutable']) {
+                        $current = clone $current;
+                        $this->__set($name, $current);
+                    }
                     $current->fromArray($value, $isTraverse);
                 }
             } else if ($metadata['type'] == self::TYPE_MANY) {
                 $current = $this->__get($name);
                 if (!is_array($current) && (!$current instanceof Iterable && !$current instanceof ArrayAccess)) {
                     throw new Model\Exception("Value of MANY property '" . get_class($this) . "->{$name}' must be an array or object that implements Iterable and ArrayAccess");
+                }
+                if ($metadata['isImmutable']) {
+                    $current = clone $current;
+                    $this->__set($name, $current);
                 }
                 if (!isset($value)) {
                     foreach ($current as $key => $item) {
@@ -264,6 +272,9 @@ class Model implements ArrayAccess, JsonSerializable
                         $current[$key] = $this->_construct($metadata['construct']);
                     }
                     if (isset($current[$key])) {
+                        if ($metadata['isImmutable']) {
+                            $current[$key] = clone $current[$key];
+                        }
                         $current[$key]->fromArray($item, $isTraverse);
                     }
                 }

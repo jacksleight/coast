@@ -46,6 +46,7 @@ class Metadata
                     'construct'   => null,
                     'isTraverse'  => false,
                     'isConstruct' => false,
+                    'isImmutable' => false,
                 ];
             }
             $current = $this->_properties[$name];
