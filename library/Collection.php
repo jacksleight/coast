@@ -16,6 +16,11 @@ class Collection implements ArrayAccess, SeekableIterator, Countable, Serializab
 {
     protected $_array = [];
 
+    public function __construct(array $array = [])
+    {
+        $this->_array = $array;
+    }
+
     public function toArray()
     {
         return $this->_array;
