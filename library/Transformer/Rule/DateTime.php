@@ -40,26 +40,34 @@ class DateTime extends Rule
 
     protected function _transform($value)
     {
-        if (!is_scalar($value)) {
-            return $value;
-        }
         $defaultTimezone = new \DateTimezone(date_default_timezone_get());
-        $timezone = isset($this->_timezone)
-            ? new \DateTimezone($this->_timezone)
-            : $defaultTimezone;
-        if (isset($this->_format)) {
-            $date = \DateTime::createFromFormat($this->_format, $value, $timezone);
-            if ($date === false) {
-                return $value;
+        if (is_scalar($value)) {
+            $timezone = isset($this->_timezone)
+                ? new \DateTimezone($this->_timezone)
+                : $defaultTimezone;
+            if (isset($this->_format)) {
+                $date = \DateTime::createFromFormat($this->_format, $value, $timezone);
+                if ($date === false) {
+                    return $value;
+                }
+            } else {
+                try {
+                    $date = new \DateTime($value, $timezone);
+                } catch (\Exception $e) {
+                    return $value;
+                }
             }
-        } else {
+            $date->setTimezone($defaultTimezone);
+        } else if (is_array($value)) {
             try {
-                $date = new \DateTime($value, $timezone);
+                $date = new \DateTime($value['date'], new \DateTimezone($value['timezone']));
             } catch (\Exception $e) {
                 return $value;
             }
+            $date->setTimezone($defaultTimezone);
+        } else {
+            return $value;
         }
-        $date->setTimezone($defaultTimezone);
         return $date;
     }
 }
