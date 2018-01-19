@@ -11,7 +11,7 @@ use Coast\Request;
 
 class Response
 {
-    protected $_req;
+    protected $_request;
 
     protected $_status  = 200;
     protected $_headers = [];
