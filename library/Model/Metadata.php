@@ -11,8 +11,9 @@ use Coast;
 use Coast\Filter;
 use Coast\Validator;
 use Coast\Transformer;
+use JsonSerializable;
 
-class Metadata 
+class Metadata implements JsonSerializable
 {
     protected $_className;
 
@@ -143,5 +144,26 @@ class Metadata
     public function __unset($name)
     {
         return $this->extra($name, null);
+    }
+
+    public function jsonSerialize()
+    {
+        $class = $this->_className;
+        $properties = $this->_properties;
+        foreach ($properties as $name => $property) {
+            if (in_array($property['type'], ['one', 'many']) && isset($property['construct'])) {
+                $construct = $property['construct'];
+                $properties[$name] += [
+                    'constructMetadata' => $construct::metadataStatic(),
+                ];
+            }
+        }
+        $extras = $this->_extras;
+        return [
+            'className'  => $class,
+            'properties' => $properties,
+            'extras'     => $extras,
+            'defaults'   => new $class(),
+        ];
     }
 }

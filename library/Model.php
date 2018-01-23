@@ -43,6 +43,12 @@ class Model implements ArrayAccess, JsonSerializable
         return self::$_initMethods;
     }
 
+    public static function createDefault()
+    {
+        $class = get_called_class();
+        return new $class();
+    }
+
     protected static function _metadataStaticBuild()
     {
         $class    = get_called_class();

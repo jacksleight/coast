@@ -5,8 +5,9 @@
  */
 
 namespace Coast\Validator;
+use JsonSerializable;
 
-abstract class Rule
+abstract class Rule implements JsonSerializable
 {
 	protected $_name;
 
@@ -78,4 +79,12 @@ abstract class Rule
 		}
 		return $this->_errors;
 	}
+
+    public function jsonSerialize()
+    {
+        return [
+			'name'		=> $this->name(),
+			'params'	=> $this->params(),
+        ];
+    }
 }

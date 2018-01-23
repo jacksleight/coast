@@ -8,8 +8,9 @@ namespace Coast;
 
 use Coast\Validator\Rule;
 use Iterator;
+use JsonSerializable;
 
-class Validator extends Rule implements Iterator
+class Validator extends Rule implements Iterator, JsonSerializable
 {
     const STEP_BREAK = 'break';
 
@@ -133,8 +134,16 @@ class Validator extends Rule implements Iterator
         next($this->_steps);
     }
 
-    public function valid() 
+    public function valid()
     {
         return key($this->_steps) !== null;
-    } 
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'steps' => $this->_steps,
+            'rules' => $this->_rules,
+        ];
+    }
 }
