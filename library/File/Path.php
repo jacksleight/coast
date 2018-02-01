@@ -6,6 +6,8 @@
 
 namespace Coast\File;
 
+use DateTime;
+
 abstract class Path extends \Coast\Path
 {
     public function exists()
@@ -66,6 +68,21 @@ abstract class Path extends \Coast\Path
     abstract public function copy(\Coast\Dir $dir, $baseName = null);
     
     abstract public function remove();
+
+    public function accessTime()
+    {
+        return (new DateTime())->setTimestamp(fileatime($this->_name));
+    }
+
+    public function changeTime()
+    {
+        return (new DateTime())->setTimestamp(filectime($this->_name));
+    }
+
+    public function modifyTime()
+    {
+        return (new DateTime())->setTimestamp(filemtime($this->_name));
+    }
 
     protected function _parseBaseName($baseName)
     {

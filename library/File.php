@@ -267,19 +267,4 @@ class File extends \Coast\File\Path
     {
         return new Dir($this->dirName(), $create);
     }
-
-    public function accessTime()
-    {
-        return (new DateTime())->setTimestamp(fileatime($this->_name));
-    }
-
-    public function changeTime()
-    {
-        return (new DateTime())->setTimestamp(filectime($this->_name));
-    }
-
-    public function modifyTime()
-    {
-        return (new DateTime())->setTimestamp(filemtime($this->_name));
-    }
 }
