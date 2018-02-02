@@ -10,9 +10,19 @@ use Coast\Transformer\Rule;
 
 class BooleanType extends Rule
 {
-    protected $_true = [true, 'true', 1, '1'];
+    protected $_true = [
+        'true',
+        'on',
+        'yes',
+        '1',
+    ];
 
-    protected $_false = [false, 'false', 0, '0'];
+    protected $_false = [
+        'false',
+        'off',
+        'no',
+        '0',
+    ];
 
     public function __construct(array $true = null, array $false = null)
     {
@@ -44,11 +54,13 @@ class BooleanType extends Rule
 
     protected function _transform($value)
     {
+        $value = strtolower($value);
         if (in_array($value, $this->_true, true)) {
             $value = true;
-        }
-        if (in_array($value, $this->_false, true)) {
+        } else if (in_array($value, $this->_false, true)) {
             $value = false;
+        } else {
+            $value = (bool) $value;
         }
         return $value;
     }

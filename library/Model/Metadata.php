@@ -154,7 +154,7 @@ class Metadata implements JsonSerializable
             if (in_array($property['type'], ['one', 'many']) && isset($property['construct'])) {
                 $construct = $property['construct'];
                 $properties[$name] += [
-                    'constructMetadata' => $construct::metadataStatic(),
+                    'metadata' => $construct::metadataStatic(),
                 ];
             }
         }
