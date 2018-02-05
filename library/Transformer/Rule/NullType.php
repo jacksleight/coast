@@ -13,10 +13,10 @@ class NullType extends Rule
 {
     protected function _transform($value)
     {
-        if (!is_scalar($value)) {
+        if (!is_string($value)) {
             return $value;
         }
-        if (!strlen($value)) {
+        if (strlen($value) == 0) {
             $value = null;
         }
         return $value;
