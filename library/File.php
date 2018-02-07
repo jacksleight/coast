@@ -224,7 +224,7 @@ class File extends \Coast\File\Path
             ? $this->_parseBaseName($baseName)
             : $this->baseName());
         copy($this->_name, $name);
-        return File($name);
+        return new File($name);
     }
 
     public function remove()
