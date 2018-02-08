@@ -5,7 +5,7 @@ use Coast\Transformer,
     Coast\Transformer\Rule;
 use DateTime;
 
-class TransformerTest extends \PHPUnit_Framework_TestCase
+class TransformerTest extends \PHPUnit\Framework\TestCase
 {
     public function testNull()
     {
@@ -27,9 +27,10 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         $transformer = new Rule\BooleanType([true, 1], ['0', 'false']);
         $this->assertTrue($transformer(true));
         $this->assertTrue($transformer(1));
+        $this->assertTrue($transformer('test'), 'test');
         $this->assertFalse($transformer('0'));
         $this->assertFalse($transformer('false'));
-        $this->assertEquals($transformer('test'), 'test');
+        $this->assertFalse($transformer(''), 'test');
 
         $this->assertEquals($transformer->true(), [true, 1]);
         $this->assertEquals($transformer->false(), ['0', 'false']);

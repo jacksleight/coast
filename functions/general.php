@@ -65,7 +65,12 @@ function css_ratio_slope($smallWidth, $smallHeight, $largeWidth, $largeHeight)
 
 function pseudo_random($bytes = 32, $algo = 'sha512')
 {
-    return rtrim(base64_encode(hash($algo, openssl_random_pseudo_bytes($bytes), true)), '=');
+    return base64_encode(hash($algo, openssl_random_pseudo_bytes($bytes), true));
+}
+
+function base64_urlsafe($string)
+{
+    return rtrim(str_replace(['+', '/'], ['-', '_'], $string), '=');
 }
 
 function number_ordinal($number, $exclude = false) {
