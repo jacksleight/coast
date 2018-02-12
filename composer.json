@@ -9,7 +9,7 @@
     {"name": "Jack Sleight", "email": "jacksleight@gmail.com"}
   ],
   "require": {
-    "php": ">=5.6.0",
+    "php": ">=5.5.0",
     "jakeasmith/http_build_url": "0.1.*"
   },
   "require-dev": {

@@ -45,18 +45,17 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
 
     public function testDateTime()
     {
-        $date = new DateTime('now');
+        $date = new DateTime('today');
         $transformer = new Rule\DateTime('Y-m-d', 'Europe/London');
-        $this->assertEquals($transformer($date), $date);
-        $this->assertEquals($transformer($date->format('Y-m-d')), $date);
+        $this->assertEquals($transformer($date)->format('Y-m-d'), $date->format('Y-m-d'));
         $this->assertEquals($transformer($date->format('Y-m')), $date->format('Y-m'));
 
         $this->assertEquals($transformer->format(), 'Y-m-d');
         $this->assertEquals($transformer->timezone(), 'Europe/London');
 
-        $date = new DateTime('now');
+        $date = new DateTime('today');
         $transformer = new Rule\DateTime(null, 'Europe/London');
-        $this->assertEquals($transformer('now'), $date);
+        $this->assertEquals($transformer('today'), $date);
         $this->assertEquals($transformer('test'), 'test');
     }
 
