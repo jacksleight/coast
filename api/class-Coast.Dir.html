@@ -5,7 +5,7 @@
 
 	<title>Class Coast\Dir | Coast API Documentation</title>
 
-	<link rel="stylesheet" href="resources/style.css?95ada9fb523b6ab4fd1c47bb375f713f2cc65542">
+	<link rel="stylesheet" href="resources/style.css?c2f33731c1948fbed7c333554678bfa68d4817da">
 
 </head>
 
@@ -57,6 +57,11 @@
 
 						</li>
 				<li>
+					<a href="namespace-Coast.Feed.html">
+						Feed					</a>
+
+						</li>
+				<li>
 					<a href="namespace-Coast.File.html">
 						File					</a>
 
@@ -85,7 +90,19 @@
 						</li>
 				<li>
 					<a href="namespace-Coast.Model.html">
-						Model					</a>
+						Model<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.Model.Exception.html">
+						Exception					</a>
+
+						</li>
+							</ul></li>
+				<li>
+					<a href="namespace-Coast.Resolver.html">
+						Resolver					</a>
 
 						</li>
 				<li>
@@ -94,10 +111,22 @@
 
 						</li>
 				<li>
-					<a href="namespace-Coast.UrlResolver.html">
-						UrlResolver					</a>
+					<a href="namespace-Coast.Sitemap.html">
+						Sitemap					</a>
 
 						</li>
+				<li>
+					<a href="namespace-Coast.Transformer.html">
+						Transformer<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.Transformer.Rule.html">
+						Rule					</a>
+
+						</li>
+							</ul></li>
 				<li>
 					<a href="namespace-Coast.Validator.html">
 						Validator<span></span>
@@ -125,8 +154,10 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
+				<li><a href="class-Coast.Acl.html">Acl</a></li>
 				<li><a href="class-Coast.App.html">App</a></li>
 				<li><a href="class-Coast.Coast.html">Coast</a></li>
+				<li><a href="class-Coast.Collection.html">Collection</a></li>
 				<li><a href="class-Coast.Config.html">Config</a></li>
 				<li><a href="class-Coast.Controller.html">Controller</a></li>
 				<li><a href="class-Coast.Csp.html">Csp</a></li>
@@ -141,12 +172,13 @@
 				<li><a href="class-Coast.Model.html">Model</a></li>
 				<li><a href="class-Coast.Path.html">Path</a></li>
 				<li><a href="class-Coast.Request.html">Request</a></li>
+				<li><a href="class-Coast.Resolver.html">Resolver</a></li>
 				<li><a href="class-Coast.Response.html">Response</a></li>
 				<li><a href="class-Coast.Router.html">Router</a></li>
 				<li><a href="class-Coast.Session.html">Session</a></li>
 				<li><a href="class-Coast.Sitemap.html">Sitemap</a></li>
+				<li><a href="class-Coast.Transformer.html">Transformer</a></li>
 				<li><a href="class-Coast.Url.html">Url</a></li>
-				<li><a href="class-Coast.UrlResolver.html">UrlResolver</a></li>
 				<li><a href="class-Coast.Validator.html">Validator</a></li>
 				<li><a href="class-Coast.View.html">View</a></li>
 				<li><a href="class-Coast.Xml.html">Xml</a></li>
@@ -246,7 +278,7 @@
 		<b>Namespace:</b> <a href="namespace-Coast.html">Coast</a><br>
 		
 
-			<b>Located at</b> <a href="source-class-Coast.Dir.html#9-104" title="Go to source code">Dir.php</a>
+			<b>Located at</b> <a href="source-class-Coast.Dir.html#12-116" title="Go to source code">Dir.php</a>
 		<br>
 	</div>
 
@@ -254,6 +286,36 @@
 
 	<table class="summary methods" id="methods">
 	<caption>Methods summary</caption>
+	<tr data-order="createTemp" id="_createTemp">
+
+		<td class="attributes"><code>
+			 public static
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_createTemp">#</a>
+		<code><a href="source-class-Coast.Dir.html#14-21" title="Go to source code">createTemp</a>( )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
 	<tr data-order="__construct" id="___construct">
 
 		<td class="attributes"><code>
@@ -266,7 +328,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-Coast.Dir.html#11-17" title="Go to source code">__construct</a>( <span>string <var>$path</var></span>, <span> <var>$create</var> = <span class="php-keyword1">false</span></span> )</code>
+		<code><a href="source-class-Coast.Dir.html#23-29" title="Go to source code">__construct</a>( <span>string <var>$path</var></span>, <span> <var>$create</var> = <span class="php-keyword1">false</span></span> )</code>
 
 		<div class="description short">
 			<p>Constructs a new path object.</p>
@@ -305,7 +367,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_iterator">#</a>
-		<code><a href="source-class-Coast.Dir.html#19-22" title="Go to source code">iterator</a>( <span> <var>$flags</var> = <span class="php-keyword1">null</span></span>, <span> <var>$recursive</var> = <span class="php-keyword1">false</span></span>, <span> <var>$mode</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Dir.html#31-34" title="Go to source code">iterator</a>( <span> <var>$flags</var> = <span class="php-keyword1">null</span></span>, <span> <var>$recursive</var> = <span class="php-keyword1">false</span></span>, <span> <var>$mode</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -335,7 +397,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_create">#</a>
-		<code><a href="source-class-Coast.Dir.html#24-30" title="Go to source code">create</a>( )</code>
+		<code><a href="source-class-Coast.Dir.html#36-42" title="Go to source code">create</a>( )</code>
 
 		<div class="description short">
 			
@@ -365,7 +427,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_copy">#</a>
-		<code><a href="source-class-Coast.Dir.html#32-49" title="Go to source code">copy</a>( <span><code><a href="class-Coast.Dir.html">Coast\Dir</a></code> <var>$dir</var></span>, <span> <var>$baseName</var> = <span class="php-keyword1">null</span></span>, <span> <var>$recursive</var> = <span class="php-keyword1">false</span></span> )</code>
+		<code><a href="source-class-Coast.Dir.html#44-61" title="Go to source code">copy</a>( <span><code><a href="class-Coast.Dir.html">Coast\Dir</a></code> <var>$dir</var></span>, <span> <var>$baseName</var> = <span class="php-keyword1">null</span></span>, <span> <var>$recursive</var> = <span class="php-keyword1">false</span></span> )</code>
 
 		<div class="description short">
 			
@@ -395,7 +457,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_remove">#</a>
-		<code><a href="source-class-Coast.Dir.html#51-60" title="Go to source code">remove</a>( <span> <var>$recursive</var> = <span class="php-keyword1">false</span></span> )</code>
+		<code><a href="source-class-Coast.Dir.html#63-72" title="Go to source code">remove</a>( <span> <var>$recursive</var> = <span class="php-keyword1">false</span></span> )</code>
 
 		<div class="description short">
 			
@@ -425,7 +487,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_permissions">#</a>
-		<code><a href="source-class-Coast.Dir.html#62-74" title="Go to source code">permissions</a>( <span> <var>$mode</var> = <span class="php-keyword1">null</span></span>, <span> <var>$recursive</var> = <span class="php-keyword1">false</span></span> )</code>
+		<code><a href="source-class-Coast.Dir.html#74-86" title="Go to source code">permissions</a>( <span> <var>$mode</var> = <span class="php-keyword1">null</span></span>, <span> <var>$recursive</var> = <span class="php-keyword1">false</span></span> )</code>
 
 		<div class="description short">
 			
@@ -440,7 +502,7 @@
 
 
 				<h4>Overrides</h4>
-				<div class="list"><code><a href="class-Coast.Path.html#_permissions">Coast\Path::permissions()</a></code></div>
+				<div class="list"><code><a href="class-Coast.File.Path.html#_permissions">Coast\File\Path::permissions()</a></code></div>
 
 		</div>
 		</div></td>
@@ -457,7 +519,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_size">#</a>
-		<code><a href="source-class-Coast.Dir.html#76-86" title="Go to source code">size</a>( <span> <var>$recursive</var> = <span class="php-keyword1">false</span></span> )</code>
+		<code><a href="source-class-Coast.Dir.html#88-98" title="Go to source code">size</a>( <span> <var>$recursive</var> = <span class="php-keyword1">false</span></span> )</code>
 
 		<div class="description short">
 			
@@ -487,7 +549,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_file">#</a>
-		<code><a href="source-class-Coast.Dir.html#88-92" title="Go to source code">file</a>( <span> <var>$path</var></span> )</code>
+		<code><a href="source-class-Coast.Dir.html#100-104" title="Go to source code">file</a>( <span> <var>$path</var></span> )</code>
 
 		<div class="description short">
 			
@@ -517,7 +579,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_dir">#</a>
-		<code><a href="source-class-Coast.Dir.html#94-98" title="Go to source code">dir</a>( <span> <var>$path</var></span>, <span> <var>$create</var> = <span class="php-keyword1">false</span></span> )</code>
+		<code><a href="source-class-Coast.Dir.html#106-110" title="Go to source code">dir</a>( <span> <var>$path</var></span>, <span> <var>$create</var> = <span class="php-keyword1">false</span></span> )</code>
 
 		<div class="description short">
 			
@@ -547,7 +609,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getIterator">#</a>
-		<code><a href="source-class-Coast.Dir.html#100-103" title="Go to source code">getIterator</a>( )</code>
+		<code><a href="source-class-Coast.Dir.html#112-115" title="Go to source code">getIterator</a>( )</code>
 
 		<div class="description short">
 			
@@ -570,28 +632,44 @@
 	</table>
 
 	<table class="summary inherited">
+	<caption>Methods inherited from <a href="class-Coast.File.Path.html#methods">Coast\File\Path</a></caption>
+	<tr>
+		<td><code>
+			<a href="class-Coast.File.Path.html#__parseBaseName">_parseBaseName()</a>, 
+			<a href="class-Coast.File.Path.html#_accessTime">accessTime()</a>, 
+			<a href="class-Coast.File.Path.html#_changeTime">changeTime()</a>, 
+			<a href="class-Coast.File.Path.html#_exists">exists()</a>, 
+			<a href="class-Coast.File.Path.html#_isDir">isDir()</a>, 
+			<a href="class-Coast.File.Path.html#_isExist">isExist()</a>, 
+			<a href="class-Coast.File.Path.html#_isFile">isFile()</a>, 
+			<a href="class-Coast.File.Path.html#_isReadable">isReadable()</a>, 
+			<a href="class-Coast.File.Path.html#_isWritable">isWritable()</a>, 
+			<a href="class-Coast.File.Path.html#_modifyTime">modifyTime()</a>, 
+			<a href="class-Coast.File.Path.html#_move">move()</a>, 
+			<a href="class-Coast.File.Path.html#_rename">rename()</a>
+		</code></td>
+	</tr>
+	</table>
+	<table class="summary inherited">
 	<caption>Methods inherited from <a href="class-Coast.Path.html#methods">Coast\Path</a></caption>
 	<tr>
 		<td><code>
 			<a href="class-Coast.Path.html#___toString">__toString()</a>, 
-			<a href="class-Coast.Path.html#__parseBaseName">_parseBaseName()</a>, 
 			<a href="class-Coast.Path.html#_baseName">baseName()</a>, 
+			<a href="class-Coast.Path.html#_child">child()</a>, 
 			<a href="class-Coast.Path.html#_dirName">dirName()</a>, 
-			<a href="class-Coast.Path.html#_exists">exists()</a>, 
 			<a href="class-Coast.Path.html#_extName">extName()</a>, 
+			<a href="class-Coast.Path.html#_extNameDot">extNameDot()</a>, 
 			<a href="class-Coast.Path.html#_fileName">fileName()</a>, 
+			<a href="class-Coast.Path.html#_fileNameDot">fileNameDot()</a>, 
 			<a href="class-Coast.Path.html#_isAbsolute">isAbsolute()</a>, 
-			<a href="class-Coast.Path.html#_isDir">isDir()</a>, 
-			<a href="class-Coast.Path.html#_isFile">isFile()</a>, 
-			<a href="class-Coast.Path.html#_isReadable">isReadable()</a>, 
 			<a href="class-Coast.Path.html#_isRelative">isRelative()</a>, 
 			<a href="class-Coast.Path.html#_isWithin">isWithin()</a>, 
-			<a href="class-Coast.Path.html#_isWritable">isWritable()</a>, 
-			<a href="class-Coast.Path.html#_move">move()</a>, 
 			<a href="class-Coast.Path.html#_name">name()</a>, 
-			<a href="class-Coast.Path.html#_path">path()</a>, 
+			<a href="class-Coast.Path.html#_parent">parent()</a>, 
+			<a href="class-Coast.Path.html#_part">part()</a>, 
+			<a href="class-Coast.Path.html#_parts">parts()</a>, 
 			<a href="class-Coast.Path.html#_prefix">prefix()</a>, 
-			<a href="class-Coast.Path.html#_rename">rename()</a>, 
 			<a href="class-Coast.Path.html#_suffix">suffix()</a>, 
 			<a href="class-Coast.Path.html#_toAbsolute">toAbsolute()</a>, 
 			<a href="class-Coast.Path.html#_toDir">toDir()</a>, 
@@ -609,6 +687,15 @@
 
 
 
+	<table class="summary inherited">
+	<caption>Constants inherited from <a href="class-Coast.Path.html#constants">Coast\Path</a></caption>
+	<tr>
+		<td><code>
+			<a href="class-Coast.Path.html#PART_FIRST"><b>PART_FIRST</b></a>, 
+			<a href="class-Coast.Path.html#PART_LAST"><b>PART_LAST</b></a>
+		</code></td>
+	</tr>
+	</table>
 
 
 

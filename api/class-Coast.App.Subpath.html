@@ -5,7 +5,7 @@
 
 	<title>Class Coast\App\Subpath | Coast API Documentation</title>
 
-	<link rel="stylesheet" href="resources/style.css?95ada9fb523b6ab4fd1c47bb375f713f2cc65542">
+	<link rel="stylesheet" href="resources/style.css?c2f33731c1948fbed7c333554678bfa68d4817da">
 
 </head>
 
@@ -57,6 +57,11 @@
 
 						</li>
 				<li>
+					<a href="namespace-Coast.Feed.html">
+						Feed					</a>
+
+						</li>
+				<li>
 					<a href="namespace-Coast.File.html">
 						File					</a>
 
@@ -85,7 +90,19 @@
 						</li>
 				<li>
 					<a href="namespace-Coast.Model.html">
-						Model					</a>
+						Model<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.Model.Exception.html">
+						Exception					</a>
+
+						</li>
+							</ul></li>
+				<li>
+					<a href="namespace-Coast.Resolver.html">
+						Resolver					</a>
 
 						</li>
 				<li>
@@ -94,10 +111,22 @@
 
 						</li>
 				<li>
-					<a href="namespace-Coast.UrlResolver.html">
-						UrlResolver					</a>
+					<a href="namespace-Coast.Sitemap.html">
+						Sitemap					</a>
 
 						</li>
+				<li>
+					<a href="namespace-Coast.Transformer.html">
+						Transformer<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.Transformer.Rule.html">
+						Rule					</a>
+
+						</li>
+							</ul></li>
 				<li>
 					<a href="namespace-Coast.Validator.html">
 						Validator<span></span>
@@ -212,7 +241,7 @@
 		<b>Namespace:</b> <a href="namespace-Coast.html">Coast</a>\<a href="namespace-Coast.App.html">App</a><br>
 		
 
-			<b>Located at</b> <a href="source-class-Coast.App.Subpath.html#14-65" title="Go to source code">App/Subpath.php</a>
+			<b>Located at</b> <a href="source-class-Coast.App.Subpath.html#14-90" title="Go to source code">App/Subpath.php</a>
 		<br>
 	</div>
 
@@ -262,7 +291,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_executable">#</a>
-		<code><a href="source-class-Coast.App.Subpath.html#30-37" title="Go to source code">executable</a>( <span><code><a href="class-Coast.App.Executable.html">Coast\App\Executable</a></code> <var>$executable</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.App.Subpath.html#30-40" title="Go to source code">executable</a>( <span><code><a href="class-Coast.App.Executable.html">Coast\App\Executable</a></code> <var>$executable</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -292,7 +321,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_path">#</a>
-		<code><a href="source-class-Coast.App.Subpath.html#39-47" title="Go to source code">path</a>( <span> <var>$path</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.App.Subpath.html#42-50" title="Go to source code">path</a>( <span> <var>$path</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -322,7 +351,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_execute">#</a>
-		<code><a href="source-class-Coast.App.Subpath.html#49-64" title="Go to source code">execute</a>( <span><code><a href="class-Coast.Request.html">Coast\Request</a></code> <var>$req</var> = <span class="php-keyword1">null</span></span>, <span><code><a href="class-Coast.Response.html">Coast\Response</a></code> <var>$res</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.App.Subpath.html#52-69" title="Go to source code">execute</a>( <span><code><a href="class-Coast.Request.html">Coast\Request</a></code> <var>$req</var></span>, <span><code><a href="class-Coast.Response.html">Coast\Response</a></code> <var>$res</var></span> )</code>
 
 		<div class="description short">
 			
@@ -342,27 +371,73 @@
 		</div>
 		</div></td>
 	</tr>
-	</table>
+	<tr data-order="preExecute" id="_preExecute">
 
-	<table class="summary inherited">
-	<caption>Methods inherited from <a href="class-Coast.App.Executable.html#methods">Coast\App\Executable</a></caption>
-	<tr>
-		<td><code>
-			<a href="class-Coast.App.Executable.html#_postExecute">postExecute()</a>, 
-			<a href="class-Coast.App.Executable.html#_preExecute">preExecute()</a>
-		</code></td>
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_preExecute">#</a>
+		<code><a href="source-class-Coast.App.Subpath.html#71-79" title="Go to source code">preExecute</a>( <span><code><a href="class-Coast.Request.html">Coast\Request</a></code> <var>$req</var></span>, <span><code><a href="class-Coast.Response.html">Coast\Response</a></code> <var>$res</var></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+				<h4>Implementation of</h4>
+				<div class="list"><code><a href="class-Coast.App.Executable.html#_preExecute">Coast\App\Executable::preExecute()</a></code></div>
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="postExecute" id="_postExecute">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_postExecute">#</a>
+		<code><a href="source-class-Coast.App.Subpath.html#81-89" title="Go to source code">postExecute</a>( <span><code><a href="class-Coast.Request.html">Coast\Request</a></code> <var>$req</var></span>, <span><code><a href="class-Coast.Response.html">Coast\Response</a></code> <var>$res</var></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+				<h4>Implementation of</h4>
+				<div class="list"><code><a href="class-Coast.App.Executable.html#_postExecute">Coast\App\Executable::postExecute()</a></code></div>
+		</div>
+		</div></td>
 	</tr>
 	</table>
 
-	<table class="summary used">
-	<caption>Methods used from <a href="class-Coast.App.Executable.Implementation.html#methods">Coast\App\Executable\Implementation</a></caption>
-	<tr>
-		<td><code>
-			<a href="class-Coast.App.Executable.Implementation.html#_postExecute">postExecute()</a>, 
-			<a href="class-Coast.App.Executable.Implementation.html#_preExecute">preExecute()</a>
-		</code></td>
-	</tr>
-	</table>
+
 
 
 

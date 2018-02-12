@@ -5,7 +5,7 @@
 
 	<title>Class Coast\Filter\Rule | Coast API Documentation</title>
 
-	<link rel="stylesheet" href="resources/style.css?95ada9fb523b6ab4fd1c47bb375f713f2cc65542">
+	<link rel="stylesheet" href="resources/style.css?c2f33731c1948fbed7c333554678bfa68d4817da">
 
 </head>
 
@@ -57,6 +57,11 @@
 
 						</li>
 				<li>
+					<a href="namespace-Coast.Feed.html">
+						Feed					</a>
+
+						</li>
+				<li>
 					<a href="namespace-Coast.File.html">
 						File					</a>
 
@@ -85,7 +90,19 @@
 						</li>
 				<li>
 					<a href="namespace-Coast.Model.html">
-						Model					</a>
+						Model<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.Model.Exception.html">
+						Exception					</a>
+
+						</li>
+							</ul></li>
+				<li>
+					<a href="namespace-Coast.Resolver.html">
+						Resolver					</a>
 
 						</li>
 				<li>
@@ -94,10 +111,22 @@
 
 						</li>
 				<li>
-					<a href="namespace-Coast.UrlResolver.html">
-						UrlResolver					</a>
+					<a href="namespace-Coast.Sitemap.html">
+						Sitemap					</a>
 
 						</li>
+				<li>
+					<a href="namespace-Coast.Transformer.html">
+						Transformer<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.Transformer.Rule.html">
+						Rule					</a>
+
+						</li>
+							</ul></li>
 				<li>
 					<a href="namespace-Coast.Validator.html">
 						Validator<span></span>
@@ -184,27 +213,25 @@
 		<h4>Direct known subclasses</h4>
 			<a href="class-Coast.Filter.html">Coast\Filter</a>, 
 			<a href="class-Coast.Filter.Rule.CamelCase.html">Coast\Filter\Rule\CamelCase</a>, 
-			<a href="class-Coast.Filter.Rule.SanitizeUrl.html">Coast\Filter\Rule\SanitizeUrl</a>, 
-			<a href="class-Coast.Filter.Rule.Slugify.html">Coast\Filter\Rule\Slugify</a>, 
 			<a href="class-Coast.Filter.Rule.StripTags.html">Coast\Filter\Rule\StripTags</a>, 
 			<a href="class-Coast.Filter.Rule.TitleCase.html">Coast\Filter\Rule\TitleCase</a>, 
 			<a href="class-Coast.Filter.Rule.Trim.html">Coast\Filter\Rule\Trim</a>, 
 			<a href="class-Coast.Filter.Rule.UpperCase.html">Coast\Filter\Rule\UpperCase</a>, 
-			<a href="class-Coast.Filter.Rule.UpperCaseFirst.html">Coast\Filter\Rule\UpperCaseFirst</a>, 
+			<a href="class-Coast.Filter.Rule.Url.html">Coast\Filter\Rule\Url</a>, 
 			<a href="class-Coast.Filter.Rule.CamelCaseSplit.html">Coast\Filter\Rule\CamelCaseSplit</a>, 
+			<a href="class-Coast.Filter.Rule.Custom.html">Coast\Filter\Rule\Custom</a>, 
+			<a href="class-Coast.Filter.Rule.EmailAddress.html">Coast\Filter\Rule\EmailAddress</a>, 
 			<a href="class-Coast.Filter.Rule.EncodeSpecialChars.html">Coast\Filter\Rule\EncodeSpecialChars</a>, 
+			<a href="class-Coast.Filter.Rule.FloatType.html">Coast\Filter\Rule\FloatType</a>, 
+			<a href="class-Coast.Filter.Rule.IntegerType.html">Coast\Filter\Rule\IntegerType</a>, 
 			<a href="class-Coast.Filter.Rule.LowerCase.html">Coast\Filter\Rule\LowerCase</a>, 
-			<a href="class-Coast.Filter.Rule.LowerCaseFirst.html">Coast\Filter\Rule\LowerCaseFirst</a>, 
-			<a href="class-Coast.Filter.Rule.Nullify.html">Coast\Filter\Rule\Nullify</a>, 
-			<a href="class-Coast.Filter.Rule.SanitizeEmailAddress.html">Coast\Filter\Rule\SanitizeEmailAddress</a>, 
-			<a href="class-Coast.Filter.Rule.SanitizeFloat.html">Coast\Filter\Rule\SanitizeFloat</a>, 
-			<a href="class-Coast.Filter.Rule.SanitizeInteger.html">Coast\Filter\Rule\SanitizeInteger</a>
+			<a href="class-Coast.Filter.Rule.Slugify.html">Coast\Filter\Rule\Slugify</a>
 	</div>
 
 	<div>
 		<h4>Indirect known subclasses</h4>
-			<a href="class-Coast.Filter.Rule.SanitizeDecimal.html">Coast\Filter\Rule\SanitizeDecimal</a>, 
-			<a href="class-Coast.Filter.Rule.SanitizeNumber.html">Coast\Filter\Rule\SanitizeNumber</a>
+			<a href="class-Coast.Filter.Rule.DecimalType.html">Coast\Filter\Rule\DecimalType</a>, 
+			<a href="class-Coast.Filter.Rule.NumberType.html">Coast\Filter\Rule\NumberType</a>
 	</div>
 
 
@@ -217,7 +244,7 @@
 		<b>Namespace:</b> <a href="namespace-Coast.html">Coast</a>\<a href="namespace-Coast.Filter.html">Filter</a><br>
 		
 
-			<b>Located at</b> <a href="source-class-Coast.Filter.Rule.html#9-52" title="Go to source code">Filter/Rule.php</a>
+			<b>Located at</b> <a href="source-class-Coast.Filter.Rule.html#9-40" title="Go to source code">Filter/Rule.php</a>
 		<br>
 	</div>
 
@@ -285,36 +312,6 @@
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="params" id="_params">
-
-		<td class="attributes"><code>
-			 public 
-
-			
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_params">#</a>
-		<code><a href="source-class-Coast.Filter.Rule.html#29-39" title="Go to source code">params</a>( )</code>
-
-		<div class="description short">
-			
-		</div>
-
-		<div class="description detailed hidden">
-			
-
-
-
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
 	<tr data-order="_filter" id="__filter">
 
 		<td class="attributes"><code>
@@ -327,7 +324,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#__filter">#</a>
-		<code><a href="source-class-Coast.Filter.Rule.html#41" title="Go to source code">_filter</a>( <span> <var>$value</var></span> )</code>
+		<code><a href="source-class-Coast.Filter.Rule.html#29" title="Go to source code">_filter</a>( <span> <var>$value</var></span> )</code>
 
 		<div class="description short">
 			
@@ -357,7 +354,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_filter">#</a>
-		<code><a href="source-class-Coast.Filter.Rule.html#43-46" title="Go to source code">filter</a>( <span> <var>$value</var></span> )</code>
+		<code><a href="source-class-Coast.Filter.Rule.html#31-34" title="Go to source code">filter</a>( <span> <var>$value</var></span>, <span> <var>$context</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -387,7 +384,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___invoke">#</a>
-		<code><a href="source-class-Coast.Filter.Rule.html#48-51" title="Go to source code">__invoke</a>( <span> <var>$value</var></span> )</code>
+		<code><a href="source-class-Coast.Filter.Rule.html#36-39" title="Go to source code">__invoke</a>( <span> <var>$value</var></span>, <span> <var>$context</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			

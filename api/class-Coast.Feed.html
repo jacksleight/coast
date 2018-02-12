@@ -5,7 +5,7 @@
 
 	<title>Class Coast\Feed | Coast API Documentation</title>
 
-	<link rel="stylesheet" href="resources/style.css?95ada9fb523b6ab4fd1c47bb375f713f2cc65542">
+	<link rel="stylesheet" href="resources/style.css?c2f33731c1948fbed7c333554678bfa68d4817da">
 
 </head>
 
@@ -57,6 +57,11 @@
 
 						</li>
 				<li>
+					<a href="namespace-Coast.Feed.html">
+						Feed					</a>
+
+						</li>
+				<li>
 					<a href="namespace-Coast.File.html">
 						File					</a>
 
@@ -85,7 +90,19 @@
 						</li>
 				<li>
 					<a href="namespace-Coast.Model.html">
-						Model					</a>
+						Model<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.Model.Exception.html">
+						Exception					</a>
+
+						</li>
+							</ul></li>
+				<li>
+					<a href="namespace-Coast.Resolver.html">
+						Resolver					</a>
 
 						</li>
 				<li>
@@ -94,10 +111,22 @@
 
 						</li>
 				<li>
-					<a href="namespace-Coast.UrlResolver.html">
-						UrlResolver					</a>
+					<a href="namespace-Coast.Sitemap.html">
+						Sitemap					</a>
 
 						</li>
+				<li>
+					<a href="namespace-Coast.Transformer.html">
+						Transformer<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.Transformer.Rule.html">
+						Rule					</a>
+
+						</li>
+							</ul></li>
 				<li>
 					<a href="namespace-Coast.Validator.html">
 						Validator<span></span>
@@ -125,8 +154,10 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
+				<li><a href="class-Coast.Acl.html">Acl</a></li>
 				<li><a href="class-Coast.App.html">App</a></li>
 				<li><a href="class-Coast.Coast.html">Coast</a></li>
+				<li><a href="class-Coast.Collection.html">Collection</a></li>
 				<li><a href="class-Coast.Config.html">Config</a></li>
 				<li><a href="class-Coast.Controller.html">Controller</a></li>
 				<li><a href="class-Coast.Csp.html">Csp</a></li>
@@ -141,12 +172,13 @@
 				<li><a href="class-Coast.Model.html">Model</a></li>
 				<li><a href="class-Coast.Path.html">Path</a></li>
 				<li><a href="class-Coast.Request.html">Request</a></li>
+				<li><a href="class-Coast.Resolver.html">Resolver</a></li>
 				<li><a href="class-Coast.Response.html">Response</a></li>
 				<li><a href="class-Coast.Router.html">Router</a></li>
 				<li><a href="class-Coast.Session.html">Session</a></li>
 				<li><a href="class-Coast.Sitemap.html">Sitemap</a></li>
+				<li><a href="class-Coast.Transformer.html">Transformer</a></li>
 				<li><a href="class-Coast.Url.html">Url</a></li>
-				<li><a href="class-Coast.UrlResolver.html">UrlResolver</a></li>
 				<li><a href="class-Coast.Validator.html">Validator</a></li>
 				<li><a href="class-Coast.View.html">View</a></li>
 				<li><a href="class-Coast.Xml.html">Xml</a></li>
@@ -206,6 +238,24 @@
 
 
 
+	<dl class="tree">
+		<dd style="padding-left:0px">
+			<a href="class-Coast.Model.html"><span>Coast\Model</span></a>
+			
+			 implements 
+<span>ArrayAccess</span>, 
+			
+<span>JsonSerializable</span>
+			
+			
+		</dd>
+		<dd style="padding-left:30px">
+			<img src="resources/inherit.png" alt="Extended by">
+<b><span>Coast\Feed</span></b>			
+			
+			
+		</dd>
+	</dl>
 
 
 
@@ -220,7 +270,7 @@
 		<b>Namespace:</b> <a href="namespace-Coast.html">Coast</a><br>
 		
 
-			<b>Located at</b> <a href="source-class-Coast.Feed.html#11-46" title="Go to source code">Feed.php</a>
+			<b>Located at</b> <a href="source-class-Coast.Feed.html#13-90" title="Go to source code">Feed.php</a>
 		<br>
 	</div>
 
@@ -228,10 +278,10 @@
 
 	<table class="summary methods" id="methods">
 	<caption>Methods summary</caption>
-	<tr data-order="__construct" id="___construct">
+	<tr data-order="_metadataStaticBuild" id="__metadataStaticBuild">
 
 		<td class="attributes"><code>
-			 public 
+			 protected static
 
 			
 			
@@ -239,8 +289,8 @@
 		</td>
 
 		<td class="name"><div>
-		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-Coast.Feed.html#15-25" title="Go to source code">__construct</a>( <span> <var>$title</var></span>, <span><code><a href="class-Coast.Url.html">Coast\Url</a></code> <var>$link</var></span>, <span> <var>$author</var></span>, <span>DateTime <var>$updated</var></span> )</code>
+		<a class="anchor" href="#__metadataStaticBuild">#</a>
+		<code><a href="source-class-Coast.Feed.html#29-61" title="Go to source code">_metadataStaticBuild</a>( )</code>
 
 		<div class="description short">
 			
@@ -254,11 +304,13 @@
 
 
 
+				<h4>Overrides</h4>
+				<div class="list"><code><a href="class-Coast.Model.html#__metadataStaticBuild">Coast\Model::_metadataStaticBuild()</a></code></div>
 
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="add" id="_add">
+	<tr data-order="__construct" id="___construct">
 
 		<td class="attributes"><code>
 			 public 
@@ -269,8 +321,8 @@
 		</td>
 
 		<td class="name"><div>
-		<a class="anchor" href="#_add">#</a>
-		<code><a href="source-class-Coast.Feed.html#27-40" title="Go to source code">add</a>( <span> <var>$title</var></span>, <span><code><a href="class-Coast.Url.html">Coast\Url</a></code> <var>$link</var></span>, <span>DateTime <var>$updated</var></span>, <span> <var>$summary</var> = <span class="php-keyword1">null</span></span>, <span> <var>$content</var> = <span class="php-keyword1">null</span></span> )</code>
+		<a class="anchor" href="#___construct">#</a>
+		<code><a href="source-class-Coast.Feed.html#63-66" title="Go to source code">__construct</a>( )</code>
 
 		<div class="description short">
 			
@@ -300,7 +352,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_toXml">#</a>
-		<code><a href="source-class-Coast.Feed.html#42-45" title="Go to source code">toXml</a>( )</code>
+		<code><a href="source-class-Coast.Feed.html#68-89" title="Go to source code">toXml</a>( )</code>
 
 		<div class="description short">
 			
@@ -320,6 +372,43 @@
 	</tr>
 	</table>
 
+	<table class="summary inherited">
+	<caption>Methods inherited from <a href="class-Coast.Model.html#methods">Coast\Model</a></caption>
+	<tr>
+		<td><code>
+			<a href="class-Coast.Model.html#___call">__call()</a>, 
+			<a href="class-Coast.Model.html#___get">__get()</a>, 
+			<a href="class-Coast.Model.html#___isset">__isset()</a>, 
+			<a href="class-Coast.Model.html#___set">__set()</a>, 
+			<a href="class-Coast.Model.html#___setUnknown">__setUnknown()</a>, 
+			<a href="class-Coast.Model.html#___unset">__unset()</a>, 
+			<a href="class-Coast.Model.html#__construct">_construct()</a>, 
+			<a href="class-Coast.Model.html#__get">_get()</a>, 
+			<a href="class-Coast.Model.html#__isset">_isset()</a>, 
+			<a href="class-Coast.Model.html#__metadataBuild">_metadataBuild()</a>, 
+			<a href="class-Coast.Model.html#__metadataModify">_metadataModify()</a>, 
+			<a href="class-Coast.Model.html#__metadataStaticModify">_metadataStaticModify()</a>, 
+			<a href="class-Coast.Model.html#__set">_set()</a>, 
+			<a href="class-Coast.Model.html#__unset">_unset()</a>, 
+			<a href="class-Coast.Model.html#_createDefault">createDefault()</a>, 
+			<a href="class-Coast.Model.html#_debug">debug()</a>, 
+			<a href="class-Coast.Model.html#_fromArray">fromArray()</a>, 
+			<a href="class-Coast.Model.html#_initMethods">initMethods()</a>, 
+			<a href="class-Coast.Model.html#_isValid">isValid()</a>, 
+			<a href="class-Coast.Model.html#_jsonSerialize">jsonSerialize()</a>, 
+			<a href="class-Coast.Model.html#_metadata">metadata()</a>, 
+			<a href="class-Coast.Model.html#_metadataReset">metadataReset()</a>, 
+			<a href="class-Coast.Model.html#_metadataStatic">metadataStatic()</a>, 
+			<a href="class-Coast.Model.html#_offsetExists">offsetExists()</a>, 
+			<a href="class-Coast.Model.html#_offsetGet">offsetGet()</a>, 
+			<a href="class-Coast.Model.html#_offsetSet">offsetSet()</a>, 
+			<a href="class-Coast.Model.html#_offsetUnset">offsetUnset()</a>, 
+			<a href="class-Coast.Model.html#_toArray">toArray()</a>, 
+			<a href="class-Coast.Model.html#_traverse">traverse()</a>, 
+			<a href="class-Coast.Model.html#_traverseModels">traverseModels()</a>
+		</code></td>
+	</tr>
+	</table>
 
 
 
@@ -328,19 +417,29 @@
 
 
 
+	<table class="summary inherited">
+	<caption>Constants inherited from <a href="class-Coast.Model.html#constants">Coast\Model</a></caption>
+	<tr>
+		<td><code>
+			<a href="class-Coast.Model.html#TRAVERSE_SKIP"><b>TRAVERSE_SKIP</b></a>, 
+			<a href="class-Coast.Model.html#TYPE_MANY"><b>TYPE_MANY</b></a>, 
+			<a href="class-Coast.Model.html#TYPE_ONE"><b>TYPE_ONE</b></a>
+		</code></td>
+	</tr>
+	</table>
 
 
 
 	<table class="summary properties" id="properties">
 	<caption>Properties summary</caption>
-	<tr data-order="_xml" id="$_xml">
+	<tr data-order="id" id="$id">
 		<td class="attributes"><code>
 			protected  
 			
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Coast.Feed.html#13" title="Go to source code"><var>$_xml</var></a>
+				<a href="source-class-Coast.Feed.html#15" title="Go to source code"><var>$id</var></a>
 
 			<div class="description short">
 				
@@ -353,13 +452,174 @@
 		</td>
 		<td class="value">
 			<div>
-				<a href="#$_xml" class="anchor">#</a>
+				<a href="#$id" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="url" id="$url">
+		<td class="attributes"><code>
+			protected  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Coast.Feed.html#17" title="Go to source code"><var>$url</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$url" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="urlFeed" id="$urlFeed">
+		<td class="attributes"><code>
+			protected  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Coast.Feed.html#19" title="Go to source code"><var>$urlFeed</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$urlFeed" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="title" id="$title">
+		<td class="attributes"><code>
+			protected  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Coast.Feed.html#21" title="Go to source code"><var>$title</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$title" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="updateDate" id="$updateDate">
+		<td class="attributes"><code>
+			protected  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Coast.Feed.html#23" title="Go to source code"><var>$updateDate</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$updateDate" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="author" id="$author">
+		<td class="attributes"><code>
+			protected  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Coast.Feed.html#25" title="Go to source code"><var>$author</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$author" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="items" id="$items">
+		<td class="attributes"><code>
+			protected  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Coast.Feed.html#27" title="Go to source code"><var>$items</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$items" class="anchor">#</a>
 				<code></code>
 			</div>
 		</td>
 	</tr>
 	</table>
 
+	<table class="summary inherited">
+	<caption>Properties inherited from <a href="class-Coast.Model.html#properties">Coast\Model</a></caption>
+	<tr>
+		<td><code>
+			<a href="class-Coast.Model.html#$_initMethods"><var>$_initMethods</var></a>, 
+			<a href="class-Coast.Model.html#$_metadata"><var>$_metadata</var></a>, 
+			<a href="class-Coast.Model.html#$_metadataSource"><var>$_metadataSource</var></a>, 
+			<a href="class-Coast.Model.html#$_metadataStatic"><var>$_metadataStatic</var></a>
+		</code></td>
+	</tr>
+	</table>
 
 
 

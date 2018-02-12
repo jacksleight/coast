@@ -5,7 +5,7 @@
 
 	<title>Class Coast\Http\Response | Coast API Documentation</title>
 
-	<link rel="stylesheet" href="resources/style.css?95ada9fb523b6ab4fd1c47bb375f713f2cc65542">
+	<link rel="stylesheet" href="resources/style.css?c2f33731c1948fbed7c333554678bfa68d4817da">
 
 </head>
 
@@ -57,6 +57,11 @@
 
 						</li>
 				<li>
+					<a href="namespace-Coast.Feed.html">
+						Feed					</a>
+
+						</li>
+				<li>
 					<a href="namespace-Coast.File.html">
 						File					</a>
 
@@ -85,7 +90,19 @@
 						</li>
 				<li>
 					<a href="namespace-Coast.Model.html">
-						Model					</a>
+						Model<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.Model.Exception.html">
+						Exception					</a>
+
+						</li>
+							</ul></li>
+				<li>
+					<a href="namespace-Coast.Resolver.html">
+						Resolver					</a>
 
 						</li>
 				<li>
@@ -94,10 +111,22 @@
 
 						</li>
 				<li>
-					<a href="namespace-Coast.UrlResolver.html">
-						UrlResolver					</a>
+					<a href="namespace-Coast.Sitemap.html">
+						Sitemap					</a>
 
 						</li>
+				<li>
+					<a href="namespace-Coast.Transformer.html">
+						Transformer<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.Transformer.Rule.html">
+						Rule					</a>
+
+						</li>
+							</ul></li>
 				<li>
 					<a href="namespace-Coast.Validator.html">
 						Validator<span></span>
@@ -125,11 +154,16 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
+				<li><a href="class-Coast.Http.Request.html">Request</a></li>
 				<li class="active"><a href="class-Coast.Http.Response.html">Response</a></li>
 			</ul>
 
 
 
+			<h3>Exceptions</h3>
+			<ul>
+				<li><a href="class-Coast.Http.Exception.html">Exception</a></li>
+			</ul>
 
 
 		</div>
@@ -192,7 +226,7 @@
 		<b>Namespace:</b> <a href="namespace-Coast.html">Coast</a>\<a href="namespace-Coast.Http.html">Http</a><br>
 		
 
-			<b>Located at</b> <a href="source-class-Coast.Http.Response.html#9-80" title="Go to source code">Http/Response.php</a>
+			<b>Located at</b> <a href="source-class-Coast.Http.Response.html#12-155" title="Go to source code">Http/Response.php</a>
 		<br>
 	</div>
 
@@ -212,7 +246,67 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-Coast.Http.Response.html#15-22" title="Go to source code">__construct</a>( <span> <var>$status</var></span>, <span>array <var>$headers</var></span>, <span> <var>$body</var></span> )</code>
+		<code><a href="source-class-Coast.Http.Response.html#20-28" title="Go to source code">__construct</a>( <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="request" id="_request">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_request">#</a>
+		<code><a href="source-class-Coast.Http.Response.html#30-37" title="Go to source code">request</a>( <span><code><a href="class-Coast.Http.Request.html">Coast\Http\Request</a></code> <var>$request</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="url" id="_url">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_url">#</a>
+		<code><a href="source-class-Coast.Http.Response.html#39-49" title="Go to source code">url</a>( <span><code><a href="class-Coast.Url.html">Coast\Url</a></code> <var>$url</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -242,7 +336,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_status">#</a>
-		<code><a href="source-class-Coast.Http.Response.html#24-27" title="Go to source code">status</a>( )</code>
+		<code><a href="source-class-Coast.Http.Response.html#51-58" title="Go to source code">status</a>( <span> <var>$status</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -272,7 +366,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_header">#</a>
-		<code><a href="source-class-Coast.Http.Response.html#29-34" title="Go to source code">header</a>( <span> <var>$name</var></span> )</code>
+		<code><a href="source-class-Coast.Http.Response.html#60-70" title="Go to source code">header</a>( <span> <var>$name</var></span>, <span> <var>$value</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -302,7 +396,37 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_headers">#</a>
-		<code><a href="source-class-Coast.Http.Response.html#36-39" title="Go to source code">headers</a>( )</code>
+		<code><a href="source-class-Coast.Http.Response.html#72-81" title="Go to source code">headers</a>( <span>array <var>$headers</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="type" id="_type">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_type">#</a>
+		<code><a href="source-class-Coast.Http.Response.html#83-86" title="Go to source code">type</a>( )</code>
 
 		<div class="description short">
 			
@@ -332,7 +456,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_body">#</a>
-		<code><a href="source-class-Coast.Http.Response.html#41-44" title="Go to source code">body</a>( )</code>
+		<code><a href="source-class-Coast.Http.Response.html#88-95" title="Go to source code">body</a>( <span> <var>$body</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -362,7 +486,127 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_json">#</a>
-		<code><a href="source-class-Coast.Http.Response.html#46-49" title="Go to source code">json</a>( )</code>
+		<code><a href="source-class-Coast.Http.Response.html#97-104" title="Go to source code">json</a>( <span> <var>$assoc</var> = <span class="php-keyword1">false</span></span>, <span> <var>$depth</var> = <span class="php-num">512</span></span>, <span> <var>$options</var> = <span class="php-num">0</span></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="xml" id="_xml">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_xml">#</a>
+		<code><a href="source-class-Coast.Http.Response.html#106-109" title="Go to source code">xml</a>( <span> <var>$class</var> = <span class="php-quote">'\Coast\Xml'</span></span>, <span> <var>$options</var> = <span class="php-num">0</span></span>, <span> <var>$namespace</var> = <span class="php-quote">''</span></span>, <span> <var>$prefix</var> = <span class="php-keyword1">false</span></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="isJson" id="_isJson">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_isJson">#</a>
+		<code><a href="source-class-Coast.Http.Response.html#111-114" title="Go to source code">isJson</a>( )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="isJavascript" id="_isJavascript">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_isJavascript">#</a>
+		<code><a href="source-class-Coast.Http.Response.html#116-119" title="Go to source code">isJavascript</a>( )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="isXml" id="_isXml">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_isXml">#</a>
+		<code><a href="source-class-Coast.Http.Response.html#121-124" title="Go to source code">isXml</a>( )</code>
 
 		<div class="description short">
 			
@@ -392,7 +636,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_isInformation">#</a>
-		<code><a href="source-class-Coast.Http.Response.html#51-54" title="Go to source code">isInformation</a>( )</code>
+		<code><a href="source-class-Coast.Http.Response.html#126-129" title="Go to source code">isInformation</a>( )</code>
 
 		<div class="description short">
 			
@@ -422,7 +666,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_isSuccess">#</a>
-		<code><a href="source-class-Coast.Http.Response.html#56-59" title="Go to source code">isSuccess</a>( )</code>
+		<code><a href="source-class-Coast.Http.Response.html#131-134" title="Go to source code">isSuccess</a>( )</code>
 
 		<div class="description short">
 			
@@ -452,7 +696,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_isRedirect">#</a>
-		<code><a href="source-class-Coast.Http.Response.html#61-64" title="Go to source code">isRedirect</a>( )</code>
+		<code><a href="source-class-Coast.Http.Response.html#136-139" title="Go to source code">isRedirect</a>( )</code>
 
 		<div class="description short">
 			
@@ -482,7 +726,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_isClientError">#</a>
-		<code><a href="source-class-Coast.Http.Response.html#66-69" title="Go to source code">isClientError</a>( )</code>
+		<code><a href="source-class-Coast.Http.Response.html#141-144" title="Go to source code">isClientError</a>( )</code>
 
 		<div class="description short">
 			
@@ -512,7 +756,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_isServerError">#</a>
-		<code><a href="source-class-Coast.Http.Response.html#71-74" title="Go to source code">isServerError</a>( )</code>
+		<code><a href="source-class-Coast.Http.Response.html#146-149" title="Go to source code">isServerError</a>( )</code>
 
 		<div class="description short">
 			
@@ -542,7 +786,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_isError">#</a>
-		<code><a href="source-class-Coast.Http.Response.html#76-79" title="Go to source code">isError</a>( )</code>
+		<code><a href="source-class-Coast.Http.Response.html#151-154" title="Go to source code">isError</a>( )</code>
 
 		<div class="description short">
 			
@@ -575,6 +819,56 @@
 
 	<table class="summary properties" id="properties">
 	<caption>Properties summary</caption>
+	<tr data-order="_request" id="$_request">
+		<td class="attributes"><code>
+			protected  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Coast.Http.Response.html#14" title="Go to source code"><var>$_request</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$_request" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="_url" id="$_url">
+		<td class="attributes"><code>
+			protected  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Coast.Http.Response.html#15" title="Go to source code"><var>$_url</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$_url" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
 	<tr data-order="_status" id="$_status">
 		<td class="attributes"><code>
 			protected  
@@ -582,7 +876,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Coast.Http.Response.html#11" title="Go to source code"><var>$_status</var></a>
+				<a href="source-class-Coast.Http.Response.html#16" title="Go to source code"><var>$_status</var></a>
 
 			<div class="description short">
 				
@@ -607,7 +901,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Coast.Http.Response.html#12" title="Go to source code"><var>$_headers</var></a>
+				<a href="source-class-Coast.Http.Response.html#17" title="Go to source code"><var>$_headers</var></a>
 
 			<div class="description short">
 				
@@ -632,7 +926,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Coast.Http.Response.html#13" title="Go to source code"><var>$_body</var></a>
+				<a href="source-class-Coast.Http.Response.html#18" title="Go to source code"><var>$_body</var></a>
 
 			<div class="description short">
 				

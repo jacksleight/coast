@@ -5,7 +5,7 @@
 
 	<title>Class Coast\Path | Coast API Documentation</title>
 
-	<link rel="stylesheet" href="resources/style.css?95ada9fb523b6ab4fd1c47bb375f713f2cc65542">
+	<link rel="stylesheet" href="resources/style.css?c2f33731c1948fbed7c333554678bfa68d4817da">
 
 </head>
 
@@ -57,6 +57,11 @@
 
 						</li>
 				<li>
+					<a href="namespace-Coast.Feed.html">
+						Feed					</a>
+
+						</li>
+				<li>
 					<a href="namespace-Coast.File.html">
 						File					</a>
 
@@ -85,7 +90,19 @@
 						</li>
 				<li>
 					<a href="namespace-Coast.Model.html">
-						Model					</a>
+						Model<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.Model.Exception.html">
+						Exception					</a>
+
+						</li>
+							</ul></li>
+				<li>
+					<a href="namespace-Coast.Resolver.html">
+						Resolver					</a>
 
 						</li>
 				<li>
@@ -94,10 +111,22 @@
 
 						</li>
 				<li>
-					<a href="namespace-Coast.UrlResolver.html">
-						UrlResolver					</a>
+					<a href="namespace-Coast.Sitemap.html">
+						Sitemap					</a>
 
 						</li>
+				<li>
+					<a href="namespace-Coast.Transformer.html">
+						Transformer<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.Transformer.Rule.html">
+						Rule					</a>
+
+						</li>
+							</ul></li>
 				<li>
 					<a href="namespace-Coast.Validator.html">
 						Validator<span></span>
@@ -125,8 +154,10 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
+				<li><a href="class-Coast.Acl.html">Acl</a></li>
 				<li><a href="class-Coast.App.html">App</a></li>
 				<li><a href="class-Coast.Coast.html">Coast</a></li>
+				<li><a href="class-Coast.Collection.html">Collection</a></li>
 				<li><a href="class-Coast.Config.html">Config</a></li>
 				<li><a href="class-Coast.Controller.html">Controller</a></li>
 				<li><a href="class-Coast.Csp.html">Csp</a></li>
@@ -141,12 +172,13 @@
 				<li><a href="class-Coast.Model.html">Model</a></li>
 				<li class="active"><a href="class-Coast.Path.html">Path</a></li>
 				<li><a href="class-Coast.Request.html">Request</a></li>
+				<li><a href="class-Coast.Resolver.html">Resolver</a></li>
 				<li><a href="class-Coast.Response.html">Response</a></li>
 				<li><a href="class-Coast.Router.html">Router</a></li>
 				<li><a href="class-Coast.Session.html">Session</a></li>
 				<li><a href="class-Coast.Sitemap.html">Sitemap</a></li>
+				<li><a href="class-Coast.Transformer.html">Transformer</a></li>
 				<li><a href="class-Coast.Url.html">Url</a></li>
-				<li><a href="class-Coast.UrlResolver.html">UrlResolver</a></li>
 				<li><a href="class-Coast.Validator.html">Validator</a></li>
 				<li><a href="class-Coast.View.html">View</a></li>
 				<li><a href="class-Coast.Xml.html">Xml</a></li>
@@ -232,7 +264,7 @@
 		<b>Namespace:</b> <a href="namespace-Coast.html">Coast</a><br>
 		
 
-			<b>Located at</b> <a href="source-class-Coast.Path.html#12-337" title="Go to source code">Path.php</a>
+			<b>Located at</b> <a href="source-class-Coast.Path.html#12-303" title="Go to source code">Path.php</a>
 		<br>
 	</div>
 
@@ -252,7 +284,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-Coast.Path.html#23-30" title="Go to source code">__construct</a>( <span>string <var>$name</var></span> )</code>
+		<code><a href="source-class-Coast.Path.html#26-33" title="Go to source code">__construct</a>( <span>string <var>$name</var></span> )</code>
 
 		<div class="description short">
 			<p>Constructs a new path object.</p>
@@ -287,7 +319,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_name">#</a>
-		<code><a href="source-class-Coast.Path.html#32-42" title="Go to source code">name</a>( <span>string <var>$name</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Path.html#35-45" title="Go to source code">name</a>( <span>string <var>$name</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			<p>Get/set the name.</p>
@@ -322,7 +354,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___toString">#</a>
-		<code><a href="source-class-Coast.Path.html#44-51" title="Go to source code">__toString</a>( )</code>
+		<code><a href="source-class-Coast.Path.html#47-54" title="Go to source code">__toString</a>( )</code>
 
 		<div class="description short">
 			<p>Aliases <code>name</code></p>
@@ -356,7 +388,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_dirName">#</a>
-		<code><a href="source-class-Coast.Path.html#53-65" title="Go to source code">dirName</a>( <span> <var>$dirName</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Path.html#56-68" title="Go to source code">dirName</a>( <span> <var>$dirName</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			<p>Get/set the directory name.</p>
@@ -390,7 +422,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_baseName">#</a>
-		<code><a href="source-class-Coast.Path.html#67-79" title="Go to source code">baseName</a>( <span> <var>$baseName</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Path.html#70-82" title="Go to source code">baseName</a>( <span> <var>$baseName</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			<p>Get/set the base name.</p>
@@ -424,7 +456,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_fileName">#</a>
-		<code><a href="source-class-Coast.Path.html#81-93" title="Go to source code">fileName</a>( <span> <var>$fileName</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Path.html#84-96" title="Go to source code">fileName</a>( <span> <var>$fileName</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			<p>Get/set the file name.</p>
@@ -439,6 +471,36 @@
 				<div class="list">
 					string
 				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="fileNameDot" id="_fileNameDot">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_fileNameDot">#</a>
+		<code><a href="source-class-Coast.Path.html#98-102" title="Go to source code">fileNameDot</a>( )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
 
 
 
@@ -458,7 +520,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_extName">#</a>
-		<code><a href="source-class-Coast.Path.html#95-107" title="Go to source code">extName</a>( <span> <var>$extName</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Path.html#104-116" title="Go to source code">extName</a>( <span> <var>$extName</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			<p>Get/set the extension name.</p>
@@ -480,6 +542,96 @@
 		</div>
 		</div></td>
 	</tr>
+	<tr data-order="extNameDot" id="_extNameDot">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_extNameDot">#</a>
+		<code><a href="source-class-Coast.Path.html#118-122" title="Go to source code">extNameDot</a>( )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="parts" id="_parts">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_parts">#</a>
+		<code><a href="source-class-Coast.Path.html#124-127" title="Go to source code">parts</a>( )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="part" id="_part">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_part">#</a>
+		<code><a href="source-class-Coast.Path.html#129-138" title="Go to source code">part</a>( <span> <var>$i</var></span>, <span> <var>$reverse</var> = <span class="php-keyword1">false</span></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
 	<tr data-order="prefix" id="_prefix">
 
 		<td class="attributes"><code>
@@ -492,7 +644,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_prefix">#</a>
-		<code><a href="source-class-Coast.Path.html#109-118" title="Go to source code">prefix</a>( <span> <var>$prefix</var></span> )</code>
+		<code><a href="source-class-Coast.Path.html#140-149" title="Go to source code">prefix</a>( <span> <var>$prefix</var></span> )</code>
 
 		<div class="description short">
 			<p>Add prefix.</p>
@@ -526,7 +678,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_suffix">#</a>
-		<code><a href="source-class-Coast.Path.html#120-129" title="Go to source code">suffix</a>( <span> <var>$suffix</var></span> )</code>
+		<code><a href="source-class-Coast.Path.html#151-160" title="Go to source code">suffix</a>( <span> <var>$suffix</var></span> )</code>
 
 		<div class="description short">
 			<p>Add suffix.</p>
@@ -560,7 +712,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_isWithin">#</a>
-		<code><a href="source-class-Coast.Path.html#131-146" title="Go to source code">isWithin</a>( <span><code><a href="class-Coast.Path.html">Coast\Path</a></code> <var>$parent</var></span> )</code>
+		<code><a href="source-class-Coast.Path.html#162-177" title="Go to source code">isWithin</a>( <span><code><a href="class-Coast.Path.html">Coast\Path</a></code> <var>$parent</var></span> )</code>
 
 		<div class="description short">
 			<p>Check if path is within another</p>
@@ -599,7 +751,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_toAbsolute">#</a>
-		<code><a href="source-class-Coast.Path.html#148-175" title="Go to source code">toAbsolute</a>( <span><code><a href="class-Coast.Path.html">Coast\Path</a></code> <var>$base</var></span> )</code>
+		<code><a href="source-class-Coast.Path.html#179-206" title="Go to source code">toAbsolute</a>( <span><code><a href="class-Coast.Path.html">Coast\Path</a></code> <var>$base</var></span> )</code>
 
 		<div class="description short">
 			<p>Get absolute path from relative path.</p>
@@ -638,7 +790,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_toRelative">#</a>
-		<code><a href="source-class-Coast.Path.html#177-204" title="Go to source code">toRelative</a>( <span><code><a href="class-Coast.Path.html">Coast\Path</a></code> <var>$base</var></span> )</code>
+		<code><a href="source-class-Coast.Path.html#208-235" title="Go to source code">toRelative</a>( <span><code><a href="class-Coast.Path.html">Coast\Path</a></code> <var>$base</var></span> )</code>
 
 		<div class="description short">
 			<p>Get relative path from absolute path.</p>
@@ -677,7 +829,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_toReal">#</a>
-		<code><a href="source-class-Coast.Path.html#206-230" title="Go to source code">toReal</a>( )</code>
+		<code><a href="source-class-Coast.Path.html#237-261" title="Go to source code">toReal</a>( )</code>
 
 		<div class="description short">
 			<p>Reduce absolute path with relative parts to real path.</p>
@@ -711,7 +863,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_isAbsolute">#</a>
-		<code><a href="source-class-Coast.Path.html#232-239" title="Go to source code">isAbsolute</a>( )</code>
+		<code><a href="source-class-Coast.Path.html#263-270" title="Go to source code">isAbsolute</a>( )</code>
 
 		<div class="description short">
 			<p>Is path absolute.</p>
@@ -745,7 +897,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_isRelative">#</a>
-		<code><a href="source-class-Coast.Path.html#241-248" title="Go to source code">isRelative</a>( )</code>
+		<code><a href="source-class-Coast.Path.html#272-279" title="Go to source code">isRelative</a>( )</code>
 
 		<div class="description short">
 			<p>Is path relative.</p>
@@ -767,7 +919,7 @@
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="path" id="_path">
+	<tr data-order="child" id="_child">
 
 		<td class="attributes"><code>
 			 public 
@@ -778,8 +930,38 @@
 		</td>
 
 		<td class="name"><div>
-		<a class="anchor" href="#_path">#</a>
-		<code><a href="source-class-Coast.Path.html#250-254" title="Go to source code">path</a>( <span> <var>$path</var></span> )</code>
+		<a class="anchor" href="#_child">#</a>
+		<code><a href="source-class-Coast.Path.html#281-286" title="Go to source code">child</a>( <span> <var>$path</var></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="parent" id="_parent">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_parent">#</a>
+		<code><a href="source-class-Coast.Path.html#288-292" title="Go to source code">parent</a>( )</code>
 
 		<div class="description short">
 			
@@ -809,7 +991,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_toDir">#</a>
-		<code><a href="source-class-Coast.Path.html#256-259" title="Go to source code">toDir</a>( )</code>
+		<code><a href="source-class-Coast.Path.html#294-297" title="Go to source code">toDir</a>( )</code>
 
 		<div class="description short">
 			
@@ -839,281 +1021,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_toFile">#</a>
-		<code><a href="source-class-Coast.Path.html#261-264" title="Go to source code">toFile</a>( )</code>
-
-		<div class="description short">
-			
-		</div>
-
-		<div class="description detailed hidden">
-			
-
-
-
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="exists" id="_exists">
-
-		<td class="attributes"><code>
-			 public 
-
-			
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_exists">#</a>
-		<code><a href="source-class-Coast.Path.html#266-272" title="Go to source code">exists</a>( )</code>
-
-		<div class="description short">
-			
-		</div>
-
-		<div class="description detailed hidden">
-			
-
-
-
-
-
-				<h4>Todo</h4>
-				<div class="list">
-						isReal?<br>
-				</div>
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="isDir" id="_isDir">
-
-		<td class="attributes"><code>
-			 public 
-
-			
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_isDir">#</a>
-		<code><a href="source-class-Coast.Path.html#274-277" title="Go to source code">isDir</a>( )</code>
-
-		<div class="description short">
-			
-		</div>
-
-		<div class="description detailed hidden">
-			
-
-
-
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="isFile" id="_isFile">
-
-		<td class="attributes"><code>
-			 public 
-
-			
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_isFile">#</a>
-		<code><a href="source-class-Coast.Path.html#279-282" title="Go to source code">isFile</a>( )</code>
-
-		<div class="description short">
-			
-		</div>
-
-		<div class="description detailed hidden">
-			
-
-
-
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="isReadable" id="_isReadable">
-
-		<td class="attributes"><code>
-			 public 
-
-			
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_isReadable">#</a>
-		<code><a href="source-class-Coast.Path.html#284-287" title="Go to source code">isReadable</a>( )</code>
-
-		<div class="description short">
-			
-		</div>
-
-		<div class="description detailed hidden">
-			
-
-
-
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="isWritable" id="_isWritable">
-
-		<td class="attributes"><code>
-			 public 
-
-			
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_isWritable">#</a>
-		<code><a href="source-class-Coast.Path.html#289-292" title="Go to source code">isWritable</a>( )</code>
-
-		<div class="description short">
-			
-		</div>
-
-		<div class="description detailed hidden">
-			
-
-
-
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="permissions" id="_permissions">
-
-		<td class="attributes"><code>
-			 public 
-
-			
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_permissions">#</a>
-		<code><a href="source-class-Coast.Path.html#294-297" title="Go to source code">permissions</a>( )</code>
-
-		<div class="description short">
-			
-		</div>
-
-		<div class="description detailed hidden">
-			
-
-
-
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="move" id="_move">
-
-		<td class="attributes"><code>
-			 public 
-
-			
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_move">#</a>
-		<code><a href="source-class-Coast.Path.html#299-307" title="Go to source code">move</a>( <span><code><a href="class-Coast.Dir.html">Coast\Dir</a></code> <var>$dir</var></span>, <span> <var>$baseName</var> = <span class="php-keyword1">null</span></span> )</code>
-
-		<div class="description short">
-			
-		</div>
-
-		<div class="description detailed hidden">
-			
-
-
-
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="rename" id="_rename">
-
-		<td class="attributes"><code>
-			 public 
-
-			
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_rename">#</a>
-		<code><a href="source-class-Coast.Path.html#309-317" title="Go to source code">rename</a>( <span> <var>$baseName</var></span>, <span><code><a href="class-Coast.Dir.html">Coast\Dir</a></code> <var>$dir</var> = <span class="php-keyword1">null</span></span> )</code>
-
-		<div class="description short">
-			
-		</div>
-
-		<div class="description detailed hidden">
-			
-
-
-
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="_parseBaseName" id="__parseBaseName">
-
-		<td class="attributes"><code>
-			 protected 
-
-			
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#__parseBaseName">#</a>
-		<code><a href="source-class-Coast.Path.html#319-336" title="Go to source code">_parseBaseName</a>( <span> <var>$baseName</var></span> )</code>
+		<code><a href="source-class-Coast.Path.html#299-302" title="Go to source code">toFile</a>( )</code>
 
 		<div class="description short">
 			
@@ -1140,6 +1048,57 @@
 
 
 
+	<table class="summary constants" id="constants">
+	<caption>Constants summary</caption>
+	<tr data-order="PART_FIRST" id="PART_FIRST">
+
+		<td class="attributes"><code>string</code></td>
+		<td class="name">
+			<code>
+				<a href="source-class-Coast.Path.html#17" title="Go to source code"><b>PART_FIRST</b></a>
+			</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#PART_FIRST" class="anchor">#</a>
+				<code><span class="php-quote">'first'</span></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="PART_LAST" id="PART_LAST">
+
+		<td class="attributes"><code>string</code></td>
+		<td class="name">
+			<code>
+				<a href="source-class-Coast.Path.html#18" title="Go to source code"><b>PART_LAST</b></a>
+			</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#PART_LAST" class="anchor">#</a>
+				<code><span class="php-quote">'last'</span></code>
+			</div>
+		</td>
+	</tr>
+	</table>
 
 
 
@@ -1153,7 +1112,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Coast.Path.html#17-21" title="Go to source code"><var>$_name</var></a>
+				<a href="source-class-Coast.Path.html#20-24" title="Go to source code"><var>$_name</var></a>
 
 			<div class="description short">
 				<p>Full path name.</p>

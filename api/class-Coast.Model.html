@@ -5,7 +5,7 @@
 
 	<title>Class Coast\Model | Coast API Documentation</title>
 
-	<link rel="stylesheet" href="resources/style.css?95ada9fb523b6ab4fd1c47bb375f713f2cc65542">
+	<link rel="stylesheet" href="resources/style.css?c2f33731c1948fbed7c333554678bfa68d4817da">
 
 </head>
 
@@ -57,6 +57,11 @@
 
 						</li>
 				<li>
+					<a href="namespace-Coast.Feed.html">
+						Feed					</a>
+
+						</li>
+				<li>
 					<a href="namespace-Coast.File.html">
 						File					</a>
 
@@ -85,7 +90,19 @@
 						</li>
 				<li>
 					<a href="namespace-Coast.Model.html">
-						Model					</a>
+						Model<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.Model.Exception.html">
+						Exception					</a>
+
+						</li>
+							</ul></li>
+				<li>
+					<a href="namespace-Coast.Resolver.html">
+						Resolver					</a>
 
 						</li>
 				<li>
@@ -94,10 +111,22 @@
 
 						</li>
 				<li>
-					<a href="namespace-Coast.UrlResolver.html">
-						UrlResolver					</a>
+					<a href="namespace-Coast.Sitemap.html">
+						Sitemap					</a>
 
 						</li>
+				<li>
+					<a href="namespace-Coast.Transformer.html">
+						Transformer<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.Transformer.Rule.html">
+						Rule					</a>
+
+						</li>
+							</ul></li>
 				<li>
 					<a href="namespace-Coast.Validator.html">
 						Validator<span></span>
@@ -125,8 +154,10 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
+				<li><a href="class-Coast.Acl.html">Acl</a></li>
 				<li><a href="class-Coast.App.html">App</a></li>
 				<li><a href="class-Coast.Coast.html">Coast</a></li>
+				<li><a href="class-Coast.Collection.html">Collection</a></li>
 				<li><a href="class-Coast.Config.html">Config</a></li>
 				<li><a href="class-Coast.Controller.html">Controller</a></li>
 				<li><a href="class-Coast.Csp.html">Csp</a></li>
@@ -141,12 +172,13 @@
 				<li class="active"><a href="class-Coast.Model.html">Model</a></li>
 				<li><a href="class-Coast.Path.html">Path</a></li>
 				<li><a href="class-Coast.Request.html">Request</a></li>
+				<li><a href="class-Coast.Resolver.html">Resolver</a></li>
 				<li><a href="class-Coast.Response.html">Response</a></li>
 				<li><a href="class-Coast.Router.html">Router</a></li>
 				<li><a href="class-Coast.Session.html">Session</a></li>
 				<li><a href="class-Coast.Sitemap.html">Sitemap</a></li>
+				<li><a href="class-Coast.Transformer.html">Transformer</a></li>
 				<li><a href="class-Coast.Url.html">Url</a></li>
-				<li><a href="class-Coast.UrlResolver.html">UrlResolver</a></li>
 				<li><a href="class-Coast.Validator.html">Validator</a></li>
 				<li><a href="class-Coast.View.html">View</a></li>
 				<li><a href="class-Coast.Xml.html">Xml</a></li>
@@ -210,13 +242,24 @@
 		<dd style="padding-left:0px">
 <b><span>Coast\Model</span></b>			
 			 implements 
-<span>ArrayAccess</span>
+<span>ArrayAccess</span>, 
+			
+<span>JsonSerializable</span>
 			
 			
 		</dd>
 	</dl>
 
 
+	<div>
+		<h4>Direct known subclasses</h4>
+			<a href="class-Coast.Feed.html">Coast\Feed</a>, 
+			<a href="class-Coast.Feed.Content.html">Coast\Feed\Content</a>, 
+			<a href="class-Coast.Feed.Item.html">Coast\Feed\Item</a>, 
+			<a href="class-Coast.Feed.Person.html">Coast\Feed\Person</a>, 
+			<a href="class-Coast.Sitemap.html">Coast\Sitemap</a>, 
+			<a href="class-Coast.Sitemap.Url.html">Coast\Sitemap\Url</a>
+	</div>
 
 
 
@@ -229,7 +272,7 @@
 		<b>Namespace:</b> <a href="namespace-Coast.html">Coast</a><br>
 		
 
-			<b>Located at</b> <a href="source-class-Coast.Model.html#11-119" title="Go to source code">Model.php</a>
+			<b>Located at</b> <a href="source-class-Coast.Model.html#19-464" title="Go to source code">Model.php</a>
 		<br>
 	</div>
 
@@ -237,7 +280,217 @@
 
 	<table class="summary methods" id="methods">
 	<caption>Methods summary</caption>
-	<tr data-order="toArray" id="_toArray">
+	<tr data-order="initMethods" id="_initMethods">
+
+		<td class="attributes"><code>
+			 public static
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_initMethods">#</a>
+		<code><a href="source-class-Coast.Model.html#38-44" title="Go to source code">initMethods</a>( <span> <var>$initMethods</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="createDefault" id="_createDefault">
+
+		<td class="attributes"><code>
+			 public static
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_createDefault">#</a>
+		<code><a href="source-class-Coast.Model.html#46-50" title="Go to source code">createDefault</a>( )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="_metadataStaticBuild" id="__metadataStaticBuild">
+
+		<td class="attributes"><code>
+			 protected static
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#__metadataStaticBuild">#</a>
+		<code><a href="source-class-Coast.Model.html#52-70" title="Go to source code">_metadataStaticBuild</a>( )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="_metadataStaticModify" id="__metadataStaticModify">
+
+		<td class="attributes"><code>
+			 protected static
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#__metadataStaticModify">#</a>
+		<code><a href="source-class-Coast.Model.html#72-76" title="Go to source code">_metadataStaticModify</a>( )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="metadataStatic" id="_metadataStatic">
+
+		<td class="attributes"><code>
+			 public static
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_metadataStatic">#</a>
+		<code><a href="source-class-Coast.Model.html#78-90" title="Go to source code">metadataStatic</a>( <span><code><a href="class-Coast.Model.Metadata.html">Coast\Model\Metadata</a></code> <var>$metadata</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="_metadataBuild" id="__metadataBuild">
+
+		<td class="attributes"><code>
+			 protected 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#__metadataBuild">#</a>
+		<code><a href="source-class-Coast.Model.html#92-95" title="Go to source code">_metadataBuild</a>( )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="_metadataModify" id="__metadataModify">
+
+		<td class="attributes"><code>
+			 protected 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#__metadataModify">#</a>
+		<code><a href="source-class-Coast.Model.html#97-100" title="Go to source code">_metadataModify</a>( )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="metadata" id="_metadata">
 
 		<td class="attributes"><code>
 			 public 
@@ -248,8 +501,98 @@
 		</td>
 
 		<td class="name"><div>
-		<a class="anchor" href="#_toArray">#</a>
-		<code><a href="source-class-Coast.Model.html#13-23" title="Go to source code">toArray</a>( )</code>
+		<a class="anchor" href="#_metadata">#</a>
+		<code><a href="source-class-Coast.Model.html#102-116" title="Go to source code">metadata</a>( <span><code><a href="class-Coast.Model.Metadata.html">Coast\Model\Metadata</a></code> <var>$metadata</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="metadataReset" id="_metadataReset">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_metadataReset">#</a>
+		<code><a href="source-class-Coast.Model.html#118-124" title="Go to source code">metadataReset</a>( <span> <var>$isTraverse</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="traverse" id="_traverse">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_traverse">#</a>
+		<code><a href="source-class-Coast.Model.html#126-174" title="Go to source code">traverse</a>( <span>Closure <var>$func</var></span>, <span> <var>$isTraverse</var> = <span class="php-keyword1">null</span></span>, <span>array <var>&amp; $history</var> = <span class="php-keyword1">array</span>()</span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="traverseModels" id="_traverseModels">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_traverseModels">#</a>
+		<code><a href="source-class-Coast.Model.html#176-216" title="Go to source code">traverseModels</a>( <span>Closure <var>$func</var></span>, <span> <var>$isTraverse</var> = <span class="php-keyword1">null</span></span>, <span>array <var>&amp; $history</var> = <span class="php-keyword1">array</span>()</span> )</code>
 
 		<div class="description short">
 			
@@ -279,7 +622,247 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_fromArray">#</a>
-		<code><a href="source-class-Coast.Model.html#25-31" title="Go to source code">fromArray</a>( <span>array <var>$array</var></span> )</code>
+		<code><a href="source-class-Coast.Model.html#218-302" title="Go to source code">fromArray</a>( <span>array <var>$array</var></span>, <span> <var>$isTraverse</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="toArray" id="_toArray">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_toArray">#</a>
+		<code><a href="source-class-Coast.Model.html#304-309" title="Go to source code">toArray</a>( <span> <var>$isTraverse</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="isValid" id="_isValid">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_isValid">#</a>
+		<code><a href="source-class-Coast.Model.html#311-320" title="Go to source code">isValid</a>( <span> <var>$isTraverse</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="debug" id="_debug">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_debug">#</a>
+		<code><a href="source-class-Coast.Model.html#322-330" title="Go to source code">debug</a>( <span> <var>$isTraverse</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="_construct" id="__construct">
+
+		<td class="attributes"><code>
+			 protected 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#__construct">#</a>
+		<code><a href="source-class-Coast.Model.html#332-338" title="Go to source code">_construct</a>( <span> <var>$construct</var></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="_set" id="__set">
+
+		<td class="attributes"><code>
+			 protected 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#__set">#</a>
+		<code><a href="source-class-Coast.Model.html#340-346" title="Go to source code">_set</a>( <span> <var>$name</var></span>, <span> <var>$value</var></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="_get" id="__get">
+
+		<td class="attributes"><code>
+			 protected 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#__get">#</a>
+		<code><a href="source-class-Coast.Model.html#348-351" title="Go to source code">_get</a>( <span> <var>$name</var></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="_isset" id="__isset">
+
+		<td class="attributes"><code>
+			 protected 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#__isset">#</a>
+		<code><a href="source-class-Coast.Model.html#353-356" title="Go to source code">_isset</a>( <span> <var>$name</var></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="_unset" id="__unset">
+
+		<td class="attributes"><code>
+			 protected 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#__unset">#</a>
+		<code><a href="source-class-Coast.Model.html#358-361" title="Go to source code">_unset</a>( <span> <var>$name</var></span> )</code>
 
 		<div class="description short">
 			
@@ -309,7 +892,37 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___set">#</a>
-		<code><a href="source-class-Coast.Model.html#33-44" title="Go to source code">__set</a>( <span> <var>$name</var></span>, <span> <var>$value</var></span> )</code>
+		<code><a href="source-class-Coast.Model.html#363-375" title="Go to source code">__set</a>( <span> <var>$name</var></span>, <span> <var>$value</var></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="__setUnknown" id="___setUnknown">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___setUnknown">#</a>
+		<code><a href="source-class-Coast.Model.html#377-386" title="Go to source code">__setUnknown</a>( <span> <var>$name</var></span>, <span> <var>$value</var></span> )</code>
 
 		<div class="description short">
 			
@@ -339,7 +952,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___get">#</a>
-		<code><a href="source-class-Coast.Model.html#46-59" title="Go to source code">__get</a>( <span> <var>$name</var></span> )</code>
+		<code><a href="source-class-Coast.Model.html#388-400" title="Go to source code">__get</a>( <span> <var>$name</var></span> )</code>
 
 		<div class="description short">
 			
@@ -369,7 +982,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___isset">#</a>
-		<code><a href="source-class-Coast.Model.html#61-74" title="Go to source code">__isset</a>( <span> <var>$name</var></span> )</code>
+		<code><a href="source-class-Coast.Model.html#402-414" title="Go to source code">__isset</a>( <span> <var>$name</var></span> )</code>
 
 		<div class="description short">
 			
@@ -399,7 +1012,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___unset">#</a>
-		<code><a href="source-class-Coast.Model.html#76-85" title="Go to source code">__unset</a>( <span> <var>$name</var></span> )</code>
+		<code><a href="source-class-Coast.Model.html#416-426" title="Go to source code">__unset</a>( <span> <var>$name</var></span> )</code>
 
 		<div class="description short">
 			
@@ -429,7 +1042,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___call">#</a>
-		<code><a href="source-class-Coast.Model.html#87-98" title="Go to source code">__call</a>( <span> <var>$name</var></span>, <span>array <var>$args</var></span> )</code>
+		<code><a href="source-class-Coast.Model.html#428-438" title="Go to source code">__call</a>( <span> <var>$name</var></span>, <span>array <var>$args</var></span> )</code>
 
 		<div class="description short">
 			
@@ -459,7 +1072,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_offsetSet">#</a>
-		<code><a href="source-class-Coast.Model.html#100-103" title="Go to source code">offsetSet</a>( <span> <var>$offset</var></span>, <span> <var>$value</var></span> )</code>
+		<code><a href="source-class-Coast.Model.html#440-443" title="Go to source code">offsetSet</a>( <span> <var>$offset</var></span>, <span> <var>$value</var></span> )</code>
 
 		<div class="description short">
 			
@@ -491,7 +1104,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_offsetExists">#</a>
-		<code><a href="source-class-Coast.Model.html#105-108" title="Go to source code">offsetExists</a>( <span> <var>$offset</var></span> )</code>
+		<code><a href="source-class-Coast.Model.html#445-448" title="Go to source code">offsetExists</a>( <span> <var>$offset</var></span> )</code>
 
 		<div class="description short">
 			
@@ -523,7 +1136,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_offsetUnset">#</a>
-		<code><a href="source-class-Coast.Model.html#110-113" title="Go to source code">offsetUnset</a>( <span> <var>$offset</var></span> )</code>
+		<code><a href="source-class-Coast.Model.html#450-453" title="Go to source code">offsetUnset</a>( <span> <var>$offset</var></span> )</code>
 
 		<div class="description short">
 			
@@ -555,7 +1168,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_offsetGet">#</a>
-		<code><a href="source-class-Coast.Model.html#115-118" title="Go to source code">offsetGet</a>( <span> <var>$offset</var></span> )</code>
+		<code><a href="source-class-Coast.Model.html#455-458" title="Go to source code">offsetGet</a>( <span> <var>$offset</var></span> )</code>
 
 		<div class="description short">
 			
@@ -575,6 +1188,38 @@
 		</div>
 		</div></td>
 	</tr>
+	<tr data-order="jsonSerialize" id="_jsonSerialize">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_jsonSerialize">#</a>
+		<code><a href="source-class-Coast.Model.html#460-463" title="Go to source code">jsonSerialize</a>( )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+				<h4>Implementation of</h4>
+				<div class="list"><code>JsonSerializable::jsonSerialize()</code></div>
+		</div>
+		</div></td>
+	</tr>
 	</table>
 
 
@@ -584,10 +1229,192 @@
 
 
 
+	<table class="summary constants" id="constants">
+	<caption>Constants summary</caption>
+	<tr data-order="TRAVERSE_SKIP" id="TRAVERSE_SKIP">
+
+		<td class="attributes"><code>string</code></td>
+		<td class="name">
+			<code>
+				<a href="source-class-Coast.Model.html#21" title="Go to source code"><b>TRAVERSE_SKIP</b></a>
+			</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#TRAVERSE_SKIP" class="anchor">#</a>
+				<code><span class="php-quote">'__Coast\Model::TRAVERSE_SKIP__'</span></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="TYPE_ONE" id="TYPE_ONE">
+
+		<td class="attributes"><code>string</code></td>
+		<td class="name">
+			<code>
+				<a href="source-class-Coast.Model.html#23" title="Go to source code"><b>TYPE_ONE</b></a>
+			</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#TYPE_ONE" class="anchor">#</a>
+				<code><span class="php-quote">'one'</span></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="TYPE_MANY" id="TYPE_MANY">
+
+		<td class="attributes"><code>string</code></td>
+		<td class="name">
+			<code>
+				<a href="source-class-Coast.Model.html#24" title="Go to source code"><b>TYPE_MANY</b></a>
+			</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#TYPE_MANY" class="anchor">#</a>
+				<code><span class="php-quote">'many'</span></code>
+			</div>
+		</td>
+	</tr>
+	</table>
 
 
 
 
+	<table class="summary properties" id="properties">
+	<caption>Properties summary</caption>
+	<tr data-order="_metadataStatic" id="$_metadataStatic">
+		<td class="attributes"><code>
+			protected static 
+			array
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Coast.Model.html#26" title="Go to source code"><var>$_metadataStatic</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$_metadataStatic" class="anchor">#</a>
+				<code>[]</code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="_metadataSource" id="$_metadataSource">
+		<td class="attributes"><code>
+			protected  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Coast.Model.html#28" title="Go to source code"><var>$_metadataSource</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$_metadataSource" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="_metadata" id="$_metadata">
+		<td class="attributes"><code>
+			protected  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Coast.Model.html#30" title="Go to source code"><var>$_metadata</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$_metadata" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="_initMethods" id="$_initMethods">
+		<td class="attributes"><code>
+			protected static 
+			array
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Coast.Model.html#32-36" title="Go to source code"><var>$_initMethods</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$_initMethods" class="anchor">#</a>
+				<code>[
+    <span class="php-quote">'isInitialized'</span>,
+    <span class="php-quote">'_isInitialized'</span>,
+    <span class="php-quote">'__isInitialized'</span>,
+]</code>
+			</div>
+		</td>
+	</tr>
+	</table>
 
 
 

@@ -5,7 +5,7 @@
 
 	<title>Class Coast\Image | Coast API Documentation</title>
 
-	<link rel="stylesheet" href="resources/style.css?95ada9fb523b6ab4fd1c47bb375f713f2cc65542">
+	<link rel="stylesheet" href="resources/style.css?c2f33731c1948fbed7c333554678bfa68d4817da">
 
 </head>
 
@@ -57,6 +57,11 @@
 
 						</li>
 				<li>
+					<a href="namespace-Coast.Feed.html">
+						Feed					</a>
+
+						</li>
+				<li>
 					<a href="namespace-Coast.File.html">
 						File					</a>
 
@@ -85,7 +90,19 @@
 						</li>
 				<li>
 					<a href="namespace-Coast.Model.html">
-						Model					</a>
+						Model<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.Model.Exception.html">
+						Exception					</a>
+
+						</li>
+							</ul></li>
+				<li>
+					<a href="namespace-Coast.Resolver.html">
+						Resolver					</a>
 
 						</li>
 				<li>
@@ -94,10 +111,22 @@
 
 						</li>
 				<li>
-					<a href="namespace-Coast.UrlResolver.html">
-						UrlResolver					</a>
+					<a href="namespace-Coast.Sitemap.html">
+						Sitemap					</a>
 
 						</li>
+				<li>
+					<a href="namespace-Coast.Transformer.html">
+						Transformer<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.Transformer.Rule.html">
+						Rule					</a>
+
+						</li>
+							</ul></li>
 				<li>
 					<a href="namespace-Coast.Validator.html">
 						Validator<span></span>
@@ -125,8 +154,10 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
+				<li><a href="class-Coast.Acl.html">Acl</a></li>
 				<li><a href="class-Coast.App.html">App</a></li>
 				<li><a href="class-Coast.Coast.html">Coast</a></li>
+				<li><a href="class-Coast.Collection.html">Collection</a></li>
 				<li><a href="class-Coast.Config.html">Config</a></li>
 				<li><a href="class-Coast.Controller.html">Controller</a></li>
 				<li><a href="class-Coast.Csp.html">Csp</a></li>
@@ -141,12 +172,13 @@
 				<li><a href="class-Coast.Model.html">Model</a></li>
 				<li><a href="class-Coast.Path.html">Path</a></li>
 				<li><a href="class-Coast.Request.html">Request</a></li>
+				<li><a href="class-Coast.Resolver.html">Resolver</a></li>
 				<li><a href="class-Coast.Response.html">Response</a></li>
 				<li><a href="class-Coast.Router.html">Router</a></li>
 				<li><a href="class-Coast.Session.html">Session</a></li>
 				<li><a href="class-Coast.Sitemap.html">Sitemap</a></li>
+				<li><a href="class-Coast.Transformer.html">Transformer</a></li>
 				<li><a href="class-Coast.Url.html">Url</a></li>
-				<li><a href="class-Coast.UrlResolver.html">UrlResolver</a></li>
 				<li><a href="class-Coast.Validator.html">Validator</a></li>
 				<li><a href="class-Coast.View.html">View</a></li>
 				<li><a href="class-Coast.Xml.html">Xml</a></li>
@@ -235,7 +267,7 @@
 		<b>Namespace:</b> <a href="namespace-Coast.html">Coast</a><br>
 		
 
-			<b>Located at</b> <a href="source-class-Coast.Image.html#16-210" title="Go to source code">Image.php</a>
+			<b>Located at</b> <a href="source-class-Coast.Image.html#16-259" title="Go to source code">Image.php</a>
 		<br>
 	</div>
 
@@ -255,7 +287,37 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-Coast.Image.html#35-47" title="Go to source code">__construct</a>( <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
+		<code><a href="source-class-Coast.Image.html#39-54" title="Go to source code">__construct</a>( <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="prefix" id="_prefix">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_prefix">#</a>
+		<code><a href="source-class-Coast.Image.html#56-63" title="Go to source code">prefix</a>( <span> <var>$prefix</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -285,7 +347,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_driver">#</a>
-		<code><a href="source-class-Coast.Image.html#49-56" title="Go to source code">driver</a>( <span> <var>$driver</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Image.html#65-72" title="Go to source code">driver</a>( <span> <var>$driver</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -315,7 +377,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_baseDir">#</a>
-		<code><a href="source-class-Coast.Image.html#58-65" title="Go to source code">baseDir</a>( <span><code><a href="class-Coast.Dir.html">Coast\Dir</a></code> <var>$baseDir</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Image.html#74-81" title="Go to source code">baseDir</a>( <span><code><a href="class-Coast.Dir.html">Coast\Dir</a></code> <var>$baseDir</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -345,7 +407,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_outputDir">#</a>
-		<code><a href="source-class-Coast.Image.html#67-74" title="Go to source code">outputDir</a>( <span><code><a href="class-Coast.Dir.html">Coast\Dir</a></code> <var>$outputDir</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Image.html#83-90" title="Go to source code">outputDir</a>( <span><code><a href="class-Coast.Dir.html">Coast\Dir</a></code> <var>$outputDir</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -363,7 +425,7 @@
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="urlResolver" id="_urlResolver">
+	<tr data-order="resolver" id="_resolver">
 
 		<td class="attributes"><code>
 			 public 
@@ -374,8 +436,8 @@
 		</td>
 
 		<td class="name"><div>
-		<a class="anchor" href="#_urlResolver">#</a>
-		<code><a href="source-class-Coast.Image.html#76-83" title="Go to source code">urlResolver</a>( <span><code><a href="class-Coast.UrlResolver.html">Coast\UrlResolver</a></code> <var>$urlResolver</var> = <span class="php-keyword1">null</span></span> )</code>
+		<a class="anchor" href="#_resolver">#</a>
+		<code><a href="source-class-Coast.Image.html#92-99" title="Go to source code">resolver</a>( <span><code><a href="class-Coast.Resolver.html">Coast\Resolver</a></code> <var>$resolver</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -393,7 +455,7 @@
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="outputUrlResolver" id="_outputUrlResolver">
+	<tr data-order="outputResolver" id="_outputResolver">
 
 		<td class="attributes"><code>
 			 public 
@@ -404,8 +466,8 @@
 		</td>
 
 		<td class="name"><div>
-		<a class="anchor" href="#_outputUrlResolver">#</a>
-		<code><a href="source-class-Coast.Image.html#85-92" title="Go to source code">outputUrlResolver</a>( <span><code><a href="class-Coast.UrlResolver.html">Coast\UrlResolver</a></code> <var>$outputUrlResolver</var> = <span class="php-keyword1">null</span></span> )</code>
+		<a class="anchor" href="#_outputResolver">#</a>
+		<code><a href="source-class-Coast.Image.html#101-108" title="Go to source code">outputResolver</a>( <span><code><a href="class-Coast.Resolver.html">Coast\Resolver</a></code> <var>$outputResolver</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -423,7 +485,7 @@
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="transform" id="_transform">
+	<tr data-order="quality" id="_quality">
 
 		<td class="attributes"><code>
 			 public 
@@ -434,8 +496,8 @@
 		</td>
 
 		<td class="name"><div>
-		<a class="anchor" href="#_transform">#</a>
-		<code><a href="source-class-Coast.Image.html#94-103" title="Go to source code">transform</a>( <span> <var>$name</var></span>, <span> <var>$value</var> = <span class="php-keyword1">null</span></span> )</code>
+		<a class="anchor" href="#_quality">#</a>
+		<code><a href="source-class-Coast.Image.html#110-117" title="Go to source code">quality</a>( <span> <var>$quality</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -453,7 +515,7 @@
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="transforms" id="_transforms">
+	<tr data-order="action" id="_action">
 
 		<td class="attributes"><code>
 			 public 
@@ -464,8 +526,8 @@
 		</td>
 
 		<td class="name"><div>
-		<a class="anchor" href="#_transforms">#</a>
-		<code><a href="source-class-Coast.Image.html#105-114" title="Go to source code">transforms</a>( <span>array <var>$transforms</var> = <span class="php-keyword1">null</span></span> )</code>
+		<a class="anchor" href="#_action">#</a>
+		<code><a href="source-class-Coast.Image.html#119-128" title="Go to source code">action</a>( <span> <var>$name</var></span>, <span> <var>$value</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -483,7 +545,7 @@
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="__invoke" id="___invoke">
+	<tr data-order="actions" id="_actions">
 
 		<td class="attributes"><code>
 			 public 
@@ -494,8 +556,98 @@
 		</td>
 
 		<td class="name"><div>
-		<a class="anchor" href="#___invoke">#</a>
-		<code><a href="source-class-Coast.Image.html#116-159" title="Go to source code">__invoke</a>( <span> <var>$file</var></span>, <span> <var>$transforms</var></span>, <span>array <var>$params</var> = <span class="php-keyword1">array</span>()</span> )</code>
+		<a class="anchor" href="#_actions">#</a>
+		<code><a href="source-class-Coast.Image.html#130-139" title="Go to source code">actions</a>( <span>array <var>$actions</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="url" id="_url">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_url">#</a>
+		<code><a href="source-class-Coast.Image.html#141-181" title="Go to source code">url</a>( <span> <var>$file</var></span>, <span> <var>$actions</var> = <span class="php-keyword1">array</span>(<span class="php-quote">'default'</span>)</span>, <span>array <var>$params</var> = <span class="php-keyword1">array</span>()</span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="process" id="_process">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_process">#</a>
+		<code><a href="source-class-Coast.Image.html#183-216" title="Go to source code">process</a>( <span> <var>$file</var></span>, <span> <var>$actions</var> = <span class="php-keyword1">array</span>(<span class="php-quote">'default'</span>)</span>, <span>array <var>$params</var> = <span class="php-keyword1">array</span>()</span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="run" id="_run">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_run">#</a>
+		<code><a href="source-class-Coast.Image.html#218-224" title="Go to source code">run</a>( <span> <var>$name</var></span>, <span>Intervention\Image\Image <var>$image</var></span>, <span>array <var>$params</var> = <span class="php-keyword1">array</span>()</span> )</code>
 
 		<div class="description short">
 			
@@ -525,7 +677,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_execute">#</a>
-		<code><a href="source-class-Coast.Image.html#161-189" title="Go to source code">execute</a>( <span><code><a href="class-Coast.Request.html">Coast\Request</a></code> <var>$req</var></span>, <span><code><a href="class-Coast.Response.html">Coast\Response</a></code> <var>$res</var></span> )</code>
+		<code><a href="source-class-Coast.Image.html#226-238" title="Go to source code">execute</a>( <span><code><a href="class-Coast.Request.html">Coast\Request</a></code> <var>$req</var></span>, <span><code><a href="class-Coast.Response.html">Coast\Response</a></code> <var>$res</var></span> )</code>
 
 		<div class="description short">
 			
@@ -545,7 +697,7 @@
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="run" id="_run">
+	<tr data-order="__invoke" id="___invoke">
 
 		<td class="attributes"><code>
 			 public 
@@ -556,8 +708,8 @@
 		</td>
 
 		<td class="name"><div>
-		<a class="anchor" href="#_run">#</a>
-		<code><a href="source-class-Coast.Image.html#191-194" title="Go to source code">run</a>( <span> <var>$name</var></span>, <span>Intervention\Image\Image <var>$image</var></span>, <span>array <var>$params</var> = <span class="php-keyword1">array</span>()</span> )</code>
+		<a class="anchor" href="#___invoke">#</a>
+		<code><a href="source-class-Coast.Image.html#240-243" title="Go to source code">__invoke</a>( <span> <var>$file</var></span>, <span> <var>$actions</var> = <span class="php-keyword1">array</span>(<span class="php-quote">'default'</span>)</span>, <span>array <var>$params</var> = <span class="php-keyword1">array</span>()</span> )</code>
 
 		<div class="description short">
 			
@@ -587,7 +739,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#__generateOutput">#</a>
-		<code><a href="source-class-Coast.Image.html#196-209" title="Go to source code">_generateOutput</a>( <span><code><a href="class-Coast.File.html">Coast\File</a></code> <var>$file</var></span>, <span> <var>$transforms</var></span>, <span>array <var>$params</var></span> )</code>
+		<code><a href="source-class-Coast.Image.html#245-258" title="Go to source code">_generateOutput</a>( <span><code><a href="class-Coast.File.html">Coast\File</a></code> <var>$file</var></span>, <span> <var>$actions</var></span>, <span>array <var>$params</var></span> )</code>
 
 		<div class="description short">
 			
@@ -614,6 +766,8 @@
 			<a href="class-Coast.App.Access.html#___call">__call()</a>, 
 			<a href="class-Coast.App.Access.html#___get">__get()</a>, 
 			<a href="class-Coast.App.Access.html#___isset">__isset()</a>, 
+			<a href="class-Coast.App.Access.html#___set">__set()</a>, 
+			<a href="class-Coast.App.Access.html#___unset">__unset()</a>, 
 			<a href="class-Coast.App.Access.html#_app">app()</a>
 		</code></td>
 	</tr>
@@ -635,6 +789,8 @@
 			<a href="class-Coast.App.Access.Implementation.html#___call">__call()</a>, 
 			<a href="class-Coast.App.Access.Implementation.html#___get">__get()</a>, 
 			<a href="class-Coast.App.Access.Implementation.html#___isset">__isset()</a>, 
+			<a href="class-Coast.App.Access.Implementation.html#___set">__set()</a>, 
+			<a href="class-Coast.App.Access.Implementation.html#___unset">__unset()</a>, 
 			<a href="class-Coast.App.Access.Implementation.html#_app">app()</a>
 		</code></td>
 	</tr>
@@ -685,14 +841,39 @@
 			</div>
 		</td>
 	</tr>
-	<tr data-order="_driver" id="$_driver">
+	<tr data-order="_prefix" id="$_prefix">
 		<td class="attributes"><code>
 			protected  
-			string
+			
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Coast.Image.html#23" title="Go to source code"><var>$_driver</var></a>
+				<a href="source-class-Coast.Image.html#23" title="Go to source code"><var>$_prefix</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$_prefix" class="anchor">#</a>
+				<code><span class="php-keyword1">null</span></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="_driver" id="$_driver">
+		<td class="attributes"><code>
+			protected  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Coast.Image.html#25" title="Go to source code"><var>$_driver</var></a>
 
 			<div class="description short">
 				
@@ -706,7 +887,7 @@
 		<td class="value">
 			<div>
 				<a href="#$_driver" class="anchor">#</a>
-				<code><span class="php-quote">'gd'</span></code>
+				<code></code>
 			</div>
 		</td>
 	</tr>
@@ -717,7 +898,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Coast.Image.html#25" title="Go to source code"><var>$_baseDir</var></a>
+				<a href="source-class-Coast.Image.html#27" title="Go to source code"><var>$_baseDir</var></a>
 
 			<div class="description short">
 				
@@ -742,7 +923,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Coast.Image.html#27" title="Go to source code"><var>$_outputDir</var></a>
+				<a href="source-class-Coast.Image.html#29" title="Go to source code"><var>$_outputDir</var></a>
 
 			<div class="description short">
 				
@@ -760,14 +941,14 @@
 			</div>
 		</td>
 	</tr>
-	<tr data-order="_urlResolver" id="$_urlResolver">
+	<tr data-order="_resolver" id="$_resolver">
 		<td class="attributes"><code>
 			protected  
 			
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Coast.Image.html#29" title="Go to source code"><var>$_urlResolver</var></a>
+				<a href="source-class-Coast.Image.html#31" title="Go to source code"><var>$_resolver</var></a>
 
 			<div class="description short">
 				
@@ -780,19 +961,19 @@
 		</td>
 		<td class="value">
 			<div>
-				<a href="#$_urlResolver" class="anchor">#</a>
+				<a href="#$_resolver" class="anchor">#</a>
 				<code></code>
 			</div>
 		</td>
 	</tr>
-	<tr data-order="_outputUrlResolver" id="$_outputUrlResolver">
+	<tr data-order="_outputResolver" id="$_outputResolver">
 		<td class="attributes"><code>
 			protected  
 			
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Coast.Image.html#31" title="Go to source code"><var>$_outputUrlResolver</var></a>
+				<a href="source-class-Coast.Image.html#33" title="Go to source code"><var>$_outputResolver</var></a>
 
 			<div class="description short">
 				
@@ -805,19 +986,44 @@
 		</td>
 		<td class="value">
 			<div>
-				<a href="#$_outputUrlResolver" class="anchor">#</a>
+				<a href="#$_outputResolver" class="anchor">#</a>
 				<code></code>
 			</div>
 		</td>
 	</tr>
-	<tr data-order="_transforms" id="$_transforms">
+	<tr data-order="_quality" id="$_quality">
+		<td class="attributes"><code>
+			protected  
+			integer
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Coast.Image.html#35" title="Go to source code"><var>$_quality</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$_quality" class="anchor">#</a>
+				<code><span class="php-num">80</span></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="_actions" id="$_actions">
 		<td class="attributes"><code>
 			protected  
 			array
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Coast.Image.html#33" title="Go to source code"><var>$_transforms</var></a>
+				<a href="source-class-Coast.Image.html#37" title="Go to source code"><var>$_actions</var></a>
 
 			<div class="description short">
 				
@@ -830,7 +1036,7 @@
 		</td>
 		<td class="value">
 			<div>
-				<a href="#$_transforms" class="anchor">#</a>
+				<a href="#$_actions" class="anchor">#</a>
 				<code>[]</code>
 			</div>
 		</td>

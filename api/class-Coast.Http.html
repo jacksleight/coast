@@ -5,7 +5,7 @@
 
 	<title>Class Coast\Http | Coast API Documentation</title>
 
-	<link rel="stylesheet" href="resources/style.css?95ada9fb523b6ab4fd1c47bb375f713f2cc65542">
+	<link rel="stylesheet" href="resources/style.css?c2f33731c1948fbed7c333554678bfa68d4817da">
 
 </head>
 
@@ -57,6 +57,11 @@
 
 						</li>
 				<li>
+					<a href="namespace-Coast.Feed.html">
+						Feed					</a>
+
+						</li>
+				<li>
 					<a href="namespace-Coast.File.html">
 						File					</a>
 
@@ -85,7 +90,19 @@
 						</li>
 				<li>
 					<a href="namespace-Coast.Model.html">
-						Model					</a>
+						Model<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.Model.Exception.html">
+						Exception					</a>
+
+						</li>
+							</ul></li>
+				<li>
+					<a href="namespace-Coast.Resolver.html">
+						Resolver					</a>
 
 						</li>
 				<li>
@@ -94,10 +111,22 @@
 
 						</li>
 				<li>
-					<a href="namespace-Coast.UrlResolver.html">
-						UrlResolver					</a>
+					<a href="namespace-Coast.Sitemap.html">
+						Sitemap					</a>
 
 						</li>
+				<li>
+					<a href="namespace-Coast.Transformer.html">
+						Transformer<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.Transformer.Rule.html">
+						Rule					</a>
+
+						</li>
+							</ul></li>
 				<li>
 					<a href="namespace-Coast.Validator.html">
 						Validator<span></span>
@@ -125,8 +154,10 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
+				<li><a href="class-Coast.Acl.html">Acl</a></li>
 				<li><a href="class-Coast.App.html">App</a></li>
 				<li><a href="class-Coast.Coast.html">Coast</a></li>
+				<li><a href="class-Coast.Collection.html">Collection</a></li>
 				<li><a href="class-Coast.Config.html">Config</a></li>
 				<li><a href="class-Coast.Controller.html">Controller</a></li>
 				<li><a href="class-Coast.Csp.html">Csp</a></li>
@@ -141,12 +172,13 @@
 				<li><a href="class-Coast.Model.html">Model</a></li>
 				<li><a href="class-Coast.Path.html">Path</a></li>
 				<li><a href="class-Coast.Request.html">Request</a></li>
+				<li><a href="class-Coast.Resolver.html">Resolver</a></li>
 				<li><a href="class-Coast.Response.html">Response</a></li>
 				<li><a href="class-Coast.Router.html">Router</a></li>
 				<li><a href="class-Coast.Session.html">Session</a></li>
 				<li><a href="class-Coast.Sitemap.html">Sitemap</a></li>
+				<li><a href="class-Coast.Transformer.html">Transformer</a></li>
 				<li><a href="class-Coast.Url.html">Url</a></li>
-				<li><a href="class-Coast.UrlResolver.html">UrlResolver</a></li>
 				<li><a href="class-Coast.Validator.html">Validator</a></li>
 				<li><a href="class-Coast.View.html">View</a></li>
 				<li><a href="class-Coast.Xml.html">Xml</a></li>
@@ -220,7 +252,7 @@
 		<b>Namespace:</b> <a href="namespace-Coast.html">Coast</a><br>
 		
 
-			<b>Located at</b> <a href="source-class-Coast.Http.html#9-110" title="Go to source code">Http.php</a>
+			<b>Located at</b> <a href="source-class-Coast.Http.html#13-135" title="Go to source code">Http.php</a>
 		<br>
 	</div>
 
@@ -240,7 +272,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-Coast.Http.html#20-23" title="Go to source code">__construct</a>( <span> <var>$timeout</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Http.html#18-26" title="Go to source code">__construct</a>( <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
 
 		<div class="description short">
 			
@@ -258,7 +290,7 @@
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="head" id="_head">
+	<tr data-order="timeout" id="_timeout">
 
 		<td class="attributes"><code>
 			 public 
@@ -269,8 +301,8 @@
 		</td>
 
 		<td class="name"><div>
-		<a class="anchor" href="#_head">#</a>
-		<code><a href="source-class-Coast.Http.html#25-28" title="Go to source code">head</a>( <span><code><a href="class-Coast.Url.html">Coast\Url</a></code> <var>$url</var></span>, <span> <var>$data</var> = <span class="php-keyword1">null</span></span> )</code>
+		<a class="anchor" href="#_timeout">#</a>
+		<code><a href="source-class-Coast.Http.html#28-35" title="Go to source code">timeout</a>( <span> <var>$timeout</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -288,7 +320,7 @@
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="get" id="_get">
+	<tr data-order="execute" id="_execute">
 
 		<td class="attributes"><code>
 			 public 
@@ -299,128 +331,8 @@
 		</td>
 
 		<td class="name"><div>
-		<a class="anchor" href="#_get">#</a>
-		<code><a href="source-class-Coast.Http.html#30-33" title="Go to source code">get</a>( <span><code><a href="class-Coast.Url.html">Coast\Url</a></code> <var>$url</var></span>, <span> <var>$data</var> = <span class="php-keyword1">null</span></span> )</code>
-
-		<div class="description short">
-			
-		</div>
-
-		<div class="description detailed hidden">
-			
-
-
-
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="post" id="_post">
-
-		<td class="attributes"><code>
-			 public 
-
-			
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_post">#</a>
-		<code><a href="source-class-Coast.Http.html#35-38" title="Go to source code">post</a>( <span><code><a href="class-Coast.Url.html">Coast\Url</a></code> <var>$url</var></span>, <span> <var>$data</var> = <span class="php-keyword1">null</span></span> )</code>
-
-		<div class="description short">
-			
-		</div>
-
-		<div class="description detailed hidden">
-			
-
-
-
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="put" id="_put">
-
-		<td class="attributes"><code>
-			 public 
-
-			
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_put">#</a>
-		<code><a href="source-class-Coast.Http.html#40-43" title="Go to source code">put</a>( <span><code><a href="class-Coast.Url.html">Coast\Url</a></code> <var>$url</var></span>, <span> <var>$data</var> = <span class="php-keyword1">null</span></span> )</code>
-
-		<div class="description short">
-			
-		</div>
-
-		<div class="description detailed hidden">
-			
-
-
-
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="delete" id="_delete">
-
-		<td class="attributes"><code>
-			 public 
-
-			
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_delete">#</a>
-		<code><a href="source-class-Coast.Http.html#45-48" title="Go to source code">delete</a>( <span><code><a href="class-Coast.Url.html">Coast\Url</a></code> <var>$url</var></span>, <span> <var>$data</var> = <span class="php-keyword1">null</span></span> )</code>
-
-		<div class="description short">
-			
-		</div>
-
-		<div class="description detailed hidden">
-			
-
-
-
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="request" id="_request">
-
-		<td class="attributes"><code>
-			 public 
-
-			
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_request">#</a>
-		<code><a href="source-class-Coast.Http.html#50-109" title="Go to source code">request</a>( <span> <var>$method</var></span>, <span><code><a href="class-Coast.Url.html">Coast\Url</a></code> <var>$url</var></span>, <span> <var>$data</var> = <span class="php-keyword1">null</span></span> )</code>
+		<a class="anchor" href="#_execute">#</a>
+		<code><a href="source-class-Coast.Http.html#37-134" title="Go to source code">execute</a>( <span><code><a href="class-Coast.Http.Request.html">Coast\Http\Request</a></code> <var>$request</var></span> )</code>
 
 		<div class="description short">
 			
@@ -447,129 +359,6 @@
 
 
 
-	<table class="summary constants" id="constants">
-	<caption>Constants summary</caption>
-	<tr data-order="METHOD_HEAD" id="METHOD_HEAD">
-
-		<td class="attributes"><code>string</code></td>
-		<td class="name">
-			<code>
-				<a href="source-class-Coast.Http.html#11" title="Go to source code"><b>METHOD_HEAD</b></a>
-			</code>
-
-			<div class="description short">
-				
-			</div>
-
-			<div class="description detailed hidden">
-				
-
-			</div>
-		</td>
-		<td class="value">
-			<div>
-				<a href="#METHOD_HEAD" class="anchor">#</a>
-				<code><span class="php-quote">'HEAD'</span></code>
-			</div>
-		</td>
-	</tr>
-	<tr data-order="METHOD_GET" id="METHOD_GET">
-
-		<td class="attributes"><code>string</code></td>
-		<td class="name">
-			<code>
-				<a href="source-class-Coast.Http.html#12" title="Go to source code"><b>METHOD_GET</b></a>
-			</code>
-
-			<div class="description short">
-				
-			</div>
-
-			<div class="description detailed hidden">
-				
-
-			</div>
-		</td>
-		<td class="value">
-			<div>
-				<a href="#METHOD_GET" class="anchor">#</a>
-				<code><span class="php-quote">'GET'</span></code>
-			</div>
-		</td>
-	</tr>
-	<tr data-order="METHOD_POST" id="METHOD_POST">
-
-		<td class="attributes"><code>string</code></td>
-		<td class="name">
-			<code>
-				<a href="source-class-Coast.Http.html#13" title="Go to source code"><b>METHOD_POST</b></a>
-			</code>
-
-			<div class="description short">
-				
-			</div>
-
-			<div class="description detailed hidden">
-				
-
-			</div>
-		</td>
-		<td class="value">
-			<div>
-				<a href="#METHOD_POST" class="anchor">#</a>
-				<code><span class="php-quote">'POST'</span></code>
-			</div>
-		</td>
-	</tr>
-	<tr data-order="METHOD_PUT" id="METHOD_PUT">
-
-		<td class="attributes"><code>string</code></td>
-		<td class="name">
-			<code>
-				<a href="source-class-Coast.Http.html#14" title="Go to source code"><b>METHOD_PUT</b></a>
-			</code>
-
-			<div class="description short">
-				
-			</div>
-
-			<div class="description detailed hidden">
-				
-
-			</div>
-		</td>
-		<td class="value">
-			<div>
-				<a href="#METHOD_PUT" class="anchor">#</a>
-				<code><span class="php-quote">'PUT'</span></code>
-			</div>
-		</td>
-	</tr>
-	<tr data-order="METHOD_DELETE" id="METHOD_DELETE">
-
-		<td class="attributes"><code>string</code></td>
-		<td class="name">
-			<code>
-				<a href="source-class-Coast.Http.html#15" title="Go to source code"><b>METHOD_DELETE</b></a>
-			</code>
-
-			<div class="description short">
-				
-			</div>
-
-			<div class="description detailed hidden">
-				
-
-			</div>
-		</td>
-		<td class="value">
-			<div>
-				<a href="#METHOD_DELETE" class="anchor">#</a>
-				<code><span class="php-quote">'DELETE'</span></code>
-			</div>
-		</td>
-	</tr>
-	</table>
 
 
 
@@ -583,7 +372,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Coast.Http.html#17" title="Go to source code"><var>$_timeout</var></a>
+				<a href="source-class-Coast.Http.html#15" title="Go to source code"><var>$_timeout</var></a>
 
 			<div class="description short">
 				
@@ -608,7 +397,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Coast.Http.html#18" title="Go to source code"><var>$_cookies</var></a>
+				<a href="source-class-Coast.Http.html#16" title="Go to source code"><var>$_cookies</var></a>
 
 			<div class="description short">
 				

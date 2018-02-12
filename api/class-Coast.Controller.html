@@ -5,7 +5,7 @@
 
 	<title>Class Coast\Controller | Coast API Documentation</title>
 
-	<link rel="stylesheet" href="resources/style.css?95ada9fb523b6ab4fd1c47bb375f713f2cc65542">
+	<link rel="stylesheet" href="resources/style.css?c2f33731c1948fbed7c333554678bfa68d4817da">
 
 </head>
 
@@ -57,6 +57,11 @@
 
 						</li>
 				<li>
+					<a href="namespace-Coast.Feed.html">
+						Feed					</a>
+
+						</li>
+				<li>
 					<a href="namespace-Coast.File.html">
 						File					</a>
 
@@ -85,7 +90,19 @@
 						</li>
 				<li>
 					<a href="namespace-Coast.Model.html">
-						Model					</a>
+						Model<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.Model.Exception.html">
+						Exception					</a>
+
+						</li>
+							</ul></li>
+				<li>
+					<a href="namespace-Coast.Resolver.html">
+						Resolver					</a>
 
 						</li>
 				<li>
@@ -94,10 +111,22 @@
 
 						</li>
 				<li>
-					<a href="namespace-Coast.UrlResolver.html">
-						UrlResolver					</a>
+					<a href="namespace-Coast.Sitemap.html">
+						Sitemap					</a>
 
 						</li>
+				<li>
+					<a href="namespace-Coast.Transformer.html">
+						Transformer<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.Transformer.Rule.html">
+						Rule					</a>
+
+						</li>
+							</ul></li>
 				<li>
 					<a href="namespace-Coast.Validator.html">
 						Validator<span></span>
@@ -125,8 +154,10 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
+				<li><a href="class-Coast.Acl.html">Acl</a></li>
 				<li><a href="class-Coast.App.html">App</a></li>
 				<li><a href="class-Coast.Coast.html">Coast</a></li>
+				<li><a href="class-Coast.Collection.html">Collection</a></li>
 				<li><a href="class-Coast.Config.html">Config</a></li>
 				<li class="active"><a href="class-Coast.Controller.html">Controller</a></li>
 				<li><a href="class-Coast.Csp.html">Csp</a></li>
@@ -141,12 +172,13 @@
 				<li><a href="class-Coast.Model.html">Model</a></li>
 				<li><a href="class-Coast.Path.html">Path</a></li>
 				<li><a href="class-Coast.Request.html">Request</a></li>
+				<li><a href="class-Coast.Resolver.html">Resolver</a></li>
 				<li><a href="class-Coast.Response.html">Response</a></li>
 				<li><a href="class-Coast.Router.html">Router</a></li>
 				<li><a href="class-Coast.Session.html">Session</a></li>
 				<li><a href="class-Coast.Sitemap.html">Sitemap</a></li>
+				<li><a href="class-Coast.Transformer.html">Transformer</a></li>
 				<li><a href="class-Coast.Url.html">Url</a></li>
-				<li><a href="class-Coast.UrlResolver.html">UrlResolver</a></li>
 				<li><a href="class-Coast.Validator.html">Validator</a></li>
 				<li><a href="class-Coast.View.html">View</a></li>
 				<li><a href="class-Coast.Xml.html">Xml</a></li>
@@ -233,7 +265,7 @@
 		<b>Namespace:</b> <a href="namespace-Coast.html">Coast</a><br>
 		
 
-			<b>Located at</b> <a href="source-class-Coast.Controller.html#9-172" title="Go to source code">Controller.php</a>
+			<b>Located at</b> <a href="source-class-Coast.Controller.html#11-203" title="Go to source code">Controller.php</a>
 		<br>
 	</div>
 
@@ -253,7 +285,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-Coast.Controller.html#23-31" title="Go to source code">__construct</a>( <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
+		<code><a href="source-class-Coast.Controller.html#25-33" title="Go to source code">__construct</a>( <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
 
 		<div class="description short">
 			
@@ -283,7 +315,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_nspace">#</a>
-		<code><a href="source-class-Coast.Controller.html#33-42" title="Go to source code">nspace</a>( <span> <var>$name</var></span>, <span> <var>$nspace</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Controller.html#35-44" title="Go to source code">nspace</a>( <span> <var>$name</var></span>, <span> <var>$nspace</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -313,7 +345,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_nspaces">#</a>
-		<code><a href="source-class-Coast.Controller.html#44-53" title="Go to source code">nspaces</a>( <span>array <var>$nspaces</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Controller.html#46-55" title="Go to source code">nspaces</a>( <span>array <var>$nspaces</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -343,7 +375,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_all">#</a>
-		<code><a href="source-class-Coast.Controller.html#55-62" title="Go to source code">all</a>( <span> <var>$all</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Controller.html#57-64" title="Go to source code">all</a>( <span> <var>$all</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -373,7 +405,37 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_forward">#</a>
-		<code><a href="source-class-Coast.Controller.html#64-78" title="Go to source code">forward</a>( <span> <var>$action</var></span>, <span> <var>$name</var> = <span class="php-keyword1">null</span></span>, <span> <var>$group</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Controller.html#66-91" title="Go to source code">forward</a>( <span> <var>$action</var></span>, <span> <var>$controller</var> = <span class="php-keyword1">null</span></span>, <span> <var>$group</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="stop" id="_stop">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_stop">#</a>
+		<code><a href="source-class-Coast.Controller.html#93-96" title="Go to source code">stop</a>( )</code>
 
 		<div class="description short">
 			
@@ -403,7 +465,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_dispatch">#</a>
-		<code><a href="source-class-Coast.Controller.html#80-124" title="Go to source code">dispatch</a>( <span> <var>$name</var></span>, <span> <var>$action</var></span>, <span> <var>$params</var> = <span class="php-keyword1">array</span>()</span>, <span> <var>$group</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Controller.html#98-152" title="Go to source code">dispatch</a>( <span> <var>$controller</var></span>, <span> <var>$action</var></span>, <span> <var>$params</var> = <span class="php-keyword1">array</span>()</span>, <span> <var>$group</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -433,7 +495,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#__queue">#</a>
-		<code><a href="source-class-Coast.Controller.html#126-156" title="Go to source code">_queue</a>( <span> <var>$name</var></span>, <span> <var>$action</var></span>, <span> <var>$params</var></span>, <span> <var>$group</var></span> )</code>
+		<code><a href="source-class-Coast.Controller.html#154-182" title="Go to source code">_queue</a>( <span> <var>$controller</var></span>, <span> <var>$action</var></span>, <span> <var>$params</var></span>, <span> <var>$group</var></span> )</code>
 
 		<div class="description short">
 			
@@ -463,7 +525,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_route">#</a>
-		<code><a href="source-class-Coast.Controller.html#158-171" title="Go to source code">route</a>( <span><code><a href="class-Coast.Request.html">Coast\Request</a></code> <var>$req</var></span>, <span><code><a href="class-Coast.Response.html">Coast\Response</a></code> <var>$res</var></span> )</code>
+		<code><a href="source-class-Coast.Controller.html#184-202" title="Go to source code">route</a>( <span><code><a href="class-Coast.Request.html">Coast\Request</a></code> <var>$req</var></span>, <span><code><a href="class-Coast.Response.html">Coast\Response</a></code> <var>$res</var></span>, <span>array <var>$route</var></span> )</code>
 
 		<div class="description short">
 			
@@ -492,6 +554,8 @@
 			<a href="class-Coast.App.Access.html#___call">__call()</a>, 
 			<a href="class-Coast.App.Access.html#___get">__get()</a>, 
 			<a href="class-Coast.App.Access.html#___isset">__isset()</a>, 
+			<a href="class-Coast.App.Access.html#___set">__set()</a>, 
+			<a href="class-Coast.App.Access.html#___unset">__unset()</a>, 
 			<a href="class-Coast.App.Access.html#_app">app()</a>
 		</code></td>
 	</tr>
@@ -504,6 +568,8 @@
 			<a href="class-Coast.App.Access.Implementation.html#___call">__call()</a>, 
 			<a href="class-Coast.App.Access.Implementation.html#___get">__get()</a>, 
 			<a href="class-Coast.App.Access.Implementation.html#___isset">__isset()</a>, 
+			<a href="class-Coast.App.Access.Implementation.html#___set">__set()</a>, 
+			<a href="class-Coast.App.Access.Implementation.html#___unset">__unset()</a>, 
 			<a href="class-Coast.App.Access.Implementation.html#_app">app()</a>
 		</code></td>
 	</tr>
@@ -527,7 +593,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Coast.Controller.html#13" title="Go to source code"><var>$_nspaces</var></a>
+				<a href="source-class-Coast.Controller.html#15" title="Go to source code"><var>$_nspaces</var></a>
 
 			<div class="description short">
 				
@@ -552,7 +618,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Coast.Controller.html#15" title="Go to source code"><var>$_stack</var></a>
+				<a href="source-class-Coast.Controller.html#17" title="Go to source code"><var>$_stack</var></a>
 
 			<div class="description short">
 				
@@ -577,7 +643,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Coast.Controller.html#17" title="Go to source code"><var>$_history</var></a>
+				<a href="source-class-Coast.Controller.html#19" title="Go to source code"><var>$_history</var></a>
 
 			<div class="description short">
 				
@@ -602,7 +668,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Coast.Controller.html#19" title="Go to source code"><var>$_actions</var></a>
+				<a href="source-class-Coast.Controller.html#21" title="Go to source code"><var>$_actions</var></a>
 
 			<div class="description short">
 				
@@ -627,7 +693,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Coast.Controller.html#21" title="Go to source code"><var>$_all</var></a>
+				<a href="source-class-Coast.Controller.html#23" title="Go to source code"><var>$_all</var></a>
 
 			<div class="description short">
 				

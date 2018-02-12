@@ -5,7 +5,7 @@
 
 	<title>Class Coast\Csrf | Coast API Documentation</title>
 
-	<link rel="stylesheet" href="resources/style.css?95ada9fb523b6ab4fd1c47bb375f713f2cc65542">
+	<link rel="stylesheet" href="resources/style.css?c2f33731c1948fbed7c333554678bfa68d4817da">
 
 </head>
 
@@ -57,6 +57,11 @@
 
 						</li>
 				<li>
+					<a href="namespace-Coast.Feed.html">
+						Feed					</a>
+
+						</li>
+				<li>
 					<a href="namespace-Coast.File.html">
 						File					</a>
 
@@ -85,7 +90,19 @@
 						</li>
 				<li>
 					<a href="namespace-Coast.Model.html">
-						Model					</a>
+						Model<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.Model.Exception.html">
+						Exception					</a>
+
+						</li>
+							</ul></li>
+				<li>
+					<a href="namespace-Coast.Resolver.html">
+						Resolver					</a>
 
 						</li>
 				<li>
@@ -94,10 +111,22 @@
 
 						</li>
 				<li>
-					<a href="namespace-Coast.UrlResolver.html">
-						UrlResolver					</a>
+					<a href="namespace-Coast.Sitemap.html">
+						Sitemap					</a>
 
 						</li>
+				<li>
+					<a href="namespace-Coast.Transformer.html">
+						Transformer<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.Transformer.Rule.html">
+						Rule					</a>
+
+						</li>
+							</ul></li>
 				<li>
 					<a href="namespace-Coast.Validator.html">
 						Validator<span></span>
@@ -125,8 +154,10 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
+				<li><a href="class-Coast.Acl.html">Acl</a></li>
 				<li><a href="class-Coast.App.html">App</a></li>
 				<li><a href="class-Coast.Coast.html">Coast</a></li>
+				<li><a href="class-Coast.Collection.html">Collection</a></li>
 				<li><a href="class-Coast.Config.html">Config</a></li>
 				<li><a href="class-Coast.Controller.html">Controller</a></li>
 				<li><a href="class-Coast.Csp.html">Csp</a></li>
@@ -141,12 +172,13 @@
 				<li><a href="class-Coast.Model.html">Model</a></li>
 				<li><a href="class-Coast.Path.html">Path</a></li>
 				<li><a href="class-Coast.Request.html">Request</a></li>
+				<li><a href="class-Coast.Resolver.html">Resolver</a></li>
 				<li><a href="class-Coast.Response.html">Response</a></li>
 				<li><a href="class-Coast.Router.html">Router</a></li>
 				<li><a href="class-Coast.Session.html">Session</a></li>
 				<li><a href="class-Coast.Sitemap.html">Sitemap</a></li>
+				<li><a href="class-Coast.Transformer.html">Transformer</a></li>
 				<li><a href="class-Coast.Url.html">Url</a></li>
-				<li><a href="class-Coast.UrlResolver.html">UrlResolver</a></li>
 				<li><a href="class-Coast.Validator.html">Validator</a></li>
 				<li><a href="class-Coast.View.html">View</a></li>
 				<li><a href="class-Coast.Xml.html">Xml</a></li>
@@ -235,7 +267,7 @@
 		<b>Namespace:</b> <a href="namespace-Coast.html">Coast</a><br>
 		
 
-			<b>Located at</b> <a href="source-class-Coast.Csrf.html#15-105" title="Go to source code">Csrf.php</a>
+			<b>Located at</b> <a href="source-class-Coast.Csrf.html#15-106" title="Go to source code">Csrf.php</a>
 		<br>
 	</div>
 
@@ -255,7 +287,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-Coast.Csrf.html#30-38" title="Go to source code">__construct</a>( <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
+		<code><a href="source-class-Coast.Csrf.html#28-36" title="Go to source code">__construct</a>( <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
 
 		<div class="description short">
 			
@@ -285,37 +317,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_name">#</a>
-		<code><a href="source-class-Coast.Csrf.html#40-47" title="Go to source code">name</a>( <span> <var>$name</var> = <span class="php-keyword1">null</span></span> )</code>
-
-		<div class="description short">
-			
-		</div>
-
-		<div class="description detailed hidden">
-			
-
-
-
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="session" id="_session">
-
-		<td class="attributes"><code>
-			 public 
-
-			
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_session">#</a>
-		<code><a href="source-class-Coast.Csrf.html#49-56" title="Go to source code">session</a>( <span><code><a href="class-Coast.Session.html">Coast\Session</a></code> <var>$session</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Csrf.html#38-45" title="Go to source code">name</a>( <span> <var>$name</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -345,7 +347,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_methods">#</a>
-		<code><a href="source-class-Coast.Csrf.html#58-65" title="Go to source code">methods</a>( <span>array <var>$methods</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Csrf.html#47-54" title="Go to source code">methods</a>( <span>array <var>$methods</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -375,7 +377,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_token">#</a>
-		<code><a href="source-class-Coast.Csrf.html#67-74" title="Go to source code">token</a>( )</code>
+		<code><a href="source-class-Coast.Csrf.html#56-62" title="Go to source code">token</a>( )</code>
 
 		<div class="description short">
 			
@@ -405,7 +407,37 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_regenerate">#</a>
-		<code><a href="source-class-Coast.Csrf.html#76-81" title="Go to source code">regenerate</a>( )</code>
+		<code><a href="source-class-Coast.Csrf.html#64-68" title="Go to source code">regenerate</a>( )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="isValid" id="_isValid">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_isValid">#</a>
+		<code><a href="source-class-Coast.Csrf.html#70-89" title="Go to source code">isValid</a>( <span> <var>$token</var></span>, <span> <var>$throw</var> = <span class="php-keyword1">false</span></span> )</code>
 
 		<div class="description short">
 			
@@ -435,7 +467,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_input">#</a>
-		<code><a href="source-class-Coast.Csrf.html#83-86" title="Go to source code">input</a>( )</code>
+		<code><a href="source-class-Coast.Csrf.html#91-94" title="Go to source code">input</a>( )</code>
 
 		<div class="description short">
 			
@@ -465,7 +497,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_execute">#</a>
-		<code><a href="source-class-Coast.Csrf.html#88-104" title="Go to source code">execute</a>( <span><code><a href="class-Coast.Request.html">Coast\Request</a></code> <var>$req</var></span>, <span><code><a href="class-Coast.Response.html">Coast\Response</a></code> <var>$res</var></span> )</code>
+		<code><a href="source-class-Coast.Csrf.html#96-105" title="Go to source code">execute</a>( <span><code><a href="class-Coast.Request.html">Coast\Request</a></code> <var>$req</var></span>, <span><code><a href="class-Coast.Response.html">Coast\Response</a></code> <var>$res</var></span> )</code>
 
 		<div class="description short">
 			
@@ -503,6 +535,8 @@
 			<a href="class-Coast.App.Access.html#___call">__call()</a>, 
 			<a href="class-Coast.App.Access.html#___get">__get()</a>, 
 			<a href="class-Coast.App.Access.html#___isset">__isset()</a>, 
+			<a href="class-Coast.App.Access.html#___set">__set()</a>, 
+			<a href="class-Coast.App.Access.html#___unset">__unset()</a>, 
 			<a href="class-Coast.App.Access.html#_app">app()</a>
 		</code></td>
 	</tr>
@@ -515,6 +549,8 @@
 			<a href="class-Coast.App.Access.Implementation.html#___call">__call()</a>, 
 			<a href="class-Coast.App.Access.Implementation.html#___get">__get()</a>, 
 			<a href="class-Coast.App.Access.Implementation.html#___isset">__isset()</a>, 
+			<a href="class-Coast.App.Access.Implementation.html#___set">__set()</a>, 
+			<a href="class-Coast.App.Access.Implementation.html#___unset">__unset()</a>, 
 			<a href="class-Coast.App.Access.Implementation.html#_app">app()</a>
 		</code></td>
 	</tr>
@@ -565,31 +601,6 @@
 			</div>
 		</td>
 	</tr>
-	<tr data-order="_session" id="$_session">
-		<td class="attributes"><code>
-			protected  
-			
-		</code></td>
-
-		<td class="name">
-				<a href="source-class-Coast.Csrf.html#22" title="Go to source code"><var>$_session</var></a>
-
-			<div class="description short">
-				
-			</div>
-
-			<div class="description detailed hidden">
-				
-
-			</div>
-		</td>
-		<td class="value">
-			<div>
-				<a href="#$_session" class="anchor">#</a>
-				<code><span class="php-keyword1">null</span></code>
-			</div>
-		</td>
-	</tr>
 	<tr data-order="_methods" id="$_methods">
 		<td class="attributes"><code>
 			protected  
@@ -597,7 +608,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Coast.Csrf.html#24-28" title="Go to source code"><var>$_methods</var></a>
+				<a href="source-class-Coast.Csrf.html#22-26" title="Go to source code"><var>$_methods</var></a>
 
 			<div class="description short">
 				

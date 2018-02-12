@@ -5,7 +5,7 @@
 
 	<title>Class Coast\Validator | Coast API Documentation</title>
 
-	<link rel="stylesheet" href="resources/style.css?95ada9fb523b6ab4fd1c47bb375f713f2cc65542">
+	<link rel="stylesheet" href="resources/style.css?c2f33731c1948fbed7c333554678bfa68d4817da">
 
 </head>
 
@@ -57,6 +57,11 @@
 
 						</li>
 				<li>
+					<a href="namespace-Coast.Feed.html">
+						Feed					</a>
+
+						</li>
+				<li>
 					<a href="namespace-Coast.File.html">
 						File					</a>
 
@@ -85,7 +90,19 @@
 						</li>
 				<li>
 					<a href="namespace-Coast.Model.html">
-						Model					</a>
+						Model<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.Model.Exception.html">
+						Exception					</a>
+
+						</li>
+							</ul></li>
+				<li>
+					<a href="namespace-Coast.Resolver.html">
+						Resolver					</a>
 
 						</li>
 				<li>
@@ -94,10 +111,22 @@
 
 						</li>
 				<li>
-					<a href="namespace-Coast.UrlResolver.html">
-						UrlResolver					</a>
+					<a href="namespace-Coast.Sitemap.html">
+						Sitemap					</a>
 
 						</li>
+				<li>
+					<a href="namespace-Coast.Transformer.html">
+						Transformer<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.Transformer.Rule.html">
+						Rule					</a>
+
+						</li>
+							</ul></li>
 				<li>
 					<a href="namespace-Coast.Validator.html">
 						Validator<span></span>
@@ -125,8 +154,10 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
+				<li><a href="class-Coast.Acl.html">Acl</a></li>
 				<li><a href="class-Coast.App.html">App</a></li>
 				<li><a href="class-Coast.Coast.html">Coast</a></li>
+				<li><a href="class-Coast.Collection.html">Collection</a></li>
 				<li><a href="class-Coast.Config.html">Config</a></li>
 				<li><a href="class-Coast.Controller.html">Controller</a></li>
 				<li><a href="class-Coast.Csp.html">Csp</a></li>
@@ -141,12 +172,13 @@
 				<li><a href="class-Coast.Model.html">Model</a></li>
 				<li><a href="class-Coast.Path.html">Path</a></li>
 				<li><a href="class-Coast.Request.html">Request</a></li>
+				<li><a href="class-Coast.Resolver.html">Resolver</a></li>
 				<li><a href="class-Coast.Response.html">Response</a></li>
 				<li><a href="class-Coast.Router.html">Router</a></li>
 				<li><a href="class-Coast.Session.html">Session</a></li>
 				<li><a href="class-Coast.Sitemap.html">Sitemap</a></li>
+				<li><a href="class-Coast.Transformer.html">Transformer</a></li>
 				<li><a href="class-Coast.Url.html">Url</a></li>
-				<li><a href="class-Coast.UrlResolver.html">UrlResolver</a></li>
 				<li class="active"><a href="class-Coast.Validator.html">Validator</a></li>
 				<li><a href="class-Coast.View.html">View</a></li>
 				<li><a href="class-Coast.Xml.html">Xml</a></li>
@@ -210,12 +242,18 @@
 		<dd style="padding-left:0px">
 			<a href="class-Coast.Validator.Rule.html"><span>Coast\Validator\Rule</span></a>
 			
+			 implements 
+<span>JsonSerializable</span>
 			
 			
 		</dd>
 		<dd style="padding-left:30px">
 			<img src="resources/inherit.png" alt="Extended by">
 <b><span>Coast\Validator</span></b>			
+			 implements 
+<span>Iterator</span>, 
+			
+<span>JsonSerializable</span>
 			
 			
 		</dd>
@@ -234,7 +272,7 @@
 		<b>Namespace:</b> <a href="namespace-Coast.html">Coast</a><br>
 		
 
-			<b>Located at</b> <a href="source-class-Coast.Validator.html#11-104" title="Go to source code">Validator.php</a>
+			<b>Located at</b> <a href="source-class-Coast.Validator.html#13-149" title="Go to source code">Validator.php</a>
 		<br>
 	</div>
 
@@ -254,7 +292,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_step">#</a>
-		<code><a href="source-class-Coast.Validator.html#19-26" title="Go to source code">step</a>( <span> <var>$step</var></span> )</code>
+		<code><a href="source-class-Coast.Validator.html#21-31" title="Go to source code">step</a>( <span> <var>$step</var></span>, <span> <var>$index</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -284,7 +322,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_steps">#</a>
-		<code><a href="source-class-Coast.Validator.html#28-37" title="Go to source code">steps</a>( <span>array <var>$steps</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Validator.html#33-42" title="Go to source code">steps</a>( <span> <var>$steps</var> = <span class="php-keyword1">null</span></span>, <span> <var>$index</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -314,7 +352,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_rule">#</a>
-		<code><a href="source-class-Coast.Validator.html#39-44" title="Go to source code">rule</a>( <span> <var>$name</var></span> )</code>
+		<code><a href="source-class-Coast.Validator.html#44-49" title="Go to source code">rule</a>( <span> <var>$name</var></span> )</code>
 
 		<div class="description short">
 			
@@ -344,7 +382,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_rules">#</a>
-		<code><a href="source-class-Coast.Validator.html#46-49" title="Go to source code">rules</a>( )</code>
+		<code><a href="source-class-Coast.Validator.html#51-54" title="Go to source code">rules</a>( )</code>
 
 		<div class="description short">
 			
@@ -374,7 +412,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___call">#</a>
-		<code><a href="source-class-Coast.Validator.html#51-75" title="Go to source code">__call</a>( <span> <var>$name</var></span>, <span> <var>$args</var></span> )</code>
+		<code><a href="source-class-Coast.Validator.html#56-87" title="Go to source code">__call</a>( <span> <var>$name</var></span>, <span> <var>$args</var></span> )</code>
 
 		<div class="description short">
 			
@@ -404,7 +442,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#__validate">#</a>
-		<code><a href="source-class-Coast.Validator.html#77-90" title="Go to source code">_validate</a>( <span> <var>$value</var></span> )</code>
+		<code><a href="source-class-Coast.Validator.html#89-102" title="Go to source code">_validate</a>( <span> <var>$value</var></span>, <span> <var>$context</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -434,7 +472,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___clone">#</a>
-		<code><a href="source-class-Coast.Validator.html#92-103" title="Go to source code">__clone</a>( )</code>
+		<code><a href="source-class-Coast.Validator.html#104-115" title="Go to source code">__clone</a>( )</code>
 
 		<div class="description short">
 			
@@ -449,6 +487,200 @@
 
 
 
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="rewind" id="_rewind">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_rewind">#</a>
+		<code><a href="source-class-Coast.Validator.html#117-120" title="Go to source code">rewind</a>( )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+				<h4>Implementation of</h4>
+				<div class="list"><code>Iterator::rewind()</code></div>
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="current" id="_current">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_current">#</a>
+		<code><a href="source-class-Coast.Validator.html#122-125" title="Go to source code">current</a>( )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+				<h4>Implementation of</h4>
+				<div class="list"><code>Iterator::current()</code></div>
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="key" id="_key">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_key">#</a>
+		<code><a href="source-class-Coast.Validator.html#127-130" title="Go to source code">key</a>( )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+				<h4>Implementation of</h4>
+				<div class="list"><code>Iterator::key()</code></div>
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="next" id="_next">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_next">#</a>
+		<code><a href="source-class-Coast.Validator.html#132-135" title="Go to source code">next</a>( )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+				<h4>Implementation of</h4>
+				<div class="list"><code>Iterator::next()</code></div>
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="valid" id="_valid">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_valid">#</a>
+		<code><a href="source-class-Coast.Validator.html#137-140" title="Go to source code">valid</a>( )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+				<h4>Implementation of</h4>
+				<div class="list"><code>Iterator::valid()</code></div>
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="jsonSerialize" id="_jsonSerialize">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_jsonSerialize">#</a>
+		<code><a href="source-class-Coast.Validator.html#142-148" title="Go to source code">jsonSerialize</a>( )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+				<h4>Overrides</h4>
+				<div class="list"><code><a href="class-Coast.Validator.Rule.html#_jsonSerialize">Coast\Validator\Rule::jsonSerialize()</a></code></div>
+
+				<h4>Implementation of</h4>
+				<div class="list"><code>JsonSerializable::jsonSerialize()</code></div>
 		</div>
 		</div></td>
 	</tr>
@@ -483,7 +715,7 @@
 		<td class="attributes"><code>string</code></td>
 		<td class="name">
 			<code>
-				<a href="source-class-Coast.Validator.html#13" title="Go to source code"><b>STEP_BREAK</b></a>
+				<a href="source-class-Coast.Validator.html#15" title="Go to source code"><b>STEP_BREAK</b></a>
 			</code>
 
 			<div class="description short">
@@ -516,7 +748,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Coast.Validator.html#15" title="Go to source code"><var>$_steps</var></a>
+				<a href="source-class-Coast.Validator.html#17" title="Go to source code"><var>$_steps</var></a>
 
 			<div class="description short">
 				
@@ -541,7 +773,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Coast.Validator.html#17" title="Go to source code"><var>$_rules</var></a>
+				<a href="source-class-Coast.Validator.html#19" title="Go to source code"><var>$_rules</var></a>
 
 			<div class="description short">
 				

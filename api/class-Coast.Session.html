@@ -5,7 +5,7 @@
 
 	<title>Class Coast\Session | Coast API Documentation</title>
 
-	<link rel="stylesheet" href="resources/style.css?95ada9fb523b6ab4fd1c47bb375f713f2cc65542">
+	<link rel="stylesheet" href="resources/style.css?c2f33731c1948fbed7c333554678bfa68d4817da">
 
 </head>
 
@@ -57,6 +57,11 @@
 
 						</li>
 				<li>
+					<a href="namespace-Coast.Feed.html">
+						Feed					</a>
+
+						</li>
+				<li>
 					<a href="namespace-Coast.File.html">
 						File					</a>
 
@@ -85,7 +90,19 @@
 						</li>
 				<li>
 					<a href="namespace-Coast.Model.html">
-						Model					</a>
+						Model<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.Model.Exception.html">
+						Exception					</a>
+
+						</li>
+							</ul></li>
+				<li>
+					<a href="namespace-Coast.Resolver.html">
+						Resolver					</a>
 
 						</li>
 				<li>
@@ -94,10 +111,22 @@
 
 						</li>
 				<li>
-					<a href="namespace-Coast.UrlResolver.html">
-						UrlResolver					</a>
+					<a href="namespace-Coast.Sitemap.html">
+						Sitemap					</a>
 
 						</li>
+				<li>
+					<a href="namespace-Coast.Transformer.html">
+						Transformer<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.Transformer.Rule.html">
+						Rule					</a>
+
+						</li>
+							</ul></li>
 				<li>
 					<a href="namespace-Coast.Validator.html">
 						Validator<span></span>
@@ -125,8 +154,10 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
+				<li><a href="class-Coast.Acl.html">Acl</a></li>
 				<li><a href="class-Coast.App.html">App</a></li>
 				<li><a href="class-Coast.Coast.html">Coast</a></li>
+				<li><a href="class-Coast.Collection.html">Collection</a></li>
 				<li><a href="class-Coast.Config.html">Config</a></li>
 				<li><a href="class-Coast.Controller.html">Controller</a></li>
 				<li><a href="class-Coast.Csp.html">Csp</a></li>
@@ -141,12 +172,13 @@
 				<li><a href="class-Coast.Model.html">Model</a></li>
 				<li><a href="class-Coast.Path.html">Path</a></li>
 				<li><a href="class-Coast.Request.html">Request</a></li>
+				<li><a href="class-Coast.Resolver.html">Resolver</a></li>
 				<li><a href="class-Coast.Response.html">Response</a></li>
 				<li><a href="class-Coast.Router.html">Router</a></li>
 				<li class="active"><a href="class-Coast.Session.html">Session</a></li>
 				<li><a href="class-Coast.Sitemap.html">Sitemap</a></li>
+				<li><a href="class-Coast.Transformer.html">Transformer</a></li>
 				<li><a href="class-Coast.Url.html">Url</a></li>
-				<li><a href="class-Coast.UrlResolver.html">UrlResolver</a></li>
 				<li><a href="class-Coast.Validator.html">Validator</a></li>
 				<li><a href="class-Coast.View.html">View</a></li>
 				<li><a href="class-Coast.Xml.html">Xml</a></li>
@@ -235,7 +267,7 @@
 		<b>Namespace:</b> <a href="namespace-Coast.html">Coast</a><br>
 		
 
-			<b>Located at</b> <a href="source-class-Coast.Session.html#14-250" title="Go to source code">Session.php</a>
+			<b>Located at</b> <a href="source-class-Coast.Session.html#14-248" title="Go to source code">Session.php</a>
 		<br>
 	</div>
 
@@ -555,7 +587,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_start">#</a>
-		<code><a href="source-class-Coast.Session.html#141-165" title="Go to source code">start</a>( <span><code><a href="class-Coast.Request.html">Coast\Request</a></code> <var>$req</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Session.html#141-163" title="Go to source code">start</a>( <span><code><a href="class-Coast.Request.html">Coast\Request</a></code> <var>$req</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -585,7 +617,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_id">#</a>
-		<code><a href="source-class-Coast.Session.html#167-170" title="Go to source code">id</a>( )</code>
+		<code><a href="source-class-Coast.Session.html#165-168" title="Go to source code">id</a>( )</code>
 
 		<div class="description short">
 			
@@ -615,7 +647,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_regenerate">#</a>
-		<code><a href="source-class-Coast.Session.html#172-176" title="Go to source code">regenerate</a>( )</code>
+		<code><a href="source-class-Coast.Session.html#170-174" title="Go to source code">regenerate</a>( )</code>
 
 		<div class="description short">
 			
@@ -645,7 +677,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_destroy">#</a>
-		<code><a href="source-class-Coast.Session.html#178-193" title="Go to source code">destroy</a>( )</code>
+		<code><a href="source-class-Coast.Session.html#176-191" title="Go to source code">destroy</a>( )</code>
 
 		<div class="description short">
 			
@@ -675,7 +707,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_reset">#</a>
-		<code><a href="source-class-Coast.Session.html#195-201" title="Go to source code">reset</a>( )</code>
+		<code><a href="source-class-Coast.Session.html#193-199" title="Go to source code">reset</a>( )</code>
 
 		<div class="description short">
 			
@@ -705,7 +737,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_data">#</a>
-		<code><a href="source-class-Coast.Session.html#203-216" title="Go to source code">data</a>( <span> <var>$name</var></span>, <span> <var>$value</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Session.html#201-214" title="Go to source code">data</a>( <span> <var>$name</var></span>, <span> <var>$value</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -735,7 +767,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_preExecute">#</a>
-		<code><a href="source-class-Coast.Session.html#218-234" title="Go to source code">preExecute</a>( <span><code><a href="class-Coast.Request.html">Coast\Request</a></code> <var>$req</var></span>, <span><code><a href="class-Coast.Response.html">Coast\Response</a></code> <var>$res</var></span> )</code>
+		<code><a href="source-class-Coast.Session.html#216-232" title="Go to source code">preExecute</a>( <span><code><a href="class-Coast.Request.html">Coast\Request</a></code> <var>$req</var></span>, <span><code><a href="class-Coast.Response.html">Coast\Response</a></code> <var>$res</var></span> )</code>
 
 		<div class="description short">
 			
@@ -767,7 +799,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___get">#</a>
-		<code><a href="source-class-Coast.Session.html#236-239" title="Go to source code">__get</a>( <span> <var>$name</var></span> )</code>
+		<code><a href="source-class-Coast.Session.html#234-237" title="Go to source code">__get</a>( <span> <var>$name</var></span> )</code>
 
 		<div class="description short">
 			
@@ -799,7 +831,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___set">#</a>
-		<code><a href="source-class-Coast.Session.html#241-244" title="Go to source code">__set</a>( <span> <var>$name</var></span>, <span> <var>$value</var></span> )</code>
+		<code><a href="source-class-Coast.Session.html#239-242" title="Go to source code">__set</a>( <span> <var>$name</var></span>, <span> <var>$value</var></span> )</code>
 
 		<div class="description short">
 			
@@ -814,6 +846,8 @@
 
 
 
+				<h4>Implementation of</h4>
+				<div class="list"><code><a href="class-Coast.App.Access.html#___set">Coast\App\Access::__set()</a></code></div>
 		</div>
 		</div></td>
 	</tr>
@@ -829,7 +863,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___unset">#</a>
-		<code><a href="source-class-Coast.Session.html#246-249" title="Go to source code">__unset</a>( <span> <var>$name</var></span> )</code>
+		<code><a href="source-class-Coast.Session.html#244-247" title="Go to source code">__unset</a>( <span> <var>$name</var></span> )</code>
 
 		<div class="description short">
 			
@@ -844,6 +878,8 @@
 
 
 
+				<h4>Implementation of</h4>
+				<div class="list"><code><a href="class-Coast.App.Access.html#___unset">Coast\App\Access::__unset()</a></code></div>
 		</div>
 		</div></td>
 	</tr>

@@ -5,7 +5,7 @@
 
 	<title>Class Coast\Request | Coast API Documentation</title>
 
-	<link rel="stylesheet" href="resources/style.css?95ada9fb523b6ab4fd1c47bb375f713f2cc65542">
+	<link rel="stylesheet" href="resources/style.css?c2f33731c1948fbed7c333554678bfa68d4817da">
 
 </head>
 
@@ -57,6 +57,11 @@
 
 						</li>
 				<li>
+					<a href="namespace-Coast.Feed.html">
+						Feed					</a>
+
+						</li>
+				<li>
 					<a href="namespace-Coast.File.html">
 						File					</a>
 
@@ -85,7 +90,19 @@
 						</li>
 				<li>
 					<a href="namespace-Coast.Model.html">
-						Model					</a>
+						Model<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.Model.Exception.html">
+						Exception					</a>
+
+						</li>
+							</ul></li>
+				<li>
+					<a href="namespace-Coast.Resolver.html">
+						Resolver					</a>
 
 						</li>
 				<li>
@@ -94,10 +111,22 @@
 
 						</li>
 				<li>
-					<a href="namespace-Coast.UrlResolver.html">
-						UrlResolver					</a>
+					<a href="namespace-Coast.Sitemap.html">
+						Sitemap					</a>
 
 						</li>
+				<li>
+					<a href="namespace-Coast.Transformer.html">
+						Transformer<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.Transformer.Rule.html">
+						Rule					</a>
+
+						</li>
+							</ul></li>
 				<li>
 					<a href="namespace-Coast.Validator.html">
 						Validator<span></span>
@@ -125,8 +154,10 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
+				<li><a href="class-Coast.Acl.html">Acl</a></li>
 				<li><a href="class-Coast.App.html">App</a></li>
 				<li><a href="class-Coast.Coast.html">Coast</a></li>
+				<li><a href="class-Coast.Collection.html">Collection</a></li>
 				<li><a href="class-Coast.Config.html">Config</a></li>
 				<li><a href="class-Coast.Controller.html">Controller</a></li>
 				<li><a href="class-Coast.Csp.html">Csp</a></li>
@@ -141,12 +172,13 @@
 				<li><a href="class-Coast.Model.html">Model</a></li>
 				<li><a href="class-Coast.Path.html">Path</a></li>
 				<li class="active"><a href="class-Coast.Request.html">Request</a></li>
+				<li><a href="class-Coast.Resolver.html">Resolver</a></li>
 				<li><a href="class-Coast.Response.html">Response</a></li>
 				<li><a href="class-Coast.Router.html">Router</a></li>
 				<li><a href="class-Coast.Session.html">Session</a></li>
 				<li><a href="class-Coast.Sitemap.html">Sitemap</a></li>
+				<li><a href="class-Coast.Transformer.html">Transformer</a></li>
 				<li><a href="class-Coast.Url.html">Url</a></li>
-				<li><a href="class-Coast.UrlResolver.html">UrlResolver</a></li>
 				<li><a href="class-Coast.Validator.html">Validator</a></li>
 				<li><a href="class-Coast.View.html">View</a></li>
 				<li><a href="class-Coast.Xml.html">Xml</a></li>
@@ -220,7 +252,7 @@
 		<b>Namespace:</b> <a href="namespace-Coast.html">Coast</a><br>
 		
 
-			<b>Located at</b> <a href="source-class-Coast.Request.html#9-402" title="Go to source code">Request.php</a>
+			<b>Located at</b> <a href="source-class-Coast.Request.html#9-492" title="Go to source code">Request.php</a>
 		<br>
 	</div>
 
@@ -240,7 +272,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_fromGlobals">#</a>
-		<code><a href="source-class-Coast.Request.html#41-80" title="Go to source code">fromGlobals</a>( )</code>
+		<code><a href="source-class-Coast.Request.html#42-85" title="Go to source code">fromGlobals</a>( )</code>
 
 		<div class="description short">
 			
@@ -270,7 +302,37 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#__clean">#</a>
-		<code><a href="source-class-Coast.Request.html#82-90" title="Go to source code">_clean</a>( <span>array <var>$params</var></span> )</code>
+		<code><a href="source-class-Coast.Request.html#87-95" title="Go to source code">_clean</a>( <span>array <var>$params</var></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="_restructure" id="__restructure">
+
+		<td class="attributes"><code>
+			 protected 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#__restructure">#</a>
+		<code><a href="source-class-Coast.Request.html#97-124" title="Go to source code">_restructure</a>( <span>array <var>$params</var></span> )</code>
 
 		<div class="description short">
 			
@@ -300,7 +362,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_param">#</a>
-		<code><a href="source-class-Coast.Request.html#92-105" title="Go to source code">param</a>( <span> <var>$name</var></span>, <span> <var>$value</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Request.html#126-148" title="Go to source code">param</a>( <span> <var>$name</var></span>, <span> <var>$value</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -330,7 +392,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_params">#</a>
-		<code><a href="source-class-Coast.Request.html#107-116" title="Go to source code">params</a>( <span>array <var>$params</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Request.html#150-159" title="Go to source code">params</a>( <span>array <var>$params</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -360,7 +422,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_server">#</a>
-		<code><a href="source-class-Coast.Request.html#118-127" title="Go to source code">server</a>( <span> <var>$name</var></span>, <span> <var>$value</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Request.html#161-170" title="Go to source code">server</a>( <span> <var>$name</var></span>, <span> <var>$value</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -390,7 +452,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_servers">#</a>
-		<code><a href="source-class-Coast.Request.html#129-138" title="Go to source code">servers</a>( <span>array <var>$servers</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Request.html#172-181" title="Go to source code">servers</a>( <span>array <var>$servers</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -420,7 +482,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_protocol">#</a>
-		<code><a href="source-class-Coast.Request.html#140-147" title="Go to source code">protocol</a>( <span> <var>$protocol</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Request.html#183-190" title="Go to source code">protocol</a>( <span> <var>$protocol</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -450,7 +512,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_method">#</a>
-		<code><a href="source-class-Coast.Request.html#149-156" title="Go to source code">method</a>( <span> <var>$method</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Request.html#192-199" title="Go to source code">method</a>( <span> <var>$method</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -480,7 +542,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_isHead">#</a>
-		<code><a href="source-class-Coast.Request.html#158-161" title="Go to source code">isHead</a>( )</code>
+		<code><a href="source-class-Coast.Request.html#201-204" title="Go to source code">isHead</a>( )</code>
 
 		<div class="description short">
 			
@@ -510,7 +572,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_isGet">#</a>
-		<code><a href="source-class-Coast.Request.html#163-166" title="Go to source code">isGet</a>( )</code>
+		<code><a href="source-class-Coast.Request.html#206-209" title="Go to source code">isGet</a>( )</code>
 
 		<div class="description short">
 			
@@ -540,7 +602,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_isPost">#</a>
-		<code><a href="source-class-Coast.Request.html#168-171" title="Go to source code">isPost</a>( )</code>
+		<code><a href="source-class-Coast.Request.html#211-214" title="Go to source code">isPost</a>( )</code>
 
 		<div class="description short">
 			
@@ -570,7 +632,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_isPut">#</a>
-		<code><a href="source-class-Coast.Request.html#173-176" title="Go to source code">isPut</a>( )</code>
+		<code><a href="source-class-Coast.Request.html#216-219" title="Go to source code">isPut</a>( )</code>
 
 		<div class="description short">
 			
@@ -600,7 +662,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_isDelete">#</a>
-		<code><a href="source-class-Coast.Request.html#178-181" title="Go to source code">isDelete</a>( )</code>
+		<code><a href="source-class-Coast.Request.html#221-224" title="Go to source code">isDelete</a>( )</code>
 
 		<div class="description short">
 			
@@ -630,7 +692,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_isAjax">#</a>
-		<code><a href="source-class-Coast.Request.html#183-186" title="Go to source code">isAjax</a>( )</code>
+		<code><a href="source-class-Coast.Request.html#226-229" title="Go to source code">isAjax</a>( )</code>
 
 		<div class="description short">
 			
@@ -660,7 +722,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_header">#</a>
-		<code><a href="source-class-Coast.Request.html#188-198" title="Go to source code">header</a>( <span> <var>$name</var></span>, <span> <var>$value</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Request.html#231-241" title="Go to source code">header</a>( <span> <var>$name</var></span>, <span> <var>$value</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -690,7 +752,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_headers">#</a>
-		<code><a href="source-class-Coast.Request.html#200-209" title="Go to source code">headers</a>( <span>array <var>$headers</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Request.html#243-252" title="Go to source code">headers</a>( <span>array <var>$headers</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -720,7 +782,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_scheme">#</a>
-		<code><a href="source-class-Coast.Request.html#211-218" title="Go to source code">scheme</a>( <span> <var>$scheme</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Request.html#254-261" title="Go to source code">scheme</a>( <span> <var>$scheme</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -750,7 +812,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_isSecure">#</a>
-		<code><a href="source-class-Coast.Request.html#220-223" title="Go to source code">isSecure</a>( )</code>
+		<code><a href="source-class-Coast.Request.html#263-266" title="Go to source code">isSecure</a>( )</code>
 
 		<div class="description short">
 			
@@ -780,7 +842,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_host">#</a>
-		<code><a href="source-class-Coast.Request.html#225-232" title="Go to source code">host</a>( <span> <var>$host</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Request.html#268-275" title="Go to source code">host</a>( <span> <var>$host</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -810,7 +872,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_port">#</a>
-		<code><a href="source-class-Coast.Request.html#234-241" title="Go to source code">port</a>( <span> <var>$port</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Request.html#277-284" title="Go to source code">port</a>( <span> <var>$port</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -840,7 +902,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_base">#</a>
-		<code><a href="source-class-Coast.Request.html#243-250" title="Go to source code">base</a>( <span> <var>$base</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Request.html#286-293" title="Go to source code">base</a>( <span> <var>$base</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -870,7 +932,67 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_path">#</a>
-		<code><a href="source-class-Coast.Request.html#252-259" title="Go to source code">path</a>( <span> <var>$path</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Request.html#295-302" title="Go to source code">path</a>( <span> <var>$path</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="pathParam" id="_pathParam">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_pathParam">#</a>
+		<code><a href="source-class-Coast.Request.html#304-317" title="Go to source code">pathParam</a>( <span> <var>$name</var></span>, <span> <var>$value</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="pathParams" id="_pathParams">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_pathParams">#</a>
+		<code><a href="source-class-Coast.Request.html#319-328" title="Go to source code">pathParams</a>( <span>array <var>$pathParams</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -900,7 +1022,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_queryParam">#</a>
-		<code><a href="source-class-Coast.Request.html#261-271" title="Go to source code">queryParam</a>( <span> <var>$name</var></span>, <span> <var>$value</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Request.html#330-343" title="Go to source code">queryParam</a>( <span> <var>$name</var></span>, <span> <var>$value</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -930,7 +1052,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_queryParams">#</a>
-		<code><a href="source-class-Coast.Request.html#273-282" title="Go to source code">queryParams</a>( <span>array <var>$queryParams</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Request.html#345-354" title="Go to source code">queryParams</a>( <span>array <var>$queryParams</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -960,7 +1082,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_bodyParam">#</a>
-		<code><a href="source-class-Coast.Request.html#284-294" title="Go to source code">bodyParam</a>( <span> <var>$name</var></span>, <span> <var>$value</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Request.html#356-369" title="Go to source code">bodyParam</a>( <span> <var>$name</var></span>, <span> <var>$value</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -990,7 +1112,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_bodyParams">#</a>
-		<code><a href="source-class-Coast.Request.html#296-305" title="Go to source code">bodyParams</a>( <span>array <var>$bodyParams</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Request.html#371-380" title="Go to source code">bodyParams</a>( <span>array <var>$bodyParams</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -1020,7 +1142,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_body">#</a>
-		<code><a href="source-class-Coast.Request.html#307-314" title="Go to source code">body</a>( <span> <var>$body</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Request.html#382-389" title="Go to source code">body</a>( <span> <var>$body</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -1050,7 +1172,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_json">#</a>
-		<code><a href="source-class-Coast.Request.html#316-319" title="Go to source code">json</a>( <span> <var>$assoc</var> = <span class="php-keyword1">false</span></span>, <span> <var>$depth</var> = <span class="php-num">512</span></span>, <span> <var>$options</var> = <span class="php-num">0</span></span> )</code>
+		<code><a href="source-class-Coast.Request.html#391-394" title="Go to source code">json</a>( <span> <var>$assoc</var> = <span class="php-keyword1">false</span></span>, <span> <var>$depth</var> = <span class="php-num">512</span></span>, <span> <var>$options</var> = <span class="php-num">0</span></span> )</code>
 
 		<div class="description short">
 			
@@ -1080,7 +1202,97 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_xml">#</a>
-		<code><a href="source-class-Coast.Request.html#321-324" title="Go to source code">xml</a>( <span> <var>$class</var> = <span class="php-quote">'\Coast\Xml'</span></span>, <span> <var>$options</var> = <span class="php-num">0</span></span>, <span> <var>$namespace</var> = <span class="php-quote">''</span></span>, <span> <var>$prefix</var> = <span class="php-keyword1">false</span></span> )</code>
+		<code><a href="source-class-Coast.Request.html#396-399" title="Go to source code">xml</a>( <span> <var>$class</var> = <span class="php-quote">'\Coast\Xml'</span></span>, <span> <var>$options</var> = <span class="php-num">0</span></span>, <span> <var>$namespace</var> = <span class="php-quote">''</span></span>, <span> <var>$prefix</var> = <span class="php-keyword1">false</span></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="type" id="_type">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_type">#</a>
+		<code><a href="source-class-Coast.Request.html#401-404" title="Go to source code">type</a>( )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="isJson" id="_isJson">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_isJson">#</a>
+		<code><a href="source-class-Coast.Request.html#406-409" title="Go to source code">isJson</a>( )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="isXml" id="_isXml">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_isXml">#</a>
+		<code><a href="source-class-Coast.Request.html#411-414" title="Go to source code">isXml</a>( )</code>
 
 		<div class="description short">
 			
@@ -1110,7 +1322,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_cookie">#</a>
-		<code><a href="source-class-Coast.Request.html#326-335" title="Go to source code">cookie</a>( <span> <var>$name</var></span>, <span> <var>$value</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Request.html#416-425" title="Go to source code">cookie</a>( <span> <var>$name</var></span>, <span> <var>$value</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -1140,7 +1352,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_cookies">#</a>
-		<code><a href="source-class-Coast.Request.html#337-346" title="Go to source code">cookies</a>( <span>array <var>$cookies</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.Request.html#427-436" title="Go to source code">cookies</a>( <span>array <var>$cookies</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -1170,7 +1382,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_url">#</a>
-		<code><a href="source-class-Coast.Request.html#348-360" title="Go to source code">url</a>( )</code>
+		<code><a href="source-class-Coast.Request.html#438-450" title="Go to source code">url</a>( )</code>
 
 		<div class="description short">
 			
@@ -1200,7 +1412,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___set">#</a>
-		<code><a href="source-class-Coast.Request.html#362-371" title="Go to source code">__set</a>( <span>string <var>$name</var></span>, <span>mixed <var>$value</var></span> )</code>
+		<code><a href="source-class-Coast.Request.html#452-461" title="Go to source code">__set</a>( <span>string <var>$name</var></span>, <span>mixed <var>$value</var></span> )</code>
 
 		<div class="description short">
 			<p>Set a parameter.</p>
@@ -1241,7 +1453,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___get">#</a>
-		<code><a href="source-class-Coast.Request.html#373-381" title="Go to source code">__get</a>( <span>string <var>$name</var></span> )</code>
+		<code><a href="source-class-Coast.Request.html#463-471" title="Go to source code">__get</a>( <span>string <var>$name</var></span> )</code>
 
 		<div class="description short">
 			<p>Get a parameter.</p>
@@ -1280,7 +1492,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___isset">#</a>
-		<code><a href="source-class-Coast.Request.html#383-391" title="Go to source code">__isset</a>( <span>string <var>$name</var></span> )</code>
+		<code><a href="source-class-Coast.Request.html#473-481" title="Go to source code">__isset</a>( <span>string <var>$name</var></span> )</code>
 
 		<div class="description short">
 			<p>Check if a parameter exists.</p>
@@ -1319,7 +1531,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___unset">#</a>
-		<code><a href="source-class-Coast.Request.html#393-401" title="Go to source code">__unset</a>( <span>string <var>$name</var></span> )</code>
+		<code><a href="source-class-Coast.Request.html#483-491" title="Go to source code">__unset</a>( <span>string <var>$name</var></span> )</code>
 
 		<div class="description short">
 			<p>Unset a parameter.</p>
@@ -1878,6 +2090,31 @@
 			</div>
 		</td>
 	</tr>
+	<tr data-order="_pathParams" id="$_pathParams">
+		<td class="attributes"><code>
+			protected  
+			array
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Coast.Request.html#36" title="Go to source code"><var>$_pathParams</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$_pathParams" class="anchor">#</a>
+				<code>[]</code>
+			</div>
+		</td>
+	</tr>
 	<tr data-order="_queryParams" id="$_queryParams">
 		<td class="attributes"><code>
 			protected  
@@ -1885,7 +2122,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Coast.Request.html#36" title="Go to source code"><var>$_queryParams</var></a>
+				<a href="source-class-Coast.Request.html#37" title="Go to source code"><var>$_queryParams</var></a>
 
 			<div class="description short">
 				
@@ -1910,7 +2147,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Coast.Request.html#37" title="Go to source code"><var>$_bodyParams</var></a>
+				<a href="source-class-Coast.Request.html#38" title="Go to source code"><var>$_bodyParams</var></a>
 
 			<div class="description short">
 				
@@ -1935,7 +2172,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Coast.Request.html#38" title="Go to source code"><var>$_body</var></a>
+				<a href="source-class-Coast.Request.html#39" title="Go to source code"><var>$_body</var></a>
 
 			<div class="description short">
 				
@@ -1960,7 +2197,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Coast.Request.html#39" title="Go to source code"><var>$_cookies</var></a>
+				<a href="source-class-Coast.Request.html#40" title="Go to source code"><var>$_cookies</var></a>
 
 			<div class="description short">
 				

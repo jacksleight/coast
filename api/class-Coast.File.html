@@ -5,7 +5,7 @@
 
 	<title>Class Coast\File | Coast API Documentation</title>
 
-	<link rel="stylesheet" href="resources/style.css?95ada9fb523b6ab4fd1c47bb375f713f2cc65542">
+	<link rel="stylesheet" href="resources/style.css?c2f33731c1948fbed7c333554678bfa68d4817da">
 
 </head>
 
@@ -57,6 +57,11 @@
 
 						</li>
 				<li>
+					<a href="namespace-Coast.Feed.html">
+						Feed					</a>
+
+						</li>
+				<li>
 					<a href="namespace-Coast.File.html">
 						File					</a>
 
@@ -85,7 +90,19 @@
 						</li>
 				<li>
 					<a href="namespace-Coast.Model.html">
-						Model					</a>
+						Model<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.Model.Exception.html">
+						Exception					</a>
+
+						</li>
+							</ul></li>
+				<li>
+					<a href="namespace-Coast.Resolver.html">
+						Resolver					</a>
 
 						</li>
 				<li>
@@ -94,10 +111,22 @@
 
 						</li>
 				<li>
-					<a href="namespace-Coast.UrlResolver.html">
-						UrlResolver					</a>
+					<a href="namespace-Coast.Sitemap.html">
+						Sitemap					</a>
 
 						</li>
+				<li>
+					<a href="namespace-Coast.Transformer.html">
+						Transformer<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Coast.Transformer.Rule.html">
+						Rule					</a>
+
+						</li>
+							</ul></li>
 				<li>
 					<a href="namespace-Coast.Validator.html">
 						Validator<span></span>
@@ -125,8 +154,10 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
+				<li><a href="class-Coast.Acl.html">Acl</a></li>
 				<li><a href="class-Coast.App.html">App</a></li>
 				<li><a href="class-Coast.Coast.html">Coast</a></li>
+				<li><a href="class-Coast.Collection.html">Collection</a></li>
 				<li><a href="class-Coast.Config.html">Config</a></li>
 				<li><a href="class-Coast.Controller.html">Controller</a></li>
 				<li><a href="class-Coast.Csp.html">Csp</a></li>
@@ -141,12 +172,13 @@
 				<li><a href="class-Coast.Model.html">Model</a></li>
 				<li><a href="class-Coast.Path.html">Path</a></li>
 				<li><a href="class-Coast.Request.html">Request</a></li>
+				<li><a href="class-Coast.Resolver.html">Resolver</a></li>
 				<li><a href="class-Coast.Response.html">Response</a></li>
 				<li><a href="class-Coast.Router.html">Router</a></li>
 				<li><a href="class-Coast.Session.html">Session</a></li>
 				<li><a href="class-Coast.Sitemap.html">Sitemap</a></li>
+				<li><a href="class-Coast.Transformer.html">Transformer</a></li>
 				<li><a href="class-Coast.Url.html">Url</a></li>
-				<li><a href="class-Coast.UrlResolver.html">UrlResolver</a></li>
 				<li><a href="class-Coast.Validator.html">Validator</a></li>
 				<li><a href="class-Coast.View.html">View</a></li>
 				<li><a href="class-Coast.Xml.html">Xml</a></li>
@@ -244,7 +276,7 @@
 		<b>Namespace:</b> <a href="namespace-Coast.html">Coast</a><br>
 		
 
-			<b>Located at</b> <a href="source-class-Coast.File.html#9-244" title="Go to source code">File.php</a>
+			<b>Located at</b> <a href="source-class-Coast.File.html#12-270" title="Go to source code">File.php</a>
 		<br>
 	</div>
 
@@ -264,7 +296,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_createTemp">#</a>
-		<code><a href="source-class-Coast.File.html#15-22" title="Go to source code">createTemp</a>( )</code>
+		<code><a href="source-class-Coast.File.html#18-25" title="Go to source code">createTemp</a>( )</code>
 
 		<div class="description short">
 			
@@ -294,7 +326,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_createMemory">#</a>
-		<code><a href="source-class-Coast.File.html#24-27" title="Go to source code">createMemory</a>( <span> <var>$max</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.File.html#27-30" title="Go to source code">createMemory</a>( <span> <var>$max</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -324,7 +356,67 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_chars">#</a>
-		<code><a href="source-class-Coast.File.html#29-33" title="Go to source code">chars</a>( <span> <var>$delimiter</var> = <span class="php-quote">','</span></span>, <span> <var>$enclosure</var> = <span class="php-quote">'&quot;'</span></span>, <span> <var>$escape</var> = <span class="php-quote">'\\'</span></span> )</code>
+		<code><a href="source-class-Coast.File.html#32-36" title="Go to source code">chars</a>( <span> <var>$delimiter</var> = <span class="php-quote">','</span></span>, <span> <var>$enclosure</var> = <span class="php-quote">'&quot;'</span></span>, <span> <var>$escape</var> = <span class="php-quote">'\\'</span></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="readAll" id="_readAll">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_readAll">#</a>
+		<code><a href="source-class-Coast.File.html#38-44" title="Go to source code">readAll</a>( )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="writeAll" id="_writeAll">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_writeAll">#</a>
+		<code><a href="source-class-Coast.File.html#46-53" title="Go to source code">writeAll</a>( <span> <var>$string</var></span> )</code>
 
 		<div class="description short">
 			
@@ -354,7 +446,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_open">#</a>
-		<code><a href="source-class-Coast.File.html#35-39" title="Go to source code">open</a>( <span> <var>$mode</var> = <span class="php-quote">'r'</span></span> )</code>
+		<code><a href="source-class-Coast.File.html#55-59" title="Go to source code">open</a>( <span> <var>$mode</var> = <span class="php-quote">'r'</span></span> )</code>
 
 		<div class="description short">
 			
@@ -384,7 +476,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_handle">#</a>
-		<code><a href="source-class-Coast.File.html#41-47" title="Go to source code">handle</a>( )</code>
+		<code><a href="source-class-Coast.File.html#61-67" title="Go to source code">handle</a>( )</code>
 
 		<div class="description short">
 			
@@ -414,7 +506,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_close">#</a>
-		<code><a href="source-class-Coast.File.html#49-57" title="Go to source code">close</a>( )</code>
+		<code><a href="source-class-Coast.File.html#69-77" title="Go to source code">close</a>( )</code>
 
 		<div class="description short">
 			
@@ -444,7 +536,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_read">#</a>
-		<code><a href="source-class-Coast.File.html#59-70" title="Go to source code">read</a>( <span> <var>$length</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.File.html#79-90" title="Go to source code">read</a>( <span> <var>$length</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -474,7 +566,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_write">#</a>
-		<code><a href="source-class-Coast.File.html#72-81" title="Go to source code">write</a>( <span> <var>$string</var></span>, <span> <var>$length</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.File.html#92-101" title="Go to source code">write</a>( <span> <var>$string</var></span>, <span> <var>$length</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -504,7 +596,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get">#</a>
-		<code><a href="source-class-Coast.File.html#83-91" title="Go to source code">get</a>( <span> <var>$length</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.File.html#103-111" title="Go to source code">get</a>( <span> <var>$length</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -534,7 +626,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_put">#</a>
-		<code><a href="source-class-Coast.File.html#93-100" title="Go to source code">put</a>( <span> <var>$string</var></span>, <span> <var>$length</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.File.html#113-120" title="Go to source code">put</a>( <span> <var>$string</var></span>, <span> <var>$length</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -564,7 +656,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getCsv">#</a>
-		<code><a href="source-class-Coast.File.html#102-108" title="Go to source code">getCsv</a>( <span> <var>$length</var> = <span class="php-num">0</span></span> )</code>
+		<code><a href="source-class-Coast.File.html#122-128" title="Go to source code">getCsv</a>( <span> <var>$length</var> = <span class="php-num">0</span></span> )</code>
 
 		<div class="description short">
 			
@@ -594,7 +686,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_putCsv">#</a>
-		<code><a href="source-class-Coast.File.html#110-117" title="Go to source code">putCsv</a>( <span> <var>$array</var></span> )</code>
+		<code><a href="source-class-Coast.File.html#130-137" title="Go to source code">putCsv</a>( <span> <var>$array</var></span> )</code>
 
 		<div class="description short">
 			
@@ -624,7 +716,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_seek">#</a>
-		<code><a href="source-class-Coast.File.html#119-126" title="Go to source code">seek</a>( <span> <var>$offset</var></span>, <span> <var>$whence</var> = SEEK_SET</span> )</code>
+		<code><a href="source-class-Coast.File.html#139-146" title="Go to source code">seek</a>( <span> <var>$offset</var></span>, <span> <var>$whence</var> = SEEK_SET</span> )</code>
 
 		<div class="description short">
 			
@@ -654,7 +746,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_rewind">#</a>
-		<code><a href="source-class-Coast.File.html#128-135" title="Go to source code">rewind</a>( )</code>
+		<code><a href="source-class-Coast.File.html#148-155" title="Go to source code">rewind</a>( )</code>
 
 		<div class="description short">
 			
@@ -684,7 +776,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_truncate">#</a>
-		<code><a href="source-class-Coast.File.html#137-144" title="Go to source code">truncate</a>( <span> <var>$length</var> = <span class="php-num">0</span></span> )</code>
+		<code><a href="source-class-Coast.File.html#157-164" title="Go to source code">truncate</a>( <span> <var>$length</var> = <span class="php-num">0</span></span> )</code>
 
 		<div class="description short">
 			
@@ -714,7 +806,97 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_tell">#</a>
-		<code><a href="source-class-Coast.File.html#146-152" title="Go to source code">tell</a>( )</code>
+		<code><a href="source-class-Coast.File.html#166-172" title="Go to source code">tell</a>( )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="flush" id="_flush">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_flush">#</a>
+		<code><a href="source-class-Coast.File.html#174-180" title="Go to source code">flush</a>( )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="lock" id="_lock">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_lock">#</a>
+		<code><a href="source-class-Coast.File.html#182-188" title="Go to source code">lock</a>( <span> <var>$operation</var> = LOCK_EX</span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="unlock" id="_unlock">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_unlock">#</a>
+		<code><a href="source-class-Coast.File.html#190-193" title="Go to source code">unlock</a>( )</code>
 
 		<div class="description short">
 			
@@ -744,7 +926,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_output">#</a>
-		<code><a href="source-class-Coast.File.html#154-163" title="Go to source code">output</a>( )</code>
+		<code><a href="source-class-Coast.File.html#195-204" title="Go to source code">output</a>( )</code>
 
 		<div class="description short">
 			
@@ -774,7 +956,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_isOpen">#</a>
-		<code><a href="source-class-Coast.File.html#165-168" title="Go to source code">isOpen</a>( )</code>
+		<code><a href="source-class-Coast.File.html#206-209" title="Go to source code">isOpen</a>( )</code>
 
 		<div class="description short">
 			
@@ -804,7 +986,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_moveUpload">#</a>
-		<code><a href="source-class-Coast.File.html#170-178" title="Go to source code">moveUpload</a>( <span><code><a href="class-Coast.Dir.html">Coast\Dir</a></code> <var>$dir</var></span>, <span> <var>$baseName</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.File.html#211-219" title="Go to source code">moveUpload</a>( <span><code><a href="class-Coast.Dir.html">Coast\Dir</a></code> <var>$dir</var></span>, <span> <var>$baseName</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -834,7 +1016,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_copy">#</a>
-		<code><a href="source-class-Coast.File.html#180-187" title="Go to source code">copy</a>( <span><code><a href="class-Coast.Dir.html">Coast\Dir</a></code> <var>$dir</var></span>, <span> <var>$baseName</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.File.html#221-228" title="Go to source code">copy</a>( <span><code><a href="class-Coast.Dir.html">Coast\Dir</a></code> <var>$dir</var></span>, <span> <var>$baseName</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -864,7 +1046,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_remove">#</a>
-		<code><a href="source-class-Coast.File.html#189-193" title="Go to source code">remove</a>( )</code>
+		<code><a href="source-class-Coast.File.html#230-234" title="Go to source code">remove</a>( )</code>
 
 		<div class="description short">
 			
@@ -894,7 +1076,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_permissions">#</a>
-		<code><a href="source-class-Coast.File.html#195-202" title="Go to source code">permissions</a>( <span> <var>$mode</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.File.html#236-243" title="Go to source code">permissions</a>( <span> <var>$mode</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -909,7 +1091,7 @@
 
 
 				<h4>Overrides</h4>
-				<div class="list"><code><a href="class-Coast.Path.html#_permissions">Coast\Path::permissions()</a></code></div>
+				<div class="list"><code><a href="class-Coast.File.Path.html#_permissions">Coast\File\Path::permissions()</a></code></div>
 
 		</div>
 		</div></td>
@@ -926,7 +1108,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_touch">#</a>
-		<code><a href="source-class-Coast.File.html#204-208" title="Go to source code">touch</a>( <span>DateTime <var>$modify</var> = <span class="php-keyword1">null</span></span>, <span>DateTime <var>$access</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Coast.File.html#245-249" title="Go to source code">touch</a>( <span>DateTime <var>$modify</var> = <span class="php-keyword1">null</span></span>, <span>DateTime <var>$access</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -956,7 +1138,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_size">#</a>
-		<code><a href="source-class-Coast.File.html#210-218" title="Go to source code">size</a>( )</code>
+		<code><a href="source-class-Coast.File.html#251-259" title="Go to source code">size</a>( )</code>
 
 		<div class="description short">
 			
@@ -986,7 +1168,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_hash">#</a>
-		<code><a href="source-class-Coast.File.html#220-223" title="Go to source code">hash</a>( <span> <var>$type</var></span> )</code>
+		<code><a href="source-class-Coast.File.html#261-264" title="Go to source code">hash</a>( <span> <var>$type</var></span> )</code>
 
 		<div class="description short">
 			
@@ -1016,97 +1198,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_dir">#</a>
-		<code><a href="source-class-Coast.File.html#225-228" title="Go to source code">dir</a>( <span> <var>$create</var> = <span class="php-keyword1">false</span></span> )</code>
-
-		<div class="description short">
-			
-		</div>
-
-		<div class="description detailed hidden">
-			
-
-
-
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="accessTime" id="_accessTime">
-
-		<td class="attributes"><code>
-			 public 
-
-			
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_accessTime">#</a>
-		<code><a href="source-class-Coast.File.html#230-233" title="Go to source code">accessTime</a>( )</code>
-
-		<div class="description short">
-			
-		</div>
-
-		<div class="description detailed hidden">
-			
-
-
-
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="changeTime" id="_changeTime">
-
-		<td class="attributes"><code>
-			 public 
-
-			
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_changeTime">#</a>
-		<code><a href="source-class-Coast.File.html#235-238" title="Go to source code">changeTime</a>( )</code>
-
-		<div class="description short">
-			
-		</div>
-
-		<div class="description detailed hidden">
-			
-
-
-
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="modifyTime" id="_modifyTime">
-
-		<td class="attributes"><code>
-			 public 
-
-			
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_modifyTime">#</a>
-		<code><a href="source-class-Coast.File.html#240-243" title="Go to source code">modifyTime</a>( )</code>
+		<code><a href="source-class-Coast.File.html#266-269" title="Go to source code">dir</a>( <span> <var>$create</var> = <span class="php-keyword1">false</span></span> )</code>
 
 		<div class="description short">
 			
@@ -1127,29 +1219,45 @@
 	</table>
 
 	<table class="summary inherited">
+	<caption>Methods inherited from <a href="class-Coast.File.Path.html#methods">Coast\File\Path</a></caption>
+	<tr>
+		<td><code>
+			<a href="class-Coast.File.Path.html#__parseBaseName">_parseBaseName()</a>, 
+			<a href="class-Coast.File.Path.html#_accessTime">accessTime()</a>, 
+			<a href="class-Coast.File.Path.html#_changeTime">changeTime()</a>, 
+			<a href="class-Coast.File.Path.html#_exists">exists()</a>, 
+			<a href="class-Coast.File.Path.html#_isDir">isDir()</a>, 
+			<a href="class-Coast.File.Path.html#_isExist">isExist()</a>, 
+			<a href="class-Coast.File.Path.html#_isFile">isFile()</a>, 
+			<a href="class-Coast.File.Path.html#_isReadable">isReadable()</a>, 
+			<a href="class-Coast.File.Path.html#_isWritable">isWritable()</a>, 
+			<a href="class-Coast.File.Path.html#_modifyTime">modifyTime()</a>, 
+			<a href="class-Coast.File.Path.html#_move">move()</a>, 
+			<a href="class-Coast.File.Path.html#_rename">rename()</a>
+		</code></td>
+	</tr>
+	</table>
+	<table class="summary inherited">
 	<caption>Methods inherited from <a href="class-Coast.Path.html#methods">Coast\Path</a></caption>
 	<tr>
 		<td><code>
 			<a href="class-Coast.Path.html#___construct">__construct()</a>, 
 			<a href="class-Coast.Path.html#___toString">__toString()</a>, 
-			<a href="class-Coast.Path.html#__parseBaseName">_parseBaseName()</a>, 
 			<a href="class-Coast.Path.html#_baseName">baseName()</a>, 
+			<a href="class-Coast.Path.html#_child">child()</a>, 
 			<a href="class-Coast.Path.html#_dirName">dirName()</a>, 
-			<a href="class-Coast.Path.html#_exists">exists()</a>, 
 			<a href="class-Coast.Path.html#_extName">extName()</a>, 
+			<a href="class-Coast.Path.html#_extNameDot">extNameDot()</a>, 
 			<a href="class-Coast.Path.html#_fileName">fileName()</a>, 
+			<a href="class-Coast.Path.html#_fileNameDot">fileNameDot()</a>, 
 			<a href="class-Coast.Path.html#_isAbsolute">isAbsolute()</a>, 
-			<a href="class-Coast.Path.html#_isDir">isDir()</a>, 
-			<a href="class-Coast.Path.html#_isFile">isFile()</a>, 
-			<a href="class-Coast.Path.html#_isReadable">isReadable()</a>, 
 			<a href="class-Coast.Path.html#_isRelative">isRelative()</a>, 
 			<a href="class-Coast.Path.html#_isWithin">isWithin()</a>, 
-			<a href="class-Coast.Path.html#_isWritable">isWritable()</a>, 
-			<a href="class-Coast.Path.html#_move">move()</a>, 
 			<a href="class-Coast.Path.html#_name">name()</a>, 
-			<a href="class-Coast.Path.html#_path">path()</a>, 
+			<a href="class-Coast.Path.html#_parent">parent()</a>, 
+			<a href="class-Coast.Path.html#_part">part()</a>, 
+			<a href="class-Coast.Path.html#_parts">parts()</a>, 
 			<a href="class-Coast.Path.html#_prefix">prefix()</a>, 
-			<a href="class-Coast.Path.html#_rename">rename()</a>, 
 			<a href="class-Coast.Path.html#_suffix">suffix()</a>, 
 			<a href="class-Coast.Path.html#_toAbsolute">toAbsolute()</a>, 
 			<a href="class-Coast.Path.html#_toDir">toDir()</a>, 
@@ -1167,6 +1275,15 @@
 
 
 
+	<table class="summary inherited">
+	<caption>Constants inherited from <a href="class-Coast.Path.html#constants">Coast\Path</a></caption>
+	<tr>
+		<td><code>
+			<a href="class-Coast.Path.html#PART_FIRST"><b>PART_FIRST</b></a>, 
+			<a href="class-Coast.Path.html#PART_LAST"><b>PART_LAST</b></a>
+		</code></td>
+	</tr>
+	</table>
 
 
 
@@ -1179,7 +1296,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Coast.File.html#11" title="Go to source code"><var>$_chars</var></a>
+				<a href="source-class-Coast.File.html#14" title="Go to source code"><var>$_chars</var></a>
 
 			<div class="description short">
 				
@@ -1204,7 +1321,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Coast.File.html#13" title="Go to source code"><var>$_handle</var></a>
+				<a href="source-class-Coast.File.html#16" title="Go to source code"><var>$_handle</var></a>
 
 			<div class="description short">
 				
