@@ -3,7 +3,7 @@ namespace Coast\Test;
 
 use Coast\Path;
 
-class PathTest extends \PHPUnit\Framework\TestCase
+class PathTest extends \PHPUnit_Framework_TestCase
 {
     public function testName()
     {
@@ -95,7 +95,7 @@ class PathTest extends \PHPUnit\Framework\TestCase
         $a = new Path('../four');
         $b = new Path('/one/two/three');
 
-        $this->expectException('Exception');
+        $this->setExpectedException('Exception');
         $b->toAbsolute($a);
     }
 
@@ -112,7 +112,7 @@ class PathTest extends \PHPUnit\Framework\TestCase
         $a = new Path('/one/four');
         $b = new Path('../');
 
-        $this->expectException('Exception');
+        $this->setExpectedException('Exception');
         $a->toRelative($b);
     }
 
@@ -133,7 +133,7 @@ class PathTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($real->name(), realpath(__DIR__ . '/..'));
 
         $path = new Path('./');
-        $this->expectException('Exception');
+        $this->setExpectedException('Exception');
         $path->toReal();
     }
 

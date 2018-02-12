@@ -3,7 +3,7 @@ namespace Coast\Test;
 
 use Coast\Feed;
 
-class FeedTest extends \PHPUnit\Framework\TestCase
+class FeedTest extends \PHPUnit_Framework_TestCase
 {
     protected $_feed;
     protected $_output;

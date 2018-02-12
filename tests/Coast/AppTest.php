@@ -7,7 +7,7 @@ use Coast\App,
     Coast\Resolver,
     Coast\Url;
 
-class AppTest extends \PHPUnit\Framework\TestCase
+class AppTest extends \PHPUnit_Framework_TestCase
 {
     public function testEnv()
     {
@@ -39,14 +39,14 @@ class AppTest extends \PHPUnit\Framework\TestCase
     public function testExecuteException()
     {
         $app = new App(__DIR__);
-        $this->expectException('Coast\App\Exception');
+        $this->setExpectedException('Coast\App\Exception');
         $app->execute(new Request());
     }
 
     public function testInvalid()
     {
         $app = new App(__DIR__);
-        $this->expectException('Coast\App\Exception');
+        $this->setExpectedException('Coast\App\Exception');
         $app->add(true);
     }
 
@@ -107,7 +107,7 @@ class AppTest extends \PHPUnit\Framework\TestCase
     {
         $app = new App(__DIR__);
         $app->param('invalid', true);
-        $this->expectException('Coast\App\Exception');
+        $this->setExpectedException('Coast\App\Exception');
         $app->invalid();
     }
 }

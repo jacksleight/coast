@@ -3,7 +3,7 @@ namespace Coast\Test;
 
 use Coast\Xml;
 
-class XmlTest extends \PHPUnit\Framework\TestCase
+class XmlTest extends \PHPUnit_Framework_TestCase
 {
     protected $_xml;
     protected $_output;

@@ -1,5 +1,5 @@
 title: Coast API Documentation
-source: lib
+source: library
 destination: ../docs/api
 php: no
 deprecated: yes

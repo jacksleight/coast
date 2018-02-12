@@ -4,7 +4,7 @@ namespace Coast\Test;
 use Coast\Filter,
     Coast\Filter\Rule;
 
-class FilterTest extends \PHPUnit\Framework\TestCase
+class FilterTest extends \PHPUnit_Framework_TestCase
 {
     public function testCamelCase()
     {

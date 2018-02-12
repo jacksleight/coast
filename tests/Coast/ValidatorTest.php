@@ -5,7 +5,7 @@ use Coast\Validator,
     Coast\Validator\Rule;
 use DateTime;
 
-class ValidatorTest extends \PHPUnit\Framework\TestCase
+class ValidatorTest extends \PHPUnit_Framework_TestCase
 {
     public function testBoolean()
     {

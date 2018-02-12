@@ -5,7 +5,7 @@ use Coast\Transformer,
     Coast\Transformer\Rule;
 use DateTime;
 
-class TransformerTest extends \PHPUnit\Framework\TestCase
+class TransformerTest extends \PHPUnit_Framework_TestCase
 {
     public function testNull()
     {

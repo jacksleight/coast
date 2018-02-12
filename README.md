@@ -129,7 +129,7 @@ And load it up in the browser at: [http://localhost:8000/](http://localhost:8000
 
 ## Requirements
 
-* PHP 5.5+
+* PHP 5.6+
 * mod_rewrite (if using Apache)
 
 ## To Do

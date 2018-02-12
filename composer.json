@@ -1,7 +1,7 @@
 {
   "name": "jacksleight/coast",
   "type": "library",
-  "description": "Web application framework for PHP 5.5+",
+  "description": "Web application framework for PHP",
   "keywords": ["framework", "coast"],
   "homepage": "http://coast.jacksleight.com/",
   "license": "MIT",
@@ -9,13 +9,13 @@
     {"name": "Jack Sleight", "email": "jacksleight@gmail.com"}
   ],
   "require": {
-    "php": ">=5.5.0",
+    "php": ">=5.6.0",
     "jakeasmith/http_build_url": "0.1.*"
   },
   "require-dev": {
     "apigen/apigen": "4.1.*",
-    "phpunit/phpunit": "6.5.*",
-    "satooshi/php-coveralls": "1.0.*"
+    "phpunit/phpunit": "5.0.*",
+    "satooshi/php-coveralls": "2.0.*"
   },
   "autoload": {
     "psr-4": {
