@@ -8,6 +8,7 @@ namespace Coast\Model;
 
 use Exception;
 use Coast;
+use Coast\Model;
 use Coast\Filter;
 use Coast\Validator;
 use Coast\Transformer;
@@ -39,15 +40,16 @@ class Metadata implements JsonSerializable
         if (func_num_args() > 1) {
             if (!isset($this->_properties[$name])) {
                 $this->_properties[$name] = [
-                    'name'        => $name,
-                    'type'        => null,
-                    'filter'      => new Filter(),
-                    'transformer' => new Transformer(),
-                    'validator'   => new Validator(),
-                    'construct'   => null,
-                    'isTraverse'  => false,
-                    'isConstruct' => false,
-                    'isImmutable' => false,
+                    'name'            => $name,
+                    'type'            => null,
+                    'filter'          => new Filter(),
+                    'transformer'     => new Transformer(),
+                    'validator'       => new Validator(),
+                    'className'       => null,
+                    'classArgs'       => null,
+                    'traverseModes'   => [Model::TRAVERSE_MODE_READ],
+                    'isConstructable' => false,
+                    'isImmutable'     => false,
                 ];
             }
             $current = $this->_properties[$name];
@@ -148,22 +150,26 @@ class Metadata implements JsonSerializable
 
     public function jsonSerialize()
     {
-        $class = $this->_className;
+        $className  = $this->_className;
         $properties = $this->_properties;
-        foreach ($properties as $name => $property) {
-            if (in_array($property['type'], ['one', 'many']) && isset($property['construct'])) {
-                $construct = $property['construct'];
-                $properties[$name] += [
-                    'metadata' => $construct::metadataStatic(),
-                ];
+        foreach ($properties as $name => $metadata) {
+            if (!in_array($metadata['type'], [
+                Model::PROPERTY_TYPE_ONE,
+                Model::PROPERTY_TYPE_MANY,
+            ]) || !$metadata['isTraversable'] || !isset($metadata['className'])) {
+                continue;
             }
+            $propertyClassName = $metadata['className'];
+            $properties[$name] += [
+                'metadata' => $propertyClassName::metadataStatic(),
+            ];
         }
         $extras = $this->_extras;
         return [
-            'className'  => $class,
+            'className'  => $className,
             'properties' => $properties,
             'extras'     => $extras,
-            'defaults'   => new $class(),
+            'defaults'   => new $className(),
         ];
     }
 }

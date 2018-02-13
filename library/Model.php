@@ -18,10 +18,12 @@ use ReflectionProperty;
 
 class Model implements ArrayAccess, JsonSerializable
 {
-    const TRAVERSE_SKIP = '__Coast\Model::TRAVERSE_SKIP__';
+    const TRAVERSE_MODE_READ   = 'read';
+    const TRAVERSE_MODE_WRITE  = 'write';
+    const TRAVERSE_OUTPUT_SKIP = '__Coast\Model::SKIP__';
 
-    const TYPE_ONE  = 'one';
-    const TYPE_MANY = 'many';
+    const PROPERTY_TYPE_ONE  = 'one';
+    const PROPERTY_TYPE_MANY = 'many';
 
     protected static $_metadataStatic = [];
 
@@ -115,146 +117,141 @@ class Model implements ArrayAccess, JsonSerializable
         return $this->_metadata;
     }
 
-    public function metadataReset($isTraverse = null)
+    public function metadataReset($mode = false)
     {
         $this->traverseModels(function() {
             $this->_metadata = null;
-        }, $isTraverse);
+        }, $mode);
         return $this;
     }
 
-    public function traverse(Closure $func, $isTraverse = null, array &$history = array())
+    public function traverse(Closure $func, $mode, array &$history = array())
     {
         array_push($history, $this);
         $func = $func->bindTo($this);
         $output = [];
         foreach ($this->metadata->properties() as $name => $metadata) {
             $value = $this->__get($name);
-            $isDeep = isset($isTraverse)
-                ? $isTraverse
-                : $metadata['isTraverse'];
+            $isTraverse = in_array($mode, $metadata['traverseModes']);
             if (is_object($value)) {
                 foreach (self::$_initMethods as $method) {
                     if (method_exists($value, $method) && !$value->$method()) {
-                        $isDeep = false;
+                        $isTraverse = false;
                         break;
                     }
                 }
             }
-            if (!$isDeep) {
-                $value = $func($name, $value, $metadata, $isDeep);
-                if ($value !== self::TRAVERSE_SKIP) {
+            if (!$isTraverse) {
+                $value = $func($name, $value, $metadata, $isTraverse);
+                if ($value !== self::TRAVERSE_OUTPUT_SKIP) {
                     $output[$name] = $value;
                 }
                 continue;
             }
             if (in_array($metadata['type'], [
-                self::TYPE_ONE,
-                self::TYPE_MANY,
+                self::PROPERTY_TYPE_ONE,
+                self::PROPERTY_TYPE_MANY,
             ]) && in_array($value, $history, true)) {
                 continue;
             }
-            if ($metadata['type'] == self::TYPE_ONE) {
+            if ($metadata['type'] == self::PROPERTY_TYPE_ONE) {
                 if (isset($value)) {
-                    $value = $value->traverse($func, $isTraverse, $history);
+                    $value = $value->traverse($func, $mode, $history);
                 }
-            } else if ($metadata['type'] == self::TYPE_MANY) {
+            } else if ($metadata['type'] == self::PROPERTY_TYPE_MANY) {
                 $items = [];
                 foreach ($value as $key => $item) {
-                    $items[$key] = $item->traverse($func, $isTraverse, $history);
+                    $items[$key] = $item->traverse($func, $mode, $history);
                 }
                 $value = $items;
             }
-            $value = $func($name, $value, $metadata, $isDeep);
-            if ($value !== self::TRAVERSE_SKIP) {
+            $value = $func($name, $value, $metadata, $isTraverse);
+            if ($value !== self::TRAVERSE_OUTPUT_SKIP) {
                 $output[$name] = $value;
             }
         }
         return $output;
     }
 
-    public function traverseModels(Closure $func, $isTraverse = null, array &$history = array())
+    public function traverseModels(Closure $func, $mode, array &$history = array())
     {
         array_push($history, $this);
         $func = $func->bindTo($this);
         foreach ($this->metadata->properties() as $name => $metadata) {
             if (!in_array($metadata['type'], [
-                self::TYPE_ONE,
-                self::TYPE_MANY,
+                self::PROPERTY_TYPE_ONE,
+                self::PROPERTY_TYPE_MANY,
             ])) {
                 continue;
             }
             $value = $this->__get($name);
-            $isDeep = isset($isTraverse)
-                ? $isTraverse
-                : $metadata['isTraverse'];
+            $isTraverse = in_array($mode, $metadata['traverseModes']);
             if (is_object($value)) {
                 foreach (self::$_initMethods as $method) {
                     if (method_exists($value, $method) && !$value->$method()) {
-                        $isDeep = false;
+                        $isTraverse = false;
                         break;
                     }
                 }
             }
-            if (!$isDeep) {
+            if (!$isTraverse) {
                 continue;
             }
             if (in_array($value, $history, true)) {
                 continue;
             }
-            if ($metadata['type'] == self::TYPE_ONE) {
+            if ($metadata['type'] == self::PROPERTY_TYPE_ONE) {
                 if (isset($value)) {
-                    $value->traverseModels($func, $isTraverse, $history);
+                    $value->traverseModels($func, $mode, $history);
                 }
-            } else if ($metadata['type'] == self::TYPE_MANY) {
+            } else if ($metadata['type'] == self::PROPERTY_TYPE_MANY) {
                 foreach ($value as $item) {
-                    $item->traverseModels($func, $isTraverse, $history);
+                    $item->traverseModels($func, $mode, $history);
                 }
             }
         }
         $func();
     }
 
-    public function fromArray(array $array, $isTraverse = null)
+    public function fromArray(array $array)
     {
+        $mode = self::TRAVERSE_MODE_WRITE;
         foreach ($array as $name => $value) {
             $metadata = $this->metadata->property($name);
             if (!isset($metadata)) {
                 $this->__setUnknown($name, $value);
                 continue;
             }
-            $isDeep = isset($isTraverse)
-                ? $isTraverse
-                : $metadata['isTraverse'];
+            $isTraverse = in_array($mode, $metadata['traverseModes']);
             if (is_object($value)) {
                 foreach (self::$_initMethods as $method) {
                     if (method_exists($value, $method) && !$value->$method()) {
-                        $isDeep = false;
+                        $isTraverse = false;
                         break;
                     }
                 }
             }
-            if (!$isDeep) {
+            if (!$isTraverse) {
                 $this->__set($name, $value);
                 continue;
             }
-            if ($metadata['type'] == self::TYPE_ONE) {
+            if ($metadata['type'] == self::PROPERTY_TYPE_ONE) {
                 $current = $this->__get($name);
                 if (!isset($value)) {
                     $this->__unset($name);
                     continue;
                 }
-                if (!isset($current) && $metadata['isConstruct']) {
-                    $this->__set($name, $current = $this->_construct($metadata['construct']));
+                if (!isset($current) && $metadata['isConstructable']) {
+                    $this->__set($name, $current = $this->_constructModel($metadata['className'], $metadata['classArgs']));
                 }
                 if (isset($current)) {
                     if ($metadata['isImmutable']) {
                         $current = clone $current;
                         $this->__set($name, $current);
                     }
-                    $current->fromArray($value, $isTraverse);
+                    $current->fromArray($value, $mode);
                 }
-            } else if ($metadata['type'] == self::TYPE_MANY) {
+            } else if ($metadata['type'] == self::PROPERTY_TYPE_MANY) {
                 $current = $this->__get($name);
                 if (!is_array($current) && (!$current instanceof Iterable && !$current instanceof ArrayAccess)) {
                     throw new Model\Exception("Value of MANY property '" . get_class($this) . "->{$name}' must be an array or object that implements Iterable and ArrayAccess");
@@ -274,14 +271,14 @@ class Model implements ArrayAccess, JsonSerializable
                         unset($current[$key]);
                         continue;
                     }
-                    if (!isset($current[$key]) && $metadata['isConstruct']) {
-                        $current[$key] = $this->_construct($metadata['construct']);
+                    if (!isset($current[$key]) && $metadata['isConstructable']) {
+                        $current[$key] = $this->_constructModel($metadata['className'], $metadata['classArgs']);
                     }
                     if (isset($current[$key])) {
                         if ($metadata['isImmutable']) {
                             $current[$key] = clone $current[$key];
                         }
-                        $current[$key]->fromArray($item, $isTraverse);
+                        $current[$key]->fromArray($item, $mode);
                     }
                 }
                 $keys = [];
@@ -301,40 +298,27 @@ class Model implements ArrayAccess, JsonSerializable
         return $this;
     }
 
-    public function toArray($isTraverse = null)
+    public function toArray()
     {
         return $this->traverse(function($name, $value, $metadata = null) {
             return $value;
-        }, $isTraverse);
+        }, self::TRAVERSE_MODE_READ);
     }
 
-    public function isValid($isTraverse = null)
+    public function isValid()
     {
         $isValid = true;
         $this->traverse(function($name, $value, $metadata) use (&$isValid) {
             if (!$metadata['validator']($this->__get($name), $this)) {
                 $isValid = false;
             }
-        }, $isTraverse);
+        }, self::TRAVERSE_MODE_READ);
         return $isValid;
     }
 
-    public function debug($isTraverse = null)
+    protected function _constructModel($className, $classArgs = null)
     {
-        return $this->traverse(function($name, $value, $metadata) {
-            return [
-                'value'  => $value,
-                'errors' => $metadata['validator']->errors(),
-            ];
-        }, $isTraverse);
-    }
-
-    protected function _construct($construct)
-    {
-        $construct = (array) $construct;
-        $className = array_shift($construct);
-        $reflection = new \ReflectionClass($className);
-        return $reflection->newInstanceArgs($construct);
+        return (new \ReflectionClass($className))->newInstanceArgs(isset($classArgs) ? $classArgs : []);
     }
 
     protected function _set($name, $value)
