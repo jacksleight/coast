@@ -11,7 +11,7 @@ use Closure;
 use Coast;
 use Coast\Model;
 use Coast\Model\Metadata;
-use Iterable;
+use Traversable;
 use JsonSerializable;
 use ReflectionClass;
 use ReflectionProperty;
@@ -253,8 +253,8 @@ class Model implements ArrayAccess, JsonSerializable
                 }
             } else if ($metadata['type'] == self::PROPERTY_TYPE_MANY) {
                 $current = $this->__get($name);
-                if (!is_array($current) && (!$current instanceof Iterable && !$current instanceof ArrayAccess)) {
-                    throw new Model\Exception("Value of MANY property '" . get_class($this) . "->{$name}' must be an array or object that implements Iterable and ArrayAccess");
+                if (!is_array($current) && (!$current instanceof Traversable && !$current instanceof ArrayAccess)) {
+                    throw new Model\Exception("Value of MANY property '" . get_class($this) . "->{$name}' must be an array or object that implements Traversable and ArrayAccess");
                 }
                 if ($metadata['isImmutable']) {
                     $current = clone $current;
