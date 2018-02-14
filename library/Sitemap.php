@@ -19,10 +19,10 @@ class Sitemap extends Model
         return parent::_metadataStaticBuild()
             ->properties([
                 'urls' => [
-                    'type'        => Model::TYPE_MANY,
-                    'isConstruct' => true,
-                    'isTraverse'  => true,
-                    'construct'   => 'Coast\Sitemap\Url',
+                    'type'            => Model::TYPE_MANY,
+                    'className'       => 'Coast\Sitemap\Url',
+                    'traverseModes'   => [Model::TRAVERSE_MODE_READ, Model::TRAVERSE_MODE_WRITE],
+                    'isConstructable' => true,
                 ],
             ]);
     }
