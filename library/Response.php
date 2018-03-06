@@ -64,7 +64,7 @@ class Response
     public function header($name, $value = null)
     {
         $name = strtolower($name);
-        if (func_num_args() > 0) {
+        if (func_num_args() > 1) {
             $this->_headers[$name] = $value;
             return $this;
         }
