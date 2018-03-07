@@ -156,7 +156,7 @@ class Metadata implements JsonSerializable
             if (!in_array($metadata['type'], [
                 Model::PROPERTY_TYPE_ONE,
                 Model::PROPERTY_TYPE_MANY,
-            ]) || !$metadata['isTraversable'] || !isset($metadata['className'])) {
+            ]) || !in_array(Model::TRAVERSE_MODE_WRITE, $metadata['traverseModes']) || !isset($metadata['className'])) {
                 continue;
             }
             $propertyClassName = $metadata['className'];
