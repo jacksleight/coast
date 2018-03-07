@@ -64,7 +64,7 @@ class Response
     public function header($name, $value = null)
     {
         $name = strtolower($name);
-        if (func_num_args() > 0) {
+        if (func_num_args() > 1) {
             $this->_headers[$name] = $value;
             return $this;
         }
@@ -167,15 +167,16 @@ class Response
             ->type($type)
             ->header('Cache-Control', "public")
             ->header('Content-Length', $length);
+        $disposition = [];
         if ($attachment) {
-            $this->attachment($name);
+            $disposition[] = "attachment";
         }
-        return $this;
-    }
-
-    public function attachment($name = null)
-    {
-        $this->header('Content-Disposition', "attachment" . (isset($name) ? "; filename={$name}" : null));
+        if (isset($name)) {
+            $disposition[] = "filename={$name}";
+        }
+        if (count($disposition)) {
+            $this->header('Content-Disposition', implode('; ', $disposition));
+        }
         return $this;
     }
 
