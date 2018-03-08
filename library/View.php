@@ -22,6 +22,8 @@ class View implements \Coast\App\Access, \Coast\App\Executable
 
     protected $_partialSeparator = '_';
 
+    protected $_helpers = [];
+
     protected $_contexts = [];
 
     protected $_active;
@@ -104,6 +106,28 @@ class View implements \Coast\App\Access, \Coast\App\Executable
             return $this;
         }
         return $this->_partialSeparator;
+    }
+
+    public function helper($name, $value = null)
+    {
+        if (func_num_args() > 1) {
+            $this->_helpers[$name] = $value;
+            return $this;
+        }
+        return isset($this->_helpers[$name])
+            ? $this->_helpers[$name]
+            : null;
+    }
+
+    public function helpers(array $helpers = null)
+    {
+        if (func_num_args() > 0) {
+            foreach ($helpers as $name => $value) {
+                $this->helper($name, $value);
+            }
+            return $this;
+        }
+        return $this->_helpers;
     }
 
     protected function _meta($group, Dir $dir)
@@ -271,6 +295,7 @@ class View implements \Coast\App\Access, \Coast\App\Executable
     {
         $this->start();
         try {
+            extract($this->_helpers);
             extract($__params);
             include (string) $__file;
         } catch (\Exception $e) {
