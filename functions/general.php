@@ -29,8 +29,13 @@ function load($_file, array $_vars = array())
         throw new \Exception("File '{$_file}' could not be found");
     }
     if (!array_key_exists($_real, $_coastLoad)) {
-        extract($_vars);
-        $_coastLoad[$_real] = require $_real;
+        $_extName = pathinfo($_real, PATHINFO_EXTENSION);
+        if (in_array($_extName, ['json', 'webmanifest'])) {
+            $_coastLoad[$_real] = json_decode(file_get_contents($_real));
+        } else {
+            extract($_vars);
+            $_coastLoad[$_real] = require $_real;
+        }
     }
     return $_coastLoad[$_real];
 }
