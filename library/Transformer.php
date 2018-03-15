@@ -59,6 +59,7 @@ class Transformer extends Rule implements Iterator
         } else {
             $map = [
                 'boolean' => 'booleanType',
+                'array'   => 'arrayType',
                 'integer' => 'integerType',
                 'null'    => 'nullType',
             ];
