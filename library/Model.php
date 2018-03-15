@@ -125,7 +125,7 @@ class Model implements ArrayAccess, JsonSerializable
         return $this;
     }
 
-    public function traverse(Closure $func, $mode, array &$history = array())
+    public function traverse(Closure $func, $mode, array $history = array())
     {
         array_push($history, $this);
         $func = $func->bindTo($this);
@@ -173,7 +173,7 @@ class Model implements ArrayAccess, JsonSerializable
         return $output;
     }
 
-    public function traverseModels(Closure $func, $mode, array &$history = array())
+    public function traverseModels(Closure $func, $mode, array $history = array())
     {
         array_push($history, $this);
         $func = $func->bindTo($this);
