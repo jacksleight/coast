@@ -58,6 +58,7 @@ class Transformer extends Rule implements Iterator
             $step = $name;
         } else {
             $map = [
+                'array'   => 'arrayType',
                 'boolean' => 'booleanType',
                 'array'   => 'arrayType',
                 'integer' => 'integerType',
