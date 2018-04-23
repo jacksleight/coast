@@ -6,6 +6,8 @@
 
 namespace Coast;
 
+use Coast\File;
+
 /**
  * PHP file based config object.
  */
@@ -37,7 +39,17 @@ class Config
             $files = [$files];
         }
         foreach ($files as $file) {
-            $this->fromArray(require (string) $file);
+            $file = new File($file);
+            $extName = $file->extName();
+            if ($extName == 'json') {
+                $data = json_decode($file->readAll(), true);
+                if (!$data) {
+                    throw new \Exception("File '{$file}' is not valid JSON");
+                }
+            } else {
+                $data = require (string) $file;
+            }
+            $this->fromArray($data);
         }
     }
 
