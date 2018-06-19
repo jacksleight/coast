@@ -133,6 +133,12 @@ class Model implements ArrayAccess, JsonSerializable
         foreach ($this->metadata->properties() as $name => $metadata) {
             $value = $this->__get($name);
             $isTraverse = in_array($mode, $metadata['traverseModes']);
+            if (!in_array($metadata['type'], [
+                self::PROPERTY_TYPE_ONE,
+                self::PROPERTY_TYPE_MANY,
+            ])) {
+                $isTraverse = false;
+            }
             if (is_object($value)) {
                 foreach (self::$_initMethods as $method) {
                     if (method_exists($value, $method) && !$value->$method()) {
@@ -223,6 +229,12 @@ class Model implements ArrayAccess, JsonSerializable
                 continue;
             }
             $isTraverse = in_array($mode, $metadata['traverseModes']);
+            if (!in_array($metadata['type'], [
+                self::PROPERTY_TYPE_ONE,
+                self::PROPERTY_TYPE_MANY,
+            ])) {
+                $isTraverse = false;
+            }
             if (is_object($value)) {
                 foreach (self::$_initMethods as $method) {
                     if (method_exists($value, $method) && !$value->$method()) {
