@@ -59,7 +59,7 @@ abstract class Path extends \Coast\Path
     {
         $name = (isset($dir)
             ? $dir
-            : $this->dir()) . "/{$this->_parseBaseName($baseName)}";
+            : $this->dirName()) . "/{$this->_parseBaseName($baseName)}";
         rename($this->_name, $name);
         $this->_name = $name;
         return $this;
