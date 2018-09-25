@@ -223,6 +223,56 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
         $this->_actions[$name]($image, $params);
     }
 
+    public function info($file)
+    {
+        $file = !$file instanceof File
+            ? new File("{$file}")
+            : $file;
+        if (!$file->isReadable()) {
+            return false;
+        }
+        if ($file->extName() == 'svg') {
+            $data = $file->readAll();
+            if (!$data) {
+                return false;
+            }
+            preg_match('/<svg[^>]*>/is', $data, $svg);
+            if (!$svg) {
+                return false;
+            }
+            preg_match_all('/(?:(width|height)=["\']([\d\.]+)["\'])|viewBox=["\'][\d\.]+ [\d\.]+ ([\d\.]+) ([\d\.]+)["\']/is', $svg[0], $size);
+            $size = array_combine(
+                $size[1],
+                $size[2]
+            ) + array_combine(
+                ['width', 'height'],
+                [implode('', $size[3]), implode('', $size[4])]
+            );
+            $size = array_map('floatval', array_filter($size, 'strlen'));
+            krsort($size);
+            if (array_keys($size) !== ['width', 'height']) {
+                return false;
+            }
+            $info = $size + [
+                'mimeType' => 'image/svg+xml',
+            ];
+        } else {
+            $size = getimagesize($file->name());
+            if (!$size) {
+                return false;
+            }
+            $info = [
+                'width'    => $size[0],
+                'height'   => $size[1],
+                'mimeType' => $size['mime'],
+            ];
+        }
+        return (object) $info += [
+            'whRatio'  => $whRatio = $info['width'] / $info['height'],
+            'hwRatio'  => $hwRatio = $info['height'] / $info['width'],
+        ];
+    }
+
     public function execute(Request $req, Response $res)
     {
         $parts = explode('/', $req->path());
