@@ -223,7 +223,7 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
         $this->_actions[$name]($image, $params);
     }
 
-    public function info($file)
+    public function info($file, $isContent = false)
     {
         $file = !$file instanceof File
             ? new File("{$file}")
@@ -236,11 +236,11 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
             if (!$data) {
                 return false;
             }
-            preg_match('/<svg[^>]*>/is', $data, $svg);
+            preg_match('/<svg([^>]*)>(.*)<\/svg>/is', $data, $svg);
             if (!$svg) {
                 return false;
             }
-            preg_match_all('/(?:(width|height)=["\']([\d\.]+)["\'])|viewBox=["\'][\d\.]+ [\d\.]+ ([\d\.]+) ([\d\.]+)["\']/is', $svg[0], $size);
+            preg_match_all('/(?:(width|height)=["\']([\d\.]+)["\'])|viewBox=["\'][\d\.]+ [\d\.]+ ([\d\.]+) ([\d\.]+)["\']/is', $svg[1], $size);
             $size = array_combine(
                 $size[1],
                 $size[2]
@@ -255,6 +255,7 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
             }
             $info = $size + [
                 'mimeType' => 'image/svg+xml',
+                'content'  => $isContent ? $svg[2] : null,
             ];
         } else {
             $size = getimagesize($file->name());
@@ -268,8 +269,9 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
             ];
         }
         return (object) $info += [
-            'whRatio'  => $whRatio = $info['width'] / $info['height'],
-            'hwRatio'  => $hwRatio = $info['height'] / $info['width'],
+            'orientation' => $info['width'] > $info['height'] ? 'landscape' : 'portrait',
+            'whRatio'     => $whRatio = $info['width'] / $info['height'],
+            'hwRatio'     => $hwRatio = $info['height'] / $info['width'],
         ];
     }
 
