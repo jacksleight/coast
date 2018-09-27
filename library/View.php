@@ -231,7 +231,11 @@ class View implements \Coast\App\Access, \Coast\App\Executable
             'params'    => [],
             'isPartial' => false,
         ]);
-        $content = $this->_render();
+        try {
+            $content = $this->_render();
+        } catch (\Exception $e) {
+            $content = null;
+        }
         array_shift($this->_active->renders);
 
         $this->_active->content->block(
@@ -256,6 +260,10 @@ class View implements \Coast\App\Access, \Coast\App\Executable
             $this->_active = null;
         }
 
+        if (isset($e)) {
+            throw $e;
+        }
+
         return $content;
     }
                 
@@ -267,28 +275,22 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         $params = $render->params;
         $files  = $this->files($script);
 
-        try {
-            if (!count($files)) {
-                if (!count($this->_active->renders)) {
-                    throw new View\Failure("View script '{$script->group}::{$script->path}' does not exist");
-                } else if (!$render->isPartial) {
-                    throw new View\Failure("View script '{$script->group}::{$script->path}' does not exist");
-                } else {
-                    return;
-                }
+        if (!count($files)) {
+            if (!count($this->_active->renders)) {
+                throw new View\Failure("View script '{$script->group}::{$script->path}' does not exist");
+            } else if (!$render->isPartial) {
+                throw new View\Failure("View script '{$script->group}::{$script->path}' does not exist");
+            } else {
+                return;
             }
-            if (!isset($files[$depth])) {
-                throw new View\Exception("View script '{$script->group}::{$script->path}' parent at depth '{$depth}' does not exist");
-            }
-            return $this->_run($files[$depth], array_merge(
-                $this->_active->params,
-                $params
-            ));
-        } catch (\Exception $e) {
-            $this->_contexts = [];
-            $this->_active   = null;
-            throw $e;
         }
+        if (!isset($files[$depth])) {
+            throw new View\Exception("View script '{$script->group}::{$script->path}' parent at depth '{$depth}' does not exist");
+        }
+        return $this->_run($files[$depth], array_merge(
+            $this->_active->params,
+            $params
+        ));
     }
         
     protected function _run(File $__file, array $__params = array())
