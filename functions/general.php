@@ -7,6 +7,8 @@
 namespace Coast;
 
 use Coast\Url;
+use ReflectionProperty;
+use ReflectionMethod;
 
 define(__NAMESPACE__ . '\DATETIME', 'Y-m-d H:i:s');
 define(__NAMESPACE__ . '\DATE', 'Y-m-d');
@@ -86,4 +88,12 @@ function number_ordinal($number, $exclude = false) {
     return $exclude
         ? $ordinal
         : $number . $ordinal;
+}
+
+function property_is_public($object, $property) {
+    return (new ReflectionProperty($object, $property))->isPublic();
+}
+
+function method_is_public($object, $method) {
+    return (new ReflectionMethod($object, $method))->isPublic();
 }
