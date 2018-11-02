@@ -43,8 +43,6 @@ class Recaptcha extends Rule
 
 	protected function _validate($value)
 	{
-        return;
-
         $http = new Http();
         $req = new Http\Request([
             'url' => (new Url('https://www.google.com/recaptcha/api/siteverify'))->queryParams([
