@@ -223,9 +223,14 @@ class Request
         return $this->method() == self::METHOD_DELETE;
     }
 
-    public function isAjax()
+    public function isXmlHttpRequest()
     {
         return $this->header('X-Requested-With') == 'XMLHttpRequest';
+    }
+
+    public function isAjax()
+    {
+        return $this->isXmlHttpRequest();
     }
 
     public function header($name, $value = null)
