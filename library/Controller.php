@@ -22,6 +22,8 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
 
     protected $_all;
 
+    protected $_infector;
+
     public function __construct(array $options = array())
     {
         foreach ($options as $name => $value) {
@@ -61,6 +63,12 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
             return $this;
         }
         return $this->_all;
+    }
+
+    public function inflector(Closure $inflector)
+    {
+        $this->_inflector = $inflector->bindTo($this);
+        return $this;
     }
 
     public function forward($action, $controller = null, $group = null)
@@ -120,11 +128,11 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
             $this->_history[] = $item;
             list($controller, $action, $params, $group) = $item;
 
-            $nspace = str_camel_lower($group);
+            $nspace = $group;
             if (!isset($this->_nspaces[$nspace])) {
                 throw new Controller\Exception("Controller group '{$nspace}' does not exist");
             }
-            $class = $this->_nspaces[$nspace] . '\\' . implode('\\', array_map('Coast\str_camel_upper', explode('/', $controller)));
+            $class = $this->_nspaces[$nspace] . '\\' . implode('\\', array_map('ucfirst', explode('/', $controller)));
             if (!isset($this->_actions[$class])) {
                 if (!class_exists($class)) {
                     throw new Controller\Failure("Controller class '{$class}' does not exist");
@@ -137,7 +145,7 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
             } else {
                 $object = $this->_actions[$class];
             }
-            $method = str_camel_lower($action);
+            $method = $action;
             if (!method_exists($object, $method)) {
                 throw new Controller\Failure("Controller action '{$class}::{$method}' does not exist");
             }
@@ -183,11 +191,16 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
 
     public function route(\Coast\Request $req, \Coast\Response $res, array $route)
     {
-        $controller = str_replace('_', '/', $route['params']['controller']);
+        $controller = $route['params']['controller'];
         $action     = $route['params']['action'];
         $group      = isset($route['params']['group'])
             ? $route['params']['group']
             : null;
+        if (isset($this->_inflector)) {
+            $controller = $this->_inflector($controller, 'controller');
+            $action     = $this->_inflector($action, 'action');
+            $group      = $this->_inflector($group, 'group');
+        }
 
         try {
             return $this->dispatch(

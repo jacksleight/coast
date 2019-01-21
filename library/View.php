@@ -32,6 +32,8 @@ class View implements \Coast\App\Access, \Coast\App\Executable
 
     protected $_files = [];
 
+    protected $_infector;
+
     public function __construct(array $options = array())
     {
         foreach ($options as $name => $value) {
@@ -197,6 +199,12 @@ class View implements \Coast\App\Access, \Coast\App\Executable
         }
 
         return $this->_files[$script->key];
+    }
+
+    public function inflector(Closure $inflector)
+    {
+        $this->_inflector = $inflector->bindTo($this);
+        return $this;
     }
 
     public function render($path, array $params = array(), $group = null, Content $previous = null)
@@ -426,8 +434,11 @@ class View implements \Coast\App\Access, \Coast\App\Executable
 
     public function execute(\Coast\Request $req, \Coast\Response $res)
     {        
-        $path  = $req->path();
-        $path  = '/' . (strlen($path) ? $path : 'index');
+        $path = $req->path();
+        $path = '/' . (strlen($path) ? $path : 'index');
+        if (isset($this->_inflector)) {
+            $path = $this->_inflector($path, 'path');
+        }
 
         try {
             return $res->html($this->render($path, [
