@@ -153,12 +153,12 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
 
     protected function _queue($controller, $action, $params, $group)
     {
-        $parts = explode('_', $controller);
+        $parts = explode('/', $controller);
         $path  = [];
         $controllers = [];
         while (count($parts) > 0) {
             $path[]  = array_shift($parts);
-            $controllers[] = implode('_', $path);
+            $controllers[] = implode('/', $path);
         }
 
         $final = $controllers[count($controllers) - 1];
