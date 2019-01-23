@@ -9,13 +9,19 @@ namespace Coast;
 use Coast;
 use ArrayAccess;
 
-abstract class AccessAll implements ArrayAccess
+abstract class Base implements ArrayAccess
 {
-    public function __construct(array $options = [])
+    public function __construct(array $array = [])
     {
-        foreach ($options as $name => $value) {
+        $this->fromArray($array);
+    }
+
+    public function fromArray(array $array = [])
+    {
+        foreach ($array as $name => $value) {
             $this->__set($name, $value);
         }
+        return $this;
     }
 
     public function __set($name, $value)
@@ -25,6 +31,8 @@ abstract class AccessAll implements ArrayAccess
                 return $this->{$name}($value);
             }
             trigger_error("Cannot access protected property method " . get_class($this) . "::\${$name}()", E_USER_ERROR);
+        } else if (property_exists($this, $name) && !property_is_public($this, $name)) {
+            trigger_error("Cannot access protected property " . get_class($this) . "::\${$name}", E_USER_ERROR);
         } else {
             $this->{$name} = $value;
         }
@@ -37,10 +45,8 @@ abstract class AccessAll implements ArrayAccess
                 return $this->{$name}();
             }
             trigger_error("Cannot access protected property method " . get_class($this) . "::\${$name}()", E_USER_ERROR);
-        } else if (!property_exists($this, $name)) {
-            trigger_error("Undefined property " . get_class($this) . "::\${$name}", E_USER_NOTICE);
         } else {
-            return $this->{$name};
+            trigger_error("Undefined property " . get_class($this) . "::\${$name}", E_USER_NOTICE);
         }
     }
 
@@ -51,10 +57,8 @@ abstract class AccessAll implements ArrayAccess
                 return $this->{$name}() !== null;
             }
             trigger_error("Cannot access protected property method " . get_class($this) . "::\${$name}()", E_USER_ERROR);
-        } else if (!property_exists($this, $name)) {
-            trigger_error("Undefined property " . get_class($this) . "::\${$name}", E_USER_NOTICE);
         } else {
-            return isset($this->{$name});
+            trigger_error("Undefined property " . get_class($this) . "::\${$name}", E_USER_NOTICE);
         }
     }
 
@@ -65,23 +69,10 @@ abstract class AccessAll implements ArrayAccess
                 return $this->{$name}(null);
             }
             trigger_error("Cannot access protected property method " . get_class($this) . "::\${$name}()", E_USER_ERROR);
+        } else if (property_exists($this, $name) && !property_is_public($this, $name)) {
+            trigger_error("Cannot access protected property " . get_class($this) . "::\${$name}", E_USER_ERROR);
         } else {
             unset($this->{$name});
-        }
-    }
-
-    public function __call($name, array $args)
-    {
-        if (method_exists($this, $name)) {
-            trigger_error("Cannot access protected method " . get_class($this) . "::\${$name}()", E_USER_ERROR);
-        } else if (!property_exists($this, $name)) {
-            trigger_error("Undefined property " . get_class($this) . "::\${$name}", E_USER_NOTICE);
-        } else {
-            if (isset($args[0])) {
-                $this->{$name} = $args[0];
-                return $this;
-            }
-            return $this->{$name};
         }
     }
 
