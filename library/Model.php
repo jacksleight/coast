@@ -18,9 +18,10 @@ use ReflectionProperty;
 
 class Model implements ArrayAccess, JsonSerializable
 {
-    const TRAVERSE_MODE_READ   = 'read';
-    const TRAVERSE_MODE_WRITE  = 'write';
-    const TRAVERSE_OUTPUT_SKIP = '__Coast\Model::SKIP__';
+    const TRAVERSE_MODE_READ     = 'read';
+    const TRAVERSE_MODE_WRITE    = 'write';
+    const TRAVERSE_MODE_VALIDATE = 'write';
+    const TRAVERSE_OUTPUT_SKIP   = '__Coast\Model::SKIP__';
 
     const PROPERTY_TYPE_ONE  = 'one';
     const PROPERTY_TYPE_MANY = 'many';
@@ -37,12 +38,22 @@ class Model implements ArrayAccess, JsonSerializable
         '__isInitialized',
     ];
 
+    protected static $_factory;
+
     public static function initMethods($initMethods = null)
     {
         if (func_num_args() > 0) {
             self::$_initMethods = $initMethods;
         }
         return self::$_initMethods;
+    }
+
+    public static function factory($factory = null)
+    {
+        if (func_num_args() > 0) {
+            self::$_factory = $factory;
+        }
+        return self::$_factory;
     }
 
     public static function createDefault()
@@ -324,7 +335,7 @@ class Model implements ArrayAccess, JsonSerializable
             if (!$metadata['validator']($this->__get($name), $this)) {
                 $isValid = false;
             }
-        }, self::TRAVERSE_MODE_READ);
+        }, self::TRAVERSE_MODE_VALIDATE);
         return $isValid;
     }
 
