@@ -7,21 +7,22 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 {
     public function testString()
     {
-        $value = 'http://user:pass@host:8080/path?name=value#fragment';
+        $value = 'http://username:password@host:8080/path?name=value#fragment';
         $url = new Url($value);
+        
         $this->assertEquals($value, (string) $url);
         $this->assertEquals($value, $url->toString());
         $this->assertEquals('http', $url->scheme());
-        $this->assertEquals('user', $url->user());
-        $this->assertEquals('pass', $url->pass());
+        $this->assertEquals('username', $url->username());
+        $this->assertEquals('password', $url->password());
         $this->assertEquals('host', $url->host());
         $this->assertEquals('8080', $url->port());
         $this->assertEquals('/path', $url->path());
         $this->assertEquals('name=value', $url->query());
         $this->assertEquals('fragment', $url->fragment());
-        $this->assertEquals('http://user:pass@host:8080', $url->toPart(Url::PART_PORT)->toString());
+        $this->assertEquals('http://username:password@host:8080', $url->toPart(Url::PART_PORT)->toString());
 
-        $value = 'http://user@host/';
+        $value = 'http://username@host/';
         $url = new Url($value);
         $this->assertEquals($value, $url->toString());
 
@@ -98,5 +99,27 @@ class UrlTest extends \PHPUnit_Framework_TestCase
         $url3 = new Url('../two');
         $this->setExpectedException('Exception');
         $url3->toRelative($url3);
+    }
+
+    public function testBase()
+    {
+        $value = 'http://host/';
+        $url = new Url($value);
+        
+        $this->assertEquals('host', $url->host());
+        $this->assertEquals('host', $url->host);
+        $this->assertEquals('host', $url['host']);
+
+        $url->path('/a');
+        $this->assertEquals('/a', $url->path());
+        $url->path = '/b';
+        $this->assertEquals('/b', $url->path());
+        $url['path'] = '/c';
+        $this->assertEquals('/c', $url->path());
+
+        $this->setExpectedException('Error');
+        $url->fake();
+        $url->fake;
+        $url['fake'];
     }
 }
