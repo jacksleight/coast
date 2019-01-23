@@ -8,5 +8,8 @@
   },
   "scripts": {
     "gulp": "node ./node_modules/gulp/bin/gulp.js"
+  },
+  "dependencies": {
+    "gulp-livereload": "^4.0.1"
   }
 }
