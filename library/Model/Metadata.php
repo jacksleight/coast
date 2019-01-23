@@ -20,7 +20,7 @@ class Metadata implements JsonSerializable
 
     protected $_properties = [];
 
-    protected $_extras = [];
+    protected $_infos = [];
 
     public function __construct($className)
     {
@@ -102,57 +102,61 @@ class Metadata implements JsonSerializable
         }
     }
 
-    public function extra($name, $value = null)
+    public function info($name, $value = null)
     {
         if (func_num_args() > 1) {
             if (isset($value)) {
-                $this->_extras[$name] = $value;
+                $this->_infos[$name] = $value;
             } else {
-                unset($this->_extras[$name]);
+                unset($this->_infos[$name]);
             }
             return $this;
         }
-        return isset($this->_extras[$name])
-            ? $this->_extras[$name]
+        return isset($this->_infos[$name])
+            ? $this->_infos[$name]
             : null;
     }
 
-    public function extras(array $extras = null)
+    public function infos(array $infos = null)
     {
         if (func_num_args() > 0) {
-            foreach ($extras as $name => $value) {
-                $this->extra($name, $value);
+            foreach ($infos as $name => $value) {
+                $this->info($name, $value);
             }
             return $this;
         }
-        return $this->_extras;
+        return $this->_infos;
     }
 
     public function __set($name, $value)
     {
-        return $this->extra($name, $value);
+        return $this->info($name, $value);
     }
 
     public function __get($name)
     {
-        return $this->extra($name);
+        return $this->info($name);
     }
 
     public function __isset($name)
     {
-        return $this->extra($name) !== null;
+        return $this->info($name) !== null;
     }
 
     public function __unset($name)
     {
-        return $this->extra($name, null);
+        return $this->info($name, null);
     }
 
     public function jsonSerialize()
     {
         $className  = $this->_className;
         $properties = $this->_properties;
+        $default    = new $className();
         foreach ($properties as $name => $metadata) {
+            $properties[$name] += [
+                'default' => $default->{$name},
+            ];
             if (!in_array($metadata['type'], [
                 Model::PROPERTY_TYPE_ONE,
                 Model::PROPERTY_TYPE_MANY,
@@ -164,12 +168,10 @@ class Metadata implements JsonSerializable
                 'metadata' => $propertyClassName::metadataStatic(),
             ];
         }
-        $extras = $this->_extras;
         return [
             'className'  => $className,
             'properties' => $properties,
-            'extras'     => $extras,
-            'defaults'   => new $className(),
+            'infos'      => $this->_infos,
         ];
     }
 }
