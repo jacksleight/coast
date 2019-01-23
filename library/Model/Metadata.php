@@ -47,7 +47,7 @@ class Metadata implements JsonSerializable
                     'validator'       => new Validator(),
                     'className'       => null,
                     'classArgs'       => null,
-                    'traverseModes'   => [Model::TRAVERSE_MODE_READ],
+                    'traverseModes'   => [Model::TRAVERSE_MODE_READ, Model::TRAVERSE_MODE_VALIDATE],
                     'isConstructable' => false,
                     'isImmutable'     => false,
                 ];
