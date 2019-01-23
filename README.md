@@ -142,7 +142,7 @@ And load it up in the browser at: [http://localhost:8000/](http://localhost:8000
 
 The MIT License
 
-Copyright 2017 Jack Sleight <http://jacksleight.com/>
+Copyright 2019 Jack Sleight <http://jacksleight.com/>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
