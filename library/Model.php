@@ -21,6 +21,7 @@ class Model implements ArrayAccess, JsonSerializable
     const TRAVERSE_MODE_READ     = 'read';
     const TRAVERSE_MODE_WRITE    = 'write';
     const TRAVERSE_MODE_VALIDATE = 'write';
+    
     const TRAVERSE_OUTPUT_SKIP   = '__Coast\Model::SKIP__';
 
     const PROPERTY_TYPE_ONE  = 'one';
@@ -54,12 +55,6 @@ class Model implements ArrayAccess, JsonSerializable
             self::$_factory = $factory;
         }
         return self::$_factory;
-    }
-
-    public static function createDefault()
-    {
-        $class = get_called_class();
-        return new $class();
     }
 
     protected static function _metadataStaticBuild()
