@@ -7,14 +7,15 @@
 namespace Coast;
 
 use Coast\Http;
+use Coast\Base;
 use DOMDocument;
 use DOMXPath;
 
-class Url
+class Url extends Base
 {
     const PART_SCHEME   = 0;
-    const PART_USER     = 1;
-    const PART_PASS     = 2;
+    const PART_USERNAME = 1;
+    const PART_PASSWORD = 2;
     const PART_HOST     = 3;
     const PART_PORT     = 4;
     const PART_PATH     = 5;
@@ -22,38 +23,43 @@ class Url
     const PART_FRAGMENT = 7;
         
     protected $_scheme;
-    protected $_user;
-    protected $_pass;
+    protected $_username;
+    protected $_password;
     protected $_host;
     protected $_port;
     protected $_path;
     protected $_queryParams = [];
     protected $_fragment;
         
-    public function __construct($value = null)
+    public function __construct($array = [])
     {
-        if (isset($value)) {
-            if (is_array($value)) {
-                $this->fromArray($value);
-            } else {
-                $this->fromString($value);
-            }
+        if (is_string($array)) {
+            $this->fromString($array);
+        } else {
+            parent::__construct($array);
         }
     }
 
     public function fromString($value)
     {
-        $parts = parse_url($value);
-        $this->fromArray($parts);
-        return $this;
+        $array = parse_url($value);
+        if (isset($array['user'])) {
+            $array['username'] = $array['user'];
+            unset($array['user']);
+        }
+        if (isset($array['pass'])) {
+            $array['password'] = $array['pass'];
+            unset($array['pass']);
+        }
+        return $this->fromArray($array);
     }
 
     public function toString()
     {
         // Optimisation to skip complex URL build when all we have is a path
         if (!isset($this->_scheme) &&
-            !isset($this->_user) &&
-            !isset($this->_pass) &&
+            !isset($this->_username) &&
+            !isset($this->_password) &&
             !isset($this->_host) &&
             !isset($this->_port) &&
             !count($this->_queryParams) &&
@@ -62,14 +68,23 @@ class Url
             return $this->_path->name();
         }
 
-        $string = http_build_url($this->toArray());
+        $array = $this->toArray();
+        if (isset($array['username'])) {
+            $array['user'] = $array['username'];
+            unset($array['username']);
+        }
+        if (isset($array['password'])) {
+            $array['pass'] = $array['password'];
+            unset($array['password']);
+        }
+        $string = http_build_url($array);
         $string = preg_replace('/^(mailto|tel|data):\/{3}/', '$1:', $string);
         if (!isset($this->_scheme) &&
             isset($this->_host)) {
             $string = '//' . $string;
         } else if (!isset($this->_scheme) &&
-            !isset($this->_user) &&
-            !isset($this->_pass) &&
+            !isset($this->_username) &&
+            !isset($this->_password) &&
             !isset($this->_host) &&
             !isset($this->_port) &&
             (!isset($this->_path) || substr($this->_path->name(), 0, 1) != '/')) {
@@ -82,31 +97,12 @@ class Url
         return $string;
     }
 
-    public function fromArray(array $parts)
-    {
-        $parts = array_intersect_key($parts, [
-            'scheme',
-            'user',
-            'pass',
-            'host',
-            'port',
-            'path',
-            'query',
-            'queryParams',
-            'fragment',
-        ]);
-        foreach ($parts as $method => $value) {
-            $this->{$method}($value);
-        }
-        return $this;
-    }
-
     public function toArray()
     {
         return [
             'scheme'   => $this->scheme(),
-            'user'     => $this->user(),
-            'pass'     => $this->pass(),
+            'username' => $this->username(),
+            'password' => $this->password(),
             'host'     => $this->host(),
             'port'     => $this->port(),
             'path'     => $this->path(),
@@ -148,22 +144,22 @@ class Url
         return $scheme == 'https';
     }
     
-    public function user($user = null)
+    public function username($username = null)
     {
         if (func_num_args() > 0) {
-            $this->_user = $user;
+            $this->_username = $username;
             return $this;
         }
-        return $this->_user;
+        return $this->_username;
     }
 
-    public function pass($pass = null)
+    public function password($password = null)
     {
         if (func_num_args() > 0) {
-            $this->_pass = $pass;
+            $this->_password = $password;
             return $this;
         }
-        return $this->_pass;
+        return $this->_password;
     }
     
     public function host($host = null)
