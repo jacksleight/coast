@@ -148,7 +148,7 @@ class Model implements ArrayAccess, JsonSerializable
         $output = [];
         foreach ($this->metadata->properties() as $name => $metadata) {
             $value = $this->__get($name);
-            $isTraverse = in_array($mode, $metadata['traverseModes']);
+            $isTraverse = ($metadata['traverseModes'] & $mode);
             if (!in_array($metadata['type'], [
                 self::TYPE_ONE,
                 self::TYPE_MANY,
@@ -203,7 +203,7 @@ class Model implements ArrayAccess, JsonSerializable
                 continue;
             }
             $value = $this->__get($name);
-            $isTraverse = in_array($mode, $metadata['traverseModes']);
+            $isTraverse = ($metadata['traverseModes'] & $mode);
             if (is_object($value) && !self::$inspect($value)) {
                 $isTraverse = false;
                 break;
@@ -236,7 +236,7 @@ class Model implements ArrayAccess, JsonSerializable
                 $this->__setUnknown($name, $value);
                 continue;
             }
-            $isTraverse = in_array($mode, $metadata['traverseModes']);
+            $isTraverse = ($metadata['traverseModes'] & $mode);
             if (!in_array($metadata['type'], [
                 self::TYPE_ONE,
                 self::TYPE_MANY,
@@ -265,7 +265,7 @@ class Model implements ArrayAccess, JsonSerializable
                         $current = clone $current;
                         $this->__set($name, $current);
                     }
-                    $current->fromArray($value, $mode);
+                    $current->fromArray($value);
                 }
             } else if ($metadata['type'] == self::TYPE_MANY) {
                 $current = $this->__get($name);
@@ -294,7 +294,7 @@ class Model implements ArrayAccess, JsonSerializable
                         if ($metadata['isImmutable']) {
                             $current[$key] = clone $current[$key];
                         }
-                        $current[$key]->fromArray($item, $mode);
+                        $current[$key]->fromArray($item);
                     }
                 }
                 $keys = [];

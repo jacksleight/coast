@@ -21,7 +21,7 @@ class Sitemap extends Model
                 'urls' => [
                     'type'            => Model::TYPE_MANY,
                     'className'       => 'Coast\Sitemap\Url',
-                    'traverseModes'   => [Model::TRAVERSE_GET, Model::TRAVERSE_SET],
+                    'traverseModes'   => Model::TRAVERSE_SET,
                     'isConstructable' => true,
                 ],
             ]);
