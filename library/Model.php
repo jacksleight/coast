@@ -18,14 +18,14 @@ use ReflectionProperty;
 
 class Model implements ArrayAccess, JsonSerializable
 {
-    const TRAVERSE_MODE_READ     = 'read';
-    const TRAVERSE_MODE_WRITE    = 'write';
-    const TRAVERSE_MODE_VALIDATE = 'write';
+    const TRAVERSE_SET      = 1;
+    const TRAVERSE_GET      = 2;
+    const TRAVERSE_VALIDATE = 4;
     
-    const TRAVERSE_OUTPUT_SKIP   = '__Coast\Model::SKIP__';
+    const TRAVERSE_SKIP = '__Coast\Model::SKIP__';
 
-    const PROPERTY_TYPE_ONE  = 'one';
-    const PROPERTY_TYPE_MANY = 'many';
+    const TYPE_ONE  = 'one';
+    const TYPE_MANY = 'many';
 
     protected static $_metadataStatic = [];
 
@@ -33,28 +33,38 @@ class Model implements ArrayAccess, JsonSerializable
 
     protected $_metadata;
 
-    protected static $_initMethods = [
-        'isInitialized',
-        '_isInitialized',
-        '__isInitialized',
-    ];
+    protected static $_fetcher;
 
-    protected static $_factory;
+    protected static $_inspector;
 
-    public static function initMethods($initMethods = null)
+    public static function fetcher($fetcher = null)
     {
         if (func_num_args() > 0) {
-            self::$_initMethods = $initMethods;
+            self::$_fetcher = $fetcher;
         }
-        return self::$_initMethods;
+        return self::$_fetcher;
     }
 
-    public static function factory($factory = null)
+    public static function inspector($inspector = null)
     {
         if (func_num_args() > 0) {
-            self::$_factory = $factory;
+            self::$_inspector = $inspector;
         }
-        return self::$_factory;
+        return self::$_inspector;
+    }
+
+    public static function fetch($className, $id)
+    {
+        return isset(self::$_fetcher)
+            ? self::$_fetcher($className, $id)
+            : null;
+    }
+
+    public static function inspect($object)
+    {
+        return isset(self::$_inspector)
+            ? self::$_inspector($object)
+            : true;
     }
 
     protected static function _metadataStaticBuild()
@@ -140,37 +150,33 @@ class Model implements ArrayAccess, JsonSerializable
             $value = $this->__get($name);
             $isTraverse = in_array($mode, $metadata['traverseModes']);
             if (!in_array($metadata['type'], [
-                self::PROPERTY_TYPE_ONE,
-                self::PROPERTY_TYPE_MANY,
+                self::TYPE_ONE,
+                self::TYPE_MANY,
             ])) {
                 $isTraverse = false;
             }
-            if (is_object($value)) {
-                foreach (self::$_initMethods as $method) {
-                    if (method_exists($value, $method) && !$value->$method()) {
-                        $isTraverse = false;
-                        break;
-                    }
-                }
+            if (is_object($value) && !self::$inspect($value)) {
+                $isTraverse = false;
+                break;
             }
             if (!$isTraverse) {
                 $value = $func($name, $value, $metadata, $isTraverse);
-                if ($value !== self::TRAVERSE_OUTPUT_SKIP) {
+                if ($value !== self::TRAVERSE_SKIP) {
                     $output[$name] = $value;
                 }
                 continue;
             }
             if (in_array($metadata['type'], [
-                self::PROPERTY_TYPE_ONE,
-                self::PROPERTY_TYPE_MANY,
+                self::TYPE_ONE,
+                self::TYPE_MANY,
             ]) && in_array($value, $history, true)) {
                 continue;
             }
-            if ($metadata['type'] == self::PROPERTY_TYPE_ONE) {
+            if ($metadata['type'] == self::TYPE_ONE) {
                 if (isset($value)) {
                     $value = $value->traverse($func, $mode, $history);
                 }
-            } else if ($metadata['type'] == self::PROPERTY_TYPE_MANY) {
+            } else if ($metadata['type'] == self::TYPE_MANY) {
                 $items = [];
                 foreach ($value as $key => $item) {
                     $items[$key] = $item->traverse($func, $mode, $history);
@@ -178,7 +184,7 @@ class Model implements ArrayAccess, JsonSerializable
                 $value = $items;
             }
             $value = $func($name, $value, $metadata, $isTraverse);
-            if ($value !== self::TRAVERSE_OUTPUT_SKIP) {
+            if ($value !== self::TRAVERSE_SKIP) {
                 $output[$name] = $value;
             }
         }
@@ -191,20 +197,16 @@ class Model implements ArrayAccess, JsonSerializable
         $func = $func->bindTo($this);
         foreach ($this->metadata->properties() as $name => $metadata) {
             if (!in_array($metadata['type'], [
-                self::PROPERTY_TYPE_ONE,
-                self::PROPERTY_TYPE_MANY,
+                self::TYPE_ONE,
+                self::TYPE_MANY,
             ])) {
                 continue;
             }
             $value = $this->__get($name);
             $isTraverse = in_array($mode, $metadata['traverseModes']);
-            if (is_object($value)) {
-                foreach (self::$_initMethods as $method) {
-                    if (method_exists($value, $method) && !$value->$method()) {
-                        $isTraverse = false;
-                        break;
-                    }
-                }
+            if (is_object($value) && !self::$inspect($value)) {
+                $isTraverse = false;
+                break;
             }
             if (!$isTraverse) {
                 continue;
@@ -212,11 +214,11 @@ class Model implements ArrayAccess, JsonSerializable
             if (in_array($value, $history, true)) {
                 continue;
             }
-            if ($metadata['type'] == self::PROPERTY_TYPE_ONE) {
+            if ($metadata['type'] == self::TYPE_ONE) {
                 if (isset($value)) {
                     $value->traverseModels($func, $mode, $history);
                 }
-            } else if ($metadata['type'] == self::PROPERTY_TYPE_MANY) {
+            } else if ($metadata['type'] == self::TYPE_MANY) {
                 foreach ($value as $item) {
                     $item->traverseModels($func, $mode, $history);
                 }
@@ -227,7 +229,7 @@ class Model implements ArrayAccess, JsonSerializable
 
     public function fromArray(array $array)
     {
-        $mode = self::TRAVERSE_MODE_WRITE;
+        $mode = self::TRAVERSE_SET;
         foreach ($array as $name => $value) {
             $metadata = $this->metadata->property($name);
             if (!isset($metadata)) {
@@ -236,24 +238,20 @@ class Model implements ArrayAccess, JsonSerializable
             }
             $isTraverse = in_array($mode, $metadata['traverseModes']);
             if (!in_array($metadata['type'], [
-                self::PROPERTY_TYPE_ONE,
-                self::PROPERTY_TYPE_MANY,
+                self::TYPE_ONE,
+                self::TYPE_MANY,
             ])) {
                 $isTraverse = false;
             }
-            if (is_object($value)) {
-                foreach (self::$_initMethods as $method) {
-                    if (method_exists($value, $method) && !$value->$method()) {
-                        $isTraverse = false;
-                        break;
-                    }
-                }
+            if (is_object($value) && !self::$inspect($value)) {
+                $isTraverse = false;
+                break;
             }
             if (!$isTraverse) {
                 $this->__set($name, $value);
                 continue;
             }
-            if ($metadata['type'] == self::PROPERTY_TYPE_ONE) {
+            if ($metadata['type'] == self::TYPE_ONE) {
                 $current = $this->__get($name);
                 if (!isset($value)) {
                     $this->__unset($name);
@@ -269,7 +267,7 @@ class Model implements ArrayAccess, JsonSerializable
                     }
                     $current->fromArray($value, $mode);
                 }
-            } else if ($metadata['type'] == self::PROPERTY_TYPE_MANY) {
+            } else if ($metadata['type'] == self::TYPE_MANY) {
                 $current = $this->__get($name);
                 if (!is_array($current) && (!$current instanceof Traversable && !$current instanceof ArrayAccess)) {
                     throw new Model\Exception("Value of MANY property '" . get_class($this) . "->{$name}' must be an array or object that implements Traversable and ArrayAccess");
@@ -320,7 +318,7 @@ class Model implements ArrayAccess, JsonSerializable
     {
         return $this->traverse(function($name, $value, $metadata = null) {
             return $value;
-        }, self::TRAVERSE_MODE_READ);
+        }, self::TRAVERSE_GET);
     }
 
     public function isValid()
@@ -330,7 +328,7 @@ class Model implements ArrayAccess, JsonSerializable
             if (!$metadata['validator']($this->__get($name), $this)) {
                 $isValid = false;
             }
-        }, self::TRAVERSE_MODE_VALIDATE);
+        }, self::TRAVERSE_VALIDATE);
         return $isValid;
     }
 

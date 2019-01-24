@@ -50,9 +50,8 @@ class Many extends Rule
         foreach ($current as $key => $object) {
             unset($current[$key]);
         }
-        $factory = Model::factory();
         foreach ($value as $i => $id) {
-            $current[$i] = call_user_func($factory, $this->_className, $id);
+            $current[$i] = Model::fetcher($this->_className, $id);
         }
         return $current;
     }

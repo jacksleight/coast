@@ -46,17 +46,17 @@ class Feed extends Model
                     'type' => 'datetime',
                 ],
                 'author' => [
-                    'type'            => Model::PROPERTY_TYPE_ONE,
+                    'type'            => Model::TYPE_ONE,
                     'className'       => 'Coast\Feed\Person',
                     'classArgs'       => ['author'],
-                    'traverseModes'   => [Model::TRAVERSE_MODE_READ, Model::TRAVERSE_MODE_WRITE],
+                    'traverseModes'   => [Model::TRAVERSE_GET, Model::TRAVERSE_SET],
                     'isConstructable' => true,
                 ],
                 'items' => [
-                    'type'            => Model::PROPERTY_TYPE_MANY,
+                    'type'            => Model::TYPE_MANY,
                     'className'       => 'Coast\Feed\Item',
                     'classArgs'       => ['author'],
-                    'traverseModes'   => [Model::TRAVERSE_MODE_READ, Model::TRAVERSE_MODE_WRITE],
+                    'traverseModes'   => [Model::TRAVERSE_GET, Model::TRAVERSE_SET],
                     'isConstructable' => true,
                 ],
             ]);

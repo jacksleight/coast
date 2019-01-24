@@ -44,7 +44,6 @@ class One extends Rule
         if (is_object($value)) {
             return $value;
         }
-        $factory = Model::factory();
-        return call_user_func($factory, $this->_className, $id);
+        return Model::fetcher($this->_className, $id);
     }
 }
