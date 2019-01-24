@@ -102,10 +102,10 @@ class Request
     public function type($type = null)
     {
         if (func_num_args() > 0) {
-            $this->header('Content-Type', $type);
+            $this->header('content-type', $type);
             return $this;
         }
-        return current(explode(';', $this->header('Content-Type')));
+        return current(explode(';', $this->header('content-type')));
     }
 
     public function body($body = null)

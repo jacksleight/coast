@@ -155,7 +155,7 @@ class Model implements ArrayAccess, JsonSerializable
             ])) {
                 $isTraverse = false;
             }
-            if (is_object($value) && !self::$inspect($value)) {
+            if (is_object($value) && !self::inspect($value)) {
                 $isTraverse = false;
                 break;
             }
@@ -204,7 +204,7 @@ class Model implements ArrayAccess, JsonSerializable
             }
             $value = $this->__get($name);
             $isTraverse = ($metadata['traverseModes'] & $mode);
-            if (is_object($value) && !self::$inspect($value)) {
+            if (is_object($value) && !self::inspect($value)) {
                 $isTraverse = false;
                 break;
             }
@@ -243,7 +243,7 @@ class Model implements ArrayAccess, JsonSerializable
             ])) {
                 $isTraverse = false;
             }
-            if (is_object($value) && !self::$inspect($value)) {
+            if (is_object($value) && !self::inspect($value)) {
                 $isTraverse = false;
                 break;
             }

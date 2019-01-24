@@ -82,7 +82,7 @@ class Response
 
     public function type()
     {
-        return current(explode(';', $this->header('Content-Type')));
+        return current(explode(';', $this->header('content-type')));
     }
 
     public function body($body = null)

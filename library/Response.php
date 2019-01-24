@@ -87,10 +87,10 @@ class Response
     public function type($type = null)
     {
         if (func_num_args() > 0) {
-            $this->header('Content-Type', $type);
+            $this->header('content-type', $type);
             return $this;
         }
-        return current(explode(';', $this->header('Content-Type')));
+        return current(explode(';', $this->header('content-type')));
     }
 
     public function cookie($name, $value = null, $age = null, $path = null, $domain = null, $secure = false, $http = false)
@@ -165,8 +165,8 @@ class Response
         $this->_body = $data;
         $this
             ->type($type)
-            ->header('Cache-Control', "public")
-            ->header('Content-Length', $length);
+            ->header('cache-control', "public")
+            ->header('content-length', $length);
         $disposition = [];
         if ($attachment) {
             $disposition[] = "attachment";
@@ -175,7 +175,7 @@ class Response
             $disposition[] = "filename={$name}";
         }
         if (count($disposition)) {
-            $this->header('Content-Disposition', implode('; ', $disposition));
+            $this->header('content-disposition', implode('; ', $disposition));
         }
         return $this;
     }
@@ -184,7 +184,7 @@ class Response
     {
         return $this
             ->status($type)
-            ->header('Location', $url);
+            ->header('location', $url);
     }
 
     public function param($name, $value = null)

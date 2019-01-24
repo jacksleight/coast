@@ -52,6 +52,8 @@ class Request
         foreach ($this->servers() as $name => $value) {
             if (preg_match('/^HTTP_(.*)$/', $name, $match)) {
                 $this->header(str_replace('_', '-', $match[1]), $value);
+            } else if (preg_match('/^CONTENT_.*$/', $name, $match)) {
+                $this->header(str_replace('_', '-', $match[0]), $value);
             }
         }
         if (function_exists('apache_request_headers')) {
@@ -71,14 +73,21 @@ class Request
         $base = array_slice($full, 0, count($full) - count($path));
         $this->base(implode('/', $base) . '/');
         $this->path(implode('/', $path));
-
         $this->pathParams($path);
+
         $this->queryParams($this->_clean($_GET));
+
+        $this->body(file_get_contents('php://input'));
+        $putParams = [];
+        if ($this->isPut() && $this->type() == 'application/x-www-form-urlencoded') {
+            parse_str($this->body(), $putParams);
+        }
         $this->bodyParams(\Coast\array_merge_smart(
             $this->_clean($_POST),
+            $this->_clean($putParams),
             $this->_restructure($_FILES)
         ));
-        $this->body(file_get_contents('php://input'));
+        
         $this->cookies($_COOKIE);
 
         return $this;
@@ -225,7 +234,7 @@ class Request
 
     public function isXmlHttpRequest()
     {
-        return $this->header('X-Requested-With') == 'XMLHttpRequest';
+        return $this->header('x-requested-with') == 'XMLHttpRequest';
     }
 
     public function isAjax()
@@ -405,7 +414,7 @@ class Request
 
     public function type()
     {
-        return current(explode(';', $this->header('Content-Type')));
+        return current(explode(';', $this->header('content-type')));
     }
 
     public function isJson()
