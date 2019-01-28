@@ -18,6 +18,7 @@ use ReflectionProperty;
 
 class Model implements ArrayAccess, JsonSerializable
 {
+    const TRAVERSE_NONE     = 0;
     const TRAVERSE_SET      = 1;
     const TRAVERSE_GET      = 2;
     const TRAVERSE_VALIDATE = 4;

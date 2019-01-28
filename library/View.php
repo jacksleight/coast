@@ -10,11 +10,13 @@ use Coast\Path;
 use Coast\File;
 use Coast\Dir;
 use Coast\View\Content;
+use Coast\App\Access;
+use Coast\App\Executable;
 
-class View implements \Coast\App\Access, \Coast\App\Executable
+class View implements Access, Executable
 {
-    use \Coast\App\Access\Implementation;
-    use \Coast\App\Executable\Implementation;
+    use Access\Implementation;
+    use Executable\Implementation;
 
     protected $_dirs = [];
 
