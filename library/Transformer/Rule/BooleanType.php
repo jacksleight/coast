@@ -54,6 +54,9 @@ class BooleanType extends Rule
 
     protected function _transform($value)
     {
+        if (is_bool($value)) {
+            return $value;
+        }
         $value = strtolower($value);
         if (in_array($value, $this->_true, true)) {
             $value = true;
