@@ -3,7 +3,7 @@ namespace Coast\Test;
 
 use Coast\Url;
 
-class UrlTest extends \PHPUnit_Framework_TestCase
+class UrlTest extends \PHPUnit\Framework\TestCase
 {
     public function testString()
     {
@@ -86,7 +86,7 @@ class UrlTest extends \PHPUnit_Framework_TestCase
         $url2 = new Url('../two');
         $this->assertTrue($url2->toAbsolute($url1)->toString() == 'http://host/two');
 
-        $this->setExpectedException('Exception');
+        $this->expectException('Exception');
         $url1->toAbsolute($url1);
     }
 
@@ -97,7 +97,7 @@ class UrlTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($url1->toRelative($url2)->toString() == '../example/one');
 
         $url3 = new Url('../two');
-        $this->setExpectedException('Exception');
+        $this->expectException('Exception');
         $url3->toRelative($url3);
     }
 
@@ -117,7 +117,7 @@ class UrlTest extends \PHPUnit_Framework_TestCase
         $url['path'] = '/c';
         $this->assertEquals('/c', $url->path());
 
-        $this->setExpectedException('Error');
+        $this->expectException('Error');
         $url->fake();
         $url->fake;
         $url['fake'];

@@ -5,7 +5,7 @@ use Coast\Transformer,
     Coast\Transformer\Rule;
 use DateTime;
 
-class TransformerTest extends \PHPUnit_Framework_TestCase
+class TransformerTest extends \PHPUnit\Framework\TestCase
 {
     public function testNull()
     {
@@ -24,14 +24,25 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
 
     public function testBoolean()
     {
-        $transformer = new Rule\BooleanType([true, 1], ['0', 'false']);
+        $transformer = new Rule\BooleanType();
+
         $this->assertTrue($transformer(true));
         $this->assertTrue($transformer(1));
-        $this->assertTrue($transformer('test'), 'test');
+        $this->assertTrue($transformer('1'));
+        $this->assertTrue($transformer('true'));
+        $this->assertTrue($transformer('on'));
+        $this->assertTrue($transformer('yes'));
+        $this->assertTrue($transformer('test'));
+
+        $this->assertFalse($transformer(false));
+        $this->assertFalse($transformer(0));
         $this->assertFalse($transformer('0'));
         $this->assertFalse($transformer('false'));
-        $this->assertFalse($transformer(''), 'test');
+        $this->assertFalse($transformer('off'));
+        $this->assertFalse($transformer('no'));
+        $this->assertFalse($transformer(''));
 
+        $transformer = new Rule\BooleanType([true, 1], ['0', 'false']);
         $this->assertEquals($transformer->true(), [true, 1]);
         $this->assertEquals($transformer->false(), ['0', 'false']);
     }
@@ -49,6 +60,8 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         $transformer = new Rule\DateTime('Y-m-d', 'Europe/London');
         $this->assertEquals($transformer($date)->format('Y-m-d'), $date->format('Y-m-d'));
         $this->assertEquals($transformer($date->format('Y-m')), $date->format('Y-m'));
+        $this->assertEquals($transformer((array) $date), $date);
+        $this->assertEquals($transformer([]), []);
 
         $this->assertEquals($transformer->format(), 'Y-m-d');
         $this->assertEquals($transformer->timezone(), 'Europe/London');
@@ -57,6 +70,13 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         $transformer = new Rule\DateTime(null, 'Europe/London');
         $this->assertEquals($transformer('today'), $date);
         $this->assertEquals($transformer('test'), 'test');
+    }
+
+    public function testArray()
+    {
+        $transformer = new Rule\ArrayType();
+        $this->assertEquals($transformer('1,2,3'), ['1', '2', '3']);
+        $this->assertEquals($transformer(['1', '2', '3']), ['1', '2', '3']);
     }
 
     public function testCustom()

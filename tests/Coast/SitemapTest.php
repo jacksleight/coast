@@ -3,7 +3,7 @@ namespace Coast\Test;
 
 use Coast\Sitemap;
 
-class SitemapTest extends \PHPUnit_Framework_TestCase
+class SitemapTest extends \PHPUnit\Framework\TestCase
 {
     protected $_sitemap;
     protected $_output;

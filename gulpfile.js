@@ -12,7 +12,7 @@ var errorHandler = function(error) {
 gulp.task('phpunit', function() {
     gulp.src('tests/**/*.php')
         .pipe(plumber({errorHandler: errorHandler}))
-    	.pipe(phpunit('', {clear: true, noCoverage: true}));
+    	.pipe(phpunit('', {clear: true}));
 });
 
 gulp.task('watch', function() {
