@@ -7,6 +7,7 @@
 namespace Coast;
 
 use Coast;
+use Closure;
 
 class Controller implements \Coast\App\Access, \Coast\Router\Routable
 {
@@ -22,7 +23,7 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
 
     protected $_all;
 
-    protected $_infector;
+    protected $_inflector;
 
     public function __construct(array $options = array())
     {
@@ -197,9 +198,9 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
             ? $route['params']['group']
             : null;
         if (isset($this->_inflector)) {
-            $controller = $this->_inflector($controller, 'controller');
-            $action     = $this->_inflector($action, 'action');
-            $group      = $this->_inflector($group, 'group');
+            $controller = ($this->_inflector)($controller, 'controller');
+            $action     = ($this->_inflector)($action, 'action');
+            $group      = ($this->_inflector)($group, 'group');
         }
 
         try {
