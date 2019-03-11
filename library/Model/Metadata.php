@@ -47,7 +47,7 @@ class Metadata implements JsonSerializable
                     'validator'       => new Validator(),
                     'className'       => null,
                     'classArgs'       => null,
-                    'traverseModes'   => Model::TRAVERSE_GET | Model::TRAVERSE_VALIDATE,
+                    'traverse'        => [],
                     'isConstructable' => false,
                     'isImmutable'     => false,
                 ];
@@ -160,7 +160,7 @@ class Metadata implements JsonSerializable
             if (!in_array($metadata['type'], [
                 Model::TYPE_ONE,
                 Model::TYPE_MANY,
-            ]) || !($metadata['traverseModes'] & Model::TRAVERSE_SET) || !isset($metadata['className'])) {
+            ]) || !in_array(Model::TRAVERSE_SET, $metadata['traverse']) || !isset($metadata['className'])) {
                 continue;
             }
             $propertyClassName = $metadata['className'];

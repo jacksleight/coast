@@ -18,10 +18,9 @@ use ReflectionProperty;
 
 class Model implements ArrayAccess, JsonSerializable
 {
-    const TRAVERSE_NONE     = 0;
-    const TRAVERSE_SET      = 1;
-    const TRAVERSE_GET      = 2;
-    const TRAVERSE_VALIDATE = 4;
+    const TRAVERSE_SET      = 'set';
+    const TRAVERSE_GET      = 'get';
+    const TRAVERSE_VALIDATE = 'validate';
     
     const TRAVERSE_SKIP = '__Coast\Model::SKIP__';
 
@@ -134,22 +133,22 @@ class Model implements ArrayAccess, JsonSerializable
         return $this->_metadata;
     }
 
-    public function metadataReset($mode = false)
+    public function metadataReset($traverse = false)
     {
         $this->traverseModels(function() {
             $this->_metadata = null;
-        }, $mode);
+        }, $traverse);
         return $this;
     }
 
-    public function traverse(Closure $func, $mode, array $history = array())
+    public function traverse(Closure $func, $traverse, array $history = array())
     {
         array_push($history, $this);
         $func = $func->bindTo($this);
         $output = [];
         foreach ($this->metadata->properties() as $name => $metadata) {
             $value = $this->__get($name);
-            $isTraverse = ($metadata['traverseModes'] & $mode);
+            $isTraverse = in_array($traverse, $metadata['traverse']);
             if (!in_array($metadata['type'], [
                 self::TYPE_ONE,
                 self::TYPE_MANY,
@@ -175,12 +174,12 @@ class Model implements ArrayAccess, JsonSerializable
             }
             if ($metadata['type'] == self::TYPE_ONE) {
                 if (isset($value)) {
-                    $value = $value->traverse($func, $mode, $history);
+                    $value = $value->traverse($func, $traverse, $history);
                 }
             } else if ($metadata['type'] == self::TYPE_MANY) {
                 $items = [];
                 foreach ($value as $key => $item) {
-                    $items[$key] = $item->traverse($func, $mode, $history);
+                    $items[$key] = $item->traverse($func, $traverse, $history);
                 }
                 $value = $items;
             }
@@ -192,7 +191,7 @@ class Model implements ArrayAccess, JsonSerializable
         return $output;
     }
 
-    public function traverseModels(Closure $func, $mode, array $history = array())
+    public function traverseModels(Closure $func, $traverse, array $history = array())
     {
         array_push($history, $this);
         $func = $func->bindTo($this);
@@ -204,7 +203,7 @@ class Model implements ArrayAccess, JsonSerializable
                 continue;
             }
             $value = $this->__get($name);
-            $isTraverse = ($metadata['traverseModes'] & $mode);
+            $isTraverse = in_array($traverse, $metadata['traverse']);
             if (is_object($value) && !self::inspect($value)) {
                 $isTraverse = false;
                 break;
@@ -217,11 +216,11 @@ class Model implements ArrayAccess, JsonSerializable
             }
             if ($metadata['type'] == self::TYPE_ONE) {
                 if (isset($value)) {
-                    $value->traverseModels($func, $mode, $history);
+                    $value->traverseModels($func, $traverse, $history);
                 }
             } else if ($metadata['type'] == self::TYPE_MANY) {
                 foreach ($value as $item) {
-                    $item->traverseModels($func, $mode, $history);
+                    $item->traverseModels($func, $traverse, $history);
                 }
             }
         }
@@ -230,14 +229,14 @@ class Model implements ArrayAccess, JsonSerializable
 
     public function fromArray(array $array)
     {
-        $mode = self::TRAVERSE_SET;
+        $traverse = self::TRAVERSE_SET;
         foreach ($array as $name => $value) {
             $metadata = $this->metadata->property($name);
             if (!isset($metadata)) {
                 $this->__setUnknown($name, $value);
                 continue;
             }
-            $isTraverse = ($metadata['traverseModes'] & $mode);
+            $isTraverse = in_array($traverse, $metadata['traverse']);
             if (!in_array($metadata['type'], [
                 self::TYPE_ONE,
                 self::TYPE_MANY,
