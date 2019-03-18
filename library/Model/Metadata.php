@@ -20,7 +20,7 @@ class Metadata implements JsonSerializable
 
     protected $_properties = [];
 
-    protected $_infos = [];
+    protected $_others = [];
 
     public function __construct($className)
     {
@@ -102,50 +102,50 @@ class Metadata implements JsonSerializable
         }
     }
 
-    public function info($name, $value = null)
+    public function other($name, $value = null)
     {
         if (func_num_args() > 1) {
             if (isset($value)) {
-                $this->_infos[$name] = $value;
+                $this->_others[$name] = $value;
             } else {
-                unset($this->_infos[$name]);
+                unset($this->_others[$name]);
             }
             return $this;
         }
-        return isset($this->_infos[$name])
-            ? $this->_infos[$name]
+        return isset($this->_others[$name])
+            ? $this->_others[$name]
             : null;
     }
 
-    public function infos(array $infos = null)
+    public function others(array $others = null)
     {
         if (func_num_args() > 0) {
-            foreach ($infos as $name => $value) {
-                $this->info($name, $value);
+            foreach ($others as $name => $value) {
+                $this->other($name, $value);
             }
             return $this;
         }
-        return $this->_infos;
+        return $this->_others;
     }
 
     public function __set($name, $value)
     {
-        return $this->info($name, $value);
+        return $this->other($name, $value);
     }
 
     public function __get($name)
     {
-        return $this->info($name);
+        return $this->other($name);
     }
 
     public function __isset($name)
     {
-        return $this->info($name) !== null;
+        return $this->other($name) !== null;
     }
 
     public function __unset($name)
     {
-        return $this->info($name, null);
+        return $this->other($name, null);
     }
 
     public function jsonSerialize()
@@ -171,7 +171,7 @@ class Metadata implements JsonSerializable
         return [
             'className'  => $className,
             'properties' => $properties,
-            'infos'      => $this->_infos,
+            'others'     => $this->_others,
         ];
     }
 }
