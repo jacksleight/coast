@@ -41,6 +41,7 @@ class Metadata implements JsonSerializable
             if (!isset($this->_properties[$name])) {
                 $this->_properties[$name] = [
                     'name'            => $name,
+                    'inverse'         => null,
                     'type'            => null,
                     'filter'          => new Filter(),
                     'transformer'     => new Transformer(),

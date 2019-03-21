@@ -258,7 +258,12 @@ class Model implements ArrayAccess, JsonSerializable
                     continue;
                 }
                 if (!isset($current) && $metadata['isConstructable']) {
-                    $this->__set($name, $current = $this->_constructModel($metadata['className'], $metadata['classArgs']));
+                    $constructed = $this->_constructModel($metadata['className'], $metadata['classArgs']);
+                    $current = $constructed;
+                    $this->__set($name, $constructed);
+                    if (isset($metadata['inverse'])) {
+                        $constructed[$metadata['inverse']] = $this;
+                    }
                 }
                 if (isset($current)) {
                     if ($metadata['isImmutable']) {
@@ -288,7 +293,11 @@ class Model implements ArrayAccess, JsonSerializable
                         continue;
                     }
                     if (!isset($current[$key]) && $metadata['isConstructable']) {
-                        $current[$key] = $this->_constructModel($metadata['className'], $metadata['classArgs']);
+                        $constructed = $this->_constructModel($metadata['className'], $metadata['classArgs']);
+                        $current[$key] = $constructed;
+                        if (isset($metadata['inverse'])) {
+                            $constructed[$metadata['inverse']] = $this;
+                        }
                     }
                     if (isset($current[$key])) {
                         if ($metadata['isImmutable']) {
