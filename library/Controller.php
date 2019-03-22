@@ -198,9 +198,10 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
             ? $route['params']['group']
             : null;
         if (isset($this->_inflector)) {
-            $controller = ($this->_inflector)($controller, 'controller');
-            $action     = ($this->_inflector)($action, 'action');
-            $group      = ($this->_inflector)($group, 'group');
+            $func       = $this->_inflector;
+            $controller = $func($controller, 'controller');
+            $action     = $func($action, 'action');
+            $group      = $func($group, 'group');
         }
 
         try {
