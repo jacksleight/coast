@@ -153,11 +153,7 @@ class Metadata implements JsonSerializable
     {
         $className  = $this->_className;
         $properties = $this->_properties;
-        $default    = new $className();
         foreach ($properties as $name => $metadata) {
-            $properties[$name] += [
-                'default' => $default->{$name},
-            ];
             if (!in_array($metadata['type'], [
                 Model::TYPE_ONE,
                 Model::TYPE_MANY,
