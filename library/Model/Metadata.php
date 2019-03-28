@@ -18,6 +18,8 @@ class Metadata implements JsonSerializable
 {
     protected $_className;
 
+    protected $_value;
+
     protected $_properties = [];
 
     protected $_others = [];
@@ -30,6 +32,15 @@ class Metadata implements JsonSerializable
     public function className()
     {
         return $this->_className;
+    }
+
+    public function value(Model $value = null)
+    {
+        if (func_num_args() > 0) {
+            $this->_value = $value;
+            return $this;
+        }
+        return $this->_value;
     }
 
     public function property($name, array $value = null)
@@ -149,26 +160,50 @@ class Metadata implements JsonSerializable
         return $this->other($name, null);
     }
 
-    public function jsonSerialize()
+    public function toArray()
     {
         $className  = $this->_className;
         $properties = $this->_properties;
-        foreach ($properties as $name => $metadata) {
+        foreach ($this->_properties as $name => $metadata) {
+            $properties[$name] += [
+                'errors' => $metadata['validator']->errors(),
+            ];
+            $isTraverse = in_array(Model::TRAVERSE_GET, $metadata['traverse']);
             if (!in_array($metadata['type'], [
                 Model::TYPE_ONE,
                 Model::TYPE_MANY,
-            ]) || !in_array(Model::TRAVERSE_SET, $metadata['traverse']) || !isset($metadata['className'])) {
+            ])) {
+                $isTraverse = false;
+            }
+            if (!$isTraverse) {
                 continue;
             }
-            $propertyClassName = $metadata['className'];
-            $properties[$name] += [
-                'metadata' => $propertyClassName::metadataStatic(),
-            ];
+            if (isset($metadata['className'])) {
+                $propertyClassName = $metadata['className'];
+                $properties[$name] += [
+                    'metadata' => $propertyClassName::metadataStatic()->toArray(),
+                ];
+            }
+            $value = $this->_value->{$name};
+            if (isset($value)) {
+                if ($metadata['type'] == Model::TYPE_ONE) {
+                    $properties[$name]['valueMetadata'] = $value->metadata()->toArray();
+                } else if ($metadata['type'] == Model::TYPE_MANY) {
+                    foreach ($value as $i => $item) {
+                        $properties[$name]['valueMetadata'][$i] = $item->metadata()->toArray();
+                    }
+                }
+            }
         }
         return [
             'className'  => $className,
             'properties' => $properties,
             'others'     => $this->_others,
         ];
+    }
+
+    public function jsonSerialize()
+    {
+        return $this->toArray();
     }
 }
