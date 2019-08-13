@@ -68,6 +68,9 @@ class DateTime extends Rule
         } else {
             return $value;
         }
+        if ($this->_format === \Coast\DATE) {
+            $date->setTime(0, 0, 0);
+        }
         return $date;
     }
 }
