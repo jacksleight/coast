@@ -37,6 +37,8 @@ class Model implements ArrayAccess, JsonSerializable
 
     protected static $_inspector;
 
+    protected static $_cleaner;
+
     public static function fetcher($fetcher = null)
     {
         if (func_num_args() > 0) {
@@ -53,6 +55,14 @@ class Model implements ArrayAccess, JsonSerializable
         return self::$_inspector;
     }
 
+    public static function cleaner($cleaner = null)
+    {
+        if (func_num_args() > 0) {
+            self::$_cleaner = $cleaner;
+        }
+        return self::$_cleaner;
+    }
+
     public static function fetch($className, $id)
     {
         $func = self::$_fetcher;
@@ -67,6 +77,14 @@ class Model implements ArrayAccess, JsonSerializable
         return isset($func)
             ? $func($object)
             : true;
+    }
+
+    public static function clean($object)
+    {
+        $func = self::$_cleaner;
+        return isset($func)
+            ? $func($object)
+            : null;
     }
 
     protected static function _metadataStaticBuild()
@@ -315,6 +333,7 @@ class Model implements ArrayAccess, JsonSerializable
                     }
                 }
                 foreach ($keys as $key) {
+                    self::clean($current[$key]);
                     unset($current[$key]);
                 }
                 $this->__set($name, $current);
