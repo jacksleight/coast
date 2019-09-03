@@ -166,9 +166,11 @@ class Metadata implements JsonSerializable
     public function toArray(callable $parser = null)
     {
         $className  = $this->_className;
+        $defaults   = (new \ReflectionClass($className))->getDefaultProperties();
         $properties = [];
         foreach ($this->_properties as $name => $metadata) {
             $property = $metadata + [
+                'default'  => $defaults[$name],
                 'errors'   => $metadata['validator']->errors(),
                 'metadata' => null,
             ];

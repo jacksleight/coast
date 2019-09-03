@@ -337,7 +337,7 @@ class Model implements ArrayAccess, JsonSerializable
                         continue;
                     }
                     if (!isset($current[$key]) && $metadata['isCreate']) {
-                        $constructed = $this->_constructModel($metadata['className'], $metadata['classArgs']);
+                        $constructed = self::modelCreate($metadata['className'], $metadata['classArgs']);
                         $current[$key] = $constructed;
                         if (isset($metadata['inverse'])) {
                             $constructed[$metadata['inverse']] = $this;
