@@ -44,6 +44,6 @@ class One extends Rule
         if (is_object($value)) {
             return $value;
         }
-        return Model::fetcher($this->_className, $id);
+        return Model::modelFetch($this->_className, $id);
     }
 }

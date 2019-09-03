@@ -51,7 +51,7 @@ class Many extends Rule
             unset($current[$key]);
         }
         foreach ($value as $i => $id) {
-            $current[$i] = Model::fetcher($this->_className, $id);
+            $current[$i] = Model::modelFetch($this->_className, $id);
         }
         return $current;
     }

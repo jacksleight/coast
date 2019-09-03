@@ -21,6 +21,7 @@ class Model implements ArrayAccess, JsonSerializable
     const TRAVERSE_SET      = 'set';
     const TRAVERSE_GET      = 'get';
     const TRAVERSE_VALIDATE = 'validate';
+    const TRAVERSE_META     = 'meta';
     
     const TRAVERSE_SKIP = '__Coast\Model::SKIP__';
 
@@ -33,55 +34,73 @@ class Model implements ArrayAccess, JsonSerializable
 
     protected $_metadata;
 
-    protected static $_fetcher;
+    protected static $_modelCreator;
 
-    protected static $_inspector;
+    protected static $_modelFetcher;
 
-    protected static $_cleaner;
+    protected static $_modelInspector;
 
-    public static function fetcher($fetcher = null)
+    protected static $_modelDeleter;
+
+    public static function modelCreator($modelCreator = null)
     {
         if (func_num_args() > 0) {
-            self::$_fetcher = $fetcher;
+            self::$_modelCreator = $modelCreator;
         }
-        return self::$_fetcher;
+        return self::$_modelCreator;
     }
 
-    public static function inspector($inspector = null)
+    public static function modelFetcher($modelFetcher = null)
     {
         if (func_num_args() > 0) {
-            self::$_inspector = $inspector;
+            self::$_modelFetcher = $modelFetcher;
         }
-        return self::$_inspector;
+        return self::$_modelFetcher;
     }
 
-    public static function cleaner($cleaner = null)
+    public static function modelInspector($modelInspector = null)
     {
         if (func_num_args() > 0) {
-            self::$_cleaner = $cleaner;
+            self::$_modelInspector = $modelInspector;
         }
-        return self::$_cleaner;
+        return self::$_modelInspector;
     }
 
-    public static function fetch($className, $id)
+    public static function modelDeleter($modelDeleter = null)
     {
-        $func = self::$_fetcher;
+        if (func_num_args() > 0) {
+            self::$_modelDeleter = $modelDeleter;
+        }
+        return self::$_modelDeleter;
+    }
+
+    public static function modelCreate($className, $classArgs)
+    {
+        $func = self::$_modelCreator;
+        return isset($func)
+            ? $func($object)
+            : (new \ReflectionClass($className))->newInstanceArgs(isset($classArgs) ? $classArgs : []);
+    }
+
+    public static function modelFetch($className, $id)
+    {
+        $func = self::$_modelFetcher;
         return isset($func)
             ? $func($className, $id)
             : null;
     }
 
-    public static function inspect($object)
+    public static function modelInspect($object)
     {
-        $func = self::$_inspector;
+        $func = self::$_modelInspector;
         return isset($func)
             ? $func($object)
             : true;
     }
 
-    public static function clean($object)
+    public static function modelDelete($object)
     {
-        $func = self::$_cleaner;
+        $func = self::$_modelDeleter;
         return isset($func)
             ? $func($object)
             : null;
@@ -176,14 +195,14 @@ class Model implements ArrayAccess, JsonSerializable
             ]) && in_array($value, $history, true)) {
                 continue;
             }
-            if (is_object($value) && !self::inspect($value)) {
-                continue;
-            }
             $isTraverse = in_array($traverse, $metadata['traverse']);
             if (!in_array($metadata['type'], [
                 self::TYPE_ONE,
                 self::TYPE_MANY,
             ])) {
+                $isTraverse = false;
+            }
+            if (is_object($value) && !self::modelInspect($value)) {
                 $isTraverse = false;
             }
             if (!$isTraverse) {
@@ -227,7 +246,7 @@ class Model implements ArrayAccess, JsonSerializable
             if (in_array($value, $history, true)) {
                 continue;
             }
-            if (is_object($value) && !self::inspect($value)) {
+            if (is_object($value) && !self::modelInspect($value)) {
                 continue;
             }
             $isTraverse = in_array($traverse, $metadata['traverse']);
@@ -263,9 +282,8 @@ class Model implements ArrayAccess, JsonSerializable
             ])) {
                 $isTraverse = false;
             }
-            if (is_object($value) && !self::inspect($value)) {
+            if (is_object($value) && !self::modelInspect($value)) {
                 $isTraverse = false;
-                break;
             }
             if (!$isTraverse) {
                 $this->__set($name, $value);
@@ -277,12 +295,12 @@ class Model implements ArrayAccess, JsonSerializable
                     $this->__unset($name);
                     continue;
                 }
-                if (!isset($current) && $metadata['isConstructable']) {
-                    $constructed = $this->_constructModel($metadata['className'], $metadata['classArgs']);
-                    $current = $constructed;
-                    $this->__set($name, $constructed);
+                if (!isset($current) && $metadata['isCreate']) {
+                    $new = self::modelCreate($metadata['className'], $metadata['classArgs']);
+                    $current = $new;
+                    $this->__set($name, $new);
                     if (isset($metadata['inverse'])) {
-                        $constructed[$metadata['inverse']] = $this;
+                        $new[$metadata['inverse']] = $this;
                     }
                 }
                 if (isset($current)) {
@@ -303,16 +321,22 @@ class Model implements ArrayAccess, JsonSerializable
                 }
                 if (!isset($value)) {
                     foreach ($current as $key => $item) {
+                        if ($metadata['isDelete']) {
+                            self::modelDelete($current[$key]);
+                        }
                         unset($current[$key]);
                     }
                     continue;
                 }
                 foreach ($value as $key => $item) {
                     if (!isset($item)) {
+                        if ($metadata['isDelete']) {
+                            self::modelDelete($current[$key]);
+                        }
                         unset($current[$key]);
                         continue;
                     }
-                    if (!isset($current[$key]) && $metadata['isConstructable']) {
+                    if (!isset($current[$key]) && $metadata['isCreate']) {
                         $constructed = $this->_constructModel($metadata['className'], $metadata['classArgs']);
                         $current[$key] = $constructed;
                         if (isset($metadata['inverse'])) {
@@ -333,7 +357,9 @@ class Model implements ArrayAccess, JsonSerializable
                     }
                 }
                 foreach ($keys as $key) {
-                    self::clean($current[$key]);
+                    if ($metadata['isDelete']) {
+                        self::modelDelete($current[$key]);
+                    }
                     unset($current[$key]);
                 }
                 $this->__set($name, $current);
@@ -346,7 +372,7 @@ class Model implements ArrayAccess, JsonSerializable
 
     public function toArray()
     {
-        return $this->traverse(function($name, $value, $metadata = null) {
+        return $this->traverse(function($name, $value, $metadata, $isTraverse) {
             return $value;
         }, self::TRAVERSE_GET);
     }
@@ -354,17 +380,12 @@ class Model implements ArrayAccess, JsonSerializable
     public function isValid()
     {
         $isValid = true;
-        $this->traverse(function($name, $value, $metadata) use (&$isValid) {
+        $this->traverse(function($name, $value, $metadata, $isTraverse) use (&$isValid) {
             if (!$metadata['validator']($this->__get($name), $this)) {
                 $isValid = false;
             }
         }, self::TRAVERSE_VALIDATE);
         return $isValid;
-    }
-
-    protected function _constructModel($className, $classArgs = null)
-    {
-        return (new \ReflectionClass($className))->newInstanceArgs(isset($classArgs) ? $classArgs : []);
     }
 
     protected function _set($name, $value)
@@ -489,6 +510,6 @@ class Model implements ArrayAccess, JsonSerializable
 
     public function jsonSerialize()
     {
-        return $this->toArray(false);
+        return $this->toArray();
     }
 }

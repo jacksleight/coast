@@ -52,18 +52,19 @@ class Metadata implements JsonSerializable
         if (func_num_args() > 1) {
             if (!isset($this->_properties[$name])) {
                 $this->_properties[$name] = [
-                    'name'            => $name,
-                    'inverse'         => null,
-                    'type'            => null,
-                    'values'          => null,
-                    'filter'          => new Filter(),
-                    'transformer'     => new Transformer(),
-                    'validator'       => new Validator(),
-                    'className'       => null,
-                    'classArgs'       => null,
-                    'traverse'        => [],
-                    'isConstructable' => false,
-                    'isImmutable'     => false,
+                    'name'        => $name,
+                    'type'        => null,
+                    'inverse'     => null,
+                    'values'      => null,
+                    'filter'      => new Filter(),
+                    'transformer' => new Transformer(),
+                    'validator'   => new Validator(),
+                    'className'   => null,
+                    'classArgs'   => null,
+                    'traverse'    => [],
+                    'isCreate'    => false,
+                    'isDelete'    => false,
+                    'isImmutable' => false,
                 ];
             }
             $current = $this->_properties[$name];
@@ -171,7 +172,11 @@ class Metadata implements JsonSerializable
                 'errors'   => $metadata['validator']->errors(),
                 'metadata' => null,
             ];
-            $isTraverse = in_array(Model::TRAVERSE_GET, $metadata['traverse']);
+            $isTraverse = array_intersect([
+                Model::TRAVERSE_SET,
+                Model::TRAVERSE_VALIDATE,
+                Model::TRAVERSE_META,
+            ], $metadata['traverse']);
             if (!in_array($metadata['type'], [
                 Model::TYPE_ONE,
                 Model::TYPE_MANY,
