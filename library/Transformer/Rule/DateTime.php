@@ -41,10 +41,10 @@ class DateTime extends Rule
     protected function _transform($value)
     {
         $defaultTimezone = new \DateTimezone(date_default_timezone_get());
+        $timezone = isset($this->_timezone)
+            ? new \DateTimezone($this->_timezone)
+            : $defaultTimezone;
         if (is_scalar($value)) {
-            $timezone = isset($this->_timezone)
-                ? new \DateTimezone($this->_timezone)
-                : $defaultTimezone;
             if (isset($this->_format)) {
                 $date = \DateTime::createFromFormat($this->_format, $value, $timezone);
                 if ($date === false) {
@@ -59,8 +59,11 @@ class DateTime extends Rule
             }
             $date->setTimezone($defaultTimezone);
         } else if (is_array($value)) {
+            $timezone = isset($value['timezone'])
+                ? new \DateTimezone($value['timezone'])
+                : $timezone;
             try {
-                $date = new \DateTime($value['date'], new \DateTimezone($value['timezone']));
+                $date = new \DateTime($value['date'], $timezone);
             } catch (\Exception $e) {
                 return $value;
             }
