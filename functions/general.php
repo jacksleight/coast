@@ -10,9 +10,10 @@ use Coast\Url;
 use ReflectionProperty;
 use ReflectionMethod;
 
-define(__NAMESPACE__ . '\DATETIME', 'Y-m-d H:i:s');
 define(__NAMESPACE__ . '\DATE', 'Y-m-d');
 define(__NAMESPACE__ . '\TIME', 'H:i:s');
+define(__NAMESPACE__ . '\DATETIME', 'Y-m-d\TH:i:s');
+define(__NAMESPACE__ . '\DATETIMEZ', 'Y-m-d\TH:i:sP');
 
 /**
  * Load a file without leaking variables, cache and reuse return value.
