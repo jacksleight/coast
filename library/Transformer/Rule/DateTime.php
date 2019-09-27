@@ -6,18 +6,31 @@
 
 namespace Coast\Transformer\Rule;
 
+use Coast\DateTime as CoastDateTime;
 use Coast\Transformer\Rule;
 
 class DateTime extends Rule
 {
+    protected $_mode;
+
     protected $_format;
 
     protected $_timezone;
 
-    public function __construct($format = null, $timezone = null)
+    public function __construct($mode, $format = null, $timezone = null)
     {
+        $this->mode($mode);
         $this->format($format);
         $this->timezone($timezone);
+    }
+
+    public function mode($mode = null)
+    {
+        if (func_num_args() > 0) {
+            $this->_mode = $mode;
+            return $this;
+        }
+        return $this->_mode;
     }
 
     public function format($format = null)
@@ -46,13 +59,15 @@ class DateTime extends Rule
             : $defaultTimezone;
         if (is_scalar($value)) {
             if (isset($this->_format)) {
-                $date = \DateTime::createFromFormat($this->_format, $value, $timezone);
+                $date = CoastDateTime::createFromFormat($this->_format, $value, $timezone);
+                $date->mode($this->_mode);
                 if ($date === false) {
                     return $value;
                 }
             } else {
                 try {
-                    $date = new \DateTime($value, $timezone);
+                    $date = new CoastDateTime($value, $timezone);
+                    $date->mode($this->_mode);
                 } catch (\Exception $e) {
                     return $value;
                 }
@@ -63,16 +78,14 @@ class DateTime extends Rule
                 ? new \DateTimezone($value['timezone'])
                 : $timezone;
             try {
-                $date = new \DateTime($value['date'], $timezone);
+                $date = new CoastDateTime($value['date'], $timezone);
+                $date->mode($this->_mode);
             } catch (\Exception $e) {
                 return $value;
             }
             $date->setTimezone($defaultTimezone);
         } else {
             return $value;
-        }
-        if ($this->_format === \Coast\DATE) {
-            $date->setTime(0, 0, 0);
         }
         return $date;
     }
