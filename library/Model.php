@@ -182,10 +182,12 @@ class Model implements ArrayAccess, JsonSerializable
         return $this;
     }
 
-    public function traverse(Closure $func, $traverse, array $history = array())
+    public function traverse(callable $parser, $traverse, array $history = array())
     {
         array_push($history, $this);
-        $func = $func->bindTo($this);
+        if ($parser instanceof Closure) {
+            $parser = $parser->bindTo($this);
+        }
         $output = [];
         foreach ($this->metadata->properties() as $name => $metadata) {
             $value = $this->__get($name);
@@ -206,7 +208,7 @@ class Model implements ArrayAccess, JsonSerializable
                 $isTraverse = false;
             }
             if (!$isTraverse) {
-                $value = $func($name, $value, $metadata, $isTraverse);
+                $value = $parser($name, $value, $metadata, $isTraverse);
                 if ($value !== self::TRAVERSE_SKIP) {
                     $output[$name] = $value;
                 }
@@ -214,16 +216,16 @@ class Model implements ArrayAccess, JsonSerializable
             }
             if ($metadata['type'] == self::TYPE_ONE) {
                 if (isset($value)) {
-                    $value = $value->traverse($func, $traverse, $history);
+                    $value = $value->traverse($parser, $traverse, $history);
                 }
             } else if ($metadata['type'] == self::TYPE_MANY) {
                 $items = [];
                 foreach ($value as $key => $item) {
-                    $items[$key] = $item->traverse($func, $traverse, $history);
+                    $items[$key] = $item->traverse($parser, $traverse, $history);
                 }
                 $value = $items;
             }
-            $value = $func($name, $value, $metadata, $isTraverse);
+            $value = $parser($name, $value, $metadata, $isTraverse);
             if ($value !== self::TRAVERSE_SKIP) {
                 $output[$name] = $value;
             }
@@ -231,10 +233,12 @@ class Model implements ArrayAccess, JsonSerializable
         return $output;
     }
 
-    public function traverseModels(Closure $func, $traverse, array $history = array())
+    public function traverseModels(callable $parser, $traverse, array $history = array())
     {
         array_push($history, $this);
-        $func = $func->bindTo($this);
+        if ($parser instanceof Closure) {
+            $parser = $parser->bindTo($this);
+        }
         foreach ($this->metadata->properties() as $name => $metadata) {
             if (!in_array($metadata['type'], [
                 self::TYPE_ONE,
@@ -255,15 +259,15 @@ class Model implements ArrayAccess, JsonSerializable
             }
             if ($metadata['type'] == self::TYPE_ONE) {
                 if (isset($value)) {
-                    $value->traverseModels($func, $traverse, $history);
+                    $value->traverseModels($parser, $traverse, $history);
                 }
             } else if ($metadata['type'] == self::TYPE_MANY) {
                 foreach ($value as $item) {
-                    $item->traverseModels($func, $traverse, $history);
+                    $item->traverseModels($parser, $traverse, $history);
                 }
             }
         }
-        $func();
+        $parser();
     }
 
     public function fromArray(array $array)
@@ -370,11 +374,14 @@ class Model implements ArrayAccess, JsonSerializable
         return $this;
     }
 
-    public function toArray()
+    public function toArray(callable $parser = null)
     {
-        return $this->traverse(function($name, $value, $metadata, $isTraverse) {
-            return $value;
-        }, self::TRAVERSE_GET);
+        if (!isset($parser)) {
+            $parser = function($name, $value, $metadata, $isTraverse) {
+                return $value;
+            };
+        }
+        return $this->traverse($parser, self::TRAVERSE_GET);
     }
 
     public function isValid()
