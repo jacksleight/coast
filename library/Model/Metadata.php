@@ -169,11 +169,12 @@ class Metadata implements JsonSerializable
         $defaults   = (new \ReflectionClass($className))->getDefaultProperties();
         $properties = [];
         foreach ($this->_properties as $name => $metadata) {
-            $property = $metadata + [
-                'default'  => $defaults[$name],
-                'errors'   => $metadata['validator']->errors(),
-                'metadata' => null,
-            ];
+            $property = [
+                'default'   => $defaults[$name],
+                'validator' => $metadata['validator']->toArray(),
+                'errors'    => $metadata['validator']->errors(),
+                'metadata'  => null,
+            ] + $metadata;
             $isTraverse = array_intersect([
                 Model::TRAVERSE_SET,
                 Model::TRAVERSE_VALIDATE,

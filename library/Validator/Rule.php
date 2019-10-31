@@ -80,11 +80,19 @@ abstract class Rule implements JsonSerializable
 		return $this->_errors;
 	}
 
-    public function jsonSerialize()
+    public function toArray()
     {
         return [
-			'name'		=> $this->name(),
-			'params'	=> $this->params(),
+			'name'   => $this->name(),
+			'params' => array_map(function($v) {
+				return $v instanceof \Closure ? 'function' : $v;
+			}, $this->params()),
+			'errors' => $this->errors(),
         ];
+    }
+
+    public function jsonSerialize()
+    {
+        return $this->toArray();
     }
 }

@@ -139,11 +139,27 @@ class Validator extends Rule implements Iterator, JsonSerializable
         return key($this->_steps) !== null;
     }
 
+    public function toArray()
+    {
+        $array = [
+            'rules' => [],
+            'steps' => [],
+        ];
+        foreach ($this->_rules as $name => $rules) {
+            foreach ($rules as $i => $rule) {
+                $array['rules'][$name][$i] = $rule->toArray();
+            }
+        }
+        foreach ($this->_steps as $i => $step) {
+            $array['steps'][$i] = $step instanceof Rule
+                ? $step->toArray()
+                : $step;
+        }
+        return $array;
+    }
+
     public function jsonSerialize()
     {
-        return [
-            'steps' => $this->_steps,
-            'rules' => $this->_rules,
-        ];
+        return $this->toArray();
     }
 }
