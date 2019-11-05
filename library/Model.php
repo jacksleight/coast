@@ -40,6 +40,8 @@ class Model implements ArrayAccess, JsonSerializable
 
     protected static $_modelInspector;
 
+    protected static $_modelVerifier;
+
     protected static $_modelDeleter;
 
     public static function modelCreator($modelCreator = null)
@@ -64,6 +66,14 @@ class Model implements ArrayAccess, JsonSerializable
             self::$_modelInspector = $modelInspector;
         }
         return self::$_modelInspector;
+    }
+
+    public static function modelVerifier($modelVerifier = null)
+    {
+        if (func_num_args() > 0) {
+            self::$_modelVerifier = $modelVerifier;
+        }
+        return self::$_modelVerifier;
     }
 
     public static function modelDeleter($modelDeleter = null)
@@ -95,6 +105,14 @@ class Model implements ArrayAccess, JsonSerializable
         $func = self::$_modelInspector;
         return isset($func)
             ? $func($object)
+            : true;
+    }
+
+    public static function modelVerify($object, $array)
+    {
+        $func = self::$_modelVerifier;
+        return isset($func)
+            ? $func($object, $array)
             : true;
     }
 
@@ -272,6 +290,9 @@ class Model implements ArrayAccess, JsonSerializable
 
     public function fromArray(array $array)
     {
+        if (!self::modelVerify($this, $array)) {
+            throw new Model\MatchException("Failed to verify array data and matched object (" . get_class($this) . ")");
+        }
         $traverse = self::TRAVERSE_SET;
         foreach ($array as $name => $value) {
             $metadata = $this->metadata->property($name);
@@ -323,6 +344,7 @@ class Model implements ArrayAccess, JsonSerializable
                     $current = clone $current;
                     $this->__set($name, $current);
                 }
+                // Remove all items if the entire value has been unset
                 if (!isset($value)) {
                     foreach ($current as $key => $item) {
                         if ($metadata['isDelete']) {
@@ -332,12 +354,9 @@ class Model implements ArrayAccess, JsonSerializable
                     }
                     continue;
                 }
+                // Check incoming data against eixsting and update/create
                 foreach ($value as $key => $item) {
                     if (!isset($item)) {
-                        if ($metadata['isDelete']) {
-                            self::modelDelete($current[$key]);
-                        }
-                        unset($current[$key]);
                         continue;
                     }
                     if (!isset($current[$key]) && $metadata['isCreate']) {
@@ -354,17 +373,27 @@ class Model implements ArrayAccess, JsonSerializable
                         $current[$key]->fromArray($item);
                     }
                 }
-                $keys = [];
+                // Check existing data against incoming and remove 
                 foreach ($current as $key => $item) {
                     if (!isset($value[$key])) {
-                        $keys[] = $key;
+                        if ($metadata['isDelete']) {
+                            self::modelDelete($current[$key]);
+                        }
+                        unset($current[$key]);
                     }
                 }
-                foreach ($keys as $key) {
-                    if ($metadata['isDelete']) {
-                        self::modelDelete($current[$key]);
-                    }
+                // Rebase current keys
+                // $current may be a persisted object so we can't replace
+                // it and we can't use any functions that expect an array
+                $items = [];
+                foreach ($current as $key => $item) {
+                    $items[] = $item;
                     unset($current[$key]);
+                }
+                $i = 0;
+                foreach ($items as $item) {
+                    $current[$i] = $item;
+                    $i++;
                 }
                 $this->__set($name, $current);
             } else {
