@@ -20,10 +20,13 @@ class Model implements ArrayAccess, JsonSerializable
 {
     const TRAVERSE_SET      = 'set';
     const TRAVERSE_GET      = 'get';
+    const TRAVERSE_CREATE   = 'create';
+    const TRAVERSE_DELETE   = 'delete';
     const TRAVERSE_VALIDATE = 'validate';
     const TRAVERSE_META     = 'meta';
     
-    const TRAVERSE_SKIP = '__Coast\Model::SKIP__';
+    const SKIP      = '__Coast\Model::SKIP__';
+    const UNDEFINED = '__Coast\Model::UNDEFINED__';
 
     const TYPE_ONE  = 'one';
     const TYPE_MANY = 'many';
@@ -34,15 +37,29 @@ class Model implements ArrayAccess, JsonSerializable
 
     protected $_metadata;
 
+    protected static $_modelIdentifier;
+
     protected static $_modelCreator;
 
     protected static $_modelFetcher;
 
-    protected static $_modelInspector;
-
-    protected static $_modelVerifier;
-
     protected static $_modelDeleter;
+
+    protected static $_modelMatcher;
+
+    protected static $_modelTraverseChecker;
+
+    protected static $_modelMatchChecker;
+
+    protected static $_modelDeleteChecker;
+
+    public static function modelIdentifier($modelIdentifier = null)
+    {
+        if (func_num_args() > 0) {
+            self::$_modelIdentifier = $modelIdentifier;
+        }
+        return self::$_modelIdentifier;
+    }
 
     public static function modelCreator($modelCreator = null)
     {
@@ -60,22 +77,6 @@ class Model implements ArrayAccess, JsonSerializable
         return self::$_modelFetcher;
     }
 
-    public static function modelInspector($modelInspector = null)
-    {
-        if (func_num_args() > 0) {
-            self::$_modelInspector = $modelInspector;
-        }
-        return self::$_modelInspector;
-    }
-
-    public static function modelVerifier($modelVerifier = null)
-    {
-        if (func_num_args() > 0) {
-            self::$_modelVerifier = $modelVerifier;
-        }
-        return self::$_modelVerifier;
-    }
-
     public static function modelDeleter($modelDeleter = null)
     {
         if (func_num_args() > 0) {
@@ -84,44 +85,124 @@ class Model implements ArrayAccess, JsonSerializable
         return self::$_modelDeleter;
     }
 
+    public static function modelMatcher($modelMatcher = null)
+    {
+        if (func_num_args() > 0) {
+            self::$_modelMatcher = $modelMatcher;
+        }
+        return self::$_modelMatcher;
+    }
+
+    public static function modelTraverseChecker($modelTraverseChecker = null)
+    {
+        if (func_num_args() > 0) {
+            self::$_modelTraverseChecker = $modelTraverseChecker;
+        }
+        return self::$_modelTraverseChecker;
+    }
+
+    public static function modelMatchChecker($modelMatchChecker = null)
+    {
+        if (func_num_args() > 0) {
+            self::$_modelMatchChecker = $modelMatchChecker;
+        }
+        return self::$_modelMatchChecker;
+    }
+
+    public static function modelDeleteChecker($modelDeleteChecker = null)
+    {
+        if (func_num_args() > 0) {
+            self::$_modelDeleteChecker = $modelDeleteChecker;
+        }
+        return self::$_modelDeleteChecker;
+    }
+
+    // Returns the identity of the given $object
+    public static function modelIdentify($object)
+    {
+        $func = self::$_modelIdentifier;
+        if (isset($func)) {
+            return $func($object);;
+        } else {
+            return spl_object_hash($object);
+        }
+    }
+
+    // Returns a new object of the given $className with $classArgs
     public static function modelCreate($className, $classArgs)
     {
         $func = self::$_modelCreator;
-        return isset($func)
-            ? $func($object)
-            : (new \ReflectionClass($className))->newInstanceArgs(isset($classArgs) ? $classArgs : []);
+        if (isset($func)) {
+            return $func($object);;
+        } else {
+            return (new \ReflectionClass($className))->newInstanceArgs(isset($classArgs) ? $classArgs : []);
+        }
     }
 
+    // Returns an existing object of the given $className and $id
     public static function modelFetch($className, $id)
     {
         $func = self::$_modelFetcher;
-        return isset($func)
-            ? $func($className, $id)
-            : null;
+        if (isset($func)) {
+            return $func($className, $id);;
+        } else {
+            return null;
+        }
     }
 
-    public static function modelInspect($object)
-    {
-        $func = self::$_modelInspector;
-        return isset($func)
-            ? $func($object)
-            : true;
-    }
-
-    public static function modelVerify($object, $array)
-    {
-        $func = self::$_modelVerifier;
-        return isset($func)
-            ? $func($object, $array)
-            : true;
-    }
-
-    public static function modelDelete($object)
+    // Deletes an existing $object
+    public static function modelDelete($object, $coll, $key)
     {
         $func = self::$_modelDeleter;
-        return isset($func)
-            ? $func($object)
-            : null;
+        if (isset($func)) {
+            $func($object, $coll, $key);
+        } else {
+            unset($coll[$key]);
+        }
+    }
+
+    // Returns the key of item in $coll that macthes the $key/$item, must return false on no match
+    public static function modelMatch($object, $coll, $key, $item)
+    {
+        $func = self::$_modelMatcher;
+        if (isset($func)) {
+            return $func($object, $coll, $key, $item);;
+        } else {
+            return isset($coll[$key]) ? $key : false;
+        }
+    }
+
+    // Returns boolean whether the $object is valid for deep traversal
+    public static function modelTraverseCheck($object)
+    {
+        $func = self::$_modelTraverseChecker;
+        if (isset($func)) {
+            return $func($object);;
+        } else {
+            return true;
+        }
+    }
+
+    // Returns boolean whether the $array is applicable to the matched $object
+    public static function modelMatchCheck($object, $array)
+    {
+        $func = self::$_modelMatchChecker;
+        if (isset($func)) {
+            return $func($object, $array);;
+        } else {
+            return true;
+        }
+    }
+
+    // Returns boolean whether the value of $item means the associated $currentItem should be deleted
+    public static function modelDeleteCheck($object, $item)
+    {
+        $func = self::$_modelDeleteChecker;
+        if (isset($func)) {
+            return $func($object, $item);;
+        } else {
+            return $item == self::UNDEFINED;
+        }
     }
 
     protected static function _metadataStaticBuild()
@@ -222,12 +303,12 @@ class Model implements ArrayAccess, JsonSerializable
             ])) {
                 $isTraverse = false;
             }
-            if (is_object($value) && !self::modelInspect($value)) {
+            if (is_object($value) && !self::modelTraverseCheck($value)) {
                 $isTraverse = false;
             }
             if (!$isTraverse) {
                 $value = $parser($name, $value, $metadata, $isTraverse);
-                if ($value !== self::TRAVERSE_SKIP) {
+                if ($value !== self::SKIP) {
                     $output[$name] = $value;
                 }
                 continue;
@@ -244,7 +325,7 @@ class Model implements ArrayAccess, JsonSerializable
                 $value = $items;
             }
             $value = $parser($name, $value, $metadata, $isTraverse);
-            if ($value !== self::TRAVERSE_SKIP) {
+            if ($value !== self::SKIP) {
                 $output[$name] = $value;
             }
         }
@@ -268,7 +349,7 @@ class Model implements ArrayAccess, JsonSerializable
             if (in_array($value, $history, true)) {
                 continue;
             }
-            if (is_object($value) && !self::modelInspect($value)) {
+            if (is_object($value) && !self::modelTraverseCheck($value)) {
                 continue;
             }
             $isTraverse = in_array($traverse, $metadata['traverse']);
@@ -290,7 +371,7 @@ class Model implements ArrayAccess, JsonSerializable
 
     public function fromArray(array $array)
     {
-        if (!self::modelVerify($this, $array)) {
+        if (!self::modelMatchCheck($this, $array)) {
             throw new Model\MatchException("Failed to verify array data and matched object (" . get_class($this) . ")");
         }
         $traverse = self::TRAVERSE_SET;
@@ -307,7 +388,7 @@ class Model implements ArrayAccess, JsonSerializable
             ])) {
                 $isTraverse = false;
             }
-            if (is_object($value) && !self::modelInspect($value)) {
+            if (is_object($value) && !self::modelTraverseCheck($value)) {
                 $isTraverse = false;
             }
             if (!$isTraverse) {
@@ -320,15 +401,16 @@ class Model implements ArrayAccess, JsonSerializable
                     $this->__unset($name);
                     continue;
                 }
-                if (!isset($current) && $metadata['isCreate']) {
-                    $new = self::modelCreate($metadata['className'], $metadata['classArgs']);
-                    $current = $new;
-                    $this->__set($name, $new);
-                    if (isset($metadata['inverse'])) {
-                        $new[$metadata['inverse']] = $this;
+                if (!isset($current)) {
+                    if (in_array(self::TRAVERSE_CREATE, $metadata['traverse'])) {
+                        $create = self::modelCreate($metadata['className'], $metadata['classArgs']);
+                        $create->fromArray($value);
+                        $this->__set($name, $create);
+                        if (isset($metadata['inverse'])) {
+                            $create[$metadata['inverse']] = $this;
+                        }
                     }
-                }
-                if (isset($current)) {
+                } else {
                     if ($metadata['isImmutable']) {
                         $current = clone $current;
                         $this->__set($name, $current);
@@ -344,55 +426,49 @@ class Model implements ArrayAccess, JsonSerializable
                     $current = clone $current;
                     $this->__set($name, $current);
                 }
-                // Remove all items if the entire value has been unset
-                if (!isset($value)) {
-                    foreach ($current as $key => $item) {
-                        if ($metadata['isDelete']) {
-                            self::modelDelete($current[$key]);
-                        }
-                        unset($current[$key]);
-                    }
-                    continue;
-                }
-                // Check incoming data against eixsting and update/create
+                // Check incoming data against existing and update/create
                 foreach ($value as $key => $item) {
-                    if (!isset($item)) {
+                    if (self::modelDeleteCheck($this, $item)) {
                         continue;
                     }
-                    if (!isset($current[$key]) && $metadata['isCreate']) {
-                        $constructed = self::modelCreate($metadata['className'], $metadata['classArgs']);
-                        $current[$key] = $constructed;
-                        if (isset($metadata['inverse'])) {
-                            $constructed[$metadata['inverse']] = $this;
+                    $currentKey = self::modelMatch($this, $current, $key, $item);
+                    if ($currentKey === false) {
+                        if (in_array(self::TRAVERSE_CREATE, $metadata['traverse'])) {
+                            $create = self::modelCreate($metadata['className'], $metadata['classArgs']);
+                            $create->fromArray($item);
+                            $current[] = $create;
+                            if (isset($metadata['inverse'])) {
+                                $create[$metadata['inverse']] = $this;
+                            }
                         }
-                    }
-                    if (isset($current[$key])) {
+                    } else {
                         if ($metadata['isImmutable']) {
-                            $current[$key] = clone $current[$key];
+                            $current[$currentKey] = clone $current[$currentKey];
                         }
-                        $current[$key]->fromArray($item);
+                        $current[$currentKey]->fromArray($item);
                     }
                 }
                 // Check existing data against incoming and remove 
-                foreach ($current as $key => $item) {
-                    if (!isset($value[$key])) {
-                        if ($metadata['isDelete']) {
-                            self::modelDelete($current[$key]);
-                        }
-                        unset($current[$key]);
+                foreach ($current as $currentKey => $currentItem) {
+                    $key  = self::modelMatch($this, $value, $currentKey, $currentItem);
+                    $item = $key === false
+                        ? self::UNDEFINED
+                        : $value[$key];
+                    if (in_array(self::TRAVERSE_DELETE, $metadata['traverse']) && self::modelDeleteCheck($this, $item)) {
+                        self::modelDelete($this, $current, $currentKey);
                     }
                 }
                 // Rebase current keys
                 // $current may be a persisted object so we can't replace
                 // it and we can't use any functions that expect an array
-                $items = [];
-                foreach ($current as $key => $item) {
-                    $items[] = $item;
-                    unset($current[$key]);
+                $currentItems = [];
+                foreach ($current as $currentKey => $currentItem) {
+                    $currentItems[] = $currentItem;
+                    unset($current[$currentKey]);
                 }
                 $i = 0;
-                foreach ($items as $item) {
-                    $current[$i] = $item;
+                foreach ($currentItems as $currentItem) {
+                    $current[$i] = $currentItem;
                     $i++;
                 }
                 $this->__set($name, $current);

@@ -195,7 +195,10 @@ class Metadata implements JsonSerializable
                 if ($metadata['type'] == Model::TYPE_ONE) {
                     $property['metadata'] = $propertyClassName::metadataStatic()->toArray($parser);
                 } else if ($metadata['type'] == Model::TYPE_MANY) {
-                    $property['metadata'] = ['default' => $propertyClassName::metadataStatic()->toArray($parser)];
+                    $property['metadata'] = [
+                        'default' => $propertyClassName::metadataStatic()->toArray($parser),
+                        'entries' => [],
+                    ];
                 }
             }
             if (isset($this->_value->{$name})) {
@@ -204,13 +207,14 @@ class Metadata implements JsonSerializable
                     $property['metadata'] = $value->metadata()->toArray($parser);
                 } else if ($metadata['type'] == Model::TYPE_MANY) {
                     foreach ($value as $i => $item) {
-                        $property['metadata'][$i] = $item->metadata()->toArray($parser);
+                        $property['metadata']['entries'][$i] = $item->metadata()->toArray($parser);
                     }
                 }
             }
             $properties[$name] = $property;
         }
         $array = [
+            'identity'   => isset($this->_value) ? Model::modelIdentify($this->_value) : null,
             'className'  => $className,
             'properties' => $properties,
             'others'     => $this->_others,
