@@ -45,11 +45,11 @@ class Model implements ArrayAccess, JsonSerializable
 
     protected static $_modelDeleter;
 
-    protected static $_modelMatcher;
+    protected static $_modelFinder;
 
     protected static $_modelTraverseChecker;
 
-    protected static $_modelMatchChecker;
+    protected static $_modelVerifier;
 
     protected static $_modelDeleteChecker;
 
@@ -85,12 +85,12 @@ class Model implements ArrayAccess, JsonSerializable
         return self::$_modelDeleter;
     }
 
-    public static function modelMatcher($modelMatcher = null)
+    public static function modelFinder($modelFinder = null)
     {
         if (func_num_args() > 0) {
-            self::$_modelMatcher = $modelMatcher;
+            self::$_modelFinder = $modelFinder;
         }
-        return self::$_modelMatcher;
+        return self::$_modelFinder;
     }
 
     public static function modelTraverseChecker($modelTraverseChecker = null)
@@ -101,12 +101,12 @@ class Model implements ArrayAccess, JsonSerializable
         return self::$_modelTraverseChecker;
     }
 
-    public static function modelMatchChecker($modelMatchChecker = null)
+    public static function modelVerifier($modelVerifier = null)
     {
         if (func_num_args() > 0) {
-            self::$_modelMatchChecker = $modelMatchChecker;
+            self::$_modelVerifier = $modelVerifier;
         }
-        return self::$_modelMatchChecker;
+        return self::$_modelVerifier;
     }
 
     public static function modelDeleteChecker($modelDeleteChecker = null)
@@ -124,16 +124,16 @@ class Model implements ArrayAccess, JsonSerializable
         if (isset($func)) {
             return $func($object);;
         } else {
-            return spl_object_hash($object);
+            return null;
         }
     }
 
     // Returns a new object of the given $className with $classArgs
-    public static function modelCreate($className, $classArgs)
+    public static function modelCreate($className, $classArgs, $array)
     {
         $func = self::$_modelCreator;
         if (isset($func)) {
-            return $func($object);;
+            return $func($className, $classArgs, $array);
         } else {
             return (new \ReflectionClass($className))->newInstanceArgs(isset($classArgs) ? $classArgs : []);
         }
@@ -162,11 +162,11 @@ class Model implements ArrayAccess, JsonSerializable
     }
 
     // Returns the key of item in $coll that macthes the $key/$item, must return false on no match
-    public static function modelMatch($object, $coll, $key, $item)
+    public static function modelFind($object, $coll, $key, $item, $isCurrent)
     {
-        $func = self::$_modelMatcher;
+        $func = self::$_modelFinder;
         if (isset($func)) {
-            return $func($object, $coll, $key, $item);;
+            return $func($object, $coll, $key, $item, $isCurrent);;
         } else {
             return isset($coll[$key]) ? $key : false;
         }
@@ -184,13 +184,11 @@ class Model implements ArrayAccess, JsonSerializable
     }
 
     // Returns boolean whether the $array is applicable to the matched $object
-    public static function modelMatchCheck($object, $array)
+    public static function modelVerify($object, $array)
     {
-        $func = self::$_modelMatchChecker;
+        $func = self::$_modelVerifier;
         if (isset($func)) {
-            return $func($object, $array);;
-        } else {
-            return true;
+            $func($object, $array);;
         }
     }
 
@@ -371,9 +369,7 @@ class Model implements ArrayAccess, JsonSerializable
 
     public function fromArray(array $array)
     {
-        if (!self::modelMatchCheck($this, $array)) {
-            throw new Model\MatchException("Failed to verify array data and matched object (" . get_class($this) . ")");
-        }
+        self::modelVerify($this, $array);
         $traverse = self::TRAVERSE_SET;
         foreach ($array as $name => $value) {
             $metadata = $this->metadata->property($name);
@@ -403,7 +399,7 @@ class Model implements ArrayAccess, JsonSerializable
                 }
                 if (!isset($current)) {
                     if (in_array(self::TRAVERSE_CREATE, $metadata['traverse'])) {
-                        $create = self::modelCreate($metadata['className'], $metadata['classArgs']);
+                        $create = self::modelCreate($metadata['className'], $metadata['classArgs'], $value);
                         $create->fromArray($value);
                         $this->__set($name, $create);
                         if (isset($metadata['inverse'])) {
@@ -431,10 +427,10 @@ class Model implements ArrayAccess, JsonSerializable
                     if (self::modelDeleteCheck($this, $item)) {
                         continue;
                     }
-                    $currentKey = self::modelMatch($this, $current, $key, $item);
+                    $currentKey = self::modelFind($this, $current, $key, $item, true);
                     if ($currentKey === false) {
                         if (in_array(self::TRAVERSE_CREATE, $metadata['traverse'])) {
-                            $create = self::modelCreate($metadata['className'], $metadata['classArgs']);
+                            $create = self::modelCreate($metadata['className'], $metadata['classArgs'], $item);
                             $create->fromArray($item);
                             $current[] = $create;
                             if (isset($metadata['inverse'])) {
@@ -450,7 +446,7 @@ class Model implements ArrayAccess, JsonSerializable
                 }
                 // Check existing data against incoming and remove 
                 foreach ($current as $currentKey => $currentItem) {
-                    $key  = self::modelMatch($this, $value, $currentKey, $currentItem);
+                    $key  = self::modelFind($this, $value, $currentKey, $currentItem, false);
                     $item = $key === false
                         ? self::UNDEFINED
                         : $value[$key];
