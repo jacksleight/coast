@@ -246,7 +246,7 @@ class Model implements ArrayAccess, JsonSerializable
     protected function _metadataBuild()
     {
         $this->_metadataSource = clone static::metadataStatic();
-        $this->_metadataSource->value($this);
+        $this->_metadataSource->instance($this);
         return $this->_metadataSource;
     }
 
