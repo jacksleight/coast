@@ -11,17 +11,17 @@ use Coast\Transformer\Rule;
 
 class DateTime extends Rule
 {
-    protected $_mode;
-
     protected $_format;
 
     protected $_timezone;
+    
+    protected $_mode;
 
-    public function __construct($mode = CoastDateTime::MODE_DATETIME, $format = null, $timezone = null)
+    public function __construct($format = null, $timezone = null, $mode = CoastDateTime::MODE_DATETIME)
     {
-        $this->mode($mode);
         $this->format($format);
         $this->timezone($timezone);
+        $this->mode($mode);
     }
 
     public function mode($mode = null)
