@@ -24,15 +24,6 @@ class DateTime extends Rule
         $this->mode($mode);
     }
 
-    public function mode($mode = null)
-    {
-        if (func_num_args() > 0) {
-            $this->_mode = $mode;
-            return $this;
-        }
-        return $this->_mode;
-    }
-
     public function format($format = null)
     {
         if (func_num_args() > 0) {
@@ -49,6 +40,15 @@ class DateTime extends Rule
             return $this;
         }
         return $this->_timezone;
+    }
+
+    public function mode($mode = null)
+    {
+        if (func_num_args() > 0) {
+            $this->_mode = $mode;
+            return $this;
+        }
+        return $this->_mode;
     }
 
     protected function _transform($value)
