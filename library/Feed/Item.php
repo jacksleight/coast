@@ -48,22 +48,19 @@ class Item extends Model
                     'type'            => Model::TYPE_ONE,
                     'className'       => 'Coast\Feed\Person',
                     'classArgs'       => ['author'],
-                    'traverse'        => [Model::TRAVERSE_SET, Model::TRAVERSE_GET],
-                    'isConstructable' => true,
+                    'traverse'        => [Model::TRAVERSE_SET, Model::TRAVERSE_GET, Model::TRAVERSE_CREATE],
                 ],
                 'summary' => [
                     'type'            => Model::TYPE_ONE,
                     'className'       => 'Coast\Feed\Content',
-                    'classArgs'       => [ 'summary'],
-                    'traverse'        => [Model::TRAVERSE_SET, Model::TRAVERSE_GET],
-                    'isConstructable' => true,
+                    'classArgs'       => ['summary'],
+                    'traverse'        => [Model::TRAVERSE_SET, Model::TRAVERSE_GET, Model::TRAVERSE_CREATE],
                 ],
                 'body' => [
                     'type'            => Model::TYPE_ONE,
                     'className'       => 'Coast\Feed\Content',
-                    'classArgs'       => [ 'body'],
-                    'traverse'        => [Model::TRAVERSE_SET, Model::TRAVERSE_GET],
-                    'isConstructable' => true,
+                    'classArgs'       => ['body'],
+                    'traverse'        => [Model::TRAVERSE_SET, Model::TRAVERSE_GET, Model::TRAVERSE_CREATE],
                 ],
             ]);
     }

@@ -6,7 +6,7 @@
 
 namespace Coast\Sitemap;
 
-use DateTime;
+use Coast\DateTime;
 use Coast\Xml;
 use Coast\Model;
 use Coast\Validator;
@@ -79,7 +79,7 @@ class Url extends Model
 
         $xml->addChild('loc', $this->url->toString());
         if (isset($this->updateDate)) {
-            $xml->addChild('lastmod', $this->updateDate->format(DateTime::W3C));
+            $xml->addChild('lastmod', $this->updateDate->format(\DateTime::W3C));
         }
         if (isset($this->changeFrequency)) {
             $xml->addChild('changefreq', $this->changeFrequency);

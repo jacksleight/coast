@@ -49,15 +49,13 @@ class Feed extends Model
                     'type'            => Model::TYPE_ONE,
                     'className'       => 'Coast\Feed\Person',
                     'classArgs'       => ['author'],
-                    'traverse'        => [Model::TRAVERSE_SET, Model::TRAVERSE_GET],
-                    'isConstructable' => true,
+                    'traverse'        => [Model::TRAVERSE_SET, Model::TRAVERSE_GET, Model::TRAVERSE_CREATE],
                 ],
                 'items' => [
                     'type'            => Model::TYPE_MANY,
                     'className'       => 'Coast\Feed\Item',
                     'classArgs'       => ['author'],
-                    'traverse'        => [Model::TRAVERSE_SET, Model::TRAVERSE_GET],
-                    'isConstructable' => true,
+                    'traverse'        => [Model::TRAVERSE_SET, Model::TRAVERSE_GET, Model::TRAVERSE_CREATE],
                 ],
             ]);
     }

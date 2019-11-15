@@ -3,7 +3,7 @@ namespace Coast\Test;
 
 use Coast\Transformer,
     Coast\Transformer\Rule;
-use DateTime;
+use Coast\DateTime;
 
 class TransformerTest extends \PHPUnit\Framework\TestCase
 {
@@ -57,9 +57,8 @@ class TransformerTest extends \PHPUnit\Framework\TestCase
     public function testDateTime()
     {
         $date = new DateTime('today');
-        $transformer = new Rule\DateTime('Y-m-d', 'Europe/London');
+        $transformer = new Rule\DateTime(DateTime::MODE_DATETIME, 'Y-m-d', 'Europe/London');
         $this->assertEquals($transformer($date)->format('Y-m-d'), $date->format('Y-m-d'));
-        $this->assertEquals($transformer($date->format('Y-m')), $date->format('Y-m'));
         $this->assertEquals($transformer((array) $date), $date);
         $this->assertEquals($transformer([]), []);
 
@@ -67,7 +66,7 @@ class TransformerTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($transformer->timezone(), 'Europe/London');
 
         $date = new DateTime('today');
-        $transformer = new Rule\DateTime(null, 'Europe/London');
+        $transformer = new Rule\DateTime(DateTime::MODE_DATETIME, null, 'Europe/London');
         $this->assertEquals($transformer('today'), $date);
         $this->assertEquals($transformer('test'), 'test');
     }

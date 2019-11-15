@@ -17,7 +17,7 @@ class DateTime extends Rule
 
     protected $_timezone;
 
-    public function __construct($mode, $format = null, $timezone = null)
+    public function __construct($mode = CoastDateTime::MODE_DATETIME, $format = null, $timezone = null)
     {
         $this->mode($mode);
         $this->format($format);
