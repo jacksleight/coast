@@ -19,7 +19,7 @@ class Metadata implements JsonSerializable
 {
     protected $_className;
 
-    protected $_value;
+    protected $_instance;
 
     protected $_properties = [];
 
@@ -35,13 +35,13 @@ class Metadata implements JsonSerializable
         return $this->_className;
     }
 
-    public function value(Model $value = null)
+    public function instance(Model $instance = null)
     {
         if (func_num_args() > 0) {
-            $this->_value = $value;
+            $this->_instance = $instance;
             return $this;
         }
-        return $this->_value;
+        return $this->_instance;
     }
 
     public function property($name, array $value = null)
@@ -53,17 +53,15 @@ class Metadata implements JsonSerializable
             if (!isset($this->_properties[$name])) {
                 $this->_properties[$name] = [
                     'name'        => $name,
-                    'type'        => null,
                     'inverse'     => null,
+                    'type'        => null,
                     'values'      => null,
                     'filter'      => new Filter(),
                     'transformer' => new Transformer(),
                     'validator'   => new Validator(),
+                    'traverse'    => [],
                     'className'   => null,
                     'classArgs'   => null,
-                    'traverse'    => [],
-                    'isCreate'    => false,
-                    'isDelete'    => false,
                     'isImmutable' => false,
                 ];
             }
@@ -173,7 +171,6 @@ class Metadata implements JsonSerializable
                 'default'   => $defaults[$name],
                 'validator' => $metadata['validator']->toArray(),
                 'errors'    => $metadata['validator']->errors(),
-                'metadata'  => null,
             ] + $metadata;
             $isTraverse = array_intersect([
                 Model::TRAVERSE_SET,
@@ -192,29 +189,23 @@ class Metadata implements JsonSerializable
             }
             if (isset($metadata['className'])) {
                 $propertyClassName = $metadata['className'];
-                if ($metadata['type'] == Model::TYPE_ONE) {
-                    $property['metadata'] = $propertyClassName::metadataStatic()->toArray($parser);
-                } else if ($metadata['type'] == Model::TYPE_MANY) {
-                    $property['metadata'] = [
-                        'default' => $propertyClassName::metadataStatic()->toArray($parser),
-                        'entries' => [],
-                    ];
-                }
+                $property['metadataStatic'] = $propertyClassName::metadataStatic()->toArray($parser);
             }
-            if (isset($this->_value->{$name})) {
-                $value = $this->_value->{$name};
+            if (isset($this->_instance->{$name})) {
+                $value = $this->_instance->{$name};
                 if ($metadata['type'] == Model::TYPE_ONE) {
                     $property['metadata'] = $value->metadata()->toArray($parser);
                 } else if ($metadata['type'] == Model::TYPE_MANY) {
+                    $property['metadata'] = [];
                     foreach ($value as $i => $item) {
-                        $property['metadata']['entries'][$i] = $item->metadata()->toArray($parser);
+                        $property['metadata'][$i] = $item->metadata()->toArray($parser);
                     }
                 }
             }
             $properties[$name] = $property;
         }
         $array = [
-            'identity'   => isset($this->_value) ? Model::modelIdentify($this->_value) : null,
+            'identity'   => isset($this->_instance) ? Model::modelIdentify($this->_instance) : null,
             'className'  => $className,
             'properties' => $properties,
             'others'     => $this->_others,

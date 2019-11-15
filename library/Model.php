@@ -199,7 +199,7 @@ class Model implements ArrayAccess, JsonSerializable
         if (isset($func)) {
             return $func($object, $item);;
         } else {
-            return $item == self::UNDEFINED;
+            return $item == null || $item == self::UNDEFINED;
         }
     }
 
@@ -246,7 +246,7 @@ class Model implements ArrayAccess, JsonSerializable
     protected function _metadataBuild()
     {
         $this->_metadataSource = clone static::metadataStatic();
-        $this->_metadataSource->value($this);
+        $this->_metadataSource->instance($this);
         return $this->_metadataSource;
     }
 
@@ -393,8 +393,8 @@ class Model implements ArrayAccess, JsonSerializable
             }
             if ($metadata['type'] == self::TYPE_ONE) {
                 $current = $this->__get($name);
-                if (!isset($value)) {
-                    $this->__unset($name);
+                if (in_array(self::TRAVERSE_DELETE, $metadata['traverse']) && self::modelDeleteCheck($this, $value)) {
+                    self::modelDelete($this, $this, $name);
                     continue;
                 }
                 if (!isset($current)) {
