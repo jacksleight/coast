@@ -12,7 +12,7 @@ class DateTimeRange extends Rule
 {
     protected $_dateTimeTransformer;
 
-    public function __construct($format = null, $timezone = null, $mode = n)
+    public function __construct($format = null, $timezone = null, $mode = null)
     {
         $this->_dateTimeTransformer = new Rule\DateTime($format, $timezone, $mode);
     }

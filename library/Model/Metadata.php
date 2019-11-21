@@ -174,7 +174,6 @@ class Metadata implements JsonSerializable
             ] + $metadata;
             $isTraverse = array_intersect([
                 Model::TRAVERSE_SET,
-                Model::TRAVERSE_VALIDATE,
                 Model::TRAVERSE_META,
             ], $metadata['traverse']);
             if (!in_array($metadata['type'], [
