@@ -12,7 +12,7 @@ trait DateTimeTrait
 {
     protected static $_jsonSerializer = false;
 
-    protected $_mode;
+    protected $_mode = 'datetime';
 
     public static function jsonSerializer(Closure $value = null)
     {
