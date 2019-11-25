@@ -192,12 +192,15 @@ class Metadata implements JsonSerializable
             }
             if (isset($this->_instance->{$name})) {
                 $value = $this->_instance->{$name};
+                if (is_object($value) && !Model::modelTraverseCheck($value)) {
+                    continue;
+                }
                 if ($metadata['type'] == Model::TYPE_ONE) {
                     $property['metadata'] = $value->metadata()->toArray($parser);
                 } else if ($metadata['type'] == Model::TYPE_MANY) {
                     $property['metadata'] = [];
-                    foreach ($value as $i => $item) {
-                        $property['metadata'][$i] = $item->metadata()->toArray($parser);
+                    foreach ($value as $item) {
+                        $property['metadata'][] = $item->metadata()->toArray($parser);
                     }
                 }
             }
