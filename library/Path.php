@@ -48,9 +48,18 @@ class Path
      * Aliases `name`
      * @return string
      */
-    public function __toString()
+    public function toString()
     {
         return $this->name();
+    }
+
+    /**
+     * Aliases `toString`
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->toString();
     }
 
     /**
