@@ -13,6 +13,7 @@ class Response
 {
     protected $_request;
 
+    protected $_sent    = false;
     protected $_status  = 200;
     protected $_headers = [];
     protected $_cookies = [];
@@ -35,6 +36,9 @@ class Response
 
     public function toGlobals()
     {
+        if ($this->_sent) {
+            return $this;
+        }
         http_response_code($this->_status);
         foreach ($this->_headers as $name => $value) {
             header("{$name}: {$value}");
@@ -50,6 +54,7 @@ class Response
         } else {
             echo $this->_body;
         }
+        $this->_sent = true;
     }
 
     public function status($status = null)
@@ -114,6 +119,15 @@ class Response
             return $this;
         }
         return $this->_body;
+    }
+
+    public function sent($sent = null)
+    {
+        if (func_num_args() > 0) {
+            $this->_sent = $sent;
+            return $this;
+        }
+        return $this->_sent;
     }
 
     public function text($text)
