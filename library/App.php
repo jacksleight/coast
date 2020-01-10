@@ -58,13 +58,13 @@ class App implements Executable
 
     /**
      * Handler for requests that are not handled by middleware.
-     * @var Closure
+     * @var callable
      */
     protected $_failureHandler;
 
     /**
      * Handler for errors thrown in middleware.
-     * @var Closure
+     * @var callable
      */
     protected $_errorHandler;
 
@@ -334,23 +334,29 @@ class App implements Executable
 
     /**
      * Set the failure handler
-     * @param  Closure $failureHandler
+     * @param  callable $failureHandler
      * @return self
      */
-    public function failureHandler(Closure $failureHandler)
+    public function failureHandler(callable $failureHandler)
     {
-        $this->_failureHandler = $failureHandler->bindTo($this);
+        if ($failureHandler instanceof \Closure) {
+            $this->_failureHandler = $failureHandler->bindTo($this);
+        }
+        $this->_failureHandler = $failureHandler;
         return $this;
     }
 
     /**
      * Set the error handler
-     * @param  Closure $errorHandler
+     * @param  callable $errorHandler
      * @return self
      */
-    public function errorHandler(Closure $errorHandler)
+    public function errorHandler(callable $errorHandler)
     {
-        $this->_errorHandler = $errorHandler->bindTo($this);
+        if ($errorHandler instanceof \Closure) {
+            $this->_errorHandler = $errorHandler->bindTo($this);
+        }
+        $this->_errorHandler = $errorHandler;
         return $this;
     }
 

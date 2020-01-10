@@ -89,7 +89,7 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
         return $this->_routes;
     }
 
-    public function route($name, $methods = null, $path = null, $params = null, \Closure $target = null)
+    public function route($name, $methods = null, $path = null, $params = null, callable $target = null)
     {
         if (func_num_args() > 1) {
             if (!is_array($methods)) {
@@ -114,7 +114,7 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
             } if (!isset($params)) {
                 $params = [];
             }
-            if (isset($target)) {
+            if (isset($target) && $target instanceof \Closure) {
                 $target = $target->bindTo($this);
             }
 
