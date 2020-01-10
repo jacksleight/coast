@@ -109,6 +109,13 @@ class Dir extends \Coast\File\Path implements \IteratorAggregate
         return new Dir(strlen($path) ? "{$this->_name}/{$path}" : $this->_name, $create);
     }
 
+    public function glob($glob, $flags = 0)
+    {
+        $paths = glob("{$this->_name}/{$glob}", $flags);
+        $files = array_map(function($v) { return new File($v); }, $paths);
+        return $files;
+    }
+
     public function getIterator()
     {
         return $this->iterator();
