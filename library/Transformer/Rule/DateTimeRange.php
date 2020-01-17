@@ -41,7 +41,7 @@ class DateTimeRange extends Rule
             $value[0] = strlen($value[0])
                 ? $this->_dateTimeTransformer->transform($value[0])
                 : new \DateTime('1000-01-01 00:00:00');
-            if ($this->_dateTimeTransformer->format() === \Coast\DATE) {
+            if ($this->mode() === \Coast\DateTime::MODE_DATE) {
                 $value[0]->setTime(0, 0, 0);
             }
         }
@@ -49,7 +49,7 @@ class DateTimeRange extends Rule
             $value[1] = strlen($value[1])
                 ? $this->_dateTimeTransformer->transform($value[1])
                 : new \DateTime('9999-12-31 23:59:59');
-            if ($this->_dateTimeTransformer->format() === \Coast\DATE) {
+            if ($this->mode() === \Coast\DateTime::MODE_DATE) {
                 $value[1]->setTime(23, 59, 59);
             }
         }
