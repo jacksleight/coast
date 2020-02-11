@@ -340,7 +340,7 @@ class App implements Executable
     public function failureHandler(callable $failureHandler)
     {
         if ($failureHandler instanceof \Closure) {
-            $this->_failureHandler = $failureHandler->bindTo($this);
+            $failureHandler = $failureHandler->bindTo($this);
         }
         $this->_failureHandler = $failureHandler;
         return $this;
@@ -354,7 +354,7 @@ class App implements Executable
     public function errorHandler(callable $errorHandler)
     {
         if ($errorHandler instanceof \Closure) {
-            $this->_errorHandler = $errorHandler->bindTo($this);
+            $errorHandler = $errorHandler->bindTo($this);
         }
         $this->_errorHandler = $errorHandler;
         return $this;
