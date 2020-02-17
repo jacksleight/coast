@@ -174,7 +174,7 @@ class Response
             $length = $data->size();
         } else {
             $data = (string) $data;
-            $length = mb_strlen($data, 'UTF-8');
+            $length = mb_strlen($data, '8bit');
         }
         $this->_body = $data;
         $this
