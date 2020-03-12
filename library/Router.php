@@ -139,7 +139,7 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
                         $names = array_merge($names, $keys);
                         if (!strlen($match[2])) {
                             $regex = "([^\/]+)";
-                        } elseif (count($keys) > 1) {
+                        } else if (count($keys) > 1) {
                             $regex = "(?:{$match[2]})";
                         } else {
                             $regex = "({$match[2]})";

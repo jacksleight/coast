@@ -72,7 +72,7 @@ class Http
         }
         if ($method == Http\Request::METHOD_HEAD) {
             curl_setopt($ch, CURLOPT_NOBODY, true);
-        } elseif ($method == Http\Request::METHOD_POST) {
+        } else if ($method == Http\Request::METHOD_POST) {
             if (is_array($body)) {
                 foreach ($body as $name => $value) {
                     if ($value instanceof File) {

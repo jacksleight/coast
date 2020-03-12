@@ -105,7 +105,7 @@ function array_filter_null_recursive($array)
             if (\count($value) > 0) {
                 $output[$key] = $value;
             }
-        } elseif (isset($value)) {
+        } else if (isset($value)) {
             $output[$key] = $value;
         }
     }

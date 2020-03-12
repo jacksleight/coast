@@ -124,6 +124,9 @@ class AclTree
             if ($match === '*') {
                 $match = '.*';
             } else {
+                $match = explode('|', $match);
+                $match = array_map(function($v) { return preg_quote($v, '/'); }, $match);
+                $match = implode('|', $match);
                 $match = "({$match})";
             }
             $match = "/^{$match}$/";
