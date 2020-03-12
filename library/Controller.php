@@ -23,6 +23,8 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
 
     protected $_all;
 
+    protected $_resolver;
+
     protected $_inflector;
 
     public function __construct(array $options = array())
@@ -64,6 +66,12 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
             return $this;
         }
         return $this->_all;
+    }
+
+    public function resolver(Closure $resolver)
+    {
+        $this->_resolver = $resolver->bindTo($this);
+        return $this;
     }
 
     public function inflector(Closure $inflector)
@@ -192,11 +200,17 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
 
     public function route(\Coast\Request $req, \Coast\Response $res, array $route)
     {
-        $controller = $route['params']['controller'];
-        $action     = $route['params']['action'];
-        $group      = isset($route['params']['group'])
-            ? $route['params']['group']
-            : null;
+        if (isset($this->_resolver)) {
+            $func   = $this->_resolver;
+            $params = $func($req, $route);
+        } else {
+            $params = $route['params'];
+        }
+
+        $controller = $params['controller'];
+        $action     = $params['action'];
+        $group      = isset($params['group']) ? $params['group'] : null;
+
         if (isset($this->_inflector)) {
             $func       = $this->_inflector;
             $controller = $func($controller, 'controller');
