@@ -130,15 +130,20 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
                 $names = [];
                 $stack = [];
                 foreach ($parts as $i => $part) {
-                    if (preg_match('/^\{([a-zA-Z0-9_-]+)(?::(.*))?\}(\?)?$/', $part, $match)) {
+                    if (preg_match('/^\{([a-zA-Z0-9_-|]+)(?::(.*))?\}(\?)?$/', $part, $match)) {
                         $match = \Coast\array_merge_smart(
                             array('', '', '', ''),
                             $match
                         );
-                        $names[] = $match[1];    
-                        $regex = strlen($match[2])
-                            ? "({$match[2]})"
-                            : "([^\/]+)";
+                        $keys  = explode('|', $match[1]);
+                        $names = array_merge($names, $keys);
+                        if (!strlen($match[2])) {
+                            $regex = "([^\/]+)";
+                        } elseif (count($keys) > 1) {
+                            $regex = "(?:{$match[2]})";
+                        } else {
+                            $regex = "({$match[2]})";
+                        }
                         if ($match[3] == '?') {
                             $regex = $i == 0 
                                 ? "(?:{$regex})?"
@@ -231,6 +236,7 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
                 array_shift($match);
             }
             $params = array_merge(
+                $this->_params,
                 $route['params'],
                 count($match) > 0
                     ? array_combine(array_slice($route['names'], 0, count($match)), $match)
