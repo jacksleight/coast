@@ -11,13 +11,29 @@ use Coast\Transformer\Rule;
 
 class ArrayType extends Rule
 {
+    protected $_delimiter;
+
+    public function __construct($delimiter = ',')
+    {
+        $this->delimiter($delimiter);
+    }
+
+    public function delimiter($delimiter = null)
+    {
+        if (func_num_args() > 0) {
+            $this->_delimiter = $delimiter;
+            return $this;
+        }
+        return $this->_delimiter;
+    }
+
     protected function _transform($value)
     {
         if (!is_string($value)) {
             return $value;
         }
         $value = strlen($value) > 0
-            ? explode(',', $value)
+            ? explode($this->_delimiter, $value)
             : [];
         return $value;
     }

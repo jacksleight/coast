@@ -235,12 +235,16 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
                 }
                 array_shift($match);
             }
+            $params = count($match) > 0 ? array_combine(array_slice($route['names'], 0, count($match)), $match) : [];
+            foreach ($params as $name => $value) {
+                if (strlen($value) === 0) {
+                    $params[$name] = null;
+                }
+            }
             $params = array_merge(
                 $this->_params,
                 $route['params'],
-                count($match) > 0
-                    ? array_combine(array_slice($route['names'], 0, count($match)), $match)
-                    : []
+                $params
             );
             return array_merge($route, [
                 'name'   => $name,
