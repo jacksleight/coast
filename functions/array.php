@@ -147,7 +147,7 @@ function array_object_smart(array $array)
         : $array;
 }
 
-function array_iterate($array, $key = null)
+function array_index($array, $key = null)
 {
     $output = [];
     foreach ($array as $i => $value) {
