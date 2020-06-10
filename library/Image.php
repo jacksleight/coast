@@ -53,6 +53,11 @@ class Image implements \Coast\App\Access, \Coast\App\Executable
         ]);
     }
 
+    public function manager()
+    {
+        return $this->_manager;
+    }
+
     public function prefix($prefix = null)
     {
         if (func_num_args() > 0) {
