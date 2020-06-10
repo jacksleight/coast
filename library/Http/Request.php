@@ -133,9 +133,13 @@ class Request
 
     public function json($json, $options = JSON_PRETTY_PRINT, $depth = 512)
     {
+        $json = json_encode($json, $options, $depth);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new \Exception('JSON encoding error: ' . json_last_error_msg());
+        }
         return $this
             ->type('application/json')
-            ->body(json_encode($json, $options, $depth));
+            ->body($json);
     }
 
     public function xml($xml, $type = null, $options = null)
