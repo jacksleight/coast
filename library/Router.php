@@ -236,9 +236,9 @@ class Router implements \Coast\App\Access, \Coast\App\Executable
                 array_shift($match);
             }
             $params = count($match) > 0 ? array_combine(array_slice($route['names'], 0, count($match)), $match) : [];
-            foreach ($params as $name => $value) {
-                if (strlen($value) === 0) {
-                    $params[$name] = null;
+            foreach ($params as $n => $v) {
+                if (strlen($v) === 0) {
+                    $params[$n] = null;
                 }
             }
             $params = array_merge(
