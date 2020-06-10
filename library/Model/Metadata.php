@@ -21,6 +21,8 @@ class Metadata implements JsonSerializable
 
     protected $_instance;
 
+    protected $_validators = [];
+
     protected $_properties = [];
 
     protected $_others = [];
@@ -42,6 +44,23 @@ class Metadata implements JsonSerializable
             return $this;
         }
         return $this->_instance;
+    }
+
+    public function validator(Validator $value = null)
+    {
+        $this->_validators[] = $value;
+        return $this;
+    }
+
+    public function validators(array $validators = null)
+    {
+        if (func_num_args() > 0) {
+            foreach ($validators as $value) {
+                $this->validator($value);
+            }
+            return $this;
+        }
+        return $this->_validators;
     }
 
     public function property($name, array $value = null)
@@ -168,10 +187,11 @@ class Metadata implements JsonSerializable
         $properties = [];
         foreach ($this->_properties as $name => $metadata) {
             $property = [
-                'default'   => $defaults[$name],
                 'validator' => $metadata['validator']->toArray(),
                 'errors'    => $metadata['validator']->errors(),
-            ] + $metadata;
+            ] + $metadata + [
+                'default'   => $defaults[$name],
+            ];
             $isTraverse = array_intersect([
                 Model::TRAVERSE_SET,
                 Model::TRAVERSE_META,
@@ -209,6 +229,8 @@ class Metadata implements JsonSerializable
         $array = [
             'identity'   => isset($this->_instance) ? Model::modelIdentify($this->_instance) : null,
             'className'  => $className,
+            'validator'  => array_map(function($v) { return $v->toArray(); }, $this->_validators),
+            'errors'     => array_map(function($v) { return $v->errors(); }, $this->_validators),
             'properties' => $properties,
             'others'     => $this->_others,
         ];

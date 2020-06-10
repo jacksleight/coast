@@ -485,9 +485,15 @@ class Model implements ArrayAccess, JsonSerializable
         return $this->traverse($parser, self::TRAVERSE_GET);
     }
 
-    public function isValid()
+    public function isValid($context = null)
     {
         $isValid = true;
+        $validators = $this->metadata()->validators();
+        foreach ($validators as $validator) {
+            if (!$validator($this, $context)) {
+                $isValid = false;
+            }
+        }
         $this->traverse(function($name, $value, $metadata, $isTraverse) use (&$isValid) {
             if (!$metadata['validator']($this->__get($name), $this)) {
                 $isValid = false;

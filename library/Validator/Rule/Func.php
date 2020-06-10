@@ -27,9 +27,9 @@ class Func extends Rule
         return $this->_func;
     }
 
-	protected function _validate($value)
+	protected function _validate($value, $context = null)
 	{
-		if (!call_user_func($this->_func, $value)) {
+		if (!call_user_func($this->_func, $value, $context)) {
 			$this->error();
 		}
 	}
