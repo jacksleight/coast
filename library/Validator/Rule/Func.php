@@ -21,6 +21,9 @@ class Func extends Rule
 	public function func($func = null)
     {
         if (func_num_args() > 0) {
+			if ($func instanceof \Closure) {
+				$func = $func->bindTo($this);
+			}
             $this->_func = $func;
             return $this;
         }
@@ -29,7 +32,7 @@ class Func extends Rule
 
 	protected function _validate($value, $context = null)
 	{
-		if (!call_user_func($this->_func, $value, $context)) {
+		if (call_user_func($this->_func, $value, $context) === false) {
 			$this->error();
 		}
 	}
