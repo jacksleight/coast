@@ -87,6 +87,9 @@ class DateTime extends Rule
         } else {
             return $value;
         }
+        if ($this->_mode == CoastDateTime::MODE_DATE) {
+            $date->setTime(0, 0, 0);
+        }
         return $date;
     }
 }
