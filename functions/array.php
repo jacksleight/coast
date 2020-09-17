@@ -155,3 +155,12 @@ function array_index($array, $key = null)
     }
     return $output;
 }
+
+function array_entries($entries)
+{
+    $output = [];
+    foreach ($entries as $entry) {
+        $output[$entry[0]] = $entry[1];
+    }
+    return $output;
+}
