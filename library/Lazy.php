@@ -18,6 +18,8 @@ class Lazy implements Executable, ArrayAccess
 {
     use Executable\Implementation;
 
+	protected $_app;
+
 	protected $_source;
 
 	protected $_vars;
@@ -30,11 +32,12 @@ class Lazy implements Executable, ArrayAccess
      */
     protected $_isSubapp = false;
 
-    public function __construct($source, $vars = array())
+    public function __construct(App $app, $source, $vars = array())
     {
         if (!$source instanceof File && !$source instanceof Closure) {
             throw new \Coast\Exception('Source must be an instance of Coast\File or Closure');
         }
+    	$this->_app    = $app;
     	$this->_source = $source;
     	$this->_vars   = $vars;
     }
@@ -68,6 +71,8 @@ class Lazy implements Executable, ArrayAccess
         }
         if ($this->_value instanceof App) {
             $this->_value->isSubapp($this->isSubapp());
+        } else if ($this->_value instanceof Closure) {
+            $this->_value = $this->_value->bindTo($this->_app);
         }
         return $this;
     }

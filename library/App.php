@@ -151,7 +151,14 @@ class App implements Executable
         $file = $file->isRelative()
             ? $this->file($file)
             : $file;
-        return \Coast\load($file, array_merge(['app' => $this], $vars));
+        if (!$file->extName()) {
+            $file->extName('php');
+        }
+        $return = \Coast\load($file, array_merge(['app' => $this], $vars));
+        if ($return instanceof Closure) {
+            $return = $return->bindTo($this);
+        }
+        return $return;
     }
 
     /**
@@ -160,15 +167,18 @@ class App implements Executable
      * @param  array   $vars
      * @return mixed
      */
-    public function lazy($source, array $vars = array())
+    public function lazy($file, array $vars = array())
     {
-        if (is_string($source)) {
-            $source = new File("{$source}");
-            $source = $source->isRelative()
-                ? $this->file($source)
-                : $source;
+        $file = !$file instanceof File
+            ? new File("{$file}")
+            : $file;
+        $file = $file->isRelative()
+            ? $this->file($file)
+            : $file;
+        if (!$file->extName()) {
+            $file->extName('php');
         }
-        return new Lazy($source, array_merge(['app' => $this], $vars));
+        return new Lazy($this, $file, array_merge(['app' => $this], $vars));
     }
 
     /**
@@ -330,6 +340,12 @@ class App implements Executable
         } else {
             return $result;
         }
+    }
+
+    public function run($file, array $args = [])
+    {
+        $func = $this->load($file);
+        return call_user_func_array($func, $args);
     }
 
     /**
