@@ -121,14 +121,12 @@ class AclTree
                 }
             }
             list($match, $test, $subs) = $rule;
-            if ($match === '*') {
-                $match = '.*';
-            } else {
-                $match = explode('|', $match);
-                $match = array_map(function($v) { return preg_quote($v, '/'); }, $match);
-                $match = implode('|', $match);
-                $match = "({$match})";
-            }
+            $match = str_replace('*', '.*', $match);
+            $match = explode('|', $match);
+            $match = array_map(function($v) { return preg_quote($v, '/'); }, $match);
+            $match = implode('|', $match);
+            $match = "({$match})";
+            $match = str_replace('\.\*', '.*', $match);
             $match = "/^{$match}$/";
             $subs = $this->_normalize($subs);
             $rules[$i] = [$match, $test, $subs];
