@@ -72,7 +72,7 @@ class Http
         }
         if ($method == Http\Request::METHOD_HEAD) {
             curl_setopt($ch, CURLOPT_NOBODY, true);
-        } else if ($method == Http\Request::METHOD_POST) {
+        } else if ($method == Http\Request::METHOD_POST || $method == Http\Request::METHOD_PUT) {
             if (is_array($body)) {
                 foreach ($body as $name => $value) {
                     if ($value instanceof File) {
@@ -85,7 +85,11 @@ class Http
                     $body[$name] = $value;
                 }
             }
-            curl_setopt($ch, CURLOPT_POST, true);
+            if ($method == Http\Request::METHOD_POST) {
+                curl_setopt($ch, CURLOPT_POST, true);
+            } else {
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+            }
             curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
         }
         
