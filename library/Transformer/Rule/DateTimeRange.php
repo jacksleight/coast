@@ -19,17 +19,23 @@ class DateTimeRange extends Rule
 
     public function format($format = null)
     {
-        return $this->_dateTimeTransformer->format($format);
+        return func_num_args() > 0
+            ? $this->_dateTimeTransformer->format($format)
+            : $this->_dateTimeTransformer->format();
     }
 
     public function timezone($timezone = null)
     {
-        return $this->_dateTimeTransformer->format($timezone);
+        return func_num_args() > 0
+            ? $this->_dateTimeTransformer->format($timezone)
+            : $this->_dateTimeTransformer->format();
     }
 
     public function mode($mode = null)
     {
-        return $this->_dateTimeTransformer->mode($mode);
+        return func_num_args() > 0
+            ? $this->_dateTimeTransformer->mode($mode)
+            : $this->_dateTimeTransformer->mode();
     }
 
     protected function _transform($value)
