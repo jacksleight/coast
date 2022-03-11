@@ -91,6 +91,7 @@ abstract class Rule implements JsonSerializable
         ];
     }
 
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return $this->toArray();

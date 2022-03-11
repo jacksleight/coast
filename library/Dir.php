@@ -6,7 +6,6 @@
 
 namespace Coast;
 
-use Coast\Dir;
 use Coast\File;
 
 class Dir extends \Coast\File\Path implements \IteratorAggregate
@@ -116,6 +115,7 @@ class Dir extends \Coast\File\Path implements \IteratorAggregate
         return $files;
     }
 
+    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         return $this->iterator();

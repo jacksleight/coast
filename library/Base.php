@@ -76,21 +76,25 @@ abstract class Base implements ArrayAccess
         }
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
        return $this->__set($offset, $value);
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->__get($offset);
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return $this->__isset($offset);
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         return $this->__unset($offset);

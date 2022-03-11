@@ -101,26 +101,31 @@ class Filter extends Rule implements Iterator
         }
     }
 
+    #[\ReturnTypeWillChange]
     public function rewind() 
     {
         reset($this->_steps);
     }
 
+    #[\ReturnTypeWillChange]
     public function current() 
     {
         return current($this->_steps);
     }
 
+    #[\ReturnTypeWillChange]
     public function key() 
     {
         return key($this->_steps);
     }
 
+    #[\ReturnTypeWillChange]
     public function next() 
     {
         next($this->_steps);
     }
 
+    #[\ReturnTypeWillChange]
     public function valid() 
     {
         return key($this->_steps) !== null;

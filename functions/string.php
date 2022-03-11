@@ -36,7 +36,7 @@ function str_camel_lower($string)
 
 function str_camel_upper($string)
 {
-    return \str_replace(' ', null, \ucwords(\Coast\str_slugify($string, ' ', false, false)));
+    return \str_replace(' ', '', \ucwords(\Coast\str_slugify($string, ' ', false, false)));
 }
 
 function str_camel_split($string, $space = ' ')
