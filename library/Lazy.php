@@ -129,24 +129,28 @@ class Lazy implements Executable, ArrayAccess
         unset($this->_value->{$name});
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         $this->init();
         $this->_value[$offset] = $value;
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         $this->init();
         return isset($this->_value[$offset]);
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         $this->init();
         return $this->_value[$offset];
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         $this->init();
