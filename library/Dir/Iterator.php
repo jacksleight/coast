@@ -25,6 +25,7 @@ class Iterator implements \SeekableIterator
         return call_user_func_array(array($this->_spl, $method), $args);
     }
 
+    #[\ReturnTypeWillChange]
     public function current()
     {
         $path = $this->_spl->current()->getPathname();
@@ -33,26 +34,31 @@ class Iterator implements \SeekableIterator
             : new \Coast\File($path);
     }
 
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return $this->_spl->key();
     }
 
+    #[\ReturnTypeWillChange]
     public function next()
     {
         return $this->_spl->next();
     }
 
+    #[\ReturnTypeWillChange]
     public function rewind()
     {
         return $this->_spl->rewind();
     }
 
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         return $this->_spl->valid();
     }
 
+    #[\ReturnTypeWillChange]
     public function seek($position)
     {
         return $this->_spl->seek($position);
