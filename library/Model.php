@@ -37,6 +37,8 @@ class Model implements ArrayAccess, JsonSerializable
 
     protected $_metadata;
 
+    protected $_construct;
+
     protected static $_modelIdentifier;
 
     protected static $_modelCreator;
@@ -527,12 +529,15 @@ class Model implements ArrayAccess, JsonSerializable
 
     public function __set($name, $value)
     {
+        $allowDynamic = $this->metadata()->allowDynamic();
         if ($name[0] == '_') {
             throw new Model\Exception("Access to '{$name}' is prohibited");
         }
         if (method_exists($this, $name)) {
             $this->{$name}($value);
         } else if (property_exists($this, $name)) {
+            $this->_set($name, $value);
+        } else if ($allowDynamic) {
             $this->_set($name, $value);
         } else {
             throw new Model\Exception\NotDefined("Property or method '{$name}' is not defined");
@@ -546,18 +551,37 @@ class Model implements ArrayAccess, JsonSerializable
         } catch (Model\Exception\NotDefined $e) {
             try {
                 $this->__set(Coast\str_camel($name), $value);
-            } catch (Model\Exception\NotDefined $e) {}
+            } catch (Model\Exception\NotDefined $e) {
+            }
+        }
+    }
+
+    public function __setConstruct($name, $value)
+    {
+        $allowDynamic = $this->metadata()->allowDynamic();
+        if ($name[0] == '_') {
+            throw new Model\Exception("Access to '{$name}' is prohibited");
+        }
+        if ($allowDynamic) {
+            $this->_construct = true;
+            $this->_set($name, $value);
+            $this->_construct = false;
+        } else {
+            throw new Model\Exception\NotDefined("Property or method '{$name}' is not defined");
         }
     }
 
     public function __get($name)
     {
+        $allowDynamic = $this->metadata()->allowDynamic();
         if ($name[0] == '_') {
             throw new Model\Exception("Access to '{$name}' is prohibited");
         }
         if (method_exists($this, $name)) {
             return $this->{$name}();
         } else if (property_exists($this, $name)) {
+            return $this->_get($name);
+        } else if ($allowDynamic) {
             return $this->_get($name);
         } else {
             throw new Model\Exception\NotDefined("Property or method '{$name}' is not defined");
@@ -566,12 +590,15 @@ class Model implements ArrayAccess, JsonSerializable
 
     public function __isset($name)
     {
+        $allowDynamic = $this->metadata()->allowDynamic();
         if ($name[0] == '_') {
             throw new Model\Exception("Access to '{$name}' is prohibited");
         }
         if (method_exists($this, $name)) {
             return $this->{$name}() !== null;
         } else if (property_exists($this, $name)) {
+            return $this->_isset($name);
+        } else if ($allowDynamic) {
             return $this->_isset($name);
         } else {
             throw new Model\Exception\NotDefined("Property or method '{$name}' is not defined");
@@ -580,10 +607,13 @@ class Model implements ArrayAccess, JsonSerializable
 
     public function __unset($name)
     {
+        $allowDynamic = $this->metadata()->allowDynamic();
         if ($name[0] == '_') {
             throw new Model\Exception("Access to '{$name}' is prohibited");
         }
         if (property_exists($this, $name)) {
+            $this->_unset($name);
+        } else if ($allowDynamic) {
             $this->_unset($name);
         } else {
             throw new Model\Exception\NotDefined("Property or method '{$name}' is not defined");

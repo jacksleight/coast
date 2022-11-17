@@ -27,6 +27,8 @@ class Metadata implements JsonSerializable
 
     protected $_others = [];
 
+    protected $_allowDynamic = false;
+
     public function __construct($className)
     {
         $this->_className = $className;
@@ -35,6 +37,17 @@ class Metadata implements JsonSerializable
     public function className()
     {
         return $this->_className;
+    }
+
+    public function allowDynamic($value = null)
+    {
+        if (func_num_args() > 0) {
+            $this->_allowDynamic = $value;
+
+            return $this;
+        }
+
+        return $this->_allowDynamic;
     }
 
     public function instance(Model $instance = null)
@@ -65,7 +78,7 @@ class Metadata implements JsonSerializable
 
     public function property($name, array $value = null)
     {
-        if (!property_exists($this->_className, $name)) {
+        if (! $this->_allowDynamic && ! property_exists($this->_className, $name)) {
             return null;
         }
         if (func_num_args() > 1) {
