@@ -113,7 +113,7 @@ class Metadata implements JsonSerializable
             $this->_properties[$name] = $value + $current;
             return $this;
         }
-        return $this->_properties[$name];
+        return $this->_properties[$name] ?? null;
     }
 
     public function properties(array $properties = null)
@@ -203,7 +203,7 @@ class Metadata implements JsonSerializable
                 'validator' => $metadata['validator']->toArray(),
                 'errors'    => $metadata['validator']->errors(),
             ] + $metadata + [
-                'default'   => $defaults[$name],
+                'default'   => $defaults[$name] ?? null,
             ];
             $isTraverse = array_intersect([
                 Model::TRAVERSE_SET,

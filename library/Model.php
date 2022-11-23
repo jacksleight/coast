@@ -506,15 +506,19 @@ class Model implements ArrayAccess, JsonSerializable
 
     protected function _set($name, $value)
     {
-        $metadata = $this->metadata->property($name);
-        $value = $metadata['filter']->filter($value);
-        $value = $metadata['transformer']->transform($value, $this);
+        if (!$this->_construct) {
+            $metadata = $this->metadata->property($name);
+            if ($metadata) {
+                $value = $metadata['filter']->filter($value);
+                $value = $metadata['transformer']->transform($value, $this);
+            }
+        }
         $this->{$name} = $value;
     }
 
     protected function _get($name)
     {
-        return $this->{$name};
+        return $this->{$name} ?? null;
     }
 
     protected function _isset($name)
