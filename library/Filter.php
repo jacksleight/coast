@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2019 Jack Sleight <http://jacksleight.com/>
- * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
+ * This source file is subject to the MIT license that is bundled with this package in the file LICENCE.
  */
 
 namespace Coast;
@@ -13,19 +13,20 @@ class Filter extends Rule implements Iterator
 {
     const STEP_BREAK = 'break';
 
-	protected $_steps = [];
+    protected $_steps = [];
 
-	protected $_rules = [];
+    protected $_rules = [];
 
     public function step($step, $index = null)
     {
-        $index = !isset($index)
+        $index = ! isset($index)
             ? count($this->_steps)
             : $index;
         array_splice($this->_steps, $index, 0, [$step]);
         if ($step instanceof Rule) {
             $this->_rules[$step->name()][] = $step;
         }
+
         return $this;
     }
 
@@ -35,11 +36,13 @@ class Filter extends Rule implements Iterator
             foreach ($steps as $i => $step) {
                 $this->step($step, isset($index) ? $index + $i : $index);
             }
+
             return $this;
         }
+
         return $this->_steps;
     }
-    
+
     public function rule($name)
     {
         return isset($this->_rules[$name])
@@ -52,41 +55,43 @@ class Filter extends Rule implements Iterator
         return $this->_rules;
     }
 
-	public function __call($name, $args)
-	{
+    public function __call($name, $args)
+    {
         if ($name == self::STEP_BREAK) {
             $step = $name;
         } else {
             $map = [
-                'float'   => 'floatType',
-                'number'  => 'numberType',
+                'float' => 'floatType',
+                'number' => 'numberType',
                 'decimal' => 'decimalType',
                 'integer' => 'integerType',
             ];
             if (isset($map[$name])) {
                 $name = $map[$name];
             }
-            $class  = get_class() . '\\Rule\\' . ucfirst($name);
+            $class = get_class($this).'\\Rule\\'.ucfirst($name);
             $reflec = new \ReflectionClass($class);
-            $step   = $reflec->newInstanceArgs($args);
-        }        
-		return $this->step($step);
-	}
+            $step = $reflec->newInstanceArgs($args);
+        }
 
-	public function _filter($value, $context = null)
-	{
-        if (!is_scalar($value)) {
+        return $this->step($step);
+    }
+
+    public function _filter($value, $context = null)
+    {
+        if (! is_scalar($value)) {
             return $value;
         }
-		foreach ($this->_steps as $step) {
-			if ($step == self::STEP_BREAK && !strlen($value)) {
+        foreach ($this->_steps as $step) {
+            if ($step == self::STEP_BREAK && ! strlen($value)) {
                 break;
-            } else if ($step instanceof Rule) {
+            } elseif ($step instanceof Rule) {
                 $value = $step($value, $context);
             }
-		}
-		return $value;
-	}
+        }
+
+        return $value;
+    }
 
     public function __clone()
     {
@@ -102,32 +107,32 @@ class Filter extends Rule implements Iterator
     }
 
     #[\ReturnTypeWillChange]
-    public function rewind() 
+    public function rewind()
     {
         reset($this->_steps);
     }
 
     #[\ReturnTypeWillChange]
-    public function current() 
+    public function current()
     {
         return current($this->_steps);
     }
 
     #[\ReturnTypeWillChange]
-    public function key() 
+    public function key()
     {
         return key($this->_steps);
     }
 
     #[\ReturnTypeWillChange]
-    public function next() 
+    public function next()
     {
         next($this->_steps);
     }
 
     #[\ReturnTypeWillChange]
-    public function valid() 
+    public function valid()
     {
         return key($this->_steps) !== null;
-    } 
+    }
 }

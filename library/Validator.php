@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2019 Jack Sleight <http://jacksleight.com/>
- * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
+ * This source file is subject to the MIT license that is bundled with this package in the file LICENCE.
  */
 
 namespace Coast;
@@ -20,13 +20,14 @@ class Validator extends Rule implements Iterator, JsonSerializable
 
     public function step($step, $index = null)
     {
-        $index = !isset($index)
+        $index = ! isset($index)
             ? count($this->_steps)
             : $index;
         array_splice($this->_steps, $index, 0, [$step]);
         if ($step instanceof Rule) {
             $this->_rules[$step->name()][] = $step;
         }
+
         return $this;
     }
 
@@ -36,8 +37,10 @@ class Validator extends Rule implements Iterator, JsonSerializable
             foreach ($steps as $i => $step) {
                 $this->step($step, isset($index) ? $index + $i : $index);
             }
+
             return $this;
         }
+
         return $this->_steps;
     }
 
@@ -60,29 +63,30 @@ class Validator extends Rule implements Iterator, JsonSerializable
         } else {
             $not = false;
             if (preg_match('/^not(\w+)$/', $name, $match)) {
-                $not  = true;
+                $not = true;
                 $name = $match[1];
             }
             $map = [
-                'array'   => 'arrayType',
+                'array' => 'arrayType',
                 'boolean' => 'booleanType',
                 'decimal' => 'decimalType',
-                'float'   => 'floatType',
+                'float' => 'floatType',
                 'integer' => 'integerType',
-                'number'  => 'numberType',
-                'object'  => 'objectType',
-                'string'  => 'stringType',
+                'number' => 'numberType',
+                'object' => 'objectType',
+                'string' => 'stringType',
             ];
             if (isset($map[$name])) {
                 $name = $map[$name];
             }
-            $class  = get_class() . '\\Rule\\' . ucfirst($name);
+            $class = get_class($this).'\\Rule\\'.ucfirst($name);
             $reflec = new \ReflectionClass($class);
-            $step   = $reflec->newInstanceArgs($args);
+            $step = $reflec->newInstanceArgs($args);
             if ($not) {
                 $step = new Rule\Not($step);
             }
         }
+
         return $this->step($step);
     }
 
@@ -90,14 +94,14 @@ class Validator extends Rule implements Iterator, JsonSerializable
     {
         $result = null;
         foreach ($this->_steps as $step) {
-            if (($step == self::STEP_BREAK && $result === false) || ($step == self::STEP_BREAK && $result === null && !isset($value))) {
+            if (($step == self::STEP_BREAK && $result === false) || ($step == self::STEP_BREAK && $result === null && ! isset($value))) {
                 break;
-            } else if ($step instanceof Rule) {
+            } elseif ($step instanceof Rule) {
                 $result = $step($value, $context);
-                if (!$result) {
+                if (! $result) {
                     $this->errors($step->errors());
                 }
-            }    
+            }
         }
     }
 
@@ -115,25 +119,25 @@ class Validator extends Rule implements Iterator, JsonSerializable
     }
 
     #[\ReturnTypeWillChange]
-    public function rewind() 
+    public function rewind()
     {
         reset($this->_steps);
     }
 
     #[\ReturnTypeWillChange]
-    public function current() 
+    public function current()
     {
         return current($this->_steps);
     }
 
     #[\ReturnTypeWillChange]
-    public function key() 
+    public function key()
     {
         return key($this->_steps);
     }
 
     #[\ReturnTypeWillChange]
-    public function next() 
+    public function next()
     {
         next($this->_steps);
     }
@@ -160,6 +164,7 @@ class Validator extends Rule implements Iterator, JsonSerializable
                 ? $step->toArray()
                 : $step;
         }
+
         return $array;
     }
 
