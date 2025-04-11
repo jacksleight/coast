@@ -5,11 +5,7 @@
 [![Coverage Status](http://img.shields.io/coveralls/jacksleight/coast/dev.svg?style=flat-square)](https://coveralls.io/r/jacksleight/coast)
 [![License](http://img.shields.io/packagist/l/jacksleight/coast.svg?style=flat-square)](https://packagist.org/packages/jacksleight/coast)
 
-Coast is a web application framework. The goal of Coast is to provide a simple, lightweight and flexible framework for building high-performance, modern web apps. Some parts of the API were inspired by the Connect and Express node.js frameworks, others are my own (possibly ridiculous) ideas.
-
-All feedback, suggestions, bug reports and contributions are very welcome. Please feel free to get in touch by email (jacksleight at gmail dot com) or [@jacksleight](https://twitter.com/jacksleight) on Twitter.
-
-**The documentation, examples and tests are still a work in progress (sorry). Until there's a 1.0 release any new version may introduce backwards compatibility breaks.**
+Coast is a web application framework. The goal of Coast is to provide a simple, lightweight and flexible framework for building high-performance, modern web apps. Some parts of the API were inspired by the Connect and Express node.js frameworks.
 
 ## Components
 
