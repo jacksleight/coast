@@ -128,12 +128,6 @@ And load it up in the browser at: [http://localhost:8000/](http://localhost:8000
 * PHP 5.6+
 * mod_rewrite (if using Apache)
 
-## To Do
-
-* Examples (in progress)
-* API documentation (in progress)
-* Tests (in progress)
-
 ## Licence
 
 The MIT License
