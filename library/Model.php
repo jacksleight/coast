@@ -297,6 +297,15 @@ class Model implements ArrayAccess, JsonSerializable
         return $this->_metadata;
     }
 
+    public function metadataSource()
+    {
+        if (! isset($this->_metadataSource)) {
+            $this->_metadataBuild();
+        }
+
+        return $this->_metadataSource;
+    }
+
     public function metadataReset($traverse = false)
     {
         $this->traverseModels(function () {
@@ -537,6 +546,31 @@ class Model implements ArrayAccess, JsonSerializable
         return $isValid;
     }
 
+    protected function _injectMetadata($name, $value)
+    {
+        if (! isset($value)) {
+            return;
+        }
+        $metadata = $this->metadata()->property($name);
+        if (! isset($metadata['inject'])) {
+            return;
+        }
+        if ($metadata['type'] == self::TYPE_ONE) {
+            foreach ($metadata['inject'] as $key => $data) {
+                $value->metadataSource()->other($key, $data);
+            }
+        } elseif ($metadata['type'] == self::TYPE_MANY) {
+            foreach ($value as $item) {
+                if (! isset($item)) {
+                    continue;
+                }
+                foreach ($metadata['inject'] as $key => $data) {
+                    $value->metadataSource()->other($key, $data);
+                }
+            }
+        }
+    }
+
     protected function _set($name, $value)
     {
         if (! $this->_construct) {
@@ -579,6 +613,7 @@ class Model implements ArrayAccess, JsonSerializable
         } else {
             throw new Model\Exception\NotDefined("Property or method '{$name}' is not defined");
         }
+        $this->_injectMetadata($name, $value);
     }
 
     public function __setUnknown($name, $value)

@@ -99,6 +99,7 @@ class Metadata implements JsonSerializable
                     'className' => null,
                     'classArgs' => null,
                     'isImmutable' => false,
+                    'inject' => null,
                 ];
             }
             $current = $this->_properties[$name];
