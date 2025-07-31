@@ -1,12 +1,12 @@
 <?php
+
 /*
  * Copyright 2016 Jack Sleight <http://jacksleight.com/>
- * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
+ * This source file is subject to the MIT license that is bundled with this package in the file LICENCE.
  */
 
 namespace Coast\Transformer\Rule\Model;
 
-use Coast;
 use Coast\Transformer\Rule;
 
 class Many extends Rule
@@ -25,8 +25,10 @@ class Many extends Rule
     {
         if (func_num_args() > 0) {
             $this->_property = $property;
+
             return $this;
         }
+
         return $this->_property;
     }
 
@@ -34,8 +36,10 @@ class Many extends Rule
     {
         if (func_num_args() > 0) {
             $this->_className = $className;
+
             return $this;
         }
+
         return $this->_className;
     }
 
@@ -43,7 +47,7 @@ class Many extends Rule
     {
         if (is_object($value)) {
             return $value;
-        } else if (is_scalar($value)) {
+        } elseif (is_scalar($value)) {
             $value = [$value];
         }
         $current = $context->{$this->_property};
@@ -53,6 +57,7 @@ class Many extends Rule
         foreach ($value as $i => $id) {
             $current[$i] = Model::modelFetch($this->_className, $id);
         }
+
         return $current;
     }
 }

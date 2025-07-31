@@ -1,19 +1,18 @@
 <?php
+
 /*
  * Copyright 2019 Jack Sleight <http://jacksleight.com/>
- * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
+ * This source file is subject to the MIT license that is bundled with this package in the file LICENCE.
  */
 
 namespace Coast\Model;
 
-use Exception;
 use Coast;
-use Coast\Model;
 use Coast\Filter;
-use Coast\Validator;
+use Coast\Model;
 use Coast\Transformer;
+use Coast\Validator;
 use JsonSerializable;
-use Closure;
 
 class Metadata implements JsonSerializable
 {
@@ -50,50 +49,55 @@ class Metadata implements JsonSerializable
         return $this->_allowDynamic;
     }
 
-    public function instance(Model $instance = null)
+    public function instance(?Model $instance = null)
     {
         if (func_num_args() > 0) {
             $this->_instance = $instance;
+
             return $this;
         }
+
         return $this->_instance;
     }
 
-    public function validator(Validator $value = null)
+    public function validator(?Validator $value = null)
     {
         $this->_validators[] = $value;
+
         return $this;
     }
 
-    public function validators(array $validators = null)
+    public function validators(?array $validators = null)
     {
         if (func_num_args() > 0) {
             foreach ($validators as $value) {
                 $this->validator($value);
             }
+
             return $this;
         }
+
         return $this->_validators;
     }
 
-    public function property($name, array $value = null)
+    public function property($name, ?array $value = null)
     {
         if (! $this->_allowDynamic && ! property_exists($this->_className, $name)) {
             return null;
         }
         if (func_num_args() > 1) {
-            if (!isset($this->_properties[$name])) {
+            if (! isset($this->_properties[$name])) {
                 $this->_properties[$name] = [
-                    'name'        => $name,
-                    'inverse'     => null,
-                    'type'        => null,
-                    'values'      => null,
-                    'filter'      => new Filter(),
-                    'transformer' => new Transformer(),
-                    'validator'   => new Validator(),
-                    'traverse'    => [],
-                    'className'   => null,
-                    'classArgs'   => null,
+                    'name' => $name,
+                    'inverse' => null,
+                    'type' => null,
+                    'values' => null,
+                    'filter' => new Filter,
+                    'transformer' => new Transformer,
+                    'validator' => new Validator,
+                    'traverse' => [],
+                    'className' => null,
+                    'classArgs' => null,
                     'isImmutable' => false,
                 ];
             }
@@ -111,23 +115,27 @@ class Metadata implements JsonSerializable
                 unset($value['validator']);
             }
             $this->_properties[$name] = $value + $current;
+
             return $this;
         }
+
         return $this->_properties[$name] ?? null;
     }
 
-    public function properties(array $properties = null)
+    public function properties(?array $properties = null)
     {
         if (func_num_args() > 0) {
             if (Coast\is_array_assoc($properties)) {
                 foreach ($properties as $name => $value) {
                     $this->property($name, $value);
                 }
+
                 return $this;
             } else {
                 return array_intersect_key($this->_properties, array_flip($properties));
             }
         }
+
         return $this->_properties;
     }
 
@@ -155,21 +163,25 @@ class Metadata implements JsonSerializable
             } else {
                 unset($this->_others[$name]);
             }
+
             return $this;
         }
+
         return isset($this->_others[$name])
             ? $this->_others[$name]
             : null;
     }
 
-    public function others(array $others = null)
+    public function others(?array $others = null)
     {
         if (func_num_args() > 0) {
             foreach ($others as $name => $value) {
                 $this->other($name, $value);
             }
+
             return $this;
         }
+
         return $this->_others;
     }
 
@@ -193,30 +205,31 @@ class Metadata implements JsonSerializable
         return $this->other($name, null);
     }
 
-    public function toArray(callable $parser = null)
+    public function toArray(?callable $parser = null)
     {
-        $className  = $this->_className;
-        $defaults   = (new \ReflectionClass($className))->getDefaultProperties();
+        $className = $this->_className;
+        $defaults = (new \ReflectionClass($className))->getDefaultProperties();
         $properties = [];
         foreach ($this->_properties as $name => $metadata) {
             $property = [
                 'validator' => $metadata['validator']->toArray(),
-                'errors'    => $metadata['validator']->errors(),
+                'errors' => $metadata['validator']->errors(),
             ] + $metadata + [
-                'default'   => $defaults[$name] ?? null,
+                'default' => $defaults[$name] ?? null,
             ];
             $isTraverse = array_intersect([
                 Model::TRAVERSE_SET,
                 Model::TRAVERSE_META,
             ], $metadata['traverse']);
-            if (!in_array($metadata['type'], [
+            if (! in_array($metadata['type'], [
                 Model::TYPE_ONE,
                 Model::TYPE_MANY,
             ])) {
                 $isTraverse = false;
             }
-            if (!$isTraverse) {
+            if (! $isTraverse) {
                 $properties[$name] = $property;
+
                 continue;
             }
             if (isset($metadata['className'])) {
@@ -225,12 +238,12 @@ class Metadata implements JsonSerializable
             }
             if (isset($this->_instance->{$name})) {
                 $value = $this->_instance->{$name};
-                if (is_object($value) && !Model::modelTraverseCheck($value)) {
+                if (is_object($value) && ! Model::modelTraverseCheck($value)) {
                     continue;
                 }
                 if ($metadata['type'] == Model::TYPE_ONE) {
                     $property['metadata'] = $value->metadata()->toArray($parser);
-                } else if ($metadata['type'] == Model::TYPE_MANY) {
+                } elseif ($metadata['type'] == Model::TYPE_MANY) {
                     $property['metadata'] = [];
                     foreach ($value as $item) {
                         $property['metadata'][] = $item->metadata()->toArray($parser);
@@ -240,16 +253,21 @@ class Metadata implements JsonSerializable
             $properties[$name] = $property;
         }
         $array = [
-            'identity'   => isset($this->_instance) ? Model::modelIdentify($this->_instance) : null,
-            'className'  => $className,
-            'validator'  => array_map(function($v) { return $v->toArray(); }, $this->_validators),
-            'errors'     => array_map(function($v) { return $v->errors(); }, $this->_validators),
+            'identity' => isset($this->_instance) ? Model::modelIdentify($this->_instance) : null,
+            'className' => $className,
+            'validator' => array_map(function ($v) {
+                return $v->toArray();
+            }, $this->_validators),
+            'errors' => array_map(function ($v) {
+                return $v->errors();
+            }, $this->_validators),
             'properties' => $properties,
-            'others'     => $this->_others,
+            'others' => $this->_others,
         ];
         if (isset($parser)) {
             $array = $parser($array);
         }
+
         return $array;
     }
 

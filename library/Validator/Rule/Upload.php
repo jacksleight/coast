@@ -1,7 +1,8 @@
 <?php
+
 /*
  * Copyright 2019 Jack Sleight <http://jacksleight.com/>
- * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
+ * This source file is subject to the MIT license that is bundled with this package in the file LICENCE.
  */
 
 namespace Coast\Validator\Rule;
@@ -11,11 +12,15 @@ use Coast\Validator\Rule;
 class Upload extends Rule
 {
     const VALID = 'valid';
-    const ERROR = 'error';
-    const SIZE  = 'size';
-    const TYPE  = 'type';
 
-    protected $_size  = null;
+    const ERROR = 'error';
+
+    const SIZE = 'size';
+
+    const TYPE = 'type';
+
+    protected $_size = null;
+
     protected $_types = null;
 
     public function __construct($size = null, $types = null)
@@ -28,8 +33,10 @@ class Upload extends Rule
     {
         if (func_num_args() > 0) {
             $this->_size = $size;
+
             return $this;
         }
+
         return $this->_size;
     }
 
@@ -37,15 +44,18 @@ class Upload extends Rule
     {
         if (func_num_args() > 0) {
             $this->_types = $types;
+
             return $this;
         }
+
         return $this->_types;
     }
 
     protected function _validate($value)
     {
-        if (!$this->_validateArray($value)) {
+        if (! $this->_validateArray($value)) {
             $this->error(self::VALID);
+
             return;
         }
         if ($value['error'] != UPLOAD_ERR_OK) {
@@ -63,22 +73,24 @@ class Upload extends Rule
                     $this->error(self::ERROR);
                     break;
             }
+
             return;
         }
 
         if (isset($this->_size) && $value['size'] > $this->_size) {
             $this->error(self::SIZE);
         }
-        if (isset($this->_types) && !in_array(pathinfo((string) $value['name'], PATHINFO_EXTENSION), $this->_types)) {
+        if (isset($this->_types) && ! in_array(pathinfo((string) $value['name'], PATHINFO_EXTENSION), $this->_types)) {
             $this->error(self::TYPE);
         }
     }
 
     protected function _validateArray($value)
     {
-        if (!is_array($value)) {
+        if (! is_array($value)) {
             return false;
         }
+
         return array_keys($value) == [
             'name',
             'type',

@@ -1,18 +1,19 @@
 <?php
+
 /*
  * Copyright 2019 Jack Sleight <http://jacksleight.com/>
- * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
+ * This source file is subject to the MIT license that is bundled with this package in the file LICENCE.
  */
 
 namespace Coast;
 
 use ArrayAccess;
-use SeekableIterator;
 use Countable;
-use Serializable;
 use JsonSerializable;
+use SeekableIterator;
+use Serializable;
 
-class Collection implements ArrayAccess, SeekableIterator, Countable, Serializable, JsonSerializable
+class Collection implements ArrayAccess, Countable, JsonSerializable, SeekableIterator, Serializable
 {
     protected $_array = [];
 
@@ -29,6 +30,7 @@ class Collection implements ArrayAccess, SeekableIterator, Countable, Serializab
     public function fromArray(array $array)
     {
         $this->_array = $array;
+
         return $this;
     }
 
@@ -58,7 +60,7 @@ class Collection implements ArrayAccess, SeekableIterator, Countable, Serializab
 
     public function offsetSet($offset, $value)
     {
-       return $this->__set($offset, $value);
+        return $this->__set($offset, $value);
     }
 
     public function offsetExists($offset)
@@ -76,44 +78,45 @@ class Collection implements ArrayAccess, SeekableIterator, Countable, Serializab
         return $this->__get($offset);
     }
 
-    public function rewind() 
+    public function rewind()
     {
         reset($this->_array);
     }
 
-    public function current() 
+    public function current()
     {
         return current($this->_array);
     }
 
-    public function key() 
+    public function key()
     {
         return key($this->_array);
     }
 
-    public function next() 
+    public function next()
     {
         next($this->_array);
     }
 
-    public function valid() 
+    public function valid()
     {
         return key($this->_array) !== null;
-    } 
+    }
 
-    public function seek($position) 
+    public function seek($position)
     {
         do {
             if ($position === key($this->_array)) {
                 return true;
             }
         } while (next($this->_array));
+
         return false;
     }
 
-    public function count() 
-    { 
-        return count($this->_array); 
+    public function count()
+    {
+        return count($this->_array);
     }
 
     public function serialize()

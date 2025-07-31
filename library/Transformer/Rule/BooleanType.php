@@ -1,7 +1,8 @@
 <?php
+
 /*
  * Copyright 2019 Jack Sleight <http://jacksleight.com/>
- * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
+ * This source file is subject to the MIT license that is bundled with this package in the file LICENCE.
  */
 
 namespace Coast\Transformer\Rule;
@@ -24,7 +25,7 @@ class BooleanType extends Rule
         '0',
     ];
 
-    public function __construct(array $true = null, array $false = null)
+    public function __construct(?array $true = null, ?array $false = null)
     {
         if (isset($true)) {
             $this->true($true);
@@ -34,21 +35,25 @@ class BooleanType extends Rule
         }
     }
 
-    public function true(array $true = null)
+    public function true(?array $true = null)
     {
         if (func_num_args() > 0) {
             $this->_true = $true;
+
             return $this;
         }
+
         return $this->_true;
     }
 
-    public function false(array $false = null)
+    public function false(?array $false = null)
     {
         if (func_num_args() > 0) {
             $this->_false = $false;
+
             return $this;
         }
+
         return $this->_false;
     }
 
@@ -60,11 +65,12 @@ class BooleanType extends Rule
         $value = strtolower($value);
         if (in_array($value, $this->_true, true)) {
             $value = true;
-        } else if (in_array($value, $this->_false, true)) {
+        } elseif (in_array($value, $this->_false, true)) {
             $value = false;
         } else {
             $value = (bool) $value;
         }
+
         return $value;
     }
 }

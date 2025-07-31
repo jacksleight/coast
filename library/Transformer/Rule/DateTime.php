@@ -1,7 +1,8 @@
 <?php
+
 /*
  * Copyright 2019 Jack Sleight <http://jacksleight.com/>
- * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
+ * This source file is subject to the MIT license that is bundled with this package in the file LICENCE.
  */
 
 namespace Coast\Transformer\Rule;
@@ -14,7 +15,7 @@ class DateTime extends Rule
     protected $_format;
 
     protected $_timezone;
-    
+
     protected $_mode;
 
     public function __construct($format = null, $timezone = null, $mode = CoastDateTime::MODE_DATETIME)
@@ -28,8 +29,10 @@ class DateTime extends Rule
     {
         if (func_num_args() > 0) {
             $this->_format = $format;
+
             return $this;
         }
+
         return $this->_format;
     }
 
@@ -37,8 +40,10 @@ class DateTime extends Rule
     {
         if (func_num_args() > 0) {
             $this->_timezone = $timezone;
+
             return $this;
         }
+
         return $this->_timezone;
     }
 
@@ -46,8 +51,10 @@ class DateTime extends Rule
     {
         if (func_num_args() > 0) {
             $this->_mode = $mode;
+
             return $this;
         }
+
         return $this->_mode;
     }
 
@@ -73,7 +80,7 @@ class DateTime extends Rule
                 }
             }
             $date->setTimezone($defaultTimezone);
-        } else if (is_array($value)) {
+        } elseif (is_array($value)) {
             $timezone = isset($value['timezone'])
                 ? new \DateTimezone($value['timezone'])
                 : $timezone;
@@ -90,6 +97,7 @@ class DateTime extends Rule
         if ($this->_mode == CoastDateTime::MODE_DATE) {
             $date->setTime(0, 0, 0);
         }
+
         return $date;
     }
 }

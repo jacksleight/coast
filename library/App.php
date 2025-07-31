@@ -1,125 +1,136 @@
 <?php
+
 /*
  * Copyright 2019 Jack Sleight <http://jacksleight.com/>
- * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
+ * This source file is subject to the MIT license that is bundled with this package in the file LICENCE.
  */
 
 namespace Coast;
 
-use Coast\App\Exception;
-use Coast\App\Executable;
-use Coast\Dir;
-use Coast\File;
-use Coast\Lazy;
-use Coast\Path;
-use Coast\Request;
-use Coast\Response;
 use Closure;
+use Coast\App\Executable;
 
 /**
  * Coast application object.
  */
 class App implements Executable
-{   
+{
     use Executable\Implementation;
 
-    const MODE_CLI  = 'cli';
+    const MODE_CLI = 'cli';
+
     const MODE_HTTP = 'http';
-    
+
     /**
      * Base directory.
+     *
      * @var Coast\Dir
      */
     protected $_baseDir;
 
     /**
      * Is subapp.
-     * @var boolean
+     *
+     * @var bool
      */
     protected $_isSubapp = false;
-       
+
     /**
      * Environment variables.
+     *
      * @var array
      */
     protected $_envs = [];
 
     /**
      * Parameters.
+     *
      * @var array
      */
     protected $_params = [];
 
     /**
      * Executables stack.
+     *
      * @var array
      */
     protected $_executables = [];
 
     /**
      * Handler for requests that are not handled by middleware.
+     *
      * @var callable
      */
     protected $_failureHandler;
 
     /**
      * Handler for errors thrown in middleware.
+     *
      * @var callable
      */
     protected $_errorHandler;
 
     /**
      * Construct a new Coast application.
-     * @param mixed $baseDir Base directory.
-     * @param array $envs Additional environment variables.
+     *
+     * @param  mixed  $baseDir  Base directory.
+     * @param  array  $envs  Additional environment variables.
      */
-    public function __construct($baseDir = null, array $envs = array())
+    public function __construct($baseDir = null, array $envs = [])
     {
         $this->baseDir($baseDir);
-        $this->_envs = array_merge(array(
+        $this->_envs = array_merge([
             'MODE' => php_sapi_name() == 'cli' ? self::MODE_CLI : self::MODE_HTTP,
-        ), $_ENV, $envs);
+        ], $_ENV, $envs);
         $this->param('app', $this);
     }
 
     /**
      * Get/set base directory.
+     *
      * @return Coast\Dir
      */
     public function baseDir($baseDir = null)
     {
         if (func_num_args() > 0) {
-            $baseDir = isset($baseDir) && !$baseDir instanceof Dir
+            $baseDir = isset($baseDir) && ! $baseDir instanceof Dir
                 ? new Dir("{$baseDir}")
                 : $baseDir;
             $this->_baseDir = $baseDir;
+
             return $this;
         }
+
         return $this->_baseDir;
     }
 
     /**
      * Get/set is subapp.
-     * @return boolean
+     *
+     * @return bool
      */
     public function isSubapp($isSubapp = null)
     {
         if (func_num_args() > 0) {
             $this->_isSubapp = $isSubapp;
+
             return $this;
         }
+
         return $this->_isSubapp;
     }
 
     /**
      * Get child directory.
+     *
      * @return Coast\Dir
      */
     public function dir($path = null, $create = false)
     {
-        if (!isset($this->_baseDir)) {
+        if (! isset($this->_baseDir)) {
             throw new App\Exception('Base directory not set');
         }
+
         return isset($path)
             ? $this->_baseDir->dir($path, $create)
             : $this->_baseDir;
@@ -127,63 +138,68 @@ class App implements Executable
 
     /**
      * Get child file.
+     *
      * @return Coast\File
      */
     public function file($path)
     {
-        if (!isset($this->_baseDir)) {
+        if (! isset($this->_baseDir)) {
             throw new App\Exception('Base directory not set');
         }
+
         return $this->_baseDir->file($path);
     }
 
     /**
      * Load a file without leaking variables, include app object in vars.
-     * @param  mixed   $file
-     * @param  array   $vars
+     *
+     * @param  mixed  $file
      * @return mixed
      */
-    public function load($file, array $vars = array())
+    public function load($file, array $vars = [])
     {
-        $file = !$file instanceof File
+        $file = ! $file instanceof File
             ? new File("{$file}")
             : $file;
         $file = $file->isRelative()
             ? $this->file($file)
             : $file;
-        if (!$file->extName()) {
+        if (! $file->extName()) {
             $file->extName('php');
         }
         $return = \Coast\load($file, array_merge(['app' => $this], $vars));
         if ($return instanceof Closure) {
             $return = $return->bindTo($this);
         }
+
         return $return;
     }
 
     /**
      * Lazy load a file without leaking variables, include app object in vars.
-     * @param  mixed   $file
-     * @param  array   $vars
+     *
+     * @param  mixed  $file
      * @return mixed
      */
-    public function lazy($file, array $vars = array())
+    public function lazy($file, array $vars = [])
     {
-        $file = !$file instanceof File
+        $file = ! $file instanceof File
             ? new File("{$file}")
             : $file;
         $file = $file->isRelative()
             ? $this->file($file)
             : $file;
-        if (!$file->extName()) {
+        if (! $file->extName()) {
             $file->extName('php');
         }
+
         return new Lazy($this, $file, array_merge(['app' => $this], $vars));
     }
 
     /**
      * Get environment variables.
-     * @param  string $name
+     *
+     * @param  string  $name
      * @return mixed
      */
     public function env($name)
@@ -195,6 +211,7 @@ class App implements Executable
 
     /**
      * Get the mode (HTTP or CLI).
+     *
      * @return string
      */
     public function mode()
@@ -204,6 +221,7 @@ class App implements Executable
 
     /**
      * Is mode HTTP.
+     *
      * @return bool
      */
     public function isHttp()
@@ -213,6 +231,7 @@ class App implements Executable
 
     /**
      * Is mode CLI.
+     *
      * @return bool
      */
     public function isCli()
@@ -222,8 +241,9 @@ class App implements Executable
 
     /**
      * Set/get param.
-     * @param  string $name  
-     * @param  mixed $value
+     *
+     * @param  string  $name
+     * @param  mixed  $value
      * @return self|mixed
      */
     public function param($name, $value = null)
@@ -233,8 +253,10 @@ class App implements Executable
                 $value->app($this);
             }
             $this->_params[$name] = $value;
+
             return $this;
         }
+
         return isset($this->_params[$name])
             ? $this->_params[$name]
             : null;
@@ -242,64 +264,69 @@ class App implements Executable
 
     /**
      * Set/get multiple params.
-     * @param  array $params
+     *
      * @return self|array
      */
-    public function params(array $params = null)
+    public function params(?array $params = null)
     {
         if (func_num_args() > 0) {
             foreach ($params as $name => $value) {
                 $this->param($name, $value);
             }
+
             return $this;
         }
+
         return $this->_params;
     }
 
     /**
      * Add executable to the stack.
-     * @param string $name
-     * @param Closure|Coast\App\Executable $value
+     *
+     * @param  string  $name
+     * @param  Closure|Coast\App\Executable  $value
      * @return self
      */
     public function executable($executable, $subpath = null)
     {
-        if (!$executable instanceof Closure && !$executable instanceof Executable) {
+        if (! $executable instanceof Closure && ! $executable instanceof Executable) {
             throw new App\Exception("Object is not a closure or instance of Coast\App\Executable");
         }
         if (isset($subpath)) {
             $executable = new App\Subpath($executable, $subpath);
-        } else if ($executable instanceof App || $executable instanceof Lazy) {
+        } elseif ($executable instanceof App || $executable instanceof Lazy) {
             $executable->isSubapp(true);
         }
         array_push($this->_executables, $executable instanceof Closure
             ? $executable->bindTo($this)
             : $executable);
+
         return $this;
     }
 
     /**
      * Execute the application, running middleware in order.
-     * @param  Coast\Request $req Request object.
-     * @param  Coast\Response $res Response object.
+     *
+     * @param  Coast\Request  $req  Request object.
+     * @param  Coast\Response  $res  Response object.
      */
-    public function execute(Request $req = null, Response $res = null)
+    public function execute(?Request $req = null, ?Response $res = null)
     {
         $auto = false;
-        if (!isset($req)) {
+        if (! isset($req)) {
             $auto = true;
-            $req  = (new Request())->fromGlobals();
-            $res  = (new Response($req));
-        } else if (!isset($res)) {
+            $req = (new Request)->fromGlobals();
+            $res = (new Response($req));
+        } elseif (! isset($res)) {
             throw new App\Exception('You must pass a Response object when passing a Request object');
         }
 
         $this->param('req', $req)
-             ->param('res', $res);
+            ->param('res', $res);
         try {
             $this->preExecute($req, $res);
             foreach ($this->_executables as $executable) {
-                if ($executable instanceof Executable && !$executable instanceof App) {
+                if ($executable instanceof Executable && ! $executable instanceof App) {
                     $executable->preExecute($req, $res);
                 }
             }
@@ -312,7 +339,7 @@ class App implements Executable
                     break;
                 }
             }
-            if (!$result && !$this->_isSubapp) {
+            if (! $result && ! $this->_isSubapp) {
                 if (isset($this->_failureHandler)) {
                     $result = call_user_func($this->_failureHandler, $req, $res);
                 } else {
@@ -320,7 +347,7 @@ class App implements Executable
                 }
             }
             foreach ($this->_executables as $executable) {
-                if ($executable instanceof Executable && !$executable instanceof App) {
+                if ($executable instanceof Executable && ! $executable instanceof App) {
                     $executable->postExecute($req, $res);
                 }
             }
@@ -333,8 +360,8 @@ class App implements Executable
             }
         }
         $this->param('req', null)
-             ->param('res', null);
-        
+            ->param('res', null);
+
         if ($auto) {
             $res->toGlobals();
         } else {
@@ -345,12 +372,13 @@ class App implements Executable
     public function run($file, array $args = [])
     {
         $func = $this->load($file);
+
         return call_user_func_array($func, $args);
     }
 
     /**
      * Set the failure handler
-     * @param  callable $failureHandler
+     *
      * @return self
      */
     public function failureHandler(callable $failureHandler)
@@ -359,12 +387,13 @@ class App implements Executable
             $failureHandler = $failureHandler->bindTo($this);
         }
         $this->_failureHandler = $failureHandler;
+
         return $this;
     }
 
     /**
      * Set the error handler
-     * @param  callable $errorHandler
+     *
      * @return self
      */
     public function errorHandler(callable $errorHandler)
@@ -373,13 +402,15 @@ class App implements Executable
             $errorHandler = $errorHandler->bindTo($this);
         }
         $this->_errorHandler = $errorHandler;
+
         return $this;
     }
 
     /**
      * Set a parameter.
-     * @param string $name
-     * @param mixed $value
+     *
+     * @param  string  $name
+     * @param  mixed  $value
      * @return self
      */
     public function __set($name, $value)
@@ -389,19 +420,22 @@ class App implements Executable
 
     /**
      * Get a parameter.
-     * @param  string $name
+     *
+     * @param  string  $name
      * @return mixed
      */
     public function __get($name)
     {
         $value = $this->param($name);
+
         return $value;
     }
 
     /**
      * Check if a parameter exists.
+     *
      * @param  string  $name
-     * @return boolean
+     * @return bool
      */
     public function __isset($name)
     {
@@ -410,8 +444,9 @@ class App implements Executable
 
     /**
      * Unset a parameter.
+     *
      * @param  string  $name
-     * @return boolean
+     * @return bool
      */
     public function __unset($name)
     {
@@ -420,15 +455,16 @@ class App implements Executable
 
     /**
      * Attempts to call parameter named `$name`
-     * @param string $name
-     * @param array $args
+     *
+     * @param  string  $name
      */
     public function __call($name, array $args)
     {
         $value = $this->param($name);
-        if (!is_callable($value)) {
+        if (! is_callable($value)) {
             throw new \Coast\App\Exception("Param '{$name}' is not callable");
         }
+
         return call_user_func_array($value, $args);
     }
 }

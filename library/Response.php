@@ -1,36 +1,41 @@
 <?php
+
 /*
  * Copyright 2019 Jack Sleight <http://jacksleight.com/>
- * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
+ * This source file is subject to the MIT license that is bundled with this package in the file LICENCE.
  */
 
 namespace Coast;
-
-use Coast\File;
-use Coast\Request;
 
 class Response
 {
     protected $_request;
 
-    protected $_sent    = false;
-    protected $_status  = 200;
-    protected $_headers = [];
-    protected $_cookies = [];
-    protected $_body    = null;
-    protected $_params  = [];
+    protected $_sent = false;
 
-    public function __construct(Request $request = null)
+    protected $_status = 200;
+
+    protected $_headers = [];
+
+    protected $_cookies = [];
+
+    protected $_body = null;
+
+    protected $_params = [];
+
+    public function __construct(?Request $request = null)
     {
         $this->request($request);
     }
 
-    public function request(Request $request = null)
+    public function request(?Request $request = null)
     {
         if (func_num_args() > 0) {
             $this->_request = $request;
+
             return $this;
         }
+
         return $this->_request;
     }
 
@@ -61,8 +66,10 @@ class Response
     {
         if (func_num_args() > 0) {
             $this->_status = $status;
+
             return $this;
         }
+
         return $this->_status;
     }
 
@@ -71,21 +78,25 @@ class Response
         $name = strtolower($name);
         if (func_num_args() > 1) {
             $this->_headers[$name] = $value;
+
             return $this;
         }
+
         return isset($this->_headers[$name])
             ? $this->_headers[$name]
             : null;
     }
 
-    public function headers(array $headers = null)
+    public function headers(?array $headers = null)
     {
         if (func_num_args() > 0) {
             foreach ($headers as $name => $value) {
                 $this->header($name, $value);
             }
+
             return $this;
         }
+
         return $this->_headers;
     }
 
@@ -93,20 +104,24 @@ class Response
     {
         if (func_num_args() > 0) {
             $this->header('content-type', $type);
+
             return $this;
         }
+
         return current(explode(';', $this->header('content-type')));
     }
 
     public function cookie($name, $value = null, $age = null, $path = null, $domain = null, $secure = false, $http = false)
     {
         if (func_num_args() > 0) {
-            if (!isset($path) && isset($this->_request)) {
+            if (! isset($path) && isset($this->_request)) {
                 $path = $this->_request->base();
             }
             $this->_cookies[$name] = [$name, $value, (isset($age) ? time() + $age : null), $path, $domain, $secure, $http];
+
             return $this;
         }
+
         return isset($this->_cookies[$name])
             ? $this->_cookies[$name]
             : null;
@@ -116,8 +131,10 @@ class Response
     {
         if (func_num_args() > 0) {
             $this->_body = $body;
+
             return $this;
         }
+
         return $this->_body;
     }
 
@@ -125,8 +142,10 @@ class Response
     {
         if (func_num_args() > 0) {
             $this->_sent = $sent;
+
             return $this;
         }
+
         return $this->_sent;
     }
 
@@ -148,8 +167,9 @@ class Response
     {
         $json = json_encode($json, $options, $depth);
         if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new \Exception('JSON encoding error: ' . json_last_error_msg());
+            throw new \Exception('JSON encoding error: '.json_last_error_msg());
         }
+
         return $this
             ->type('application/json')
             ->body($json);
@@ -159,9 +179,10 @@ class Response
     {
         if ($xml instanceof \SimpleXMLElement) {
             $xml = $xml->asXML();
-        } else if ($xml instanceof \DOMDocument) {
+        } elseif ($xml instanceof \DOMDocument) {
             $xml = $xml->saveXML($options);
         }
+
         return $this
             ->type(isset($type)
                 ? "application/{$type}+xml"
@@ -183,11 +204,11 @@ class Response
         $this->_body = $data;
         $this
             ->type($type)
-            ->header('cache-control', "public")
+            ->header('cache-control', 'public')
             ->header('content-length', $length);
         $disposition = [];
         if ($attachment) {
-            $disposition[] = "attachment";
+            $disposition[] = 'attachment';
         }
         if (isset($name)) {
             $disposition[] = "filename={$name}";
@@ -195,6 +216,7 @@ class Response
         if (count($disposition)) {
             $this->header('content-disposition', implode('; ', $disposition));
         }
+
         return $this;
     }
 
@@ -213,28 +235,33 @@ class Response
             } else {
                 unset($this->_params[$name]);
             }
+
             return $this;
         }
+
         return isset($this->_params[$name])
             ? $this->_params[$name]
             : null;
     }
 
-    public function params(array $params = null)
+    public function params(?array $params = null)
     {
         if (func_num_args() > 0) {
             foreach ($params as $name => $value) {
                 $this->param($name, $value);
             }
+
             return $this;
         }
+
         return $this->_params;
     }
 
     /**
      * Set a parameter.
-     * @param string $name
-     * @param mixed $value
+     *
+     * @param  string  $name
+     * @param  mixed  $value
      * @return self
      */
     public function __set($name, $value)
@@ -244,7 +271,8 @@ class Response
 
     /**
      * Get a parameter.
-     * @param  string $name
+     *
+     * @param  string  $name
      * @return mixed
      */
     public function __get($name)
@@ -254,8 +282,9 @@ class Response
 
     /**
      * Check if a parameter exists.
+     *
      * @param  string  $name
-     * @return boolean
+     * @return bool
      */
     public function __isset($name)
     {
@@ -264,8 +293,9 @@ class Response
 
     /**
      * Unset a parameter.
+     *
      * @param  string  $name
-     * @return boolean
+     * @return bool
      */
     public function __unset($name)
     {

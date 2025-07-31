@@ -1,16 +1,14 @@
 <?php
-/* 
+
+/*
  * Copyright 2019 Jack Sleight <http://jacksleight.com/>
- * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
+ * This source file is subject to the MIT license that is bundled with this package in the file LICENCE.
  */
 
 namespace Coast;
 
 use Coast\App\Access;
 use Coast\App\Executable;
-use Coast\Request;
-use Coast\Response;
-use Coast\Url;
 
 class Csp implements Access, Executable
 {
@@ -27,22 +25,24 @@ class Csp implements Access, Executable
 
     protected $_directives = [];
 
-    public function __construct(array $options = array())
+    public function __construct(array $options = [])
     {
         foreach ($options as $name => $value) {
             if ($name[0] == '_') {
-                throw new \Coast\Exception("Access to '{$name}' is prohibited");  
+                throw new \Coast\Exception("Access to '{$name}' is prohibited");
             }
             $this->$name($value);
         }
     }
 
-    public function reportUrl(Url $reportUrl = null)
+    public function reportUrl(?Url $reportUrl = null)
     {
         if (func_num_args() > 0) {
             $this->_reportUrl = $reportUrl;
+
             return $this;
         }
+
         return $this->_reportUrl;
     }
 
@@ -50,8 +50,10 @@ class Csp implements Access, Executable
     {
         if (func_num_args() > 0) {
             $this->_isReportOnly = (bool) $isReportOnly;
+
             return $this;
         }
+
         return $this->_isReportOnly;
     }
 
@@ -59,19 +61,23 @@ class Csp implements Access, Executable
     {
         if (func_num_args() > 1) {
             $this->_groups[$name] = $value;
+
             return $this;
         }
+
         return $this->_groups[$name];
     }
 
-    public function groups(array $groups = null)
+    public function groups(?array $groups = null)
     {
         if (func_num_args() > 0) {
             foreach ($groups as $name => $value) {
                 $this->group($name, $value);
             }
+
             return $this;
         }
+
         return $this->_groups;
     }
 
@@ -79,25 +85,30 @@ class Csp implements Access, Executable
     {
         if (func_num_args() > 1) {
             $this->_directives[$name] = $value;
+
             return $this;
         }
+
         return $this->_directives[$name];
     }
 
-    public function directives(array $directives = null)
+    public function directives(?array $directives = null)
     {
         if (func_num_args() > 0) {
             foreach ($directives as $name => $value) {
                 $this->directive($name, $value);
             }
+
             return $this;
         }
+
         return $this->_directives;
     }
 
     public function groupSource($group, $value)
     {
         $this->_groups[$group][] = $value;
+
         return $this;
     }
 
@@ -106,12 +117,14 @@ class Csp implements Access, Executable
         foreach ($values as $value) {
             $this->groupSource($group, $value);
         }
+
         return $this;
     }
 
     public function directiveSource($directive, $value)
     {
         $this->_directives[$directive][] = $value;
+
         return $this;
     }
 
@@ -120,14 +133,16 @@ class Csp implements Access, Executable
         foreach ($values as $value) {
             $this->directiveSource($directive, $value);
         }
+
         return $this;
     }
 
     public function nonce()
     {
-        if (!isset($this->_nonce)) {
+        if (! isset($this->_nonce)) {
             $this->_nonce = \Coast\pseudo_random();
         }
+
         return $this->_nonce;
     }
 
@@ -140,25 +155,26 @@ class Csp implements Access, Executable
         if (isset($this->_reportUrl)) {
             $parts[] = "report-uri {$this->_reportUrl}";
         }
+
         return implode('; ', $parts);
     }
 
     protected function _parseSources(array $sources)
     {
-        if (!is_array($sources)) {
+        if (! is_array($sources)) {
             $sources = [$sources];
-        } 
+        }
 
         $parts = [];
         foreach ($sources as $i => $value) {
-            if (!is_array($value) && isset($this->_groups[$value])) {
+            if (! is_array($value) && isset($this->_groups[$value])) {
                 $value = $this->_groups[$value];
             }
             if (is_array($value)) {
                 $value = $this->_parseSources($value);
-            } else if (preg_match('/^(none|self|unsafe-inline|unsafe-eval|(nonce|sha256|sha384|sha512)-.+)$/i', $value)) {
+            } elseif (preg_match('/^(none|self|unsafe-inline|unsafe-eval|(nonce|sha256|sha384|sha512)-.+)$/i', $value)) {
                 $value = "'{$value}'";
-            } else if ($value == 'nonce') {
+            } elseif ($value == 'nonce') {
                 $value = "'nonce-{$this->nonce()}'";
             }
             $parts[] = $value;

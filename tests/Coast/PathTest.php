@@ -1,11 +1,12 @@
 <?php
+
 namespace Coast\Test;
 
 use Coast\Path;
 
 class PathTest extends \PHPUnit\Framework\TestCase
 {
-    public function testName()
+    public function test_name()
     {
         $path = new Path('/dir/base.ext');
 
@@ -13,7 +14,7 @@ class PathTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('/dir/base.ext', $path->name());
     }
 
-    public function testDirName()
+    public function test_dir_name()
     {
         $path = new Path('/dir/base.ext');
 
@@ -22,7 +23,7 @@ class PathTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('/other/base.ext', $path->name());
     }
 
-    public function testBaseName()
+    public function test_base_name()
     {
         $path = new Path('/dir/base.ext');
 
@@ -31,7 +32,7 @@ class PathTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('/dir/image.jpg', $path->name());
     }
 
-    public function testFileName()
+    public function test_file_name()
     {
         $path = new Path('/dir/base.ext');
 
@@ -45,7 +46,7 @@ class PathTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('base', $path->fileNameDot());
     }
 
-    public function testExtName()
+    public function test_ext_name()
     {
         $path = new Path('/dir/base.ext');
 
@@ -59,21 +60,21 @@ class PathTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('sub.ext', $path->extNameDot());
     }
 
-    public function testPrefix()
+    public function test_prefix()
     {
         $path = new Path('/dir/base.ext');
         $path->prefix('new-');
         $this->assertEquals('/dir/new-base.ext', $path->name());
     }
 
-    public function testSuffix()
+    public function test_suffix()
     {
         $path = new Path('/dir/base.ext');
         $path->suffix('-new');
         $this->assertEquals('/dir/base-new.ext', $path->name());
     }
 
-    public function testWithin()
+    public function test_within()
     {
         $a = new Path('/parent');
         $b = new Path('/parent/child');
@@ -82,7 +83,7 @@ class PathTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($a->isWithin($b));
     }
 
-    public function testAbsolute()
+    public function test_absolute()
     {
         $a = new Path('../four');
         $b = new Path('/one/two/three');
@@ -90,7 +91,7 @@ class PathTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('/one/four', $a->toAbsolute($b)->name());
     }
 
-    public function testAbsoluteException()
+    public function test_absolute_exception()
     {
         $a = new Path('../four');
         $b = new Path('/one/two/three');
@@ -99,7 +100,7 @@ class PathTest extends \PHPUnit\Framework\TestCase
         $b->toAbsolute($a);
     }
 
-    public function testRelative()
+    public function test_relative()
     {
         $a = new Path('/one/four');
         $b = new Path('/one/two/three');
@@ -107,8 +108,8 @@ class PathTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('../four', $a->toRelative($b)->name());
     }
 
-    public function testRelativeException()
-    {   
+    public function test_relative_exception()
+    {
         $a = new Path('/one/four');
         $b = new Path('../');
 
@@ -116,7 +117,7 @@ class PathTest extends \PHPUnit\Framework\TestCase
         $a->toRelative($b);
     }
 
-    public function testType()
+    public function test_type()
     {
         $abs = new Path('/name');
         $rel = new Path('name');
@@ -125,42 +126,42 @@ class PathTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($rel->isRelative());
     }
 
-    public function testReal()
+    public function test_real()
     {
-        $path = new Path(__DIR__ . '/..');
+        $path = new Path(__DIR__.'/..');
         $real = $path->toReal();
 
-        $this->assertEquals($real->name(), realpath(__DIR__ . '/..'));
+        $this->assertEquals($real->name(), realpath(__DIR__.'/..'));
 
         $path = new Path('./');
         $this->expectException('Exception');
         $path->toReal();
     }
 
-    public function testChild()
+    public function test_child()
     {
         $path = new Path('/one/two/three');
 
         $this->assertEquals('/one/two/three/four', $path->child('four')->name());
     }
 
-    public function testParent()
+    public function test_parent()
     {
         $path = new Path('/one/two/three');
 
         $this->assertEquals('/one/two', $path->parent()->name());
     }
 
-    public function testDir()
+    public function test_dir()
     {
         $path = new Path('/one/two/three');
-        $dir  = $path->toDir();
+        $dir = $path->toDir();
 
         $this->assertInstanceOf('Coast\Dir', $dir);
         $this->assertEquals('/one/two/three', $dir->name());
     }
 
-    public function testFile()
+    public function test_file()
     {
         $path = new Path('/one/two/three');
         $file = $path->toFile();
@@ -169,13 +170,13 @@ class PathTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('/one/two/three', $file->name());
     }
 
-    public function testParts()
+    public function test_parts()
     {
         $path = new Path('/dir/base.ext');
         $this->assertEquals(['', 'dir', 'base.ext'], $path->parts());
     }
 
-    public function testPart()
+    public function test_part()
     {
         $path = new Path('/dir/base.ext');
         $this->assertEquals('base.ext', $path->part(2));

@@ -1,14 +1,11 @@
 <?php
+
 /*
  * Copyright 2019 Jack Sleight <http://jacksleight.com/>
- * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
+ * This source file is subject to the MIT license that is bundled with this package in the file LICENCE.
  */
 
 namespace Coast;
-
-use Coast\Xml;
-use Coast\Model;
-use Coast\Collection;
 
 class Feed extends Model
 {
@@ -46,23 +43,23 @@ class Feed extends Model
                     'type' => 'datetime',
                 ],
                 'author' => [
-                    'type'            => Model::TYPE_ONE,
-                    'className'       => 'Coast\Feed\Person',
-                    'classArgs'       => ['author'],
-                    'traverse'        => [Model::TRAVERSE_SET, Model::TRAVERSE_GET, Model::TRAVERSE_CREATE],
+                    'type' => Model::TYPE_ONE,
+                    'className' => 'Coast\Feed\Person',
+                    'classArgs' => ['author'],
+                    'traverse' => [Model::TRAVERSE_SET, Model::TRAVERSE_GET, Model::TRAVERSE_CREATE],
                 ],
                 'items' => [
-                    'type'            => Model::TYPE_MANY,
-                    'className'       => 'Coast\Feed\Item',
-                    'classArgs'       => ['author'],
-                    'traverse'        => [Model::TRAVERSE_SET, Model::TRAVERSE_GET, Model::TRAVERSE_CREATE],
+                    'type' => Model::TYPE_MANY,
+                    'className' => 'Coast\Feed\Item',
+                    'classArgs' => ['author'],
+                    'traverse' => [Model::TRAVERSE_SET, Model::TRAVERSE_GET, Model::TRAVERSE_CREATE],
                 ],
             ]);
     }
 
     public function __construct()
     {
-        $this->items = new Collection();
+        $this->items = new Collection;
     }
 
     public function toXml()
@@ -80,11 +77,11 @@ class Feed extends Model
         if (isset($this->author)) {
             $xml->appendChild($this->author->toXml());
         }
-        
+
         foreach ($this->items as $item) {
             $xml->appendChild($item->toXml());
         }
-        
+
         return $xml;
     }
 }

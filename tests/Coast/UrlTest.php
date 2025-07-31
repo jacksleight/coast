@@ -1,15 +1,16 @@
 <?php
+
 namespace Coast\Test;
 
 use Coast\Url;
 
 class UrlTest extends \PHPUnit\Framework\TestCase
 {
-    public function testString()
+    public function test_string()
     {
         $value = 'http://username:password@host:8080/path?name=value#fragment';
         $url = new Url($value);
-        
+
         $this->assertEquals($value, (string) $url);
         $this->assertEquals($value, $url->toString());
         $this->assertEquals('http', $url->scheme());
@@ -35,7 +36,7 @@ class UrlTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($value, $url->toString());
     }
 
-    public function testHttp()
+    public function test_http()
     {
         $url = new Url('http://host/');
         $this->assertTrue($url->isHttp());
@@ -44,9 +45,9 @@ class UrlTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($url->isHttps());
     }
 
-    public function testQueryParam()
+    public function test_query_param()
     {
-        $url = new Url();
+        $url = new Url;
         $url->queryParam('test', 'OK');
         $this->assertEquals(['test' => 'OK'], $url->queryParams());
 
@@ -54,9 +55,9 @@ class UrlTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals([], $url->queryParams());
     }
 
-    public function testQueryParams()
+    public function test_query_params()
     {
-        $url = new Url();
+        $url = new Url;
         $url->queryParams([
             'test1' => 'OK',
             'test2' => 'OK',
@@ -68,19 +69,19 @@ class UrlTest extends \PHPUnit\Framework\TestCase
 
         $url->queryParams(null);
         $this->assertEquals([], $url->queryParams());
-    } 
+    }
 
-    public function testQuery()
+    public function test_query()
     {
-        $url = new Url();
+        $url = new Url;
         $url->query('test1=OK&test2=OK');
         $this->assertEquals('test1=OK&test2=OK', $url->query());
 
         $url->query(null);
         $this->assertEquals(null, $url->query());
-    } 
+    }
 
-    public function testAbsolute()
+    public function test_absolute()
     {
         $url1 = new Url('http://host/example/one');
         $url2 = new Url('../two');
@@ -90,7 +91,7 @@ class UrlTest extends \PHPUnit\Framework\TestCase
         $url1->toAbsolute($url1);
     }
 
-    public function testRelative()
+    public function test_relative()
     {
         $url1 = new Url('http://host/example/one');
         $url2 = new Url('http://host/host/two');
@@ -101,11 +102,11 @@ class UrlTest extends \PHPUnit\Framework\TestCase
         $url3->toRelative($url3);
     }
 
-    public function testBase()
+    public function test_base()
     {
         $value = 'http://host/';
         $url = new Url($value);
-        
+
         $this->assertEquals('host', $url->host());
         $this->assertEquals('host', $url->host);
         $this->assertEquals('host', $url['host']);

@@ -1,57 +1,58 @@
 <?php
-/* 
+
+/*
  * Copyright 2019 Jack Sleight <http://jacksleight.com/>
- * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
+ * This source file is subject to the MIT license that is bundled with this package in the file LICENCE.
  */
 
 namespace Coast;
 
-use Coast\File;
-use Coast\App;
-use Coast\App\Executable;
-use Coast\Request;
-use Coast\Response;
-use Closure;
 use ArrayAccess;
+use Closure;
+use Coast\App\Executable;
 
-class Lazy implements Executable, ArrayAccess
+class Lazy implements ArrayAccess, Executable
 {
     use Executable\Implementation;
 
-	protected $_app;
+    protected $_app;
 
-	protected $_source;
+    protected $_source;
 
-	protected $_vars;
+    protected $_vars;
 
     protected $_value;
 
     /**
      * Is subapp.
-     * @var boolean
+     *
+     * @var bool
      */
     protected $_isSubapp = false;
 
-    public function __construct(App $app, $source, $vars = array())
+    public function __construct(App $app, $source, $vars = [])
     {
-        if (!$source instanceof File && !$source instanceof Closure) {
+        if (! $source instanceof File && ! $source instanceof Closure) {
             throw new \Coast\Exception('Source must be an instance of Coast\File or Closure');
         }
-    	$this->_app    = $app;
-    	$this->_source = $source;
-    	$this->_vars   = $vars;
+        $this->_app = $app;
+        $this->_source = $source;
+        $this->_vars = $vars;
     }
 
     /**
      * Get/set is subapp.
-     * @return boolean
+     *
+     * @return bool
      */
     public function isSubapp($isSubapp = null)
     {
         if (func_num_args() > 0) {
             $this->_isSubapp = $isSubapp;
+
             return $this;
         }
+
         return $this->_isSubapp;
     }
 
@@ -64,31 +65,34 @@ class Lazy implements Executable, ArrayAccess
     {
         if (isset($this->_value)) {
             return $this;
-        } else if ($this->_source instanceof File) {
+        } elseif ($this->_source instanceof File) {
             $this->_value = \Coast\load($this->_source, $this->_vars);
-        } else if ($this->_source instanceof Closure) {
+        } elseif ($this->_source instanceof Closure) {
             $this->_value = call_user_func($this->_source, $this->_vars);
         }
         if ($this->_value instanceof App) {
             $this->_value->isSubapp($this->isSubapp());
-        } else if ($this->_value instanceof Closure) {
+        } elseif ($this->_value instanceof Closure) {
             $this->_value = $this->_value->bindTo($this->_app);
         }
+
         return $this;
     }
 
     public function value()
     {
         $this->init();
+
         return $this->_value;
     }
 
     public function execute(Request $req, Response $res)
     {
         $this->init();
-        if (!$this->_value instanceof Closure && !$this->_value instanceof Executable) {
+        if (! $this->_value instanceof Closure && ! $this->_value instanceof Executable) {
             throw new App\Exception("Object is not a closure or instance of Coast\App\Executable");
         }
+
         return $this->_value->execute($req, $res);
     }
 
@@ -96,12 +100,14 @@ class Lazy implements Executable, ArrayAccess
     {
         $this->init();
         $args = func_get_args();
+
         return call_user_func_array($this->_value, $args);
     }
 
     public function __call($method, $args)
     {
         $this->init();
+
         return call_user_func_array([$this->_value, $method], $args);
     }
 
@@ -114,12 +120,14 @@ class Lazy implements Executable, ArrayAccess
     public function __isset($name)
     {
         $this->init();
+
         return isset($this->_value->{$name});
     }
 
     public function __get($name)
     {
         $this->init();
+
         return $this->_value->{$name};
     }
 
@@ -140,6 +148,7 @@ class Lazy implements Executable, ArrayAccess
     public function offsetExists($offset)
     {
         $this->init();
+
         return isset($this->_value[$offset]);
     }
 
@@ -147,6 +156,7 @@ class Lazy implements Executable, ArrayAccess
     public function offsetGet($offset)
     {
         $this->init();
+
         return $this->_value[$offset];
     }
 

@@ -1,13 +1,11 @@
 <?php
+
 /*
  * Copyright 2019 Jack Sleight <http://jacksleight.com/>
- * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
+ * This source file is subject to the MIT license that is bundled with this package in the file LICENCE.
  */
 
 namespace Coast;
-
-use Coast\File;
-use Coast\Dir;
 
 /**
  * Path object.
@@ -15,17 +13,20 @@ use Coast\Dir;
 class Path
 {
     const PART_FIRST = 'first';
-    const PART_LAST  = 'last';
+
+    const PART_LAST = 'last';
 
     /**
      * Full path name.
+     *
      * @var string
      */
     protected $_name;
 
     /**
      * Constructs a new path object.
-     * @param string $name Full path name.
+     *
+     * @param  string  $name  Full path name.
      */
     public function __construct($name)
     {
@@ -34,18 +35,21 @@ class Path
 
     /**
      * Get/set the name.
-     * @param string $name Full path name.
+     *
+     * @param  string  $name  Full path name.
      */
     public function name($name = null)
     {
         if (func_num_args() > 0) {
             $this->_name = str_replace(DIRECTORY_SEPARATOR, '/', $name);
         }
+
         return $this->_name;
     }
 
     /**
      * Aliases `name`
+     *
      * @return string
      */
     public function toString()
@@ -55,6 +59,7 @@ class Path
 
     /**
      * Aliases `toString`
+     *
      * @return string
      */
     public function __toString()
@@ -64,6 +69,7 @@ class Path
 
     /**
      * Get/set the directory name.
+     *
      * @return string
      */
     public function dirName($dirName = null)
@@ -71,13 +77,16 @@ class Path
         if (func_num_args() > 0) {
             $parts = pathinfo($this->_name);
             $this->_name = "{$dirName}/{$parts['basename']}";
+
             return $this;
         }
+
         return pathinfo($this->_name, PATHINFO_DIRNAME);
     }
 
     /**
      * Get/set the base name.
+     *
      * @return string
      */
     public function baseName($baseName = null)
@@ -85,13 +94,16 @@ class Path
         if (func_num_args() > 0) {
             $parts = pathinfo($this->_name);
             $this->_name = "{$parts['dirname']}/{$baseName}";
+
             return $this;
         }
+
         return pathinfo($this->_name, PATHINFO_BASENAME);
     }
 
     /**
      * Get/set the file name.
+     *
      * @return string
      */
     public function fileName($fileName = null)
@@ -99,19 +111,23 @@ class Path
         if (func_num_args() > 0) {
             $parts = pathinfo($this->_name);
             $this->_name = "{$parts['dirname']}/{$fileName}.{$parts['extension']}";
+
             return $this;
         }
+
         return pathinfo($this->_name, PATHINFO_FILENAME);
     }
 
     public function fileNameDot()
     {
         $baseName = pathinfo($this->_name, PATHINFO_BASENAME);
+
         return substr($baseName, 0, strpos($baseName, '.'));
     }
 
     /**
      * Get/set the extension name.
+     *
      * @return string
      */
     public function extName($extName = null)
@@ -119,14 +135,17 @@ class Path
         if (func_num_args() > 0) {
             $parts = pathinfo($this->_name);
             $this->_name = "{$parts['dirname']}/{$parts['filename']}.{$extName}";
+
             return $this;
         }
+
         return pathinfo($this->_name, PATHINFO_EXTENSION);
     }
 
     public function extNameDot()
     {
         $baseName = pathinfo($this->_name, PATHINFO_BASENAME);
+
         return substr($baseName, strpos($baseName, '.') + 1);
     }
 
@@ -141,6 +160,7 @@ class Path
         if ($reverse) {
             $parts = array_reverse($parts);
         }
+
         return isset($parts[$i])
             ? $parts[$i]
             : null;
@@ -148,83 +168,92 @@ class Path
 
     /**
      * Add prefix.
+     *
      * @return string
      */
     public function prefix($prefix)
     {
         $parts = pathinfo($this->_name);
         $this->_name = "{$parts['dirname']}/{$prefix}{$parts['filename']}.{$parts['extension']}";
+
         return $this;
     }
 
     /**
      * Add suffix.
+     *
      * @return string
      */
     public function suffix($suffix)
     {
         $parts = pathinfo($this->_name);
         $this->_name = "{$parts['dirname']}/{$parts['filename']}{$suffix}.{$parts['extension']}";
+
         return $this;
     }
 
     /**
      * Check if path is within another
-     * @param  Coast\Path $target path to check against. 
+     *
+     * @param  Coast\Path  $target  path to check against.
      * @return bool
      */
     public function isWithin(\Coast\Path $parent)
     {
         $path = $this->_name;
-        $parts = \explode(PATH_SEPARATOR, (string) $parent);    
+        $parts = \explode(PATH_SEPARATOR, (string) $parent);
         foreach ($parts as $part) {
-            if (\preg_match('/^' . \preg_quote($part, '/') . '/', $path)) {
+            if (\preg_match('/^'.\preg_quote($part, '/').'/', $path)) {
                 return true;
             }
         }
+
         return false;
     }
 
     /**
      * Get absolute path from relative path.
-     * @param  Coast\Path $base base absolute path.
+     *
+     * @param  Coast\Path  $base  base absolute path.
      * @return Coast\Path
      */
     public function toAbsolute(\Coast\Path $base)
     {
-        if (!$this->isRelative() || !$base->isAbsolute()) {
+        if (! $this->isRelative() || ! $base->isAbsolute()) {
             throw new \Exception("Path '{$this}' is not relative or base path '{$base}' is not absolute");
         }
 
         $source = explode('/', (string) $base);
         $target = explode('/', $this->_name);
-        
+
         $name = $source;
         array_pop($name);
         foreach ($target as $part) {
             if ($part == '..') {
                 array_pop($name);
-            } else if ($part != '.' && $part != '') {
+            } elseif ($part != '.' && $part != '') {
                 $name[] = $part;
             }
         }
         $name = implode('/', $name);
 
         $class = get_class($this);
+
         return new $class($name);
     }
 
     /**
      * Get relative path from absolute path.
-     * @param  Coast\Path $base Base absolute path.
+     *
+     * @param  Coast\Path  $base  Base absolute path.
      * @return Coast\Path
      */
     public function toRelative(\Coast\Path $base)
     {
-        if (!$this->isAbsolute() || !$base->isAbsolute()) {
+        if (! $this->isAbsolute() || ! $base->isAbsolute()) {
             throw new \Exception("Source path '{$this}' is not absolute or base path '{$base}' is not absolute");
         }
-        
+
         $source = explode('/', (string) $base);
         $target = explode('/', $this->_name);
 
@@ -240,37 +269,41 @@ class Path
         $name = implode('/', $name);
 
         $class = get_class($this);
+
         return new $class($name);
     }
 
     /**
      * Reduce absolute path with relative parts to real path.
+     *
      * @return Coast\Path
      */
     public function toReal()
     {
-        if (!$this->isAbsolute()) {
+        if (! $this->isAbsolute()) {
             throw new \Exception("Path '{$this}' is not absolute");
         }
 
         $target = explode('/', $this->_name);
-        
+
         $name = [];
         foreach ($target as $part) {
             if ($part == '..') {
                 array_pop($name);
-            } else if ($part != '.') {
+            } elseif ($part != '.') {
                 $name[] = $part;
             }
         }
         $name = implode('/', $name);
 
         $class = get_class($this);
+
         return new $class($name);
     }
 
     /**
      * Is path absolute.
+     *
      * @return bool
      */
     public function isAbsolute()
@@ -280,23 +313,26 @@ class Path
 
     /**
      * Is path relative.
+     *
      * @return bool
      */
     public function isRelative()
     {
-        return !$this->isAbsolute();
+        return ! $this->isAbsolute();
     }
 
     public function child($path)
     {
-        $path  = ltrim($path, '/');
+        $path = ltrim($path, '/');
         $class = get_class($this);
+
         return new $class("{$this->_name}/{$path}");
     }
 
     public function parent()
     {
         $class = get_class($this);
+
         return new $class($this->dirName());
     }
 

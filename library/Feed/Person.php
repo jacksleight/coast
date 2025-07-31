@@ -1,16 +1,14 @@
 <?php
+
 /*
  * Copyright 2019 Jack Sleight <http://jacksleight.com/>
- * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
+ * This source file is subject to the MIT license that is bundled with this package in the file LICENCE.
  */
 
 namespace Coast\Feed;
 
-use DateTime;
-use Coast\Xml;
 use Coast\Model;
-use Coast\Validator;
-use Coast\Transformer;
+use Coast\Xml;
 
 class Person extends Model
 {
@@ -38,10 +36,10 @@ class Person extends Model
         $roots = [
             'author' => 'author',
         ];
-        $xml = new Xml('<?xml version="1.0" encoding="UTF-8"?><' . $roots[$this->_type] . '/>');
-        
+        $xml = new Xml('<?xml version="1.0" encoding="UTF-8"?><'.$roots[$this->_type].'/>');
+
         $xml->addChild('name')->addCData($this->name);
-        
+
         return $xml;
     }
 }

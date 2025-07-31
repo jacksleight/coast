@@ -1,7 +1,8 @@
 <?php
+
 /*
  * Copyright 2019 Jack Sleight <http://jacksleight.com/>
- * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
+ * This source file is subject to the MIT license that is bundled with this package in the file LICENCE.
  */
 
 namespace Coast;
@@ -9,26 +10,32 @@ namespace Coast;
 use ArrayAccess;
 use Closure;
 use Coast;
-use Coast\Model;
 use Coast\Model\Metadata;
-use Traversable;
 use JsonSerializable;
 use ReflectionClass;
 use ReflectionProperty;
+use Traversable;
 
 class Model implements ArrayAccess, JsonSerializable
 {
-    const TRAVERSE_SET      = 'set';
-    const TRAVERSE_GET      = 'get';
-    const TRAVERSE_CREATE   = 'create';
-    const TRAVERSE_DELETE   = 'delete';
+    const TRAVERSE_SET = 'set';
+
+    const TRAVERSE_GET = 'get';
+
+    const TRAVERSE_CREATE = 'create';
+
+    const TRAVERSE_DELETE = 'delete';
+
     const TRAVERSE_VALIDATE = 'validate';
-    const TRAVERSE_META     = 'meta';
-    
-    const SKIP      = '__Coast\Model::SKIP__';
+
+    const TRAVERSE_META = 'meta';
+
+    const SKIP = '__Coast\Model::SKIP__';
+
     const UNDEFINED = '__Coast\Model::UNDEFINED__';
 
-    const TYPE_ONE  = 'one';
+    const TYPE_ONE = 'one';
+
     const TYPE_MANY = 'many';
 
     protected static $_metadataStatic = [];
@@ -60,6 +67,7 @@ class Model implements ArrayAccess, JsonSerializable
         if (func_num_args() > 0) {
             self::$_modelIdentifier = $modelIdentifier;
         }
+
         return self::$_modelIdentifier;
     }
 
@@ -68,6 +76,7 @@ class Model implements ArrayAccess, JsonSerializable
         if (func_num_args() > 0) {
             self::$_modelCreator = $modelCreator;
         }
+
         return self::$_modelCreator;
     }
 
@@ -76,6 +85,7 @@ class Model implements ArrayAccess, JsonSerializable
         if (func_num_args() > 0) {
             self::$_modelFetcher = $modelFetcher;
         }
+
         return self::$_modelFetcher;
     }
 
@@ -84,6 +94,7 @@ class Model implements ArrayAccess, JsonSerializable
         if (func_num_args() > 0) {
             self::$_modelDeleter = $modelDeleter;
         }
+
         return self::$_modelDeleter;
     }
 
@@ -92,6 +103,7 @@ class Model implements ArrayAccess, JsonSerializable
         if (func_num_args() > 0) {
             self::$_modelFinder = $modelFinder;
         }
+
         return self::$_modelFinder;
     }
 
@@ -100,6 +112,7 @@ class Model implements ArrayAccess, JsonSerializable
         if (func_num_args() > 0) {
             self::$_modelTraverseChecker = $modelTraverseChecker;
         }
+
         return self::$_modelTraverseChecker;
     }
 
@@ -108,6 +121,7 @@ class Model implements ArrayAccess, JsonSerializable
         if (func_num_args() > 0) {
             self::$_modelVerifier = $modelVerifier;
         }
+
         return self::$_modelVerifier;
     }
 
@@ -116,6 +130,7 @@ class Model implements ArrayAccess, JsonSerializable
         if (func_num_args() > 0) {
             self::$_modelDeleteChecker = $modelDeleteChecker;
         }
+
         return self::$_modelDeleteChecker;
     }
 
@@ -124,7 +139,7 @@ class Model implements ArrayAccess, JsonSerializable
     {
         $func = self::$_modelIdentifier;
         if (isset($func)) {
-            return $func($object);;
+            return $func($object);
         } else {
             return null;
         }
@@ -146,7 +161,7 @@ class Model implements ArrayAccess, JsonSerializable
     {
         $func = self::$_modelFetcher;
         if (isset($func)) {
-            return $func($className, $id);;
+            return $func($className, $id);
         } else {
             return null;
         }
@@ -168,7 +183,7 @@ class Model implements ArrayAccess, JsonSerializable
     {
         $func = self::$_modelFinder;
         if (isset($func)) {
-            return $func($object, $coll, $key, $item, $isCurrent);;
+            return $func($object, $coll, $key, $item, $isCurrent);
         } else {
             return isset($coll[$key]) ? $key : false;
         }
@@ -179,7 +194,7 @@ class Model implements ArrayAccess, JsonSerializable
     {
         $func = self::$_modelTraverseChecker;
         if (isset($func)) {
-            return $func($object);;
+            return $func($object);
         } else {
             return true;
         }
@@ -190,7 +205,7 @@ class Model implements ArrayAccess, JsonSerializable
     {
         $func = self::$_modelVerifier;
         if (isset($func)) {
-            $func($object, $array);;
+            $func($object, $array);
         }
     }
 
@@ -199,7 +214,7 @@ class Model implements ArrayAccess, JsonSerializable
     {
         $func = self::$_modelDeleteChecker;
         if (isset($func)) {
-            return $func($object, $item);;
+            return $func($object, $item);
         } else {
             return $item == null || $item == self::UNDEFINED;
         }
@@ -207,10 +222,12 @@ class Model implements ArrayAccess, JsonSerializable
 
     protected static function _metadataStaticBuild()
     {
-        $class    = get_called_class();
+        $class = get_called_class();
         $metadata = new Metadata($class);
-        $reflect  = new ReflectionClass($class);
-        $names    = array_map(function($v) { return $v->getName(); }, array_diff(
+        $reflect = new ReflectionClass($class);
+        $names = array_map(function ($v) {
+            return $v->getName();
+        }, array_diff(
             $reflect->getProperties(),
             $reflect->getProperties(ReflectionProperty::IS_STATIC)
         ));
@@ -222,26 +239,30 @@ class Model implements ArrayAccess, JsonSerializable
                 'name' => $name,
             ]);
         }
+
         return static::$_metadataStatic[$class] = $metadata;
     }
 
     protected static function _metadataStaticModify()
     {
         $class = get_called_class();
+
         return static::$_metadataStatic[$class];
     }
 
-    public static function metadataStatic(Metadata $metadata = null)
+    public static function metadataStatic(?Metadata $metadata = null)
     {
         $class = get_called_class();
         if (func_num_args() > 0) {
             static::$_metadataStatic[$class] = $metadata;
+
             return $this;
         }
-        if (!isset(static::$_metadataStatic[$class])) {
+        if (! isset(static::$_metadataStatic[$class])) {
             static::_metadataStaticBuild();
             static::_metadataStaticModify();
         }
+
         return static::$_metadataStatic[$class];
     }
 
@@ -249,6 +270,7 @@ class Model implements ArrayAccess, JsonSerializable
     {
         $this->_metadataSource = clone static::metadataStatic();
         $this->_metadataSource->instance($this);
+
         return $this->_metadataSource;
     }
 
@@ -257,31 +279,34 @@ class Model implements ArrayAccess, JsonSerializable
         return $this->_metadata = clone $this->_metadataSource;
     }
 
-    public function metadata(Metadata $metadata = null)
+    public function metadata(?Metadata $metadata = null)
     {
         if (func_num_args() > 0) {
             $this->_metadataSource = $metadata;
-            $this->_metadata       = null;
+            $this->_metadata = null;
+
             return $this;
         }
-        if (!isset($this->_metadataSource)) {
+        if (! isset($this->_metadataSource)) {
             $this->_metadataBuild();
         }
-        if (!isset($this->_metadata)) {
+        if (! isset($this->_metadata)) {
             $this->_metadataModify();
         }
+
         return $this->_metadata;
     }
 
     public function metadataReset($traverse = false)
     {
-        $this->traverseModels(function() {
+        $this->traverseModels(function () {
             $this->_metadata = null;
         }, $traverse);
+
         return $this;
     }
 
-    public function traverse(callable $parser, $traverse, array $history = array())
+    public function traverse(callable $parser, $traverse, array $history = [])
     {
         array_push($history, $this);
         if ($parser instanceof Closure) {
@@ -297,27 +322,28 @@ class Model implements ArrayAccess, JsonSerializable
                 continue;
             }
             $isTraverse = in_array($traverse, $metadata['traverse']);
-            if (!in_array($metadata['type'], [
+            if (! in_array($metadata['type'], [
                 self::TYPE_ONE,
                 self::TYPE_MANY,
             ])) {
                 $isTraverse = false;
             }
-            if (is_object($value) && !self::modelTraverseCheck($value)) {
+            if (is_object($value) && ! self::modelTraverseCheck($value)) {
                 $isTraverse = false;
             }
-            if (!$isTraverse) {
+            if (! $isTraverse) {
                 $value = $parser($name, $value, $metadata, $isTraverse);
                 if ($value !== self::SKIP) {
                     $output[$name] = $value;
                 }
+
                 continue;
             }
             if ($metadata['type'] == self::TYPE_ONE) {
                 if (isset($value)) {
                     $value = $value->traverse($parser, $traverse, $history);
                 }
-            } else if ($metadata['type'] == self::TYPE_MANY) {
+            } elseif ($metadata['type'] == self::TYPE_MANY) {
                 $items = [];
                 foreach ($value as $key => $item) {
                     $items[$key] = $item->traverse($parser, $traverse, $history);
@@ -329,17 +355,18 @@ class Model implements ArrayAccess, JsonSerializable
                 $output[$name] = $value;
             }
         }
+
         return $output;
     }
 
-    public function traverseModels(callable $parser, $traverse, array $history = array())
+    public function traverseModels(callable $parser, $traverse, array $history = [])
     {
         array_push($history, $this);
         if ($parser instanceof Closure) {
             $parser = $parser->bindTo($this);
         }
         foreach ($this->metadata->properties() as $name => $metadata) {
-            if (!in_array($metadata['type'], [
+            if (! in_array($metadata['type'], [
                 self::TYPE_ONE,
                 self::TYPE_MANY,
             ])) {
@@ -349,18 +376,18 @@ class Model implements ArrayAccess, JsonSerializable
             if (in_array($value, $history, true)) {
                 continue;
             }
-            if (is_object($value) && !self::modelTraverseCheck($value)) {
+            if (is_object($value) && ! self::modelTraverseCheck($value)) {
                 continue;
             }
             $isTraverse = in_array($traverse, $metadata['traverse']);
-            if (!$isTraverse) {
+            if (! $isTraverse) {
                 continue;
             }
             if ($metadata['type'] == self::TYPE_ONE) {
                 if (isset($value)) {
                     $value->traverseModels($parser, $traverse, $history);
                 }
-            } else if ($metadata['type'] == self::TYPE_MANY) {
+            } elseif ($metadata['type'] == self::TYPE_MANY) {
                 foreach ($value as $item) {
                     $item->traverseModels($parser, $traverse, $history);
                 }
@@ -375,31 +402,34 @@ class Model implements ArrayAccess, JsonSerializable
         $traverse = self::TRAVERSE_SET;
         foreach ($array as $name => $value) {
             $metadata = $this->metadata->property($name);
-            if (!isset($metadata)) {
+            if (! isset($metadata)) {
                 $this->__setUnknown($name, $value);
+
                 continue;
             }
             $isTraverse = in_array($traverse, $metadata['traverse']);
-            if (!in_array($metadata['type'], [
+            if (! in_array($metadata['type'], [
                 self::TYPE_ONE,
                 self::TYPE_MANY,
             ])) {
                 $isTraverse = false;
             }
-            if (is_object($value) && !self::modelTraverseCheck($value)) {
+            if (is_object($value) && ! self::modelTraverseCheck($value)) {
                 $isTraverse = false;
             }
-            if (!$isTraverse) {
+            if (! $isTraverse) {
                 $this->__set($name, $value);
+
                 continue;
             }
             if ($metadata['type'] == self::TYPE_ONE) {
                 $current = $this->__get($name);
                 if (in_array(self::TRAVERSE_DELETE, $metadata['traverse']) && self::modelDeleteCheck($this, $value)) {
                     self::modelDelete($this, $this, $name);
+
                     continue;
                 }
-                if (!isset($current)) {
+                if (! isset($current)) {
                     if (in_array(self::TRAVERSE_CREATE, $metadata['traverse'])) {
                         $create = self::modelCreate($metadata['className'], $metadata['classArgs'], $value);
                         $create->fromArray($value);
@@ -415,10 +445,10 @@ class Model implements ArrayAccess, JsonSerializable
                     }
                     $current->fromArray($value);
                 }
-            } else if ($metadata['type'] == self::TYPE_MANY) {
+            } elseif ($metadata['type'] == self::TYPE_MANY) {
                 $current = $this->__get($name);
-                if (!is_array($current) && (!$current instanceof Traversable && !$current instanceof ArrayAccess)) {
-                    throw new Model\Exception("Value of MANY property '" . get_class($this) . "->{$name}' must be an array or object that implements Traversable and ArrayAccess");
+                if (! is_array($current) && (! $current instanceof Traversable && ! $current instanceof ArrayAccess)) {
+                    throw new Model\Exception("Value of MANY property '".get_class($this)."->{$name}' must be an array or object that implements Traversable and ArrayAccess");
                 }
                 if ($metadata['isImmutable']) {
                     $current = clone $current;
@@ -446,9 +476,9 @@ class Model implements ArrayAccess, JsonSerializable
                         $current[$currentKey]->fromArray($item);
                     }
                 }
-                // Check existing data against incoming and remove 
+                // Check existing data against incoming and remove
                 foreach ($current as $currentKey => $currentItem) {
-                    $key  = self::modelFind($this, $value, $currentKey, $currentItem, false);
+                    $key = self::modelFind($this, $value, $currentKey, $currentItem, false);
                     $item = $key === false
                         ? self::UNDEFINED
                         : $value[$key];
@@ -474,16 +504,18 @@ class Model implements ArrayAccess, JsonSerializable
                 $this->__set($name, $value);
             }
         }
+
         return $this;
     }
 
-    public function toArray(callable $parser = null)
+    public function toArray(?callable $parser = null)
     {
-        if (!isset($parser)) {
-            $parser = function($name, $value, $metadata, $isTraverse) {
+        if (! isset($parser)) {
+            $parser = function ($name, $value, $metadata, $isTraverse) {
                 return $value;
             };
         }
+
         return $this->traverse($parser, self::TRAVERSE_GET);
     }
 
@@ -492,21 +524,22 @@ class Model implements ArrayAccess, JsonSerializable
         $isValid = true;
         $validators = $this->metadata()->validators();
         foreach ($validators as $validator) {
-            if (!$validator($this, $context)) {
+            if (! $validator($this, $context)) {
                 $isValid = false;
             }
         }
-        $this->traverse(function($name, $value, $metadata, $isTraverse) use (&$isValid) {
-            if (!$metadata['validator']($this->__get($name), $this)) {
+        $this->traverse(function ($name, $value, $metadata, $isTraverse) use (&$isValid) {
+            if (! $metadata['validator']($this->__get($name), $this)) {
                 $isValid = false;
             }
         }, self::TRAVERSE_VALIDATE);
+
         return $isValid;
     }
 
     protected function _set($name, $value)
     {
-        if (!$this->_construct) {
+        if (! $this->_construct) {
             $metadata = $this->metadata->property($name);
             if ($metadata) {
                 $value = $metadata['filter']->filter($value);
@@ -539,9 +572,9 @@ class Model implements ArrayAccess, JsonSerializable
         }
         if (method_exists($this, $name)) {
             $this->{$name}($value);
-        } else if (property_exists($this, $name)) {
+        } elseif (property_exists($this, $name)) {
             $this->_set($name, $value);
-        } else if ($allowDynamic) {
+        } elseif ($allowDynamic) {
             $this->_set($name, $value);
         } else {
             throw new Model\Exception\NotDefined("Property or method '{$name}' is not defined");
@@ -583,9 +616,9 @@ class Model implements ArrayAccess, JsonSerializable
         }
         if (method_exists($this, $name)) {
             return $this->{$name}();
-        } else if (property_exists($this, $name)) {
+        } elseif (property_exists($this, $name)) {
             return $this->_get($name);
-        } else if ($allowDynamic) {
+        } elseif ($allowDynamic) {
             return $this->_get($name);
         } else {
             throw new Model\Exception\NotDefined("Property or method '{$name}' is not defined");
@@ -600,9 +633,9 @@ class Model implements ArrayAccess, JsonSerializable
         }
         if (method_exists($this, $name)) {
             return $this->{$name}() !== null;
-        } else if (property_exists($this, $name)) {
+        } elseif (property_exists($this, $name)) {
             return $this->_isset($name);
-        } else if ($allowDynamic) {
+        } elseif ($allowDynamic) {
             return $this->_isset($name);
         } else {
             throw new Model\Exception\NotDefined("Property or method '{$name}' is not defined");
@@ -617,7 +650,7 @@ class Model implements ArrayAccess, JsonSerializable
         }
         if (property_exists($this, $name)) {
             $this->_unset($name);
-        } else if ($allowDynamic) {
+        } elseif ($allowDynamic) {
             $this->_unset($name);
         } else {
             throw new Model\Exception\NotDefined("Property or method '{$name}' is not defined");
@@ -631,15 +664,17 @@ class Model implements ArrayAccess, JsonSerializable
         }
         if (isset($args[0])) {
             $this->__set($name, $args[0]);
+
             return $this;
         }
+
         return $this->__get($name);
     }
 
     #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
-       return $this->__set($offset, $value);
+        return $this->__set($offset, $value);
     }
 
     #[\ReturnTypeWillChange]

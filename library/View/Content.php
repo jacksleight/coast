@@ -1,7 +1,8 @@
 <?php
+
 /*
  * Copyright 2019 Jack Sleight <http://jacksleight.com/>
- * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
+ * This source file is subject to the MIT license that is bundled with this package in the file LICENCE.
  */
 
 namespace Coast\View;
@@ -12,7 +13,7 @@ class Content
 
     protected $_blocks = [];
 
-    public function __construct(array $blocks = array())
+    public function __construct(array $blocks = [])
     {
         $this->_blocks = $blocks;
     }
@@ -21,21 +22,25 @@ class Content
     {
         if (func_num_args() > 1) {
             $this->_params[$name] = $value;
+
             return $this;
         }
+
         return isset($this->_params[$name])
             ? $this->_params[$name]
             : null;
     }
 
-    public function params(array $querys = null)
+    public function params(?array $querys = null)
     {
         if (func_num_args() > 0) {
             foreach ($querys as $name => $value) {
                 $this->param($name, $value);
             }
+
             return $this;
         }
+
         return $this->_params;
     }
 
@@ -47,21 +52,25 @@ class Content
             } else {
                 $this->_blocks[] = $value;
             }
+
             return $this;
         }
+
         return isset($this->_blocks[$name])
             ? $this->_blocks[$name]
             : null;
     }
 
-    public function blocks(array $blocks = null)
+    public function blocks(?array $blocks = null)
     {
         if (func_num_args() > 0) {
             foreach ($blocks as $name => $value) {
                 $this->block($name, $value);
             }
+
             return $this;
         }
+
         return $this->_blocks;
     }
 
@@ -70,6 +79,7 @@ class Content
         $temp = array_combine($keys = array_keys($this->_blocks), $keys);
         $temp[] = null;
         end($temp);
+
         return key($temp);
     }
 

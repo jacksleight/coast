@@ -1,7 +1,8 @@
 <?php
+
 /*
  * Copyright 2019 Jack Sleight <http://jacksleight.com/>
- * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
+ * This source file is subject to the MIT license that is bundled with this package in the file LICENCE.
  */
 
 namespace Coast;
@@ -9,49 +10,55 @@ namespace Coast;
 use Closure;
 
 class Acl
-{ 
-    const NONE  = null;
+{
+    const NONE = null;
+
     const ALLOW = true;
-    const DENY  = false;
+
+    const DENY = false;
 
     protected $_roles = [];
 
-    public function role($name, array $value = null)
+    public function role($name, ?array $value = null)
     {
         if (func_num_args() > 1) {
             $value += [
                 'extend' => null,
-                'rules'  => [],
+                'rules' => [],
             ];
-            if (isset($value['extend']) && !isset($this->_roles[$value['extend']])) {
+            if (isset($value['extend']) && ! isset($this->_roles[$value['extend']])) {
                 throw new Exception("Role '{$value['extend']}' does not exist");
             }
             $this->_roles[$name] = $value;
+
             return $this;
         }
+
         return isset($this->_roles[$name])
             ? $this->_roles[$name]
             : null;
     }
 
-    public function roles(array $roles = null)
+    public function roles(?array $roles = null)
     {
         if (func_num_args() > 0) {
             foreach ($roles as $name => $value) {
                 $this->role($name, $value);
             }
+
             return $this;
         }
+
         return $this->_roles;
     }
 
     public function rule($role, $resource, $operations, $action)
     {
-        if (!isset($this->_roles[$role])) {
+        if (! isset($this->_roles[$role])) {
             throw new Exception("Role '{$role}' does not exist");
         }
 
-        if (!is_array($operations)) {
+        if (! is_array($operations)) {
             $operations = array_map('trim', explode(',', $operations));
         }
         if ($action instanceof Closure) {
@@ -62,17 +69,20 @@ class Acl
             $operations,
             $action,
         ];
+
         return $this;
     }
 
-    public function rules($role, array $rules = null)
+    public function rules($role, ?array $rules = null)
     {
         if (func_num_args() > 1) {
             foreach ($rules as $rule) {
                 call_user_func_array([$this, 'rule'], array_merge([$role], $rule));
             }
+
             return $this;
         }
+
         return $this->_roles[$role]['rules'];
     }
 
@@ -91,13 +101,13 @@ class Acl
         return $this->rule($role, $resource, $operations, $action, $func);
     }
 
-    public function check($role, $resource, $operation, array $params = array())
+    public function check($role, $resource, $operation, array $params = [])
     {
-        if (!isset($this->_roles[$role])) {
+        if (! isset($this->_roles[$role])) {
             throw new Exception("Role '{$role}' does not exist");
         }
 
-        $role  = $this->_roles[$role];
+        $role = $this->_roles[$role];
 
         $value = $role;
         $rules = $value['rules'];
@@ -113,7 +123,7 @@ class Acl
             if ($resource != $rule[0]) {
                 continue;
             }
-            if ($rule[1] !== ['*'] && !in_array($operation, $rule[1])) {
+            if ($rule[1] !== ['*'] && ! in_array($operation, $rule[1])) {
                 continue;
             }
             $action = $rule[2];
@@ -128,22 +138,22 @@ class Acl
         return $action;
     }
 
-    public function isAllow($role, $resource, $operation, array $params = array())
+    public function isAllow($role, $resource, $operation, array $params = [])
     {
         return $this->check($role, $resource, $operation, $params) === self::ALLOW;
     }
 
-    public function isDeny($role, $resource, $operation, array $params = array())
+    public function isDeny($role, $resource, $operation, array $params = [])
     {
         return $this->check($role, $resource, $operation, $params) === self::DENY;
     }
 
-    public function isNone($role, $resource, $operation, array $params = array())
+    public function isNone($role, $resource, $operation, array $params = [])
     {
         return $this->check($role, $resource, $operation, $params) === self::NONE;
     }
 
-    public function __invoke($role, $resource, $operation, array $params = array())
+    public function __invoke($role, $resource, $operation, array $params = [])
     {
         return $this->check($role, $resource, $operation, $params);
     }

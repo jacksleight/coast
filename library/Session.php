@@ -1,17 +1,16 @@
 <?php
-/* 
+
+/*
  * Copyright 2019 Jack Sleight <http://jacksleight.com/>
- * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
+ * This source file is subject to the MIT license that is bundled with this package in the file LICENCE.
  */
 
 namespace Coast;
 
 use Coast\App\Access;
 use Coast\App\Executable;
-use Coast\Request;
-use Coast\Response;
 
-class Session implements Executable, Access
+class Session implements Access, Executable
 {
     use Access\Implementation;
     use Executable\Implementation;
@@ -23,7 +22,7 @@ class Session implements Executable, Access
     protected $_expires = 1200;
 
     protected $_host = null;
-    
+
     protected $_path = null;
 
     protected $_isSecure = null;
@@ -32,11 +31,11 @@ class Session implements Executable, Access
 
     protected $_request;
 
-    public function __construct(array $options = array())
+    public function __construct(array $options = [])
     {
         foreach ($options as $name => $value) {
             if ($name[0] == '_') {
-                throw new \Coast\Exception("Access to '{$name}' is prohibited");  
+                throw new \Coast\Exception("Access to '{$name}' is prohibited");
             }
             $this->$name($value);
         }
@@ -46,8 +45,10 @@ class Session implements Executable, Access
     {
         if (func_num_args() > 0) {
             $this->_name = $name;
+
             return $this;
         }
+
         return $this->_name;
     }
 
@@ -55,8 +56,10 @@ class Session implements Executable, Access
     {
         if (func_num_args() > 0) {
             $this->_lifetime = $lifetime;
+
             return $this;
         }
+
         return $this->_lifetime;
     }
 
@@ -64,8 +67,10 @@ class Session implements Executable, Access
     {
         if (func_num_args() > 0) {
             $this->_expires = $expires;
+
             return $this;
         }
+
         return $this->_expires;
     }
 
@@ -73,8 +78,10 @@ class Session implements Executable, Access
     {
         if (func_num_args() > 0) {
             $this->_host = $host;
+
             return $this;
         }
+
         return $this->_host;
     }
 
@@ -82,8 +89,10 @@ class Session implements Executable, Access
     {
         if (func_num_args() > 0) {
             $this->_path = $path;
+
             return $this;
         }
+
         return $this->_path;
     }
 
@@ -91,31 +100,37 @@ class Session implements Executable, Access
     {
         if (func_num_args() > 0) {
             $this->_isSecure = (bool) $isSecure;
+
             return $this;
         }
+
         return $this->_isSecure;
     }
 
-    public function fingerprint(\Closure $fingerprint = null)
+    public function fingerprint(?\Closure $fingerprint = null)
     {
         if (func_num_args() > 0) {
             $this->_fingerprint = $fingerprint->bindTo($this);
+
             return $this;
         }
+
         return $this->_fingerprint;
     }
 
-    public function request(Request $req = null)
+    public function request(?Request $req = null)
     {
         if (func_num_args() > 0) {
             $this->_request = $req;
+
             return $this;
         }
+
         return $this->_request;
     }
 
     public function configure()
-    {   
+    {
         ini_set('session.entropy_file', '/dev/urandom');
         ini_set('session.entropy_length', 32);
         ini_set('session.hash_function', 'sha512');
@@ -128,17 +143,17 @@ class Session implements Executable, Access
         $params = session_get_cookie_params();
         session_name($this->_name);
         session_set_cookie_params(
-            isset($this->_lifetime) ? $this->_lifetime  : $params['lifetime'],
-            isset($this->_path)     ? $this->_path      : $params['path'],
-            isset($this->_host)     ? $this->_host      : $params['domain'],
-            isset($this->_isSecure) ? $this->_isSecure  : $params['secure'],
+            isset($this->_lifetime) ? $this->_lifetime : $params['lifetime'],
+            isset($this->_path) ? $this->_path : $params['path'],
+            isset($this->_host) ? $this->_host : $params['domain'],
+            isset($this->_isSecure) ? $this->_isSecure : $params['secure'],
             true
         );
 
         return $this;
     }
 
-    public function start(Request $req = null)
+    public function start(?Request $req = null)
     {
         session_start();
 
@@ -170,6 +185,7 @@ class Session implements Executable, Access
     public function regenerate()
     {
         session_regenerate_id(true);
+
         return $this;
     }
 
@@ -187,6 +203,7 @@ class Session implements Executable, Access
         );
         session_unset();
         session_destroy();
+
         return $this;
     }
 
@@ -206,10 +223,12 @@ class Session implements Executable, Access
             } else {
                 unset($_SESSION[$name]);
             }
+
             return $this;
-        } else if (!isset($_SESSION[$name])) {
+        } elseif (! isset($_SESSION[$name])) {
             $_SESSION[$name] = new \stdClass;
         }
+
         return $_SESSION[$name];
     }
 
@@ -217,13 +236,13 @@ class Session implements Executable, Access
     {
         $this->request($req);
 
-        if (!isset($this->_host) && strpos($host = $req->host(), '.') !== false) {
+        if (! isset($this->_host) && strpos($host = $req->host(), '.') !== false) {
             $this->host($host);
         }
-        if (!isset($this->_path)) {
+        if (! isset($this->_path)) {
             $this->path($req->base());
         }
-        if (!isset($this->_isSecure)) {
+        if (! isset($this->_isSecure)) {
             $this->isSecure($req->isSecure());
         }
 

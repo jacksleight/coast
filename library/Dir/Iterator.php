@@ -1,7 +1,8 @@
 <?php
+
 /*
  * Copyright 2019 Jack Sleight <http://jacksleight.com/>
- * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
+ * This source file is subject to the MIT license that is bundled with this package in the file LICENCE.
  */
 
 namespace Coast\Dir;
@@ -12,23 +13,24 @@ class Iterator implements \SeekableIterator
 
     public function __construct($path, $flags = null, $recursive = false, $mode = null)
     {
-        $flags = !isset($flags)
+        $flags = ! isset($flags)
             ? \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_FILEINFO | \FilesystemIterator::SKIP_DOTS
             : $flags;
-        $this->_spl = !$recursive
+        $this->_spl = ! $recursive
             ? new \FilesystemIterator($path, $flags)
             : new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path, $flags), $mode);
     }
 
     public function __call($method, $args)
     {
-        return call_user_func_array(array($this->_spl, $method), $args);
+        return call_user_func_array([$this->_spl, $method], $args);
     }
 
     #[\ReturnTypeWillChange]
     public function current()
     {
         $path = $this->_spl->current()->getPathname();
+
         return $this->_spl->isDir()
             ? new \Coast\Dir($path)
             : new \Coast\File($path);

@@ -1,12 +1,12 @@
 <?php
+
 /*
  * Copyright 2019 Jack Sleight <http://jacksleight.com/>
- * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
+ * This source file is subject to the MIT license that is bundled with this package in the file LICENCE.
  */
 
 namespace Coast;
 
-use Coast;
 use ArrayAccess;
 
 abstract class Base implements ArrayAccess
@@ -21,6 +21,7 @@ abstract class Base implements ArrayAccess
         foreach ($array as $name => $value) {
             $this->__set($name, $value);
         }
+
         return $this;
     }
 
@@ -30,9 +31,9 @@ abstract class Base implements ArrayAccess
             if (method_is_public($this, $name)) {
                 return $this->{$name}($value);
             }
-            trigger_error("Cannot access protected property method " . get_class($this) . "::\${$name}()", E_USER_ERROR);
-        } else if (property_exists($this, $name) && !property_is_public($this, $name)) {
-            trigger_error("Cannot access protected property " . get_class($this) . "::\${$name}", E_USER_ERROR);
+            trigger_error('Cannot access protected property method '.get_class($this)."::\${$name}()", E_USER_ERROR);
+        } elseif (property_exists($this, $name) && ! property_is_public($this, $name)) {
+            trigger_error('Cannot access protected property '.get_class($this)."::\${$name}", E_USER_ERROR);
         } else {
             $this->{$name} = $value;
         }
@@ -44,9 +45,9 @@ abstract class Base implements ArrayAccess
             if (method_is_public($this, $name)) {
                 return $this->{$name}();
             }
-            trigger_error("Cannot access protected property method " . get_class($this) . "::\${$name}()", E_USER_ERROR);
+            trigger_error('Cannot access protected property method '.get_class($this)."::\${$name}()", E_USER_ERROR);
         } else {
-            trigger_error("Undefined property " . get_class($this) . "::\${$name}", E_USER_NOTICE);
+            trigger_error('Undefined property '.get_class($this)."::\${$name}", E_USER_NOTICE);
         }
     }
 
@@ -56,9 +57,9 @@ abstract class Base implements ArrayAccess
             if (method_is_public($this, $name)) {
                 return $this->{$name}() !== null;
             }
-            trigger_error("Cannot access protected property method " . get_class($this) . "::\${$name}()", E_USER_ERROR);
+            trigger_error('Cannot access protected property method '.get_class($this)."::\${$name}()", E_USER_ERROR);
         } else {
-            trigger_error("Undefined property " . get_class($this) . "::\${$name}", E_USER_NOTICE);
+            trigger_error('Undefined property '.get_class($this)."::\${$name}", E_USER_NOTICE);
         }
     }
 
@@ -68,9 +69,9 @@ abstract class Base implements ArrayAccess
             if (method_is_public($this, $name)) {
                 return $this->{$name}(null);
             }
-            trigger_error("Cannot access protected property method " . get_class($this) . "::\${$name}()", E_USER_ERROR);
-        } else if (property_exists($this, $name) && !property_is_public($this, $name)) {
-            trigger_error("Cannot access protected property " . get_class($this) . "::\${$name}", E_USER_ERROR);
+            trigger_error('Cannot access protected property method '.get_class($this)."::\${$name}()", E_USER_ERROR);
+        } elseif (property_exists($this, $name) && ! property_is_public($this, $name)) {
+            trigger_error('Cannot access protected property '.get_class($this)."::\${$name}", E_USER_ERROR);
         } else {
             unset($this->{$name});
         }
@@ -79,7 +80,7 @@ abstract class Base implements ArrayAccess
     #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
-       return $this->__set($offset, $value);
+        return $this->__set($offset, $value);
     }
 
     #[\ReturnTypeWillChange]

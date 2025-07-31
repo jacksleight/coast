@@ -1,7 +1,8 @@
 <?php
+
 /*
  * Copyright 2019 Jack Sleight <http://jacksleight.com/>
- * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
+ * This source file is subject to the MIT license that is bundled with this package in the file LICENCE.
  */
 
 namespace Coast\File;
@@ -47,41 +48,43 @@ abstract class Path extends \Coast\Path
 
     public function move(\Coast\Dir $dir, $baseName = null)
     {
-        $name = "{$dir}/" . (isset($baseName)
+        $name = "{$dir}/".(isset($baseName)
             ? $this->_parseBaseName($baseName)
             : $this->baseName());
         rename($this->_name, $name);
         $this->_name = $name;
+
         return $this;
     }
 
-    public function rename($baseName, \Coast\Dir $dir = null)
+    public function rename($baseName, ?\Coast\Dir $dir = null)
     {
         $name = (isset($dir)
             ? $dir
-            : $this->dirName()) . "/{$this->_parseBaseName($baseName)}";
+            : $this->dirName())."/{$this->_parseBaseName($baseName)}";
         rename($this->_name, $name);
         $this->_name = $name;
+
         return $this;
     }
 
     abstract public function copy(\Coast\Dir $dir, $baseName = null);
-    
+
     abstract public function remove();
 
     public function accessTime()
     {
-        return (new DateTime())->setTimestamp(fileatime($this->_name));
+        return (new DateTime)->setTimestamp(fileatime($this->_name));
     }
 
     public function changeTime()
     {
-        return (new DateTime())->setTimestamp(filectime($this->_name));
+        return (new DateTime)->setTimestamp(filectime($this->_name));
     }
 
     public function modifyTime()
     {
-        return (new DateTime())->setTimestamp(filemtime($this->_name));
+        return (new DateTime)->setTimestamp(filemtime($this->_name));
     }
 
     protected function _parseBaseName($baseName)
@@ -90,9 +93,9 @@ abstract class Path extends \Coast\Path
             $baseName = array_intersect_key($baseName, [
                 'baseName' => null,
                 'fileName' => null,
-                'extName'  => null,
-                'prefix'   => null,
-                'suffix'   => null,
+                'extName' => null,
+                'prefix' => null,
+                'suffix' => null,
             ]);
             $path = new \Coast\Path($this->baseName());
             foreach ($baseName as $method => $value) {
@@ -100,6 +103,7 @@ abstract class Path extends \Coast\Path
             }
             $baseName = $path->baseName();
         }
+
         return $baseName;
     }
 }

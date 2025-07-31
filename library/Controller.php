@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2019 Jack Sleight <http://jacksleight.com/>
  * This source file is subject to the MIT license that is bundled with this package in the file LICENCE.
@@ -6,7 +7,6 @@
 
 namespace Coast;
 
-use Coast;
 use Closure;
 
 class Controller implements \Coast\App\Access, \Coast\Router\Routable
@@ -27,7 +27,7 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
 
     protected $_inflector;
 
-    public function __construct(array $options = array())
+    public function __construct(array $options = [])
     {
         foreach ($options as $name => $value) {
             if ($name[0] == '_') {
@@ -41,21 +41,25 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
     {
         if (func_num_args() > 0) {
             $this->_nspaces[$name] = $nspace;
+
             return $this;
         }
+
         return isset($this->_nspaces[$name])
             ? $this->_nspaces[$name]
             : null;
     }
 
-    public function nspaces(array $nspaces = null)
+    public function nspaces(?array $nspaces = null)
     {
         if (func_num_args() > 0) {
             foreach ($nspaces as $name => $nspace) {
                 $this->nspace($name, $nspace);
             }
+
             return $this;
         }
+
         return $this->_nspaces;
     }
 
@@ -63,20 +67,24 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
     {
         if (func_num_args() > 0) {
             $this->_all = $all;
+
             return $this;
         }
+
         return $this->_all;
     }
 
     public function resolver(Closure $resolver)
     {
         $this->_resolver = $resolver->bindTo($this);
+
         return $this;
     }
 
     public function inflector(Closure $inflector)
     {
         $this->_inflector = $inflector->bindTo($this);
+
         return $this;
     }
 
@@ -98,8 +106,8 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
         if (isset($params['req'])) {
             $params['req']->param('dispatch', [
                 'controller' => $controller,
-                'action'     => $action,
-                'group'      => $group
+                'action' => $action,
+                'group' => $group,
             ]);
         }
 
@@ -112,9 +120,9 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
         $this->_stack = [];
     }
 
-    public function dispatch($controller, $action, $params = array(), $group = null)
+    public function dispatch($controller, $action, $params = [], $group = null)
     {
-        if (!isset($group)) {
+        if (! isset($group)) {
             reset($this->_nspaces);
             $group = key($this->_nspaces);
         }
@@ -122,32 +130,32 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
         if (isset($params['req'])) {
             $params['req']->param('dispatch', [
                 'controller' => $controller,
-                'action'     => $action,
-                'group'      => $group
+                'action' => $action,
+                'group' => $group,
             ]);
         }
 
         $this->_history = [];
-        $this->_stack   = [];
+        $this->_stack = [];
         $this->_queue($controller, $action, $params, $group);
 
         $result = null;
         while (count($this->_stack) > 0) {
             $item = array_shift($this->_stack);
             $this->_history[] = $item;
-            list($controller, $action, $params, $group) = $item;
+            [$controller, $action, $params, $group] = $item;
 
             $nspace = $group;
-            if (!isset($this->_nspaces[$nspace])) {
+            if (! isset($this->_nspaces[$nspace])) {
                 throw new Controller\Exception("Controller group '{$nspace}' does not exist");
             }
-            $class = $this->_nspaces[$nspace] . '\\' . implode('\\', array_map('ucfirst', explode('/', $controller)));
-            if (!isset($this->_actions[$class])) {
-                if (!class_exists($class)) {
+            $class = $this->_nspaces[$nspace].'\\'.implode('\\', array_map('ucfirst', explode('/', $controller)));
+            if (! isset($this->_actions[$class])) {
+                if (! class_exists($class)) {
                     throw new Controller\Failure("Controller class '{$class}' does not exist");
                 }
                 $object = new $class($this);
-                if (!$object instanceof \Coast\Controller\Action) {
+                if (! $object instanceof \Coast\Controller\Action) {
                     throw new Controller\Exception("Controller class '{$class}' is not an instance of \Coast\Controller\Action");
                 }
                 $this->_actions[$class] = $object;
@@ -155,7 +163,7 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
                 $object = $this->_actions[$class];
             }
             $method = $action;
-            if (!method_exists($object, $method)) {
+            if (! method_exists($object, $method)) {
                 throw new Controller\Failure("Controller action '{$class}::{$method}' does not exist");
             }
 
@@ -171,10 +179,10 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
     protected function _queue($controller, $action, $params, $group)
     {
         $parts = explode('/', $controller);
-        $path  = [];
+        $path = [];
         $controllers = [];
         while (count($parts) > 0) {
-            $path[]  = array_shift($parts);
+            $path[] = array_shift($parts);
             $controllers[] = implode('/', $path);
         }
 
@@ -201,21 +209,21 @@ class Controller implements \Coast\App\Access, \Coast\Router\Routable
     public function route(\Coast\Request $req, \Coast\Response $res, array $route)
     {
         if (isset($this->_resolver)) {
-            $func   = $this->_resolver;
+            $func = $this->_resolver;
             $params = $func($req, $route);
         } else {
             $params = $route['params'];
         }
 
         $controller = $params['controller'];
-        $action     = $params['action'];
-        $group      = isset($params['group']) ? $params['group'] : null;
+        $action = $params['action'];
+        $group = isset($params['group']) ? $params['group'] : null;
 
         if (isset($this->_inflector)) {
-            $func       = $this->_inflector;
+            $func = $this->_inflector;
             $controller = $func($controller, 'controller');
-            $action     = $func($action, 'action');
-            $group      = $func($group, 'group');
+            $action = $func($action, 'action');
+            $group = $func($group, 'group');
         }
 
         try {

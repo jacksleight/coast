@@ -1,50 +1,58 @@
 <?php
+
 /*
  * Copyright 2019 Jack Sleight <http://jacksleight.com/>
- * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
+ * This source file is subject to the MIT license that is bundled with this package in the file LICENCE.
  */
 
 namespace Coast\Http;
 
 use Coast\Url;
-use Coast\Http\Request;
 
 class Response
 {
     protected $_request;
+
     protected $_url;
+
     protected $_status;
+
     protected $_headers = [];
+
     protected $_body;
 
-    public function __construct(array $options = array())
+    public function __construct(array $options = [])
     {
         foreach ($options as $name => $value) {
             if ($name[0] == '_') {
-                throw new \Coast\Exception("Access to '{$name}' is prohibited");  
+                throw new \Coast\Exception("Access to '{$name}' is prohibited");
             }
             $this->$name($value);
         }
     }
 
-    public function request(Request $request = null)
+    public function request(?Request $request = null)
     {
         if (func_num_args() > 0) {
             $this->_request = $request;
+
             return $this;
         }
+
         return $this->_request;
     }
 
-    public function url(Url $url = null)
+    public function url(?Url $url = null)
     {
         if (func_num_args() > 0) {
-            if (!$url->isHttp()) {
-                throw new \Exception("URL scheme is not HTTP or HTTPS");
+            if (! $url->isHttp()) {
+                throw new \Exception('URL scheme is not HTTP or HTTPS');
             }
             $this->_url = $url;
+
             return $this;
         }
+
         return $this->_url;
     }
 
@@ -52,8 +60,10 @@ class Response
     {
         if (func_num_args() > 0) {
             $this->_status = $status;
+
             return $this;
         }
+
         return $this->_status;
     }
 
@@ -62,21 +72,25 @@ class Response
         $name = strtolower($name);
         if (isset($value)) {
             $this->_headers[$name] = $value;
+
             return $this;
         }
+
         return isset($this->_headers[$name])
             ? $this->_headers[$name]
             : null;
     }
 
-    public function headers(array $headers = null)
+    public function headers(?array $headers = null)
     {
         if (func_num_args() > 0) {
             foreach ($headers as $name => $value) {
                 $this->header($name, $value);
             }
+
             return $this;
         }
+
         return $this->_headers;
     }
 
@@ -89,8 +103,10 @@ class Response
     {
         if (func_num_args() > 0) {
             $this->_body = $body;
+
             return $this;
         }
+
         return $this->_body;
     }
 
@@ -100,6 +116,7 @@ class Response
         if ($this->isJavascript() && preg_match('/^\w+\(([^\)]*)\)$/', $body, $match)) {
             $body = $match[1];
         }
+
         return json_decode($body, $assoc, $depth, $options);
     }
 

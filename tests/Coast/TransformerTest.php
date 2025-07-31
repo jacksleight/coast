@@ -1,30 +1,31 @@
 <?php
+
 namespace Coast\Test;
 
-use Coast\Transformer,
-    Coast\Transformer\Rule;
 use Coast\DateTime;
+use Coast\Transformer;
+use Coast\Transformer\Rule;
 
 class TransformerTest extends \PHPUnit\Framework\TestCase
 {
-    public function testNull()
+    public function test_null()
     {
-        $transformer = new Rule\NullType();
+        $transformer = new Rule\NullType;
         $this->assertEquals($transformer(''), null);
         $this->assertEquals($transformer('test'), 'test');
         $this->assertEquals($transformer([]), []);
     }
 
-    public function testUrl()
+    public function test_url()
     {
-        $transformer = new Rule\Url();
+        $transformer = new Rule\Url;
         $this->assertEquals($transformer('http://example.com/'), new \Coast\Url('http://example.com/'));
         $this->assertEquals($transformer([]), []);
     }
 
-    public function testBoolean()
+    public function test_boolean()
     {
-        $transformer = new Rule\BooleanType();
+        $transformer = new Rule\BooleanType;
 
         $this->assertTrue($transformer(true));
         $this->assertTrue($transformer(1));
@@ -47,14 +48,14 @@ class TransformerTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($transformer->false(), ['0', 'false']);
     }
 
-    public function testInteger()
+    public function test_integer()
     {
-        $transformer = new Rule\IntegerType();
+        $transformer = new Rule\IntegerType;
         $this->assertEquals($transformer('1'), 1);
         $this->assertEquals($transformer('1.4'), 1);
     }
 
-    public function testDateTime()
+    public function test_date_time()
     {
         $date = new DateTime('today');
         $transformer = new Rule\DateTime('Y-m-d', 'Europe/London');
@@ -71,16 +72,16 @@ class TransformerTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($transformer('test'), 'test');
     }
 
-    public function testArray()
+    public function test_array()
     {
-        $transformer = new Rule\ArrayType();
+        $transformer = new Rule\ArrayType;
         $this->assertEquals($transformer('1,2,3'), ['1', '2', '3']);
         $this->assertEquals($transformer(['1', '2', '3']), ['1', '2', '3']);
     }
 
-    public function testCustom()
+    public function test_custom()
     {
-        $func = function($value) {
+        $func = function ($value) {
             return [$value];
         };
         $transformer = new Rule\Custom($func);
@@ -89,27 +90,27 @@ class TransformerTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($transformer->func(), $func);
     }
 
-    public function testBreak()
+    public function test_break()
     {
-        $transformer = (new Transformer())
+        $transformer = (new Transformer)
             ->break()
             ->boolean();
         $this->assertSame($transformer(null), null);
     }
 
-    public function testSteps()
+    public function test_steps()
     {
-        $transformer1 = (new Transformer())
+        $transformer1 = (new Transformer)
             ->null();
-        $transformer2 = (new Transformer())
+        $transformer2 = (new Transformer)
             ->steps($transformer1->steps());
         $this->assertEquals($transformer1(''), null);
         $this->assertEquals($transformer2(''), null);
     }
 
-    public function testRules()
+    public function test_rules()
     {
-        $transformer = (new Transformer())
+        $transformer = (new Transformer)
             ->null();
         $rule = $transformer->rule('nullType');
         $this->assertEquals($rule[0]->name(), 'nullType');
@@ -117,9 +118,9 @@ class TransformerTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($rules['nullType'][0]->name(), 'nullType');
     }
 
-    public function testClone()
+    public function test_clone()
     {
-        $transformer1 = (new Transformer())
+        $transformer1 = (new Transformer)
             ->null();
         $transformer2 = clone $transformer1;
         $rules1 = $transformer1->rule('nullType');
@@ -127,9 +128,9 @@ class TransformerTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($rules1[0], $rules2[0]);
     }
 
-    public function testName()
+    public function test_name()
     {
-        $transformer = new Rule\NullType();
+        $transformer = new Rule\NullType;
         $transformer->name('test');
         $this->assertEquals($transformer->name(), 'test');
     }

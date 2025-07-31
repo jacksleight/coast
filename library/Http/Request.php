@@ -1,41 +1,54 @@
 <?php
+
 /*
  * Copyright 2019 Jack Sleight <http://jacksleight.com/>
- * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
+ * This source file is subject to the MIT license that is bundled with this package in the file LICENCE.
  */
 
 namespace Coast\Http;
 
-use Coast\Url;
-use Coast\Http\Response;
 use Coast\File;
+use Coast\Url;
 
 class Request
 {
-    const METHOD_HEAD   = 'HEAD';
-    const METHOD_GET    = 'GET';
-    const METHOD_POST   = 'POST';
-    const METHOD_PUT    = 'PUT';
+    const METHOD_HEAD = 'HEAD';
+
+    const METHOD_GET = 'GET';
+
+    const METHOD_POST = 'POST';
+
+    const METHOD_PUT = 'PUT';
+
     const METHOD_DELETE = 'DELETE';
 
-    const AUTH_ANY          = CURLAUTH_ANY;
-    const AUTH_ANYSAFE      = CURLAUTH_ANYSAFE;
-    const AUTH_BASIC        = CURLAUTH_BASIC;
-    const AUTH_DIGEST       = CURLAUTH_DIGEST;
+    const AUTH_ANY = CURLAUTH_ANY;
+
+    const AUTH_ANYSAFE = CURLAUTH_ANYSAFE;
+
+    const AUTH_BASIC = CURLAUTH_BASIC;
+
+    const AUTH_DIGEST = CURLAUTH_DIGEST;
+
     const AUTH_GSSNEGOTIATE = CURLAUTH_GSSNEGOTIATE;
-    const AUTH_NTLM         = CURLAUTH_NTLM;
+
+    const AUTH_NTLM = CURLAUTH_NTLM;
 
     protected $_method = self::METHOD_GET;
+
     protected $_url;
+
     protected $_auth;
+
     protected $_headers = [];
+
     protected $_body;
 
-    public function __construct(array $options = array())
+    public function __construct(array $options = [])
     {
         foreach ($options as $name => $value) {
             if ($name[0] == '_') {
-                throw new \Coast\Exception("Access to '{$name}' is prohibited");  
+                throw new \Coast\Exception("Access to '{$name}' is prohibited");
             }
             $this->$name($value);
         }
@@ -45,34 +58,40 @@ class Request
     {
         if (func_num_args() > 0) {
             $this->_method = $method;
+
             return $this;
         }
+
         return $this->_method;
     }
 
-    public function url(Url $url = null)
+    public function url(?Url $url = null)
     {
         if (func_num_args() > 0) {
-            if (!$url->isHttp() || !$url->isAbsolute()) {
-                throw new \Exception("URL must be HTTP and absolute");
+            if (! $url->isHttp() || ! $url->isAbsolute()) {
+                throw new \Exception('URL must be HTTP and absolute');
             }
             $this->_url = $url;
+
             return $this;
         }
+
         return $this->_url;
     }
 
-    public function auth(array $auth = null)
+    public function auth(?array $auth = null)
     {
         if (func_num_args() > 0) {
             $auth = $auth + [
-                'type'     => self::AUTH_ANY,
+                'type' => self::AUTH_ANY,
                 'username' => null,
                 'password' => null,
             ];
             $this->_auth = $auth;
+
             return $this;
         }
+
         return $this->_auth;
     }
 
@@ -81,21 +100,25 @@ class Request
         $name = strtolower($name);
         if (isset($value)) {
             $this->_headers[$name] = $value;
+
             return $this;
         }
+
         return isset($this->_headers[$name])
             ? $this->_headers[$name]
             : null;
     }
 
-    public function headers(array $headers = null)
+    public function headers(?array $headers = null)
     {
         if (func_num_args() > 0) {
             foreach ($headers as $name => $value) {
                 $this->header($name, $value);
             }
+
             return $this;
         }
+
         return $this->_headers;
     }
 
@@ -103,8 +126,10 @@ class Request
     {
         if (func_num_args() > 0) {
             $this->header('content-type', $type);
+
             return $this;
         }
+
         return current(explode(';', $this->header('content-type')));
     }
 
@@ -112,8 +137,10 @@ class Request
     {
         if (func_num_args() > 0) {
             $this->_body = $body;
+
             return $this;
         }
+
         return $this->_body;
     }
 
@@ -135,20 +162,22 @@ class Request
     {
         $json = json_encode($json, $options, $depth);
         if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new \Exception('JSON encoding error: ' . json_last_error_msg());
+            throw new \Exception('JSON encoding error: '.json_last_error_msg());
         }
+
         return $this
             ->type('application/json')
             ->body($json);
     }
 
     public function xml($xml, $type = null, $options = null)
-    {  
+    {
         if ($xml instanceof \SimpleXMLElement) {
             $xml = $xml->asXML();
-        } else if ($xml instanceof \DOMDocument) {
+        } elseif ($xml instanceof \DOMDocument) {
             $xml = $xml->saveXML($options);
         }
+
         return $this
             ->type(isset($type)
                 ? "application/{$type}+xml"
@@ -157,11 +186,12 @@ class Request
     }
 
     public function file(File $file, $type = null)
-    {  
+    {
         $this
             ->body([
                 [$file, $type],
             ]);
+
         return $this;
     }
 }

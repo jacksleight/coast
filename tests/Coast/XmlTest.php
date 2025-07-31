@@ -1,4 +1,5 @@
 <?php
+
 namespace Coast\Test;
 
 use Coast\Xml;
@@ -6,10 +7,12 @@ use Coast\Xml;
 class XmlTest extends \PHPUnit\Framework\TestCase
 {
     protected $_xml;
+
     protected $_output;
+
     protected $_array;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->_xml = new Xml('<?xml version="1.0" encoding="UTF-8"?><response/>');
         $this->_xml->addChild('message', 'success');
@@ -21,13 +24,13 @@ class XmlTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    public function testString()
+    public function test_string()
     {
-        $this->assertEquals($this->_output, $this->_xml->toString());        
-        $this->assertEquals($this->_output, (string) $this->_xml);        
+        $this->assertEquals($this->_output, $this->_xml->toString());
+        $this->assertEquals($this->_output, (string) $this->_xml);
     }
 
-    public function testFile()
+    public function test_file()
     {
         $file = \Coast\File::createTemp();
         $this->_xml->writeFile($file);
@@ -37,7 +40,7 @@ class XmlTest extends \PHPUnit\Framework\TestCase
         $file->remove();
     }
 
-    public function testArray()
+    public function test_array()
     {
         $this->assertEquals($this->_array, $this->_xml->toArray());
     }

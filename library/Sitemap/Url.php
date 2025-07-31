@@ -1,26 +1,32 @@
 <?php
+
 /*
  * Copyright 2019 Jack Sleight <http://jacksleight.com/>
- * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
+ * This source file is subject to the MIT license that is bundled with this package in the file LICENCE.
  */
 
 namespace Coast\Sitemap;
 
-use Coast\DateTime;
-use Coast\Xml;
 use Coast\Model;
-use Coast\Validator;
 use Coast\Transformer;
+use Coast\Validator;
+use Coast\Xml;
 
 class Url extends Model
 {
-    const CHANGEFREQUENCY_ALWAYS  = 'always';
-    const CHANGEFREQUENCY_HOURLY  = 'hourly';
-    const CHANGEFREQUENCY_DAILY   = 'daily';
-    const CHANGEFREQUENCY_WEEKLY  = 'weekly';
+    const CHANGEFREQUENCY_ALWAYS = 'always';
+
+    const CHANGEFREQUENCY_HOURLY = 'hourly';
+
+    const CHANGEFREQUENCY_DAILY = 'daily';
+
+    const CHANGEFREQUENCY_WEEKLY = 'weekly';
+
     const CHANGEFREQUENCY_MONTHLY = 'monthly';
-    const CHANGEFREQUENCY_YEARLY  = 'yearly';
-    const CHANGEFREQUENCY_NEVER   = 'never';
+
+    const CHANGEFREQUENCY_YEARLY = 'yearly';
+
+    const CHANGEFREQUENCY_NEVER = 'never';
 
     protected $url;
 
@@ -35,24 +41,24 @@ class Url extends Model
         return parent::_metadataStaticBuild()
             ->properties([
                 'url' => [
-                    'transformer' => (new Transformer())
+                    'transformer' => (new Transformer)
                         ->break()
                         ->url(),
-                    'validator' => (new Validator())
+                    'validator' => (new Validator)
                         ->set()
                         ->break()
                         ->object('Coast\Url'),
                 ],
                 'updateDate' => [
-                    'transformer' => (new Transformer())
+                    'transformer' => (new Transformer)
                         ->break()
                         ->dateTime(),
-                    'validator' => (new Validator())
+                    'validator' => (new Validator)
                         ->break()
                         ->object('DateTime'),
                 ],
                 'changeFrequency' => [
-                    'validator' => (new Validator())
+                    'validator' => (new Validator)
                         ->break()
                         ->in([
                             self::CHANGEFREQUENCY_ALWAYS,
@@ -65,7 +71,7 @@ class Url extends Model
                         ]),
                 ],
                 'priority' => [
-                    'validator' => (new Validator())
+                    'validator' => (new Validator)
                         ->break()
                         ->decimal()
                         ->range(0, 1),

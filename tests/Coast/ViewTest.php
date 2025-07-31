@@ -1,7 +1,6 @@
 <?php
-namespace Coast\Test;
 
-use Coast\Url;
+namespace Coast\Test;
 
 class ViewTest extends \PHPUnit\Framework\TestCase
 {

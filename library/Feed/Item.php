@@ -1,16 +1,14 @@
 <?php
+
 /*
  * Copyright 2019 Jack Sleight <http://jacksleight.com/>
- * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
+ * This source file is subject to the MIT license that is bundled with this package in the file LICENCE.
  */
 
 namespace Coast\Feed;
 
-use DateTime;
-use Coast\Xml;
 use Coast\Model;
-use Coast\Validator;
-use Coast\Transformer;
+use Coast\Xml;
 
 class Item extends Model
 {
@@ -45,22 +43,22 @@ class Item extends Model
                     'type' => 'datetime',
                 ],
                 'author' => [
-                    'type'            => Model::TYPE_ONE,
-                    'className'       => 'Coast\Feed\Person',
-                    'classArgs'       => ['author'],
-                    'traverse'        => [Model::TRAVERSE_SET, Model::TRAVERSE_GET, Model::TRAVERSE_CREATE],
+                    'type' => Model::TYPE_ONE,
+                    'className' => 'Coast\Feed\Person',
+                    'classArgs' => ['author'],
+                    'traverse' => [Model::TRAVERSE_SET, Model::TRAVERSE_GET, Model::TRAVERSE_CREATE],
                 ],
                 'summary' => [
-                    'type'            => Model::TYPE_ONE,
-                    'className'       => 'Coast\Feed\Content',
-                    'classArgs'       => ['summary'],
-                    'traverse'        => [Model::TRAVERSE_SET, Model::TRAVERSE_GET, Model::TRAVERSE_CREATE],
+                    'type' => Model::TYPE_ONE,
+                    'className' => 'Coast\Feed\Content',
+                    'classArgs' => ['summary'],
+                    'traverse' => [Model::TRAVERSE_SET, Model::TRAVERSE_GET, Model::TRAVERSE_CREATE],
                 ],
                 'body' => [
-                    'type'            => Model::TYPE_ONE,
-                    'className'       => 'Coast\Feed\Content',
-                    'classArgs'       => ['body'],
-                    'traverse'        => [Model::TRAVERSE_SET, Model::TRAVERSE_GET, Model::TRAVERSE_CREATE],
+                    'type' => Model::TYPE_ONE,
+                    'className' => 'Coast\Feed\Content',
+                    'classArgs' => ['body'],
+                    'traverse' => [Model::TRAVERSE_SET, Model::TRAVERSE_GET, Model::TRAVERSE_CREATE],
                 ],
             ]);
     }
@@ -68,7 +66,7 @@ class Item extends Model
     public function toXml()
     {
         $xml = new Xml('<?xml version="1.0" encoding="UTF-8"?><entry/>');
-        
+
         $xml->addChild('id', $this->id);
         $xml->addChild('title')->addCData($this->title);
         $xml->addChild('link')->addAttribute('href', $this->url->toString());

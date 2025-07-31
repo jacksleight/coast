@@ -1,17 +1,15 @@
 <?php
+
 /*
  * Copyright 2019 Jack Sleight <http://jacksleight.com/>
- * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
+ * This source file is subject to the MIT license that is bundled with this package in the file LICENCE.
  */
 
 namespace Coast;
 
-use Coast\Path;
-use Coast\File;
-use Coast\Dir;
-use Coast\View\Content;
 use Coast\App\Access;
 use Coast\App\Executable;
+use Coast\View\Content;
 
 class View implements Access, Executable
 {
@@ -36,39 +34,43 @@ class View implements Access, Executable
 
     protected $_infector;
 
-    public function __construct(array $options = array())
+    public function __construct(array $options = [])
     {
         foreach ($options as $name => $value) {
             if ($name[0] == '_') {
-                throw new \Coast\Exception("Access to '{$name}' is prohibited");  
+                throw new \Coast\Exception("Access to '{$name}' is prohibited");
             }
             $this->$name($value);
         }
     }
 
-    public function dir($group, Dir $dir = null)
+    public function dir($group, ?Dir $dir = null)
     {
         if (func_num_args() > 0) {
-            if (!$group) {
+            if (! $group) {
                 $group = 'default';
             }
             $this->_dirs[$group] = $dir;
             $this->_meta($group, $dir);
+
             return $this;
         }
+
         return isset($this->_dirs[$group])
             ? $this->_dirs[$group]
             : null;
     }
 
-    public function dirs(array $dirs = null)
+    public function dirs(?array $dirs = null)
     {
         if (func_num_args() > 0) {
             foreach ($dirs as $group => $dir) {
                 $this->dir($group, $dir);
             }
+
             return $this;
         }
+
         return $this->_dirs;
     }
 
@@ -80,17 +82,20 @@ class View implements Access, Executable
             $this->_dirs[isset($target[1]) ? $target[1] : $group]
                 ->dir($target[0]),
         ]);
+
         return $this;
     }
 
-    public function extensions($group = null, array $extensions = null)
+    public function extensions($group = null, ?array $extensions = null)
     {
         if (func_num_args() > 0) {
             foreach ($extensions as $source => $target) {
                 $this->extension($group, $source, $target);
             }
+
             return $this;
         }
+
         return $this->_extensions;
     }
 
@@ -98,8 +103,10 @@ class View implements Access, Executable
     {
         if (func_num_args() > 0) {
             $this->_extName = $extName;
+
             return $this;
         }
+
         return $this->_extName;
     }
 
@@ -107,8 +114,10 @@ class View implements Access, Executable
     {
         if (func_num_args() > 0) {
             $this->_partialSeparator = $partialSeparator;
+
             return $this;
         }
+
         return $this->_partialSeparator;
     }
 
@@ -116,28 +125,32 @@ class View implements Access, Executable
     {
         if (func_num_args() > 1) {
             $this->_helpers[$name] = $value;
+
             return $this;
         }
+
         return isset($this->_helpers[$name])
             ? $this->_helpers[$name]
             : null;
     }
 
-    public function helpers(array $helpers = null)
+    public function helpers(?array $helpers = null)
     {
         if (func_num_args() > 0) {
             foreach ($helpers as $name => $value) {
                 $this->helper($name, $value);
             }
+
             return $this;
         }
+
         return $this->_helpers;
     }
 
     protected function _meta($group, Dir $dir)
     {
         $meta = $dir->file('_.php');
-        if (!$meta->exists()) {
+        if (! $meta->exists()) {
             return;
         }
 
@@ -148,39 +161,40 @@ class View implements Access, Executable
     }
 
     public function script($path, $group = null)
-    {  
+    {
         $path = new \Coast\Path($path);
         if (isset($this->_active)) {
-            if (!isset($group)) {
+            if (! isset($group)) {
                 $path = $path->isRelative()
                     ? $path->toAbsolute($this->_active->script->path)
                     : $path;
                 $group = $this->_active->script->group;
-            } else if (!$path->isAbsolute()) {
+            } elseif (! $path->isAbsolute()) {
                 $path = new \Coast\Path("/{$path}");
             }
         } else {
-            if (!$path->isAbsolute()) {
+            if (! $path->isAbsolute()) {
                 $path = new \Coast\Path("/{$path}");
             }
-            if (!isset($group)) {
+            if (! isset($group)) {
                 $group = 'default';
             }
         }
-        if (!isset($this->_dirs[$group])) {
+        if (! isset($this->_dirs[$group])) {
             throw new View\Exception("View group '{$group}' does not exist");
         }
+
         return (object) [
-            'key'   => "{$group}:{$path}",
+            'key' => "{$group}:{$path}",
             'group' => $group,
-            'path'  => $path,
-            'file'  => null,
+            'path' => $path,
+            'file' => null,
         ];
     }
 
     public function files($script)
     {
-        if (!isset($this->_files[$script->key])) {
+        if (! isset($this->_files[$script->key])) {
             $files = [];
             $file = isset($script->file)
                 ? $script->file
@@ -189,7 +203,7 @@ class View implements Access, Executable
                 array_push($files, $file);
             }
             foreach ($this->_extensions as $extension) {
-                if (!$file->isWithin($extension[0])) {
+                if (! $file->isWithin($extension[0])) {
                     continue;
                 }
                 $file = $extension[1]->file($file->toRelative($extension[0]));
@@ -206,39 +220,40 @@ class View implements Access, Executable
     public function inflector(Closure $inflector)
     {
         $this->_inflector = $inflector->bindTo($this);
+
         return $this;
     }
 
-    public function render($path, array $params = array(), $group = null, Content $previous = null)
-    {  
+    public function render($path, array $params = [], $group = null, ?Content $previous = null)
+    {
         if ($path instanceof File) {
             $script = (object) [
-                'key'   => $path->name(),
+                'key' => $path->name(),
                 'group' => 'default',
-                'path'  => new Path('/'),
-                'file'  => $path,
+                'path' => new Path('/'),
+                'file' => $path,
             ];
         } else {
             $script = $this->script($path, $group);
         }
-        
+
         array_unshift($this->_contexts, (object) ([
-            'script'   => $script,
-            'params'   => $params,
-            'vars'     => [],
-            'outer'    => null,
-            'block'    => null,
-            'content'  => new Content(),
+            'script' => $script,
+            'params' => $params,
+            'vars' => [],
+            'outer' => null,
+            'block' => null,
+            'content' => new Content,
             'previous' => $previous,
-            'buffers'  => 0,
-            'renders'  => [],
+            'buffers' => 0,
+            'renders' => [],
         ]));
         $this->_active = &$this->_contexts[0];
 
         array_unshift($this->_active->renders, (object) [
-            'script'    => $script,
-            'depth'     => 0,
-            'params'    => [],
+            'script' => $script,
+            'depth' => 0,
+            'params' => [],
             'isPartial' => false,
         ]);
         try {
@@ -259,8 +274,8 @@ class View implements Access, Executable
 
         $content = $this->_active->content;
         if (isset($this->_active->outer)) {
-            list($path, $params, $group) = $this->_active->outer;
-            $content = $this->render($path, $params, $group, $content);           
+            [$path, $params, $group] = $this->_active->outer;
+            $content = $this->render($path, $params, $group, $content);
         }
 
         array_shift($this->_contexts);
@@ -276,34 +291,35 @@ class View implements Access, Executable
 
         return $content;
     }
-                
+
     protected function _render()
     {
         $render = &$this->_active->renders[0];
         $script = $render->script;
-        $depth  = $render->depth;
+        $depth = $render->depth;
         $params = $render->params;
-        $files  = $this->files($script);
+        $files = $this->files($script);
 
-        if (!count($files)) {
-            if (!count($this->_active->renders)) {
+        if (! count($files)) {
+            if (! count($this->_active->renders)) {
                 throw new View\Failure("View script '{$script->group}::{$script->path}' does not exist");
-            } else if (!$render->isPartial) {
+            } elseif (! $render->isPartial) {
                 throw new View\Failure("View script '{$script->group}::{$script->path}' does not exist");
             } else {
                 return;
             }
         }
-        if (!isset($files[$depth])) {
+        if (! isset($files[$depth])) {
             throw new View\Exception("View script '{$script->group}::{$script->path}' parent at depth '{$depth}' does not exist");
         }
+
         return $this->_run($files[$depth], array_merge(
             $this->_active->params,
             $params
         ));
     }
-        
-    protected function _run(File $__file, array $__params = array())
+
+    protected function _run(File $__file, array $__params = [])
     {
         $this->start();
         try {
@@ -318,9 +334,10 @@ class View implements Access, Executable
             }
             throw $e;
         }
-        return $this->end();        
+
+        return $this->end();
     }
-        
+
     public function params(array $params)
     {
         $this->_active->params = array_merge(
@@ -328,18 +345,18 @@ class View implements Access, Executable
             $params
         );
     }
-        
+
     public function pass(array $params)
     {
         $this->_active->content->params($params);
     }
-        
-    public function partial($name, $params = array())
+
+    public function partial($name, $params = [])
     {
         array_unshift($this->_active->renders, (object) [
-            'script'    => $this->script("{$this->_active->script->path}{$this->_partialSeparator}{$name}"),
-            'depth'     => 0,
-            'params'    => $params,
+            'script' => $this->script("{$this->_active->script->path}{$this->_partialSeparator}{$name}"),
+            'depth' => 0,
+            'params' => $params,
             'isPartial' => true,
         ]);
         $content = $this->_render();
@@ -355,26 +372,27 @@ class View implements Access, Executable
 
         return $this->_render();
     }
-        
-    public function inner($path, array $params = array(), $group = null)
+
+    public function inner($path, array $params = [], $group = null)
     {
-        if (!isset($this->_active)) {
-            throw new View\Exception("Cannot call View::inner() outside of rendering context");
+        if (! isset($this->_active)) {
+            throw new View\Exception('Cannot call View::inner() outside of rendering context');
         }
 
         $params = array_merge(
             $this->_active->params,
             $params
         );
-        return $this->render($path, $params, $group);      
+
+        return $this->render($path, $params, $group);
     }
 
-    public function outer($path, array $params = array(), $group = null)
+    public function outer($path, array $params = [], $group = null)
     {
-        if (!isset($this->_active)) {
-            throw new View\Exception("Cannot call View::outer() outside of rendering context");
+        if (! isset($this->_active)) {
+            throw new View\Exception('Cannot call View::outer() outside of rendering context');
         }
-        
+
         $params = array_merge(
             $this->_active->params,
             $params
@@ -385,7 +403,7 @@ class View implements Access, Executable
     protected function block($name = null)
     {
         $content = $this->end();
-        if (strlen($content) > 0 ) {
+        if (strlen($content) > 0) {
             $this->_active->content->block($this->_active->block, $content);
         }
 
@@ -399,23 +417,25 @@ class View implements Access, Executable
 
     protected function content($name = null)
     {
-        if (!isset($this->_active->previous)) {
+        if (! isset($this->_active->previous)) {
             return;
         }
+
         return isset($name)
             ? $this->_active->previous->block($name)
             : $this->_active->previous;
     }
-    
+
     protected function start()
     {
         ob_start();
         $this->_active->buffers++;
     }
-    
+
     protected function end()
     {
         $this->_active->buffers--;
+
         return ob_get_clean();
     }
 
@@ -435,9 +455,9 @@ class View implements Access, Executable
     }
 
     public function execute(\Coast\Request $req, \Coast\Response $res)
-    {        
+    {
         $path = $req->path();
-        $path = '/' . (strlen($path) ? $path : 'index');
+        $path = '/'.(strlen($path) ? $path : 'index');
         if (isset($this->_inflector)) {
             $path = $this->_inflector($path, 'path');
         }
@@ -451,4 +471,4 @@ class View implements Access, Executable
             return;
         }
     }
-} 
+}

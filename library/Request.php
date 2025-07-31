@@ -1,49 +1,71 @@
 <?php
+
 /*
  * Copyright 2019 Jack Sleight <http://jacksleight.com/>
- * This source file is subject to the MIT license that is bundled with this package in the file LICENCE. 
+ * This source file is subject to the MIT license that is bundled with this package in the file LICENCE.
  */
 
 namespace Coast;
 
 class Request
 {
-    const PROTOCOL_10   = 'HTTP/1.0';
-    const PROTOCOL_11   = 'HTTP/1.1';
-    
-    const METHOD_HEAD   = 'HEAD';
-    const METHOD_GET    = 'GET';
-    const METHOD_POST   = 'POST';
-    const METHOD_PUT    = 'PUT';
+    const PROTOCOL_10 = 'HTTP/1.0';
+
+    const PROTOCOL_11 = 'HTTP/1.1';
+
+    const METHOD_HEAD = 'HEAD';
+
+    const METHOD_GET = 'GET';
+
+    const METHOD_POST = 'POST';
+
+    const METHOD_PUT = 'PUT';
+
     const METHOD_DELETE = 'DELETE';
-    
-    const SCHEME_HTTP   = 'http';
-    const SCHEME_HTTPS  = 'https';
-    
-    const PORT_HTTP     = 80;
-    const PORT_HTTPS    = 443;
-    
-    protected $_params      = [];
-    protected $_servers     = [];
+
+    const SCHEME_HTTP = 'http';
+
+    const SCHEME_HTTPS = 'https';
+
+    const PORT_HTTP = 80;
+
+    const PORT_HTTPS = 443;
+
+    protected $_params = [];
+
+    protected $_servers = [];
+
     protected $_protocol;
+
     protected $_method;
-    protected $_headers     = [];
+
+    protected $_headers = [];
+
     protected $_scheme;
+
     protected $_host;
+
     protected $_port;
+
     protected $_base;
+
     protected $_path;
-    protected $_pathParams  = [];
+
+    protected $_pathParams = [];
+
     protected $_queryParams = [];
-    protected $_bodyParams  = [];
-    protected $_body        = [];
-    protected $_cookies     = [];
+
+    protected $_bodyParams = [];
+
+    protected $_body = [];
+
+    protected $_cookies = [];
 
     public function fromGlobals()
     {
         global $argv;
         $this->params(isset($argv) ? $argv : []);
-        
+
         $this->servers($_SERVER);
 
         $this->protocol(strtoupper($this->server('SERVER_PROTOCOL')));
@@ -52,7 +74,7 @@ class Request
         foreach ($this->servers() as $name => $value) {
             if (preg_match('/^HTTP_(.*)$/', $name, $match)) {
                 $this->header(str_replace('_', '-', $match[1]), $value);
-            } else if (preg_match('/^CONTENT_.*$/', $name, $match)) {
+            } elseif (preg_match('/^CONTENT_.*$/', $name, $match)) {
                 $this->header(str_replace('_', '-', $match[0]), $value);
             }
         }
@@ -65,13 +87,13 @@ class Request
         $this->scheme($this->server('HTTPS') == 'on' ? self::SCHEME_HTTPS : self::SCHEME_HTTP);
         $this->host($this->server('SERVER_NAME'));
         $this->port($this->server('SERVER_PORT'));
-    
-        list($full) = explode('?', $this->server('REQUEST_URI'));    
+
+        [$full] = explode('?', $this->server('REQUEST_URI'));
         $path = isset($_GET['_']) ? $_GET['_'] : ltrim($full, '/');
         $full = explode('/', $full);
         $path = explode('/', $path);
         $base = array_slice($full, 0, count($full) - count($path));
-        $this->base(implode('/', $base) . '/');
+        $this->base(implode('/', $base).'/');
         $this->path(implode('/', $path));
         $this->pathParams($path);
 
@@ -87,7 +109,7 @@ class Request
             $this->_clean($putParams),
             $this->_restructure($_FILES)
         ));
-        
+
         $this->cookies($_COOKIE);
 
         return $this;
@@ -100,6 +122,7 @@ class Request
                 unset($params[$name]);
             }
         }
+
         return $params;
     }
 
@@ -109,8 +132,9 @@ class Request
         foreach ($params as $name => $array) {
             foreach ($array as $field => $value) {
                 $pointer = &$output[$name];
-                if (!is_array($value)) {
+                if (! is_array($value)) {
                     $pointer[$field] = $value;
+
                     continue;
                 }
                 $stack = [&$pointer];
@@ -123,12 +147,13 @@ class Request
                     $pointer = &$stack[count($stack) - 1];
                     $pointer = &$pointer[$key];
                     $stack[] = &$pointer;
-                    if (!$iterator->hasChildren()) {
+                    if (! $iterator->hasChildren()) {
                         $pointer[$field] = $value;
                     }
                 }
             }
         }
+
         return $output;
     }
 
@@ -140,6 +165,7 @@ class Request
             } else {
                 unset($this->_params[$name]);
             }
+
             return $this;
         }
         $sources = [
@@ -153,17 +179,20 @@ class Request
                 return $this->{$source}[$name];
             }
         }
+
         return null;
     }
 
-    public function params(array $params = null)
+    public function params(?array $params = null)
     {
         if (func_num_args() > 0) {
             foreach ($params as $name => $value) {
                 $this->param($name, $value);
             }
+
             return $this;
         }
+
         return $this->_params;
     }
 
@@ -171,21 +200,25 @@ class Request
     {
         if (func_num_args() > 1) {
             $this->_servers[$name] = $value;
+
             return $this;
         }
+
         return isset($this->_servers[$name])
             ? $this->_servers[$name]
             : null;
     }
 
-    public function servers(array $servers = null)
+    public function servers(?array $servers = null)
     {
         if (func_num_args() > 0) {
             foreach ($servers as $name => $value) {
                 $this->server($name, $value);
             }
+
             return $this;
         }
+
         return $this->_servers;
     }
 
@@ -193,8 +226,10 @@ class Request
     {
         if (func_num_args() > 0) {
             $this->_protocol = $protocol;
+
             return $this;
         }
+
         return $this->_protocol;
     }
 
@@ -202,8 +237,10 @@ class Request
     {
         if (func_num_args() > 0) {
             $this->_method = $method;
+
             return $this;
         }
+
         return $this->_method;
     }
 
@@ -247,21 +284,25 @@ class Request
         $name = strtolower($name);
         if (isset($value)) {
             $this->_headers[$name] = $value;
+
             return $this;
         }
+
         return isset($this->_headers[$name])
             ? $this->_headers[$name]
             : null;
     }
 
-    public function headers(array $headers = null)
+    public function headers(?array $headers = null)
     {
         if (func_num_args() > 0) {
             foreach ($headers as $name => $value) {
                 $this->header($name, $value);
             }
+
             return $this;
         }
+
         return $this->_headers;
     }
 
@@ -269,8 +310,10 @@ class Request
     {
         if (func_num_args() > 0) {
             $this->_scheme = $scheme;
+
             return $this;
         }
+
         return $this->_scheme;
     }
 
@@ -283,8 +326,10 @@ class Request
     {
         if (func_num_args() > 0) {
             $this->_host = $host;
+
             return $this;
         }
+
         return $this->_host;
     }
 
@@ -292,8 +337,10 @@ class Request
     {
         if (func_num_args() > 0) {
             $this->_port = $port;
+
             return $this;
         }
+
         return $this->_port;
     }
 
@@ -301,8 +348,10 @@ class Request
     {
         if (func_num_args() > 0) {
             $this->_base = $base;
+
             return $this;
         }
+
         return $this->_base;
     }
 
@@ -310,8 +359,10 @@ class Request
     {
         if (func_num_args() > 0) {
             $this->_path = $path;
+
             return $this;
         }
+
         return $this->_path;
     }
 
@@ -323,21 +374,25 @@ class Request
             } else {
                 unset($this->_pathParams[$name]);
             }
+
             return $this;
         }
+
         return isset($this->_pathParams[$name])
             ? $this->_pathParams[$name]
             : null;
     }
 
-    public function pathParams(array $pathParams = null)
+    public function pathParams(?array $pathParams = null)
     {
         if (func_num_args() > 0) {
             foreach ($pathParams as $name => $value) {
                 $this->pathParam($name, $value);
             }
+
             return $this;
         }
+
         return $this->_pathParams;
     }
 
@@ -349,21 +404,25 @@ class Request
             } else {
                 unset($this->_queryParams[$name]);
             }
+
             return $this;
         }
+
         return isset($this->_queryParams[$name])
             ? $this->_queryParams[$name]
             : null;
     }
 
-    public function queryParams(array $queryParams = null)
+    public function queryParams(?array $queryParams = null)
     {
         if (func_num_args() > 0) {
             foreach ($queryParams as $name => $value) {
                 $this->queryParam($name, $value);
             }
+
             return $this;
         }
+
         return $this->_queryParams;
     }
 
@@ -375,21 +434,25 @@ class Request
             } else {
                 unset($this->_bodyParams[$name]);
             }
+
             return $this;
         }
+
         return isset($this->_bodyParams[$name])
             ? $this->_bodyParams[$name]
             : null;
     }
 
-    public function bodyParams(array $bodyParams = null)
+    public function bodyParams(?array $bodyParams = null)
     {
         if (func_num_args() > 0) {
             foreach ($bodyParams as $name => $value) {
                 $this->bodyParam($name, $value);
             }
+
             return $this;
         }
+
         return $this->_bodyParams;
     }
 
@@ -397,8 +460,10 @@ class Request
     {
         if (func_num_args() > 0) {
             $this->_body = $body;
+
             return $this;
         }
+
         return $this->_body;
     }
 
@@ -431,42 +496,48 @@ class Request
     {
         if (func_num_args() > 1) {
             $this->_cookies[$name] = $value;
+
             return $this;
         }
+
         return isset($this->_cookies[$name])
             ? $this->_cookies[$name]
             : null;
     }
 
-    public function cookies(array $cookies = null)
+    public function cookies(?array $cookies = null)
     {
         if (func_num_args() > 0) {
             foreach ($cookies as $name => $value) {
                 $this->cookie($name, $value);
             }
+
             return $this;
         }
+
         return $this->_cookies;
     }
 
     public function url()
     {
         $default =
-            ($this->scheme() == self::SCHEME_HTTP  && $this->port() == self::PORT_HTTP) ||
+            ($this->scheme() == self::SCHEME_HTTP && $this->port() == self::PORT_HTTP) ||
             ($this->scheme() == self::SCHEME_HTTPS && $this->port() == self::PORT_HTTPS);
+
         return new \Coast\Url([
-            'scheme'      => $this->scheme(),
-            'host'        => $this->host(),
-            'port'        => !$default ? $this->port() : null,
-            'path'        => $this->base() . $this->path(),
+            'scheme' => $this->scheme(),
+            'host' => $this->host(),
+            'port' => ! $default ? $this->port() : null,
+            'path' => $this->base().$this->path(),
             'queryParams' => $this->queryParams(),
         ]);
     }
 
     /**
      * Set a parameter.
-     * @param string $name
-     * @param mixed $value
+     *
+     * @param  string  $name
+     * @param  mixed  $value
      * @return self
      */
     public function __set($name, $value)
@@ -476,7 +547,8 @@ class Request
 
     /**
      * Get a parameter.
-     * @param  string $name
+     *
+     * @param  string  $name
      * @return mixed
      */
     public function __get($name)
@@ -486,8 +558,9 @@ class Request
 
     /**
      * Check if a parameter exists.
+     *
      * @param  string  $name
-     * @return boolean
+     * @return bool
      */
     public function __isset($name)
     {
@@ -496,8 +569,9 @@ class Request
 
     /**
      * Unset a parameter.
+     *
      * @param  string  $name
-     * @return boolean
+     * @return bool
      */
     public function __unset($name)
     {
