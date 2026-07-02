@@ -31,6 +31,8 @@ class Request
 
     const PORT_HTTPS = 443;
 
+    protected $_id;
+
     protected $_params = [];
 
     protected $_servers = [];
@@ -242,6 +244,15 @@ class Request
         }
 
         return $this->_method;
+    }
+
+    public function id()
+    {
+        if (! isset($this->_id)) {
+            $this->_id = bin2hex(random_bytes(3));
+        }
+
+        return $this->_id;
     }
 
     public function isHead()

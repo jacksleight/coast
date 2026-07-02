@@ -71,6 +71,13 @@ class App implements Executable
     protected $_errorHandler;
 
     /**
+     * Memory held back so a response can still be built after a fatal error.
+     *
+     * @var string
+     */
+    protected $_reservedMemory;
+
+    /**
      * Construct a new Coast application.
      *
      * @param  mixed  $baseDir  Base directory.
@@ -352,7 +359,7 @@ class App implements Executable
                 }
             }
             $this->postExecute($req, $res);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             if (isset($this->_errorHandler)) {
                 $result = call_user_func($this->_errorHandler, $req, $res, $e);
             } else {
@@ -402,6 +409,66 @@ class App implements Executable
             $errorHandler = $errorHandler->bindTo($this);
         }
         $this->_errorHandler = $errorHandler;
+
+        return $this;
+    }
+
+    /**
+     * Promote PHP errors (warnings, notices) to exceptions so they travel through
+     * the error handler instead of being echoed into the response.
+     *
+     * @return self
+     */
+    public function convertErrors($enabled = true)
+    {
+        if (! $enabled) {
+            restore_error_handler();
+
+            return $this;
+        }
+        set_error_handler(function ($severity, $message, $file, $line) {
+            if (! (error_reporting() & $severity)) {
+                return false;
+            }
+            throw new \ErrorException($message, 0, $severity, $file, $line);
+        });
+
+        return $this;
+    }
+
+    /**
+     * Catch otherwise-fatal errors (e.g. memory exhaustion, timeouts) on shutdown and
+     * route them through the registered error handler so a structured response is still
+     * sent. A small amount of memory is reserved up front so the handler can run.
+     *
+     * @return self
+     */
+    public function catchFatals($enabled = true)
+    {
+        if (! $enabled) {
+            $this->_reservedMemory = null;
+
+            return $this;
+        }
+        $this->_reservedMemory = str_repeat(' ', 1024 * 64);
+        register_shutdown_function(function () {
+            $this->_reservedMemory = null;
+            $error = error_get_last();
+            if (! $error || ! in_array($error['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR])) {
+                return;
+            }
+            if (headers_sent() || ! isset($this->_errorHandler)) {
+                return;
+            }
+            $req = $this->param('req');
+            $res = $this->param('res');
+            if (! $req || ! $res) {
+                return;
+            }
+            $e = new \ErrorException($error['message'], 0, $error['type'], $error['file'], $error['line']);
+            call_user_func($this->_errorHandler, $req, $res, $e);
+            $res->toGlobals();
+        });
 
         return $this;
     }
