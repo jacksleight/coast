@@ -62,7 +62,7 @@ class BooleanType extends Rule
         if (is_bool($value)) {
             return $value;
         }
-        $value = strtolower($value);
+        $value = strtolower((string) $value);
         if (in_array($value, $this->_true, true)) {
             $value = true;
         } elseif (in_array($value, $this->_false, true)) {
