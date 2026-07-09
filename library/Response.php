@@ -48,8 +48,21 @@ class Response
         foreach ($this->_headers as $name => $value) {
             header("{$name}: {$value}");
         }
-        foreach ($this->_cookies as $name => $params) {
-            call_user_func_array('setcookie', $params);
+        foreach ($this->_cookies as $params) {
+            $sameSite = $params[7] ?? null;
+            if (isset($sameSite)) {
+                [$name, $value, $expires, $path, $domain, $secure, $http] = $params;
+                setcookie($name, (string) $value, [
+                    'expires' => $expires ?? 0,
+                    'path' => $path ?? '',
+                    'domain' => $domain ?? '',
+                    'secure' => $secure,
+                    'httponly' => $http,
+                    'samesite' => $sameSite,
+                ]);
+            } else {
+                call_user_func_array('setcookie', array_slice($params, 0, 7));
+            }
         }
         if ($this->_body instanceof File) {
             $this->_body->output();
@@ -111,13 +124,13 @@ class Response
         return current(explode(';', $this->header('content-type')));
     }
 
-    public function cookie($name, $value = null, $age = null, $path = null, $domain = null, $secure = false, $http = false)
+    public function cookie($name, $value = null, $age = null, $path = null, $domain = null, $secure = false, $http = false, $sameSite = null)
     {
         if (func_num_args() > 0) {
             if (! isset($path) && isset($this->_request)) {
                 $path = $this->_request->base();
             }
-            $this->_cookies[$name] = [$name, $value, (isset($age) ? time() + $age : null), $path, $domain, $secure, $http];
+            $this->_cookies[$name] = [$name, $value, (isset($age) ? time() + $age : null), $path, $domain, $secure, $http, $sameSite];
 
             return $this;
         }
@@ -125,6 +138,11 @@ class Response
         return isset($this->_cookies[$name])
             ? $this->_cookies[$name]
             : null;
+    }
+
+    public function cookies()
+    {
+        return $this->_cookies;
     }
 
     public function body($body = null)
