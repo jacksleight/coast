@@ -290,6 +290,51 @@ class Request
         return $this->isXmlHttpRequest();
     }
 
+    public function isDocument()
+    {
+        return $this->header('sec-fetch-dest') === 'document'
+            || $this->prefers(['text/html', 'application/json']) === 'text/html';
+    }
+
+    public function accepts()
+    {
+        $accepts = [];
+        $values = array_filter(array_map('trim', explode(',', (string) $this->header('accept'))), 'strlen');
+        foreach ($values as $index => $value) {
+            $params = array_map('trim', explode(';', $value));
+            $type = strtolower(array_shift($params));
+            $quality = 1.0;
+            foreach ($params as $param) {
+                if (stripos($param, 'q=') === 0) {
+                    $quality = (float) substr($param, 2);
+                }
+            }
+            $accepts[] = [$type, $quality, $index];
+        }
+        usort($accepts, function ($a, $b) {
+            return ($b[1] <=> $a[1]) ?: ($a[2] <=> $b[2]);
+        });
+
+        return array_column($accepts, 0);
+    }
+
+    public function prefers(array $types)
+    {
+        foreach ($this->accepts() as $accept) {
+            if ($accept === '*/*') {
+                continue;
+            }
+            foreach ($types as $type) {
+                $type = strtolower($type);
+                if ($accept === $type || $accept === explode('/', $type)[0].'/*') {
+                    return $type;
+                }
+            }
+        }
+
+        return null;
+    }
+
     public function header($name, $value = null)
     {
         $name = strtolower($name);
